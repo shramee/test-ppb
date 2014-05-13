@@ -689,7 +689,8 @@ function siteorigin_panels_widgets_init(){
 	register_widget('SiteOrigin_Panels_Widgets_EmbeddedVideo');
 	register_widget('SiteOrigin_Panels_Widgets_Video');
 }
-add_action('widgets_init', 'siteorigin_panels_widgets_init');
+// simply plugin by not including these widgets
+//add_action('widgets_init', 'siteorigin_panels_widgets_init');
 
 /**
  * Enqueue widget compatibility files.

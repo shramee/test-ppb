@@ -992,6 +992,8 @@ function siteorigin_panels_recommended_widgets(){
 }
 add_action('siteorigin_panels_after_widgets', 'siteorigin_panels_recommended_widgets');
 
+add_filter('siteorigin_panels_show_recommended', '__return_false');
+
 /**
  * Add a filter to import panels_data meta key. This fixes serialized PHP.
  */

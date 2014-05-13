@@ -15,8 +15,10 @@ jQuery(function($){
         var dialog = $(e.target);
         if( dialog.data('widget-type') != 'Pootle_Text_Widget' ) return;
 
+        dialog.filter('.widget-dialog-pootle_text_widget').find('.editor_links').remove();
+
         if(dialog.data('bs_tinymce_setup') == null) {
-            dialog.filter('.widget-dialog-wp_widget_pootle_text_widget').find('a[id$=visual]').click();
+            dialog.filter('.widget-dialog-pootle_text_widget').find('a[id$=visual]').click();
             dialog.find('.editor_container iframe[id$="_ifr"]').css('height', 350);
             dialog.data('bs_tinymce_setup', true);
         }
