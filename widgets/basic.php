@@ -682,15 +682,15 @@ add_shortcode('self_video', 'siteorigin_panels_video_shortcode');
  * Register the widgets.
  */
 function siteorigin_panels_widgets_init(){
-	register_widget('SiteOrigin_Panels_Widgets_Gallery');
-	register_widget('SiteOrigin_Panels_Widgets_PostContent');
-	register_widget('SiteOrigin_Panels_Widgets_Image');
+//	register_widget('SiteOrigin_Panels_Widgets_Gallery');
+//	register_widget('SiteOrigin_Panels_Widgets_PostContent');
+//	register_widget('SiteOrigin_Panels_Widgets_Image');
 	register_widget('SiteOrigin_Panels_Widgets_PostLoop');
-	register_widget('SiteOrigin_Panels_Widgets_EmbeddedVideo');
-	register_widget('SiteOrigin_Panels_Widgets_Video');
+//	register_widget('SiteOrigin_Panels_Widgets_EmbeddedVideo');
+//	register_widget('SiteOrigin_Panels_Widgets_Video');
 }
 // simply plugin by not including these widgets
-//add_action('widgets_init', 'siteorigin_panels_widgets_init');
+add_action('widgets_init', 'siteorigin_panels_widgets_init');
 
 /**
  * Enqueue widget compatibility files.
