@@ -48,5 +48,25 @@
 
 /* Canvas Slider Compat */
 .panel-grid-cell .widget_woo_component .business .slider-pagination {
-    position: relative;
+     position: relative;
+ }
+
+.panel-grid-cell .widget_woo_component .business .slider-pagination .flex-control-nav {
+    padding: 0;
+}
+
+.panel-grid-cell .widget_woo_component .business #loopedSlider .slides {
+    padding: 0;
+}
+
+.panel-grid-cell .widget_woo_component .business #loopedSlider .slides > li > img {
+    padding: 0;
+}
+
+.panel-grid-cell .widget_woo_component .business ul.flex-direction-nav {
+    list-style-type: none;
+}
+
+.panel-grid-cell .widget_woo_component .business ul.flex-direction-nav li {
+    list-style-type: none;
 }

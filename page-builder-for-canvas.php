@@ -1102,4 +1102,10 @@ function siteorigin_panels_plugin_action_links($links) {
 	$links[] = '<a href="http://siteorigin.com/page-builder/#newsletter">'.__('Newsletter', 'siteorigin-panels').'</a>';
 	return $links;
 }
-add_action('plugin_action_links_' . plugin_basename(__FILE__), 'siteorigin_panels_plugin_action_links');
+//add_action('plugin_action_links_' . plugin_basename(__FILE__), 'siteorigin_panels_plugin_action_links');
+
+function pp_pb_load_slider_js($doLoad) {
+    return true;
+}
+
+add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js');
