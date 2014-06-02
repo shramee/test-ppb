@@ -704,3 +704,5 @@ function siteorigin_panels_comatibility_init(){
     }
 }
 add_action('admin_init', 'siteorigin_panels_comatibility_init', 5);
+
+include plugin_dir_path(__FILE__) . '/compat/woo-tabs.php';
