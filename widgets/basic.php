@@ -699,7 +699,9 @@ function siteorigin_panels_comatibility_init(){
 	if(is_plugin_active('black-studio-tinymce-widget/black-studio-tinymce-widget.php')){
 		include plugin_dir_path(__FILE__).'/compat/black-studio-tinymce/black-studio-tinymce.php';
 	}
-    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php')) {
+    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
+        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
+    ) {
         include plugin_dir_path(__FILE__) . '/compat/pootle-text-widget/pootle-text-widget.php';
     }
 }
