@@ -19,7 +19,7 @@ function origin_widgets_init(){
 		if(class_exists($class)) register_widget($class);
 	}
 }
-add_action('widgets_init', 'origin_widgets_init');
+//add_action('widgets_init', 'origin_widgets_init');
 
 function origin_widgets_enqueue($prefix){
 	if($prefix == 'widgets.php') wp_enqueue_script('origin-widgets-admin-script', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'widgets/js/admin.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
