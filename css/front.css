@@ -70,3 +70,8 @@
 .panel-grid-cell .widget_woo_component .business ul.flex-direction-nav li {
     list-style-type: none;
 }
+
+.panel-grid #tabs .list li
+{
+    list-style-type: none;
+}
