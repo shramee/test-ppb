@@ -42,7 +42,7 @@ function siteorigin_panels_update_notice(){
 		}
 	}
 }
-add_action('siteorigin_panels_before_interface', 'siteorigin_panels_update_notice');
+//add_action('siteorigin_panels_before_interface', 'siteorigin_panels_update_notice');
 
 function siteorigin_panels_get_incompatible_plugins(){
 	$incompatible = array_map('trim', (array) file( plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE).'/incompatible.txt' ) );
@@ -93,7 +93,7 @@ function siteorigin_panels_incompatibility_notice(){
 	}
 
 }
-add_action('siteorigin_panels_before_interface', 'siteorigin_panels_incompatibility_notice');
+//add_action('siteorigin_panels_before_interface', 'siteorigin_panels_incompatibility_notice');
 
 /**
  * This action handles dismissing the updated notice.
