@@ -60,4 +60,3 @@ function pp_page_builder_pootle_text_widget_admin_enqueue($page) {
 	}
 }
 add_action('admin_enqueue_scripts', 'pp_page_builder_pootle_text_widget_admin_enqueue', 15);
-
