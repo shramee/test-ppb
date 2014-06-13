@@ -21,6 +21,7 @@ include plugin_dir_path(__FILE__) . 'inc/copy.php';
 include plugin_dir_path(__FILE__) . 'inc/styles.php';
 include plugin_dir_path(__FILE__) . 'inc/legacy.php';
 include plugin_dir_path(__FILE__) . 'inc/notice.php';
+include plugin_dir_path(__FILE__) . 'inc/vantage-extra.php';
 
 if( defined('SITEORIGIN_PANELS_DEV') && SITEORIGIN_PANELS_DEV ) include plugin_dir_path(__FILE__).'inc/debug.php';
 
