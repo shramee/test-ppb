@@ -25,6 +25,7 @@
 .panel-grid-cell .panel {
 	min-height: 1em;
 	zoom: 1;
+    border: none;
 }
 
 .panel-grid-cell .panel:before {
