@@ -18,9 +18,23 @@ $fields['top_border'] = array(
 'type' => 'color',
 );
 
+$fields['top_border_height'] = array(
+    'name' => __('Top Border Height', 'pp-pb'),
+    'type' => 'number',
+    'min' => '0',
+    'default' => '0'
+);
+
 $fields['bottom_border'] = array(
 'name' => __('Bottom Border Color', 'vantage'),
 'type' => 'color',
+);
+
+$fields['bottom_border_height'] = array(
+    'name' => __('Bottom Border Height', 'pp-pb'),
+    'type' => 'number',
+    'min' => '0',
+    'default' => '0'
 );
 
 $fields['background'] = array(
@@ -30,7 +44,7 @@ $fields['background'] = array(
 
 $fields['background_image'] = array(
 'name' => __('Background Image', 'vantage'),
-'type' => 'url',
+'type' => 'upload',
 );
 
 $fields['background_image_repeat'] = array(
@@ -50,11 +64,19 @@ add_filter('siteorigin_panels_row_style_fields', 'pp_vantage_panels_row_style_fi
 function pp_vantage_panels_panels_row_style_attributes($attr, $style) {
 $attr['style'] = '';
 
-if(!empty($style['top_border'])) $attr['style'] .= 'border-top: 1px solid '.$style['top_border'].'; ';
-if(!empty($style['bottom_border'])) $attr['style'] .= 'border-bottom: 1px solid '.$style['bottom_border'].'; ';
+if(!empty($style['top_border']) || !empty($style['top_border_height'])) {
+    $attr['style'] .= 'border-top: ' . $style['top_border_height'] . 'px solid '.$style['top_border'].'; ';
+}
+if(!empty($style['bottom_border']) || !empty($style['bottom_border_height'])) {
+    $attr['style'] .= 'border-bottom: ' . $style['bottom_border_height'] . 'px solid '.$style['bottom_border'].'; ';
+}
 if(!empty($style['background'])) $attr['style'] .= 'background-color: '.$style['background'].'; ';
 if(!empty($style['background_image'])) $attr['style'] .= 'background-image: url('.esc_url($style['background_image']).'); ';
-if(!empty($style['background_image_repeat'])) $attr['style'] .= 'background-repeat: repeat; ';
+if(!empty($style['background_image_repeat'])) {
+    $attr['style'] .= 'background-repeat: repeat; ';
+} else {
+    $attr['style'] .= 'background-repeat: no-repeat; ';
+}
 
 if(empty($attr['style'])) unset($attr['style']);
 return $attr;

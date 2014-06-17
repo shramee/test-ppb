@@ -28,6 +28,8 @@ jQuery( function($){
             open:    function () {
                 var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
+
+                window.setPageBuilderUploadButton();
             },
             close : function(){
                 $(this).data('overlay').remove();

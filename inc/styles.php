@@ -17,9 +17,9 @@ function siteorigin_panels_style_get_fields(){
 		if(!empty($styles)){
 			$fields['class'] = array(
 				'name' => __('Class', 'siteorigin-panels'),
-				'type' => 'select',
+				'type' => 'text',
 				'default' => '',
-				'options' => wp_parse_args( $styles, array('' => __( 'Default', 'siteorigin-panels' ) ) ),
+				//'options' => wp_parse_args( $styles, array('' => __( 'Default', 'siteorigin-panels' ) ) ),
 			);
 		}
 
@@ -63,9 +63,12 @@ function siteorigin_panels_style_dialog_form(){
 				break;
 
 			case 'number' :
-				?><input type="number" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
+				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
 				break;
 
+            case 'upload':
+                ?><input type="text" id="pp-pb-<?php esc_attr_e($name) ?>" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /><button class="button upload-button thickbox">Upload</button><?php
+                break;
 			default :
 				?><input type="text" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
 				break;
