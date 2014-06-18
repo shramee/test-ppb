@@ -699,11 +699,11 @@ function siteorigin_panels_comatibility_init(){
 	if(is_plugin_active('black-studio-tinymce-widget/black-studio-tinymce-widget.php')){
 		include plugin_dir_path(__FILE__).'/compat/black-studio-tinymce/black-studio-tinymce.php';
 	}
-    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
-        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
-    ) {
+//    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
+//        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
+//    ) {
         include plugin_dir_path(__FILE__) . '/compat/pootle-text-widget/pootle-text-widget.php';
-    }
+//    }
 }
 add_action('admin_init', 'siteorigin_panels_comatibility_init', 5);
 
@@ -712,9 +712,9 @@ add_action('wp_head', 'pp_page_builder_pootle_text_widget_frontend_style');
 function pp_page_builder_pootle_text_widget_frontend_style() {
     include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
-    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
-        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
-    ) {
+//    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
+//        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
+//    ) {
 
         $output = '';
 
@@ -745,8 +745,10 @@ function pp_page_builder_pootle_text_widget_frontend_style() {
 
 
         echo "<style>\n $output \n</style>\n";
-    }
+//    }
 }
 
 
 include plugin_dir_path(__FILE__) . '/compat/woo-tabs.php';
+
+require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');

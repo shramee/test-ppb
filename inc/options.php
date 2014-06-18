@@ -54,7 +54,7 @@ function siteorigin_panels_setting($key = ''){
  * Add the options page
  */
 function siteorigin_panels_options_admin_menu() {
-	add_options_page( __('SiteOrigin Page Builder', 'siteorigin-panels'), __('Page Builder', 'siteorigin-panels'), 'manage_options', 'siteorigin_panels', 'siteorigin_panels_options_page' );
+	add_options_page( __('Page Builder for WooThemes Canvas', 'siteorigin-panels'), __('Page Builder', 'siteorigin-panels'), 'manage_options', 'page_builder', 'siteorigin_panels_options_page' );
 }
 add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu' );
 
