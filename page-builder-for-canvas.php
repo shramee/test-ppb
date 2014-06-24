@@ -228,7 +228,7 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
 		wp_enqueue_script( 'so-panels-chosen', plugin_dir_url(__FILE__) . 'js/chosen/chosen.jquery.min.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
 
 		wp_enqueue_script( 'so-panels-admin', plugin_dir_url(__FILE__) . 'js/panels.admin.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
-		wp_enqueue_script( 'so-panels-admin-panels', plugin_dir_url(__FILE__) . 'js/panels.admin.panels.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
+		wp_enqueue_script( 'so-panels-admin-panels', plugin_dir_url(__FILE__) . 'js/panels.admin.panels.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
 		wp_enqueue_script( 'so-panels-admin-grid', plugin_dir_url(__FILE__) . 'js/panels.admin.grid.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
 		wp_enqueue_script( 'so-panels-admin-prebuilt', plugin_dir_url(__FILE__) . 'js/panels.admin.prebuilt.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
 		wp_enqueue_script( 'so-panels-admin-tooltip', plugin_dir_url(__FILE__) . 'js/panels.admin.tooltip.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
@@ -1112,3 +1112,172 @@ function pp_pb_load_slider_js($doLoad) {
 }
 
 add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js');
+
+require_once('page-builder-for-canvas-functions.php');
+add_action( 'init', 'check_main_heading', 0 );
+
+add_filter( 'option_woo_template', 'pp_pb_add_theme_options'  );
+
+function pp_pb_add_theme_options ( $options ) {
+
+    $options_pixels = array();
+    $total_possible_numbers = intval( apply_filters( 'woo_total_possible_numbers', 20 ) );
+    for ( $i = 0; $i <= $total_possible_numbers; $i++ ) {
+        $options_pixels[] = $i . 'px';
+    }
+
+    $options[] = array(
+        'name' => 'Page Builder Widgets',
+        'type' => 'subheading'
+    );
+
+    $shortname = 'page_builder';
+
+    $options[] = array( "name" => __( 'Widget Background Color', 'woothemes' ),
+        "desc" => __( 'Pick a custom color for the widget background or add a hex color code e.g. #cccccc', 'woothemes' ),
+        "id" => $shortname."_widget_bg",
+        "std" => "",
+        "type" => "color");
+
+    $options[] = array( "name" => __( 'Widget Border', 'woothemes' ),
+        "desc" => __( 'Specify border properties for widgets.', 'woothemes' ),
+        "id" => $shortname."_widget_border",
+        "std" => array('width' => '0','style' => 'solid','color' => '#dbdbdb'),
+        "type" => "border");
+
+    $options[] = array( "name" => __( 'Widget Padding', 'woothemes' ),
+        "desc" => __( 'Enter an integer value i.e. 20 for the desired widget padding.', 'woothemes' ),
+        "id" => $shortname."_widget_padding",
+        "std" => "",
+        "type" => array(
+            array(  'id' => $shortname. '_widget_padding_tb',
+                'type' => 'text',
+                'std' => '',
+                'meta' => __( 'Top/Bottom', 'woothemes' ) ),
+            array(  'id' => $shortname. '_widget_padding_lr',
+                'type' => 'text',
+                'std' => '',
+                'meta' => __( 'Left/Right', 'woothemes' ) )
+        ));
+
+    $options[] = array( "name" => __( 'Widget Title', 'woothemes' ),
+        "desc" => __( 'Select the typography you want for the widget title.', 'woothemes' ),
+        "id" => $shortname."_widget_font_title",
+        "std" => array('size' => '14','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'),
+        "type" => "typography");
+
+    $options[] = array( "name" => __( 'Widget Title Bottom Border', 'woothemes' ),
+        "desc" => __( 'Specify border property for the widget title.', 'woothemes' ),
+        "id" => $shortname."_widget_title_border",
+        "std" => array('width' => '1','style' => 'solid','color' => '#e6e6e6'),
+        "type" => "border");
+
+    $options[] = array( "name" => __( 'Widget Text', 'woothemes' ),
+        "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
+        "id" => $shortname."_widget_font_text",
+        "std" => array('size' => '13','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#555555'),
+        "type" => "typography");
+
+    $options[] = array( "name" => __( 'Widget Rounded Corners', 'woothemes' ),
+        "desc" => __( 'Set amount of pixels for border radius (rounded corners). Will only show in CSS3 compatible browser.', 'woothemes' ),
+        "id" => $shortname."_widget_border_radius",
+        "type" => "select",
+        "options" => $options_pixels);
+
+    $options[] = array( "name" => __( 'Tabs Widget Background color', 'woothemes' ),
+        "desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
+        "id" => $shortname."_widget_tabs_bg",
+        "std" => "",
+        "type" => "color");
+
+    $options[] = array( "name" => __( 'Tabs Widget Inside Background Color', 'woothemes' ),
+        "desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
+        "id" => $shortname."_widget_tabs_bg_inside",
+        "std" => "",
+        "type" => "color");
+
+    $options[] = array( "name" => __( 'Tabs Widget Title', 'woothemes' ),
+        "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
+        "id" => $shortname."_widget_tabs_font",
+        "std" => array('size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'),
+        "type" => "typography");
+
+    $options[] = array( "name" => __( 'Tabs Widget Meta / Tabber Font', 'woothemes' ),
+        "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
+        "id" => $shortname."_widget_tabs_font_meta",
+        "std" => array('size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#999999'),
+        "type" => "typography");
+
+    return $options;
+}
+
+add_action('wp_head', 'pp_pb_option_css');
+
+function pp_pb_option_css() {
+    global $woo_options;
+
+    $output = '';
+
+    // Widget Styling
+    $widget_font_title = $woo_options['page_builder_widget_font_title'];
+    $widget_font_text = $woo_options['page_builder_widget_font_text'];
+    $widget_padding_tb = $woo_options['page_builder_widget_padding_tb'];
+    $widget_padding_lr = $woo_options['page_builder_widget_padding_lr'];
+    $widget_bg = $woo_options['page_builder_widget_bg'];
+    $widget_border = $woo_options['page_builder_widget_border'];
+    $widget_title_border = $woo_options['page_builder_widget_title_border'];
+    $widget_border_radius = $woo_options['page_builder_widget_border_radius'];
+
+    $h3_css = '';
+    if ( $widget_font_title )
+        $h3_css .= 'font:'.$widget_font_title["style"].' '.$widget_font_title["size"].$widget_font_title["unit"].'/1.2em '.stripslashes($widget_font_title["face"]).';color:'.$widget_font_title["color"].';';
+    if ( $widget_title_border )
+        $h3_css .= 'border-bottom:'.$widget_title_border["width"].'px '.$widget_title_border["style"].' '.$widget_title_border["color"].';';
+    if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 )
+        $h3_css .= 'margin-bottom:0;';
+
+    if ( $h3_css != '' )
+        $output .= '.panel-grid-cell .widget h3 {'. $h3_css . '}'. "\n";
+
+    if ( $widget_title_border )
+        $output .= '.panel-grid-cell .widget_recent_comments li{ border-color: '.$widget_title_border["color"].';}'. "\n";
+
+    if ( $widget_font_text )
+        $output .= '.panel-grid-cell .widget p, .panel-grid-cell .widget .textwidget { ' . woo_generate_font_css( $widget_font_text, 1.5 ) . ' }' . "\n";
+
+    $widget_css = '';
+    if ( $widget_font_text )
+        $widget_css .= 'font:'.$widget_font_text["style"].' '.$widget_font_text["size"].$widget_font_text["unit"].'/1.5em '.stripslashes($widget_font_text["face"]).';color:'.$widget_font_text["color"].';';
+    if ( $widget_padding_tb || $widget_padding_lr )
+        $widget_css .= 'padding:'.$widget_padding_tb.'px '.$widget_padding_lr.'px;';
+    if ( $widget_bg )
+        $widget_css .= 'background-color:'.$widget_bg.';';
+    if ( $widget_border["width"] > 0 )
+        $widget_css .= 'border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';';
+    if ( $widget_border_radius )
+        $widget_css .= 'border-radius:'.$widget_border_radius.';-moz-border-radius:'.$widget_border_radius.';-webkit-border-radius:'.$widget_border_radius.';';
+
+    if ( $widget_css != '' )
+        $output .= '.panel-grid-cell .widget {'. $widget_css . '}'. "\n";
+
+    if ( $widget_border["width"] > 0 )
+        $output .= '.panel-grid-cell #tabs {border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';}'. "\n";
+
+    // Tabs Widget
+    $widget_tabs_bg = $woo_options['page_builder_widget_tabs_bg'];
+    $widget_tabs_bg_inside = $woo_options['page_builder_widget_tabs_bg_inside'];
+    $widget_tabs_font = $woo_options['page_builder_widget_tabs_font'];
+    $widget_tabs_font_meta = $woo_options['page_builder_widget_tabs_font_meta'];
+
+    if ( $widget_tabs_bg )
+        $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:'.$widget_tabs_bg.';}'. "\n";
+    if ( $widget_tabs_bg_inside )
+        $output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color:'.$widget_tabs_bg_inside.';}'. "\n";
+    if ( $widget_tabs_font )
+        $output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . woo_generate_font_css( $widget_tabs_font, 1.5 ) . ' }'. "\n";
+    if ( $widget_tabs_font_meta )
+        $output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . woo_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
+    $output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . woo_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
+
+    echo "<style>\n" . $output . "\n" . "</style>\n";
+}

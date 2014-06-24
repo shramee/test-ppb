@@ -25,6 +25,9 @@
 .panel-grid-cell .panel {
 	min-height: 1em;
 	zoom: 1;
+}
+
+.panel-grid-cell > .panel {
     border: none;
     box-shadow: none !important;
 }

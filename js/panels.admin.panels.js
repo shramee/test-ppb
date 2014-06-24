@@ -20,7 +20,7 @@
 
         if ( typeof $$.data('dialog') != 'undefined' && !$$.data('dialog').hasClass('ui-dialog-content-loading') ) {
 
-            $$.data('dialog').find( '*[name]' ).not( '[data-info-field]' ).each( function () {
+            $$.data('dialog').find( '*[name^=widgets]' ).not( '[data-info-field]' ).each( function () {
                 var $$ = $(this);
                 var name = /widgets\[[0-9]+\]\[(.*)\]/.exec($$.attr('name'));
                 name = name[1];
