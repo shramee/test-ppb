@@ -587,7 +587,8 @@ add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_single_post_content'
  */
 function siteorigin_panels_filter_content( $content ) {
 
-    $isWooCommerceInstalled = isset($GLOBALS['woocommerce']);
+    $isWooCommerceInstalled = isset($GLOBALS['woocommerce']) &&
+        function_exists('is_shop') && function_exists('wc_get_page_id');
 
     if ($isWooCommerceInstalled) {
         if (is_post_type_archive() && !is_shop()) {
@@ -595,7 +596,7 @@ function siteorigin_panels_filter_content( $content ) {
         }
 
         if (is_shop()) {
-            $postID = woocommerce_get_page_id('shop');
+            $postID = wc_get_page_id('shop');
         } else {
             $postID = get_the_ID();
         }
