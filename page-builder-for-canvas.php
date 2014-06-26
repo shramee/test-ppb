@@ -586,7 +586,28 @@ add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_single_post_content'
  * @filter the_content
  */
 function siteorigin_panels_filter_content( $content ) {
-	global $post;
+
+    $isWooCommerceInstalled = isset($GLOBALS['woocommerce']);
+
+    if ($isWooCommerceInstalled) {
+        if (is_post_type_archive() && !is_shop()) {
+            return $content;
+        }
+
+        if (is_shop()) {
+            $postID = woocommerce_get_page_id('shop');
+        } else {
+            $postID = get_the_ID();
+        }
+    } else {
+        if (is_post_type_archive()) {
+            return $content;
+        }
+
+        $postID = get_the_ID();
+    }
+
+    $post = get_post($postID);
 
 	if ( empty( $post ) ) return $content;
 	if ( in_array( $post->post_type, siteorigin_panels_setting('post-types') ) ) {
@@ -1133,19 +1154,19 @@ function pp_pb_add_theme_options ( $options ) {
 
     $shortname = 'page_builder';
 
-    $options[] = array( "name" => __( 'Widget Background Color', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Background Color', 'woothemes' ),
         "desc" => __( 'Pick a custom color for the widget background or add a hex color code e.g. #cccccc', 'woothemes' ),
         "id" => $shortname."_widget_bg",
         "std" => "",
         "type" => "color");
 
-    $options[] = array( "name" => __( 'Widget Border', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Border', 'woothemes' ),
         "desc" => __( 'Specify border properties for widgets.', 'woothemes' ),
         "id" => $shortname."_widget_border",
         "std" => array('width' => '0','style' => 'solid','color' => '#dbdbdb'),
         "type" => "border");
 
-    $options[] = array( "name" => __( 'Widget Padding', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Padding', 'woothemes' ),
         "desc" => __( 'Enter an integer value i.e. 20 for the desired widget padding.', 'woothemes' ),
         "id" => $shortname."_widget_padding",
         "std" => "",
@@ -1160,49 +1181,49 @@ function pp_pb_add_theme_options ( $options ) {
                 'meta' => __( 'Left/Right', 'woothemes' ) )
         ));
 
-    $options[] = array( "name" => __( 'Widget Title', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Title', 'woothemes' ),
         "desc" => __( 'Select the typography you want for the widget title.', 'woothemes' ),
         "id" => $shortname."_widget_font_title",
         "std" => array('size' => '14','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'),
         "type" => "typography");
 
-    $options[] = array( "name" => __( 'Widget Title Bottom Border', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Title Bottom Border', 'woothemes' ),
         "desc" => __( 'Specify border property for the widget title.', 'woothemes' ),
         "id" => $shortname."_widget_title_border",
         "std" => array('width' => '1','style' => 'solid','color' => '#e6e6e6'),
         "type" => "border");
 
-    $options[] = array( "name" => __( 'Widget Text', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Text', 'woothemes' ),
         "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
         "id" => $shortname."_widget_font_text",
         "std" => array('size' => '13','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#555555'),
         "type" => "typography");
 
-    $options[] = array( "name" => __( 'Widget Rounded Corners', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Widget Rounded Corners', 'woothemes' ),
         "desc" => __( 'Set amount of pixels for border radius (rounded corners). Will only show in CSS3 compatible browser.', 'woothemes' ),
         "id" => $shortname."_widget_border_radius",
         "type" => "select",
         "options" => $options_pixels);
 
-    $options[] = array( "name" => __( 'Tabs Widget Background color', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Tabs Widget Background color', 'woothemes' ),
         "desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
         "id" => $shortname."_widget_tabs_bg",
         "std" => "",
         "type" => "color");
 
-    $options[] = array( "name" => __( 'Tabs Widget Inside Background Color', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Tabs Widget Inside Background Color', 'woothemes' ),
         "desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
         "id" => $shortname."_widget_tabs_bg_inside",
         "std" => "",
         "type" => "color");
 
-    $options[] = array( "name" => __( 'Tabs Widget Title', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Tabs Widget Title', 'woothemes' ),
         "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
         "id" => $shortname."_widget_tabs_font",
         "std" => array('size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'),
         "type" => "typography");
 
-    $options[] = array( "name" => __( 'Tabs Widget Meta / Tabber Font', 'woothemes' ),
+    $options[] = array( "name" => __( 'Page Builder Tabs Widget Meta / Tabber Font', 'woothemes' ),
         "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
         "id" => $shortname."_widget_tabs_font_meta",
         "std" => array('size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#999999'),
