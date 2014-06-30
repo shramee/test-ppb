@@ -1236,19 +1236,18 @@ function pp_pb_add_theme_options ( $options ) {
 add_action('wp_head', 'pp_pb_option_css');
 
 function pp_pb_option_css() {
-    global $woo_options;
 
     $output = '';
 
     // Widget Styling
-    $widget_font_title = $woo_options['page_builder_widget_font_title'];
-    $widget_font_text = $woo_options['page_builder_widget_font_text'];
-    $widget_padding_tb = $woo_options['page_builder_widget_padding_tb'];
-    $widget_padding_lr = $woo_options['page_builder_widget_padding_lr'];
-    $widget_bg = $woo_options['page_builder_widget_bg'];
-    $widget_border = $woo_options['page_builder_widget_border'];
-    $widget_title_border = $woo_options['page_builder_widget_title_border'];
-    $widget_border_radius = $woo_options['page_builder_widget_border_radius'];
+    $widget_font_title = get_option('page_builder_widget_font_title', array('size' => '14','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'));
+    $widget_font_text = get_option('page_builder_widget_font_text', array('size' => '13','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#555555'));
+    $widget_padding_tb = get_option('page_builder_widget_padding_tb', '0');
+    $widget_padding_lr = get_option('page_builder_widget_padding_lr', '0');
+    $widget_bg = get_option('page_builder_widget_bg', 'transparent');
+    $widget_border = get_option('page_builder_widget_border', array('width' => '0','style' => 'solid','color' => '#dbdbdb'));
+    $widget_title_border = get_option('page_builder_widget_title_border', array('width' => '1','style' => 'solid','color' => '#e6e6e6'));
+    $widget_border_radius = get_option('page_builder_widget_border_radius', '0px');
 
     $h3_css = '';
     if ( $widget_font_title )
@@ -1270,10 +1269,25 @@ function pp_pb_option_css() {
     $widget_css = '';
     if ( $widget_font_text )
         $widget_css .= 'font:'.$widget_font_text["style"].' '.$widget_font_text["size"].$widget_font_text["unit"].'/1.5em '.stripslashes($widget_font_text["face"]).';color:'.$widget_font_text["color"].';';
-    if ( $widget_padding_tb || $widget_padding_lr )
-        $widget_css .= 'padding:'.$widget_padding_tb.'px '.$widget_padding_lr.'px;';
-    if ( $widget_bg )
+
+    if (!$widget_padding_lr) {
+        $widget_css .= 'padding-left: 0; padding-right: 0;';
+    } else {
+        $widget_css .= 'padding-left: ' . $widget_padding_lr . 'px ; padding-right: ' . $widget_padding_lr . 'px;';
+    }
+    if (!$widget_padding_tb) {
+        $widget_css .= 'padding-top: 0; padding-bottom: 0;';
+    } else {
+        $widget_css .= 'padding-top: ' . $widget_padding_tb . 'px ; padding-bottom: ' . $widget_padding_tb . 'px;';
+    }
+
+    if ( $widget_bg ) {
         $widget_css .= 'background-color:'.$widget_bg.';';
+    } else {
+        $widget_css .= 'background-color: transparent;';
+    }
+
+
     if ( $widget_border["width"] > 0 )
         $widget_css .= 'border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';';
     if ( $widget_border_radius )
@@ -1286,15 +1300,23 @@ function pp_pb_option_css() {
         $output .= '.panel-grid-cell #tabs {border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';}'. "\n";
 
     // Tabs Widget
-    $widget_tabs_bg = $woo_options['page_builder_widget_tabs_bg'];
-    $widget_tabs_bg_inside = $woo_options['page_builder_widget_tabs_bg_inside'];
-    $widget_tabs_font = $woo_options['page_builder_widget_tabs_font'];
-    $widget_tabs_font_meta = $woo_options['page_builder_widget_tabs_font_meta'];
+    $widget_tabs_bg = get_option('page_builder_widget_tabs_bg', 'transparent');
+    $widget_tabs_bg_inside = get_option('page_builder_widget_tabs_bg_inside', 'transparent');
+    $widget_tabs_font = get_option('page_builder_widget_tabs_font', array('size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'));
+    $widget_tabs_font_meta = get_option('page_builder_widget_tabs_font_meta', array('size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#999999'));
 
-    if ( $widget_tabs_bg )
-        $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:'.$widget_tabs_bg.';}'. "\n";
-    if ( $widget_tabs_bg_inside )
-        $output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color:'.$widget_tabs_bg_inside.';}'. "\n";
+    if ( $widget_tabs_bg ) {
+        $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:' . $widget_tabs_bg . ';}' . "\n";
+    } else {
+        $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color: transparent;}' . "\n";
+    }
+
+    if ( $widget_tabs_bg_inside ) {
+        $output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color:' . $widget_tabs_bg_inside . ';}' . "\n";
+    } else {
+        $output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color: transparent; }' . "\n";
+    }
+
     if ( $widget_tabs_font )
         $output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . woo_generate_font_css( $widget_tabs_font, 1.5 ) . ' }'. "\n";
     if ( $widget_tabs_font_meta )

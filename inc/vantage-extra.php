@@ -47,6 +47,14 @@ $fields['background_image'] = array(
 'type' => 'upload',
 );
 
+
+$fields['height'] = array(
+    'name' => __('Height', 'pp-pb'),
+    'type' => 'number',
+    'min' => '0',
+    'default' => ''
+);
+
 $fields['background_image_repeat'] = array(
 'name' => __('Repeat Background Image', 'vantage'),
 'type' => 'checkbox',
@@ -90,6 +98,10 @@ function pp_vantage_panels_panels_row_style_attributes($attr, $style) {
 
     if (!empty($style['background_image_size'])) {
         $attr['style'] .= 'background-size: ' . $style['background_image_size'] . '; ';
+    }
+
+    if (!empty($style['height'])) {
+        $attr['style'] .= 'height: ' . $style['height'] . 'px;';
     }
 
     if(empty($attr['style']))
