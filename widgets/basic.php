@@ -715,36 +715,36 @@ function pp_page_builder_pootle_text_widget_frontend_style() {
 //    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
 //        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
 //    ) {
-
-        $output = '';
-
-        global $woo_options;
-
-        $font_text = get_option('woo_font_text');
-        $font_h1 = get_option('woo_font_h1');
-        $font_h2 = $woo_options['woo_font_h2'];
-        $font_h3 = $woo_options['woo_font_h3'];
-        $font_h4 = $woo_options['woo_font_h4'];
-        $font_h5 = $woo_options['woo_font_h5'];
-        $font_h6 = $woo_options['woo_font_h6'];
-
-        if ($font_text)
-            $output .= '.panel-grid  .widget_pootle-text-widget p { ' . woo_generate_font_css($font_text, 1.5) . ' }' . "\n";
-        if ($font_h1)
-            $output .= '.panel-grid  .widget_pootle-text-widget h1 { ' . woo_generate_font_css($font_h1, 1.2) . ' }';
-        if ($font_h2)
-            $output .= '.panel-grid  .widget_pootle-text-widget h2 { ' . woo_generate_font_css($font_h2, 1.2) . ' }';
-        if ($font_h3)
-            $output .= '.panel-grid  .widget_pootle-text-widget h3 { ' . woo_generate_font_css($font_h3, 1.2) . '; margin-bottom: 0.5em; padding: 0; border-bottom: none; }';
-        if ($font_h4)
-            $output .= '.panel-grid  .widget_pootle-text-widget h4 { ' . woo_generate_font_css($font_h4, 1.2) . ' }';
-        if ($font_h5)
-            $output .= '.panel-grid  .widget_pootle-text-widget h5 { ' . woo_generate_font_css($font_h5, 1.2) . ' }';
-        if ($font_h6)
-            $output .= '.panel-grid  .widget_pootle-text-widget h6 { ' . woo_generate_font_css($font_h6, 1.2) . ' }' . "\n";
-
-
-        echo "<style>\n $output \n</style>\n";
+//
+//        $output = '';
+//
+//        global $woo_options;
+//
+//        $font_text = get_option('woo_font_text');
+//        $font_h1 = get_option('woo_font_h1');
+//        $font_h2 = $woo_options['woo_font_h2'];
+//        $font_h3 = $woo_options['woo_font_h3'];
+//        $font_h4 = $woo_options['woo_font_h4'];
+//        $font_h5 = $woo_options['woo_font_h5'];
+//        $font_h6 = $woo_options['woo_font_h6'];
+//
+//        if ($font_text)
+//            $output .= '.panel-grid  .widget_pootle-text-widget p { ' . woo_generate_font_css($font_text, 1.5) . ' }' . "\n";
+//        if ($font_h1)
+//            $output .= '.panel-grid  .widget_pootle-text-widget h1 { ' . woo_generate_font_css($font_h1, 1.2) . ' }';
+//        if ($font_h2)
+//            $output .= '.panel-grid  .widget_pootle-text-widget h2 { ' . woo_generate_font_css($font_h2, 1.2) . ' }';
+//        if ($font_h3)
+//            $output .= '.panel-grid  .widget_pootle-text-widget h3 { ' . woo_generate_font_css($font_h3, 1.2) . '; margin-bottom: 0.5em; padding: 0; border-bottom: none; }';
+//        if ($font_h4)
+//            $output .= '.panel-grid  .widget_pootle-text-widget h4 { ' . woo_generate_font_css($font_h4, 1.2) . ' }';
+//        if ($font_h5)
+//            $output .= '.panel-grid  .widget_pootle-text-widget h5 { ' . woo_generate_font_css($font_h5, 1.2) . ' }';
+//        if ($font_h6)
+//            $output .= '.panel-grid  .widget_pootle-text-widget h6 { ' . woo_generate_font_css($font_h6, 1.2) . ' }' . "\n";
+//
+//
+//        echo "<style>\n $output \n</style>\n";
 //    }
 }
 
