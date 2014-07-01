@@ -13,6 +13,11 @@ add_filter('siteorigin_panels_row_styles', 'pp_vantage_panels_row_styles');
 
 function pp_vantage_panels_row_style_fields($fields) {
 
+    $fields['id'] = array(
+        'name' => __('ID', 'vantage'),
+        'type' => 'text',
+    );
+
 $fields['top_border'] = array(
 'name' => __('Top Border Color', 'vantage'),
 'type' => 'color',
@@ -114,9 +119,11 @@ add_filter('siteorigin_panels_row_style_attributes', 'pp_vantage_panels_panels_r
 
 function pp_vantage_panels_panels_row_attributes($attr, $row) {
     if(!empty($row['style']['no_margin'])) {
-    if(empty($attr['style'])) $attr['style'] = '';
-    $attr['style'] .= 'margin-bottom: 0px;';
-}
+        if(empty($attr['style'])) $attr['style'] = '';
+        $attr['style'] .= 'margin-bottom: 0px;';
+    }
+
+    $attr['id'] = $row['style']['id'];
 
 return $attr;
 }
