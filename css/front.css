@@ -20,8 +20,13 @@
 	box-sizing: border-box;
 	min-height: 1em;
 	padding: 0 17px;
-    display: inline-block;
-    vertical-align: top;
+}
+
+@media only screen and (min-width: 768px) {
+    .panel-grid-cell {
+        display: inline-block;
+        vertical-align: top;
+    }
 }
 
 .panel-grid-cell .panel {
