@@ -107,6 +107,8 @@ function pp_vantage_panels_panels_row_style_attributes($attr, $style) {
 
     if (!empty($style['height'])) {
         $attr['style'] .= 'height: ' . $style['height'] . 'px;';
+    } else {
+        $attr['style'] .= 'height: auto;';
     }
 
     if(empty($attr['style']))

@@ -20,7 +20,8 @@
 	box-sizing: border-box;
 	min-height: 1em;
 	padding: 0 17px;
-    float: left;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .panel-grid-cell .panel {
