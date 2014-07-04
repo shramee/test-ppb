@@ -13,6 +13,23 @@ License: GPL version 3
 define('PP_PAGE_BUILDER_VERSION', '0.9.1');
 define('PP_PAGE_BUILDER_BASE_FILE', __FILE__);
 
+add_action('admin_init', 'pp_pb_check_for_conflict');
+
+function pp_pb_check_for_conflict() {
+    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
+        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')) {
+
+        $pluginFile =  __FILE__;
+        $plugin = plugin_basename($pluginFile);
+        if (is_plugin_active($plugin) ) {
+            deactivate_plugins( $plugin );
+            wp_die( "ERROR: <strong>Page Builder</strong> cannot be activated if Pootle Text Widget is also activated. " .
+                "Page Builder is unable to continue and has been deactivated. " .
+                "<br /><br />Back to the WordPress <a href='".get_admin_url(null, 'plugins.php')."'>Plugins page</a>." );
+        }
+    }
+}
+
 include plugin_dir_path(__FILE__) . 'widgets/basic.php';
 
 include plugin_dir_path(__FILE__) . 'inc/options.php';

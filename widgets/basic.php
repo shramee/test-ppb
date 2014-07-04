@@ -751,4 +751,8 @@ function pp_page_builder_pootle_text_widget_frontend_style() {
 
 include plugin_dir_path(__FILE__) . '/compat/woo-tabs.php';
 
-require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');
+//add_action('init', 'pp_pb_include_pootle_visual_editor');
+//
+//function pp_pb_include_pootle_visual_editor() {
+    require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');
+//}
