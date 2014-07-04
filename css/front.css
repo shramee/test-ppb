@@ -26,6 +26,14 @@
     .panel-grid-cell {
         display: inline-block;
         vertical-align: top;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .panel-grid-cell {
+        display: block !important;
+        width: 100% !important;
     }
 }
 
