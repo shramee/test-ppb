@@ -11,9 +11,12 @@ Instructions
 
 Support
 
-For support issues please email support@pootlepress.com
+- Please see a full video tutorial here:http://www.pootlepress.com/canvas-extensions/tutorials/canvas-page-builder/
+- For support issues please email support@pootlepress.com
 
 
 Versions
+
+1.0 - New row visual styling options / Page Builder widget options / general bug fixes
 
 0.9 - Initial launch in beta
