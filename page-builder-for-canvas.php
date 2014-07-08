@@ -3,14 +3,14 @@
 Plugin Name: Canvas Extension - Page Builder for Canvas
 Plugin URI: http://pootlepress.com/
 Description: A page builder for Canvas.
-Version: 0.9.1
+Version: 1.0
 Author: PootlePress
 Author URI: http://pootlepress.com/
 License: GPL version 3
 */
 
 
-define('PP_PAGE_BUILDER_VERSION', '0.9.1');
+define('PP_PAGE_BUILDER_VERSION', '1.0);
 define('PP_PAGE_BUILDER_BASE_FILE', __FILE__);
 
 add_action('admin_init', 'pp_pb_check_for_conflict');
