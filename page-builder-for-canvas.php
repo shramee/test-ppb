@@ -10,7 +10,7 @@ License: GPL version 3
 */
 
 
-define('PP_PAGE_BUILDER_VERSION', '1.0);
+define('PP_PAGE_BUILDER_VERSION', '1.0');
 define('PP_PAGE_BUILDER_BASE_FILE', __FILE__);
 
 add_action('admin_init', 'pp_pb_check_for_conflict');
