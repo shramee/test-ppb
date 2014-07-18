@@ -39,6 +39,7 @@ include plugin_dir_path(__FILE__) . 'inc/styles.php';
 include plugin_dir_path(__FILE__) . 'inc/legacy.php';
 include plugin_dir_path(__FILE__) . 'inc/notice.php';
 include plugin_dir_path(__FILE__) . 'inc/vantage-extra.php';
+include plugin_dir_path(__FILE__) . 'inc/class-pootlepress-updater.php';
 
 if( defined('SITEORIGIN_PANELS_DEV') && SITEORIGIN_PANELS_DEV ) include plugin_dir_path(__FILE__).'inc/debug.php';
 
@@ -1340,5 +1341,24 @@ function pp_pb_option_css() {
         $output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . woo_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
     $output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . woo_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
 
+//    global $siteorigin_panels_inline_css;
+//    if (!empty($siteorigin_panels_inline_css)) {
+//        $output .= $siteorigin_panels_inline_css;
+//    }
+
     echo "<style>\n" . $output . "\n" . "</style>\n";
+}
+
+
+add_action('init', 'pp_pb_updater');
+function pp_pb_updater()
+{
+    if (!function_exists('get_plugin_data')) {
+        include(ABSPATH . 'wp-admin/includes/plugin.php');
+    }
+    $data = get_plugin_data(__FILE__);
+    $wptuts_plugin_current_version = $data['Version'];
+    $wptuts_plugin_remote_path = 'http://www.pootlepress.com/?updater=1';
+    $wptuts_plugin_slug = plugin_basename(__FILE__);
+    new Pootlepress_Updater ($wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug);
 }
