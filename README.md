@@ -17,6 +17,8 @@ Support
 
 Versions
 
+1.1 - ability to update within WordPress
+
 1.0 - Visual editor widget now bundled / New row visual styling options / Page Builder widget options / general bug fixes
 
 0.9 - Initial launch in beta
