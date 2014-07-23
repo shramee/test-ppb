@@ -121,8 +121,15 @@ add_filter('siteorigin_panels_row_style_attributes', 'pp_vantage_panels_panels_r
 
 function pp_vantage_panels_panels_row_attributes($attr, $row) {
     if(!empty($row['style']['no_margin'])) {
-        if(empty($attr['style'])) $attr['style'] = '';
+        if(empty($attr['style']))
+            $attr['style'] = '';
+
         $attr['style'] .= 'margin-bottom: 0px;';
+    } else {
+        if(empty($attr['style']))
+            $attr['style'] = '';
+
+        $attr['style'] .= 'margin-bottom: 30px;';
     }
 
     $attr['id'] = $row['style']['id'];
