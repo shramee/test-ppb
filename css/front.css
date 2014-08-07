@@ -95,3 +95,32 @@
 {
     list-style-type: none;
 }
+
+.panel-grid-cell > .widget_woo_component > .magazine ul
+{
+    clear: none;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.panel-grid-cell > .widget_woo_component > .magazine ul > li
+{
+    list-style-type: none;
+}
+
+.panel-grid-cell > .widget_woo_component > .magazine .flex-direction-nav
+{
+    height: 0;
+}
+
+.panel-grid-cell > .widget_woo_component > .magazine > .pagination-wrap
+{
+    text-align: center;
+}
+
+.panel-grid-cell > .widget_woo_component > .magazine > .pagination-wrap > .flex-control-nav
+{
+    position: relative;
+    top: 10px;
+}
