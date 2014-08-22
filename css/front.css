@@ -124,3 +124,8 @@
     position: relative;
     top: 10px;
 }
+
+.panel-grid-cell > .widget_pootle-text-widget ul
+{
+    list-style-position: outside;
+}
