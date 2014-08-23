@@ -17,6 +17,8 @@ Support
 
 Versions
 
+1.1.2 - fix list styling in visual editor widget & magazine slider widget
+
 1.1.1 - Fix bottom margin for row
 
 1.1 - ability to update within WordPress
