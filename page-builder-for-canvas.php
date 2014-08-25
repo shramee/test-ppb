@@ -1291,16 +1291,22 @@ function pp_pb_option_css() {
     $widget_title_border = get_option('page_builder_widget_title_border', array('width' => '1','style' => 'solid','color' => '#e6e6e6'));
     $widget_border_radius = get_option('page_builder_widget_border_radius', '0px');
 
-    $h3_css = '';
-    if ( $widget_font_title )
-        $h3_css .= 'font:'.$widget_font_title["style"].' '.$widget_font_title["size"].$widget_font_title["unit"].'/1.2em '.stripslashes($widget_font_title["face"]).';color:'.$widget_font_title["color"].';';
-    if ( $widget_title_border )
-        $h3_css .= 'border-bottom:'.$widget_title_border["width"].'px '.$widget_title_border["style"].' '.$widget_title_border["color"].';';
-    if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 )
-        $h3_css .= 'margin-bottom:0;';
+    // reset this to general h3 styling, overwriting ".widget h3"
+//    $woo_font_h3 = get_option('woo_font_h3', array('size' => '20','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#222222'));
+//    if ( $woo_font_h3 )
+    $output .= 'h3 { border-bottom: none !important; }';
 
-    if ( $h3_css != '' )
-        $output .= '.panel-grid-cell .widget h3 {'. $h3_css . '}'. "\n";
+    $widget_title_css = '';
+    if ( $widget_font_title )
+        $widget_title_css .= 'font:'.$widget_font_title["style"].' '.$widget_font_title["size"].$widget_font_title["unit"].'/1.2em '.stripslashes($widget_font_title["face"]).';color:'.$widget_font_title["color"].';';
+    if ( $widget_title_border )
+        $widget_title_css .= 'border-bottom:'.$widget_title_border["width"].'px '.$widget_title_border["style"].' '.$widget_title_border["color"].' !important;';
+    if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 )
+        $widget_title_css .= 'margin-bottom:0 !important;';
+
+    if ( $widget_title_css != '' )
+        $output .= '.panel-grid-cell .widget h3.widget-title {'. $widget_title_css . '}'. "\n";
+
 
     if ( $widget_title_border )
         $output .= '.panel-grid-cell .widget_recent_comments li{ border-color: '.$widget_title_border["color"].';}'. "\n";
@@ -1372,6 +1378,24 @@ function pp_pb_option_css() {
 
     echo "<style>\n" . $output . "\n" . "</style>\n";
 }
+
+function pp_pb_generate_font_css( $option, $em = '1' ) {
+
+    // Test if font-face is a Google font
+    global $google_fonts;
+    foreach ( $google_fonts as $google_font ) {
+
+        // Add single quotation marks to font name and default arial sans-serif ending
+        if ( $option['face'] == $google_font['name'] )
+            $option['face'] = "'" . $option['face'] . "', arial, sans-serif";
+
+    } // END foreach
+
+    if ( !@$option['style'] && !@$option['size'] && !@$option['unit'] && !@$option['color'] )
+        return 'font-family: '.stripslashes($option["face"]).' !important;';
+    else
+        return 'font:'.$option['style'].' '.$option['size'].$option['unit'].'/'.$em.'em '.stripslashes($option['face']).' !important; color:'.$option['color'].' !important;';
+} // End woo_generate_font_css()
 
 
 add_action('init', 'pp_pb_updater');
