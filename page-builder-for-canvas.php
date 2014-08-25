@@ -848,7 +848,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $grid, $cell, $panel,
 
 	$classes = array( 'panel', 'widget' );
 	if ( !empty( $the_widget->id_base ) ) {
-        $classes[] = 'widget_' . $the_widget->id_base;
+        $classes[] = 'widget_' . $the_widget->id_base . ' ' . $the_widget->id_base;
     }
 	if ( $is_first ) $classes[] = 'panel-first-child';
 	if ( $is_last ) $classes[] = 'panel-last-child';
