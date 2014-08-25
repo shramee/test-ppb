@@ -132,7 +132,7 @@ function pp_vantage_panels_panels_row_attributes($attr, $row) {
         $attr['style'] .= 'margin-bottom: 30px;';
     }
 
-    $attr['id'] = $row['style']['id'];
+    $attr['id'] = isset($row['style']['id']) ? $row['style']['id'] : '';
 
 return $attr;
 }

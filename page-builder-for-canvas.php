@@ -609,6 +609,11 @@ function siteorigin_panels_filter_content( $content ) {
         function_exists('is_shop') && function_exists('wc_get_page_id');
 
     if ($isWooCommerceInstalled) {
+        // prevent Page Builder overwrite taxonomy description with widget content
+        if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) == 0 ) {
+            return $content;
+        }
+
         if (is_post_type_archive() && !is_shop()) {
             return $content;
         }
@@ -842,7 +847,9 @@ function siteorigin_panels_the_widget( $widget, $instance, $grid, $cell, $panel,
 	$the_widget = new $widget;
 
 	$classes = array( 'panel', 'widget' );
-	if ( !empty( $the_widget->id_base ) ) $classes[] = 'widget_' . $the_widget->id_base;
+	if ( !empty( $the_widget->id_base ) ) {
+        $classes[] = 'widget_' . $the_widget->id_base;
+    }
 	if ( $is_first ) $classes[] = 'panel-first-child';
 	if ( $is_last ) $classes[] = 'panel-last-child';
 	$id = 'panel-' . $post_id . '-' . $grid . '-' . $cell . '-' . $panel;
@@ -970,6 +977,23 @@ function siteorigin_panels_enqueue_styles(){
 	wp_register_style('siteorigin-panels-front', plugin_dir_url(__FILE__) . 'css/front.css', array(), PP_PAGE_BUILDER_VERSION );
 }
 add_action('wp_enqueue_scripts', 'siteorigin_panels_enqueue_styles', 1);
+
+function siteorigin_panels_enqueue_scripts(){
+    $isWooCommerceInstalled = isset($GLOBALS['woocommerce']) &&
+        function_exists('is_product');
+
+    if ($isWooCommerceInstalled) {
+        if ( is_product() )
+            wp_dequeue_script( 'wc-single-product' );
+            wp_enqueue_script('pb-wc-single-product', plugin_dir_url(__FILE__) . 'js/wc-single-product.js', array('jquery'));
+            wp_localize_script( 'pb-wc-single-product', 'wc_single_product_params', apply_filters( 'wc_single_product_params', array(
+            'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'woocommerce' ),
+            'review_rating_required'    => get_option( 'woocommerce_review_rating_required' ),
+        ) ) );
+    }
+
+}
+add_action('wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100);
 
 /**
  * Add current pages as cloneable pages
