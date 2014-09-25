@@ -17,6 +17,8 @@ Support
 
 Versions
 
+1.2 - Add Continue Reading option for Post Loop widget / Fix h3 underline issue in Visual Editor / other compatibility and bug fixes 
+
 1.1.2 - fix list styling in visual editor widget & magazine slider widget
 
 1.1.1 - Fix bottom margin for row
