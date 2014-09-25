@@ -304,6 +304,20 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 			echo $args['before_title'] . $instance['title'] . $args['after_title'];
 		}
 
+        $displayPostMore = isset($instance['display_post_more']) && $instance['display_post_more'] == true;
+        $isInitialPostMore = has_action( 'woo_post_inside_after', 'woo_post_more' );
+
+        // hack to temporary add/remove post more
+        if ($displayPostMore) {
+            if (!$isInitialPostMore) {
+                add_action( 'woo_post_inside_after', 'woo_post_more' );
+            }
+        } else {
+            if ($isInitialPostMore) {
+                remove_action( 'woo_post_inside_after', 'woo_post_more' );
+            }
+        }
+
 		if(strpos('/'.$instance['template'], '/content') !== false) {
 			while(have_posts()) {
 				the_post();
@@ -313,6 +327,16 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		else {
 			locate_template($instance['template'], true, false);
 		}
+
+        if ($displayPostMore) {
+            if (!$isInitialPostMore) {
+                remove_action( 'woo_post_inside_after', 'woo_post_more' );
+            }
+        } else {
+            if ($isInitialPostMore) {
+                add_action( 'woo_post_inside_after', 'woo_post_more' );
+            }
+        }
 
 		echo $args['after_widget'];
 
@@ -381,6 +405,8 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 			'orderby' => 'date',
 
 			'sticky' => '',
+
+            'display_post_more' => false,
 
 			'additional' => '',
 		));
@@ -467,7 +493,15 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 			</select>
 		</p>
 
-		<p>
+        <p>
+            <label for="<?php echo $this->get_field_id('display_post_more') ?>">
+            <input type="checkbox" <?php checked($instance['display_post_more']) ?> id="<?php echo $this->get_field_id( 'display_post_more' ) ?>" name="<?php echo $this->get_field_name( 'display_post_more' ) ?>" value="1" />
+            <?php _e('Display Post More', 'siteorigin-panels') ?>
+            </label>
+        </p>
+
+
+        <p>
 			<label for="<?php echo $this->get_field_id('additional') ?>"><?php _e('Additional ', 'siteorigin-panels') ?></label>
 			<input type="text" class="widefat" id="<?php echo $this->get_field_id( 'additional' ) ?>" name="<?php echo $this->get_field_name( 'additional' ) ?>" value="<?php echo esc_attr($instance['additional']) ?>" />
 			<small><?php printf(__('Additional query arguments. See <a href="%s" target="_blank">query_posts</a>.', 'siteorigin-panels'), 'http://codex.wordpress.org/Function_Reference/query_posts') ?></small>
