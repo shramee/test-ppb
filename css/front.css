@@ -30,12 +30,14 @@
     }
 }
 
+/*
 @media only screen and (max-width: 767px) {
     .panel-grid-cell {
         display: block !important;
         width: 100% !important;
     }
 }
+*/
 
 .panel-grid-cell .panel {
 	min-height: 1em;

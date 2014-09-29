@@ -84,7 +84,7 @@ function siteorigin_panels_options_init() {
 	add_settings_field( 'bundled-widgets', __('Bundled Widgets', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'general', array( 'type' => 'bundled-widgets' ) );
 
 	// The display fields
-	add_settings_field( 'post-types', __('Responsive', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'responsive' ) );
+	add_settings_field( 'responsive', __('Responsive', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'responsive' ) );
 	add_settings_field( 'mobile-width', __('Mobile Width', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'mobile-width' ) );
 	add_settings_field( 'margin-sides', __('Margin Sides', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'margin-sides' ) );
 	add_settings_field( 'margin-bottom', __('Margin Bottom', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'margin-bottom' ) );

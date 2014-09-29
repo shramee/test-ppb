@@ -485,7 +485,7 @@ function siteorigin_panels_generate_css($post_id, $panels_data){
 			$cell = $panels_data['grid_cells'][$ci++];
 
 			if ( $cell_count > 1 ) {
-				$css_new = 'width:' . round( $cell['weight'] * 100, 3 ) . '%';
+				$css_new = 'width:' . round( $cell['weight'] * 100, 3, PHP_ROUND_HALF_DOWN) . '%';
 				if ( empty( $css[1920][$css_new] ) ) $css[1920][$css_new] = array();
 				$css[1920][$css_new][] = '#pgc-' . $post_id . '-' . $gi  . '-' . $i;
 			}
@@ -527,7 +527,13 @@ function siteorigin_panels_generate_css($post_id, $panels_data){
 		if(empty($css[ $panels_mobile_width ][ $panel_grid_cell_css ])) $css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
 		$css[ $panels_mobile_width ][ $panel_grid_css ][] = '.panel-grid';
 		$css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
-	}
+	} else {
+        $panel_grid_cell_css = 'display: inline-block !important; vertical-align: top !important;';
+
+        if(empty($css[ $panels_mobile_width ][ $panel_grid_cell_css ])) $css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
+
+        $css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
+    }
 
 	// Add the bottom margin
 	$bottom_margin = 'margin-bottom: '.$panels_margin_bottom.'px';
