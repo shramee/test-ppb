@@ -118,6 +118,8 @@ function siteorigin_panels_get_panels_data_from_post($form_post){
 		$the_widget = new $info['class'];
 		$widget = json_decode($widget['data'], true);
 
+
+
 		if ( method_exists( $the_widget, 'update' ) && !empty($info['raw']) ) {
 			$widget = $the_widget->update( $widget, $widget );
 		}
@@ -127,6 +129,8 @@ function siteorigin_panels_get_panels_data_from_post($form_post){
 		$panels_data['widgets'][$i] = $widget;
 
 	}
+
+
 
 	$panels_data['grids'] = array_values( stripslashes_deep( isset( $form_post['grids'] ) ? $form_post['grids'] : array() ) );
 	$panels_data['grid_cells'] = array_values( stripslashes_deep( isset( $form_post['grid_cells'] ) ? $form_post['grid_cells'] : array() ) );

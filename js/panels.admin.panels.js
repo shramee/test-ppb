@@ -32,12 +32,33 @@
                     else return e;
                 });
 
+                var previousSub = null;
                 var sub = data;
                 for(var i = 0; i < parts.length; i++) {
                     if(i == parts.length - 1) {
 
                         if( $$.attr('type') == 'checkbox' ){
-                            if ( $$.is(':checked') ) sub[parts[i]] = $$.val() != '' ? $$.val() : true;
+
+                            // for multi select checkboxes,
+                            // for example, categories in post slider in WooSlider widget
+                            if (parts[i] == '') {
+
+                                if (previousSub != null && i > 0) {
+                                    if (!$.isArray(previousSub[parts[i-1]])) {
+                                        previousSub[parts[i-1]] = [];
+                                    }
+                                    if ( $$.is(':checked') ) previousSub[parts[i-1]].push($$.val());
+
+                                } else {
+                                    if ( $$.is(':checked') ) sub[parts[i]] = true;
+                                }
+
+
+                            } else {
+                                if ( $$.is(':checked') ) sub[parts[i]] = $$.val() != '' ? $$.val() : true;
+                            }
+
+
                         }
                         else {
                             sub[parts[i]] = $$.val();
@@ -48,6 +69,7 @@
                         if(typeof sub[parts[i]] == 'undefined') {
                             sub[parts[i]] = {};
                         }
+                        previousSub = sub;
                         sub = sub[parts[i]];
                     }
                 }
@@ -243,13 +265,14 @@
                         return;
                     }
 
+                    var postData = panel.panelsGetPanelData();
 
                     $.post(
                         ajaxurl,
                         {
                             'action' : 'so_panels_widget_form',
                             'widget' : widgetClass,
-                            'instance' : JSON.stringify( panel.panelsGetPanelData() ),
+                            'instance' : JSON.stringify( postData ),
                             'raw' : panel.find('input[name$="[info][raw]"]').val()
                         },
                         function(result){
