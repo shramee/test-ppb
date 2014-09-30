@@ -1318,7 +1318,7 @@ function pp_pb_option_css() {
         $output .= '.panel-grid-cell .widget_recent_comments li{ border-color: '.$widget_title_border["color"].';}'. "\n";
 
     if ( $widget_font_text )
-        $output .= '.panel-grid-cell .widget p, .panel-grid-cell .widget .textwidget { ' . woo_generate_font_css( $widget_font_text, 1.5 ) . ' }' . "\n";
+        $output .= '.panel-grid-cell .widget p, .panel-grid-cell .widget .textwidget { ' . pp_pb_generate_font_css( $widget_font_text, 1.5 ) . ' }' . "\n";
 
     $widget_css = '';
     if ( $widget_font_text )
@@ -1372,10 +1372,10 @@ function pp_pb_option_css() {
     }
 
     if ( $widget_tabs_font )
-        $output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . woo_generate_font_css( $widget_tabs_font, 1.5 ) . ' }'. "\n";
+        $output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . pp_pb_generate_font_css( $widget_tabs_font, 1.5 ) . ' }'. "\n";
     if ( $widget_tabs_font_meta )
-        $output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . woo_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
-    $output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . woo_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
+        $output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
+    $output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
 
 //    global $siteorigin_panels_inline_css;
 //    if (!empty($siteorigin_panels_inline_css)) {
@@ -1401,7 +1401,7 @@ function pp_pb_generate_font_css( $option, $em = '1' ) {
         return 'font-family: '.stripslashes($option["face"]).' !important;';
     else
         return 'font:'.$option['style'].' '.$option['size'].$option['unit'].'/'.$em.'em '.stripslashes($option['face']).' !important; color:'.$option['color'].' !important;';
-} // End woo_generate_font_css()
+} // End pp_pb_generate_font_css()
 
 
 add_action('init', 'pp_pb_updater');
