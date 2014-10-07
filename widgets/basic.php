@@ -226,6 +226,8 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		);
 	}
 
+    private $instance;
+
 	/**
 	 * @param array $args
 	 * @param array $instance
@@ -304,7 +306,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 			echo $args['before_title'] . $instance['title'] . $args['after_title'];
 		}
 
-        $displayPostMore = isset($instance['display_post_more']) && $instance['display_post_more'] == true;
+        $displayPostMore = isset($instance['continue_reading_enable']) && $instance['continue_reading_enable'] == true;
         $isInitialPostMore = has_action( 'woo_post_inside_after', 'woo_post_more' );
 
         // hack to temporary add/remove post more
@@ -318,6 +320,26 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
             }
         }
 
+        $thumbnailEnable = isset($instance['thumbnail_enable']) && $instance['thumbnail_enable'] == true;
+        $initialThumbnailEnable = get_option('pp_pb_post_loop_thumbnail_enable', '1') == true;
+        if ($thumbnailEnable != $initialThumbnailEnable) {
+            update_option('pp_pb_post_loop_thumbnail_enable', $thumbnailEnable ? '1' : '0');
+        }
+
+        $this->instance = $instance;
+        // add filter to further set other parameters
+        add_filter('woo_get_dynamic_values', array($this, 'temporary_set_woo_settings'));
+
+        add_filter('get_the_excerpt', array($this, 'filter_excerpt'));
+
+        add_filter('the_title', array($this, 'filter_title'), 10, 2);
+
+        // hook for enable/disable pagination
+        add_action ('woo_loop_before', array($this, 'loop_before'));
+
+        // hook for column count
+//        add_action('get_header', array($this, 'option_css'));
+
 		if(strpos('/'.$instance['template'], '/content') !== false) {
 			while(have_posts()) {
 				the_post();
@@ -327,6 +349,18 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		else {
 			locate_template($instance['template'], true, false);
 		}
+
+        remove_action ('woo_loop_before', array($this, 'loop_before'));
+
+        remove_filter('the_title', array($this, 'filter_title'), 10, 2);
+
+        remove_filter('get_the_excerpt', array($this, 'filter_excerpt'));
+
+        remove_filter('woo_get_dynamic_values', array($this, 'temporary_set_woo_settings'));
+
+        if ($thumbnailEnable != $initialThumbnailEnable) {
+            update_option('pp_pb_post_loop_thumbnail_enable', $initialThumbnailEnable ? '1' : '0');
+        }
 
         if ($displayPostMore) {
             if (!$isInitialPostMore) {
@@ -344,6 +378,85 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		wp_reset_query();
 	}
 
+    public function option_css() {
+        if (isset($this->instance['column_count'])) {
+            $count = (int)$this->instance['column_count'];
+            if ($count > 1) {
+                $columnWidth = (100 / $count) . "%";
+
+//                $css = '';
+//                $css .= ".widget_siteorigin-panels-postloop > article {\n";
+//                $css .= "\t" . "display: inline-block;" . "\n";
+//                $css .= "\t" . "width: " . $columnWidth . ";\n";
+//                $css .= "\t" . "padding-right: 10px;" . "\n";
+//
+//                echo "<style>\n" . $css . "</style>\n";
+            }
+
+        }
+    }
+
+    public function filter_excerpt($excerpt) {
+        if (isset($this->instance['excerpt_length'])) {
+            $length = (int)$this->instance['excerpt_length'];
+            $excerpt = substr($excerpt, 0, $length);
+            return $excerpt;
+        } else {
+            return $excerpt;
+        }
+    }
+
+    public function filter_title($title, $id) {
+        if (isset($this->instance['titles_show'])) {
+            if (!$this->instance['titles_show']) {
+                return '';
+            }
+        }
+
+        return $title;
+    }
+
+    public function loop_before() {
+        // https://wordpress.org/support/topic/turn-off-pagination-for-some-specific-pages
+        if (isset($this->instance['pagination_enable'])) {
+            if (!$this->instance['pagination_enable']) {
+                global $wp_query;
+                query_posts(
+                    array_merge(
+                        $wp_query->query,
+                        array('posts_per_page' => -1)
+                    )
+                );
+            }
+        }
+    }
+
+    public function temporary_set_woo_settings($settings) {
+        if ($this->instance['excerpt_enable']) {
+            $settings['post_content'] = 'excerpt';
+        } else {
+            $settings['post_content'] = 'content';
+        }
+
+        if (isset($this->instance['thumbnail_size'])) {
+            $size = (int)$this->instance['thumbnail_size'];
+            $settings['thumb_w'] = $size;
+            $settings['thumb_h'] = $size;
+        }
+
+        if (isset($this->instance['thumbnail_position'])) {
+            $position = $this->instance['thumbnail_position'];
+            if ($position == 'left') {
+                $settings['thumb_align'] = 'alignleft';
+            } else if ($position == 'center') {
+                $settings['thumb_align'] = 'aligncenter';
+            } else if ($position == 'right') {
+                $settings['thumb_align'] = 'alignright';
+            }
+        }
+
+        return $settings;
+    }
 	/**
 	 * Update the widget
 	 *
@@ -406,9 +519,16 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
 			'sticky' => '',
 
-            'display_post_more' => false,
+            'additional' => '',
 
-			'additional' => '',
+            'thumbnail_enable' => '1',
+            'thumbnail_size' => '',
+            'thumbnail_position' => '',
+            'excerpt_enable' => '0',
+            'excerpt_length' => '',
+            'continue_reading_enable' => '0',
+            'pagination_enable' => '1',
+            'titles_show' => '1',
 		));
 
 		$templates = $this->get_loop_templates();
@@ -494,12 +614,64 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		</p>
 
         <p>
-            <label for="<?php echo $this->get_field_id('display_post_more') ?>">
-            <input type="checkbox" <?php checked($instance['display_post_more']) ?> id="<?php echo $this->get_field_id( 'display_post_more' ) ?>" name="<?php echo $this->get_field_name( 'display_post_more' ) ?>" value="1" />
-            <?php _e('Display Post More', 'siteorigin-panels') ?>
+            <label>
+                <input type="checkbox" <?php checked($instance['thumbnail_enable'], '1') ?>  id="<?php echo $this->get_field_id( 'thumbnail_enable' ) ?>" name="<?php echo $this->get_field_name( 'thumbnail_enable' ) ?>" value="1" />
+                <?php _e('Enable/disable thumbnail', 'siteorigin-panels') ?>
             </label>
         </p>
 
+        <p>
+            <label for="<?php echo $this->get_field_id('thumbnail_size') ?>"><?php _e('Thumbnail size', 'siteorigin-panels') ?></label>
+            <input type="number" min="0" max="1000" step="1" id="<?php echo $this->get_field_id( 'thumbnail_size' ) ?>" name="<?php echo $this->get_field_name( 'thumbnail_size' ) ?>" value="<?php echo esc_attr($instance['thumbnail_size']) ?>" />
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('thumbnail_position') ?>"><?php _e('Thumbnail position', 'siteorigin-panels') ?></label>
+            <select id="<?php echo $this->get_field_id( 'thumbnail_position' ) ?>" name="<?php echo $this->get_field_name( 'thumbnail_position' ) ?>" >
+                <option value="" <?php selected($instance['thumbnail_position'], '') ?>><?php esc_html_e('Default', 'siteorigin-panels') ?></option>
+                <option value="left" <?php selected($instance['thumbnail_position'], 'left') ?>><?php esc_html_e('Left', 'siteorigin-panels') ?></option>
+                <option value="center" <?php selected($instance['thumbnail_position'], 'center') ?>><?php esc_html_e('Center', 'siteorigin-panels') ?></option>
+                <option value="right" <?php selected($instance['thumbnail_position'], 'right') ?>><?php esc_html_e('Right', 'siteorigin-panels') ?></option>
+            </select>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox" <?php checked($instance['excerpt_enable'], true) ?>  id="<?php echo $this->get_field_id( 'excerpt_enable' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_enable' ) ?>" value="1" />
+                <?php _e('Enable/disable excerpt', 'siteorigin-panels') ?>
+            </label>
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('excerpt_length') ?>"><?php _e('Excerpt length', 'siteorigin-panels') ?></label>
+            <input type="number" min="0" max="1000" step="1" id="<?php echo $this->get_field_id( 'excerpt_length' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ) ?>" value="<?php echo esc_attr($instance['excerpt_length']) ?>" />
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('continue_reading_enable') ?>">
+                <input type="checkbox" <?php checked($instance['continue_reading_enable'], '1') ?> id="<?php echo $this->get_field_id( 'continue_reading_enable' ) ?>" name="<?php echo $this->get_field_name( 'continue_reading_enable' ) ?>" value="1" />
+                <?php _e('Enable continue reading', 'siteorigin-panels') ?>
+            </label>
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('pagination_enable') ?>">
+                <input type="checkbox" <?php checked($instance['pagination_enable']) ?> id="<?php echo $this->get_field_id( 'pagination_enable' ) ?>" name="<?php echo $this->get_field_name( 'pagination_enable' ) ?>" value="1" />
+                <?php _e('Enable pagination', 'siteorigin-panels') ?>
+            </label>
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('titles_show') ?>">
+                <input type="checkbox" <?php checked($instance['titles_show']) ?> id="<?php echo $this->get_field_id( 'titles_show' ) ?>" name="<?php echo $this->get_field_name( 'titles_show' ) ?>" value="1" />
+                <?php _e('Show titles', 'siteorigin-panels') ?>
+            </label>
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('column_count') ?>"><?php _e('Number of columns', 'siteorigin-panels') ?></label>
+            <input type="number" min="1" max="10" step="1" id="<?php echo $this->get_field_id( 'column_count' ) ?>" name="<?php echo $this->get_field_name( 'column_count' ) ?>" value="<?php echo esc_attr($instance['column_count']) ?>" />
+        </p>
 
         <p>
 			<label for="<?php echo $this->get_field_id('additional') ?>"><?php _e('Additional ', 'siteorigin-panels') ?></label>
@@ -509,6 +681,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 	<?php
 	}
 }
+
 
 /**
  * A panel that lets you embed video.

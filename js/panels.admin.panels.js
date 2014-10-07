@@ -55,7 +55,12 @@
 
 
                             } else {
-                                if ( $$.is(':checked') ) sub[parts[i]] = $$.val() != '' ? $$.val() : true;
+                                if ( $$.is(':checked') ) {
+                                    sub[parts[i]] = $$.val() != '' ? $$.val() : true;
+                                } else {
+                                    // added this line of code for Pootle Post Loop Widget checkbox
+                                    sub[parts[i]] = $$.val() == '1' ? '0' : false;
+                                }
                             }
 
 

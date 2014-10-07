@@ -522,7 +522,7 @@ function siteorigin_panels_generate_css($post_id, $panels_data){
 	if( $settings['responsive'] ) {
 		// Add CSS to prevent overflow on mobile resolution.
 		$panel_grid_css = 'margin-left: 0 !important; margin-right: 0 !important;';
-		$panel_grid_cell_css = 'padding: 0 !important;';
+		$panel_grid_cell_css = 'padding: 0 !important; width: 100% !important;';
 		if(empty($css[ $panels_mobile_width ][ $panel_grid_css ])) $css[ $panels_mobile_width ][ $panel_grid_css ] = array();
 		if(empty($css[ $panels_mobile_width ][ $panel_grid_cell_css ])) $css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
 		$css[ $panels_mobile_width ][ $panel_grid_css ][] = '.panel-grid';
@@ -797,6 +797,30 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				unset( $data['info'] );
 
 				siteorigin_panels_the_widget( $widget_info['info']['class'], $data, $gi, $ci, $pi, $pi == 0, $pi == count( $widgets ) - 1, $post_id );
+
+                // post loop css for multiple columns
+                if ($widget_info['info']['class'] == "SiteOrigin_Panels_Widgets_PostLoop") {
+                    if (isset($widget_info['column_count'])) {
+                        $count = (int)$widget_info['column_count'];
+                        $width = (100 / $count) . "%";
+                        $cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
+                        $css = '';
+
+                        $css .= "#$cssId {\n";
+                        $css .= "\t" . "font-size: 0; \n";
+                        $css .= "}\n";
+
+                        $css .= "#$cssId > article {\n";
+                        $css .= "\t" . "width: " . $width . ";\n";
+                        $css .= "\t" . 'display: inline-block;' . "\n";
+                        $css .= "\t" . 'box-sizing: border-box;' . "\n";
+                        $css .= "\t" . 'padding-right: 10px;' . "\n";
+                        $css .= "\t" . 'vertical-align: top;' . "\n";
+                        $css .= "}\n";
+
+                        echo "<style>\n" . $css . "</style>\n";
+                    }
+                }
 			}
 			if ( empty( $widgets ) ) echo '&nbsp;';
 			echo '</div>';
@@ -1376,6 +1400,7 @@ function pp_pb_option_css() {
     if ( $widget_tabs_font_meta )
         $output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
     $output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
+
 
 //    global $siteorigin_panels_inline_css;
 //    if (!empty($siteorigin_panels_inline_css)) {
