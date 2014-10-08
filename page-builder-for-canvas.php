@@ -1414,13 +1414,15 @@ function pp_pb_generate_font_css( $option, $em = '1' ) {
 
     // Test if font-face is a Google font
     global $google_fonts;
-    foreach ( $google_fonts as $google_font ) {
+    if (is_array($google_fonts)) {
+        foreach ($google_fonts as $google_font) {
 
-        // Add single quotation marks to font name and default arial sans-serif ending
-        if ( $option['face'] == $google_font['name'] )
-            $option['face'] = "'" . $option['face'] . "', arial, sans-serif";
+            // Add single quotation marks to font name and default arial sans-serif ending
+            if ($option['face'] == $google_font['name'])
+                $option['face'] = "'" . $option['face'] . "', arial, sans-serif";
 
-    } // END foreach
+        } // END foreach
+    }
 
     if ( !@$option['style'] && !@$option['size'] && !@$option['unit'] && !@$option['color'] )
         return 'font-family: '.stripslashes($option["face"]).' !important;';
