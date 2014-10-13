@@ -529,6 +529,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
             'continue_reading_enable' => '0',
             'pagination_enable' => '1',
             'titles_show' => '1',
+
 		));
 
 		$templates = $this->get_loop_templates();

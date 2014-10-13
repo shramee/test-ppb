@@ -611,7 +611,7 @@ add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_single_post_content'
  */
 function siteorigin_panels_filter_content( $content ) {
 
-    $isWooCommerceInstalled = isset($GLOBALS['woocommerce']) &&
+    $isWooCommerceInstalled =
         function_exists('is_shop') && function_exists('wc_get_page_id');
 
     if ($isWooCommerceInstalled) {
@@ -1009,7 +1009,7 @@ function siteorigin_panels_enqueue_styles(){
 add_action('wp_enqueue_scripts', 'siteorigin_panels_enqueue_styles', 1);
 
 function siteorigin_panels_enqueue_scripts(){
-    $isWooCommerceInstalled = isset($GLOBALS['woocommerce']) &&
+    $isWooCommerceInstalled = /* isset($GLOBALS['woocommerce']) && */
         function_exists('is_product');
 
     if ($isWooCommerceInstalled) {
