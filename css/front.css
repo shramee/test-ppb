@@ -131,3 +131,9 @@
 {
     list-style-position: outside;
 }
+
+/* fix Canvas set ol calendar element within .entry with a padding left */
+.entry > .panel-grid > .panel-row-style > .panel-grid-cell > .panel > ol.vcalendar
+{
+    padding-left: 0;
+}
