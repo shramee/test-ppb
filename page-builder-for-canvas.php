@@ -802,6 +802,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
                 if ($widget_info['info']['class'] == "SiteOrigin_Panels_Widgets_PostLoop") {
                     if (isset($widget_info['column_count'])) {
                         $count = (int)$widget_info['column_count'];
+                        // fix division by zero
+                        if ($count < 1) {
+                            $count = 1;
+                        }
                         $width = (100 / $count) . "%";
                         $cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
                         $css = '';

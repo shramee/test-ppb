@@ -137,3 +137,9 @@
 {
     padding-left: 0;
 }
+
+/* fix Canvas set ul tweets element within .entry with a padding left */
+.entry > .panel-grid > .panel-row-style > .panel-grid-cell > .panel > ul.tweets
+{
+    padding-left: 0;
+}
