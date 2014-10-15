@@ -85,21 +85,21 @@ return $fields;
 add_filter('siteorigin_panels_row_style_fields', 'pp_vantage_panels_row_style_fields');
 
 function pp_vantage_panels_panels_row_style_attributes($attr, $style) {
-    $attr['style'] = '';
+$attr['style'] = '';
 
-    if(!empty($style['top_border']) || !empty($style['top_border_height'])) {
-        $attr['style'] .= 'border-top: ' . $style['top_border_height'] . 'px solid '.$style['top_border'].'; ';
-    }
-    if(!empty($style['bottom_border']) || !empty($style['bottom_border_height'])) {
-        $attr['style'] .= 'border-bottom: ' . $style['bottom_border_height'] . 'px solid '.$style['bottom_border'].'; ';
-    }
-    if(!empty($style['background'])) $attr['style'] .= 'background-color: '.$style['background'].'; ';
-    if(!empty($style['background_image'])) $attr['style'] .= 'background-image: url('.esc_url($style['background_image']).'); ';
-    if(!empty($style['background_image_repeat'])) {
-        $attr['style'] .= 'background-repeat: repeat; ';
-    } else {
-        $attr['style'] .= 'background-repeat: no-repeat; ';
-    }
+if(!empty($style['top_border']) || !empty($style['top_border_height'])) {
+    $attr['style'] .= 'border-top: ' . $style['top_border_height'] . 'px solid '.$style['top_border'].'; ';
+}
+if(!empty($style['bottom_border']) || !empty($style['bottom_border_height'])) {
+    $attr['style'] .= 'border-bottom: ' . $style['bottom_border_height'] . 'px solid '.$style['bottom_border'].'; ';
+}
+if(!empty($style['background'])) $attr['style'] .= 'background-color: '.$style['background'].'; ';
+if(!empty($style['background_image'])) $attr['style'] .= 'background-image: url('.esc_url($style['background_image']).'); ';
+if(!empty($style['background_image_repeat'])) {
+    $attr['style'] .= 'background-repeat: repeat; ';
+} else {
+    $attr['style'] .= 'background-repeat: no-repeat; ';
+}
 
     if (!empty($style['background_image_size'])) {
         $attr['style'] .= 'background-size: ' . $style['background_image_size'] . '; ';
@@ -114,26 +114,34 @@ function pp_vantage_panels_panels_row_style_attributes($attr, $style) {
     if(empty($attr['style']))
         unset($attr['style']);
 
-    return $attr;
+return $attr;
 }
 
 add_filter('siteorigin_panels_row_style_attributes', 'pp_vantage_panels_panels_row_style_attributes', 10, 2);
 
 function pp_vantage_panels_panels_row_attributes($attr, $row) {
     if(!empty($row['style']['no_margin'])) {
-        if(empty($attr['style']))
+        if(empty($attr['style'])) {
             $attr['style'] = '';
+        }
 
         $attr['style'] .= 'margin-bottom: 0px;';
     } else {
-        if(empty($attr['style']))
+        if(empty($attr['style'])) {
             $attr['style'] = '';
+        }
 
-        $attr['style'] .= 'margin-bottom: 30px;';
+        $displayOption = get_option('siteorigin_panels_display', array());
+        if (is_array($displayOption) && isset($displayOption['margin-bottom'])) {
+            $attr['style'] .= 'margin-bottom: ' . $displayOption['margin-bottom'] . 'px;';
+        } else {
+            $attr['style'] .= 'margin-bottom: 30px;';
+        }
+
     }
 
     $attr['id'] = isset($row['style']['id']) ? $row['style']['id'] : '';
 
-return $attr;
+    return $attr;
 }
 add_filter('siteorigin_panels_row_attributes', 'pp_vantage_panels_panels_row_attributes', 10, 2);

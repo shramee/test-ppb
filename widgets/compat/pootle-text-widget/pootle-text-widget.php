@@ -43,19 +43,19 @@ function pp_page_builder_pootle_text_widget_admin_enqueue($page) {
 //		if( version_compare($pootle_text_widget_version, '1.3.3', '<=') ) {
 //			// Use the old compatibility file.
             // pootle-text-widget is based on black-studio 1.3.3
-			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( PP_PAGE_BUILDER_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.old.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
+			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.old.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 //		}
 //		else {
 			// Use the new compatibility file
-//			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( PP_PAGE_BUILDER_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
+//			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 //		}
 
-		wp_enqueue_style('pootle-text-widget-pp-page-builder', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.css', array(), PP_PAGE_BUILDER_VERSION);
+		wp_enqueue_style('pootle-text-widget-pp-page-builder', plugin_dir_url(POOTLEPAGE_BASE_FILE).'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.css', array(), POOTLEPAGE_VERSION);
 
 
 //		if(version_compare($pootle_text_widget_version, '1.2.0', '<=')) {
 //			// We also need a modified javascript for older versions of Black Studio TinyMCE
-//			wp_enqueue_script('black-studio-tinymce-widget', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'widgets/compat/pootle-text-widget/pootle-text-widget.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
+//			wp_enqueue_script('black-studio-tinymce-widget', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'widgets/compat/pootle-text-widget/pootle-text-widget.min.js', array('jquery'), POOTLEPAGE_VERSION);
 //		}
 	}
 }

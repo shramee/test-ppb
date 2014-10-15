@@ -22,7 +22,7 @@ function origin_widgets_init(){
 //add_action('widgets_init', 'origin_widgets_init');
 
 function origin_widgets_enqueue($prefix){
-	if($prefix == 'widgets.php') wp_enqueue_script('origin-widgets-admin-script', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'widgets/js/admin.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
+	if($prefix == 'widgets.php') wp_enqueue_script('origin-widgets-admin-script', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'widgets/js/admin.min.js', array('jquery'), POOTLEPAGE_VERSION);
 }
 add_action('admin_enqueue_scripts', 'origin_widgets_enqueue');
 
@@ -41,7 +41,7 @@ add_action('init', 'origin_widgets_display_css');
 function origin_widgets_generate_css($class, $style, $preset, $version = null){
 	$widget = new $class();
 	if( !is_subclass_of($widget, 'SiteOrigin_Panels_Widget') ) return '';
-	if(empty($version)) $version = PP_PAGE_BUILDER_VERSION;
+	if(empty($version)) $version = POOTLEPAGE_VERSION;
 
 	$id = str_replace('_', '', strtolower(str_replace('SiteOrigin_Panels_Widget_', '', $class)));
 	$key = strtolower($id.'-'.$style.'-'. $preset.'-'.str_replace('.', '', $version));
@@ -323,7 +323,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 					'class' => get_class($this),
 					'style' => $style,
 					'preset' => $preset,
-				), site_url('?action=origin_widgets_css') ), array(), PP_PAGE_BUILDER_VERSION );
+				), site_url('?action=origin_widgets_css') ), array(), POOTLEPAGE_VERSION );
 			}
 		}
 
@@ -465,7 +465,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			$folders = array(
 				get_stylesheet_directory().'/widgets' => get_stylesheet_directory_uri().'/widgets/widgets',
 				get_template_directory().'/widgets' => get_template_directory_uri().'/widgets',
-				plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE).'widgets/widgets' => plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'widgets/widgets',
+				plugin_dir_path(POOTLEPAGE_BASE_FILE).'widgets/widgets' => plugin_dir_url(POOTLEPAGE_BASE_FILE).'widgets/widgets',
 			);
 			$folders = apply_filters('siteorigin_widget_folders', $folders);
 		}
@@ -484,7 +484,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			$folders = array(
 				get_stylesheet_directory().'/widgets/img' => get_stylesheet_directory_uri().'/widgets/img',
 				get_template_directory().'/widgets/img' => get_template_directory_uri().'/widgets/img',
-				plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE).'widgets/img' => plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'widgets/img',
+				plugin_dir_path(POOTLEPAGE_BASE_FILE).'widgets/img' => plugin_dir_url(POOTLEPAGE_BASE_FILE).'widgets/img',
 			);
 			$folders = apply_filters('siteorigin_widget_image_folders', $folders);
 		}

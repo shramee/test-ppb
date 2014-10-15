@@ -11,11 +11,16 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 	</div>
 	
 	<div id="add-to-panels">
-		<button class="panels-add" data-tooltip="<?php esc_attr_e('Add Widget','siteorigin-panels') ?>"><?php _e('Add Widget', 'siteorigin-panels') ?></button>
-		<button class="grid-add" data-tooltip="<?php esc_attr_e('Add Row','siteorigin-panels') ?>"><?php _e('Add Row', 'siteorigin-panels') ?></button>
+
+        <button class="grid-add add-button button"><?php _e('Add Row', 'siteorigin-panels') ?></button>
+
+		<button class="panels-add add-button button"><?php _e('Add Widget', 'siteorigin-panels') ?></button>
 		<?php if(!empty($layouts)) : ?>
-			<button class="prebuilt-set" data-tooltip="<?php esc_attr_e('Prebuilt Layouts','siteorigin-panels') ?>"><?php _e('Prebuilt Layouts', 'siteorigin-panels') ?></button>
+			<button class="prebuilt-set add-button button"><?php _e('Add Layout', 'siteorigin-panels') ?></button>
 		<?php endif; ?>
+
+<!--        <button class="page-settings button">Page Settings</button>-->
+<!--        <button class="hide-elements button">Hide Elements</button>-->
 		<div class="clear"></div>
 	</div>
 	
@@ -29,7 +34,40 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 
 			<ul class="panel-type-list">
 
-				<?php foreach($wp_widget_factory->widgets as $class => $widget_obj) : ?>
+                <?php
+                $widgetSettings = get_option('pootlepage-widgets', array());
+                if (!is_array($widgetSettings)) {
+                    $widgetSettings = array();
+                }
+                if (!isset($widgetSettings['reorder-widgets'])) {
+                    $widgetSettings['reorder-widgets'] = '[]';
+                }
+                if (!isset($widgetSettings['unused-widgets'])) {
+                    $widgetSettings['unused-widgets'] = '[]';
+                }
+
+                $widgetSettings['reorder-widgets'] = json_decode($widgetSettings['reorder-widgets'], true);
+                $widgetSettings['unused-widgets'] = json_decode($widgetSettings['unused-widgets'], true);
+
+                // make visual editor as first one
+                if (in_array('Pootle_Text_Widget', $widgetSettings['reorder-widgets'])) {
+                    $temp = array();
+                    $temp[] = 'Pootle_Text_Widget';
+                    foreach ($widgetSettings['reorder-widgets'] as $class) {
+                        if ($class != 'Pootle_Text_Widget') {
+                            $temp[] = $class;
+                        }
+                    }
+
+                    $widgetSettings['reorder-widgets'] = $temp;
+                }
+                ?>
+                <?php foreach ($widgetSettings['reorder-widgets'] as $class) :
+                    if (!isset($wp_widget_factory->widgets[$class])) {
+                        continue;
+                    }
+                    $widget_obj = $wp_widget_factory->widgets[$class];
+				?>
 					<li class="panel-type"
 						data-class="<?php echo esc_attr($class) ?>"
 						data-title="<?php echo esc_attr($widget_obj->name) ?>"
@@ -58,6 +96,29 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 		<p><input type="text" id="grid-add-dialog-input" name="column_count" class="small-text" value="3" /></p>
 	</div>
 
+    <div id="remove-row-dialog" data-title="<?php esc_attr_e("Remove Row", 'siteorigin-panels') ?>" class="panels-admin-dialog">
+        <p>Are you sure?</p>
+    </div>
+
+
+    <div id="page-setting-dialog" data-title="<?php esc_attr_e('Page Settings', 'siteorigin-panels') ?>" class="panels-admin-dialog">
+
+        <?php
+            $pageSettingsFields = pootlepage_page_settings_fields();
+            pootlepage_dialog_form_echo($pageSettingsFields);
+        ?>
+
+    </div>
+
+    <div id="hide-element-dialog" data-title="<?php esc_attr_e('Hide Elements', 'siteorigin-panels') ?>" class="panels-admin-dialog">
+
+        <?php
+            $hideElementsFields = pootlepage_hide_elements_fields();
+            pootlepage_hide_elements_dialog_echo($hideElementsFields);
+        ?>
+
+    </div>
+
 	<?php // The layouts dialog ?>
 
 	<?php if(!empty($layouts)) : ?>
@@ -80,6 +141,21 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 	<div id="grid-styles-dialog" data-title="<?php esc_attr_e('Row Visual Style','siteorigin-panels') ?>" class="panels-admin-dialog">
 		<?php siteorigin_panels_style_dialog_form() ?>
 	</div>
+
+    <?php
+        global $post;
+        $pageSettings = get_post_meta($post->ID, 'pootlepage-page-settings', true);
+        if (empty($pageSettings)) {
+            $pageSettings = '{}';
+        }
+
+        $hideElements = get_post_meta($post->ID, 'pootlepage-hide-elements', true);
+        if (empty($hideElements)) {
+            $hideElements = '{}';
+        }
+    ?>
+    <input type="hidden" id="page-settings" name="page-settings" value="<?php esc_attr_e($pageSettings) ?>" />
+    <input type="hidden" id="hide-elements" name="hide-elements" value="<?php esc_attr_e($hideElements) ?>" />
 
 	<?php wp_nonce_field('save', '_sopanels_nonce') ?>
 	<?php do_action('siteorigin_panels_metabox_end'); ?>

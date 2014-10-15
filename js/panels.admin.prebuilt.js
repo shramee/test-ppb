@@ -64,10 +64,10 @@ jQuery(function($){
 
     // Button for adding prebuilt layouts
     $( '#add-to-panels .prebuilt-set' )
-        .button( {
-            icons: {primary: 'ui-icon-prebuilt'},
-            text:  false
-        } )
+//        .button( {
+////            icons: {primary: 'ui-icon-prebuilt'},
+//            text:  'Add Layout'
+//        } )
         .click( function () {
             $( '#grid-prebuilt-dialog' ).dialog( 'open' );
             return false;

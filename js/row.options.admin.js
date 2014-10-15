@@ -1,17 +1,19 @@
 (function ($) {
 
-    window.setPageBuilderUploadButton = function () {
+    window.setRowOptionUploadButton = function () {
 
         $('#grid-styles-dialog .upload-button').click(function () {
 
             var $textField = $(this).parent().find('input');
-            var textFieldID = $textField.attr('id');
+            var field = $textField.attr('data-style-field');
 
-            window.formfield = textFieldID;
+            var $field = $('#grid-styles-dialog input[data-style-field="' + field + '"]');
+
+            window.$formField = $field;
 
             window.send_to_editor = function (html) {
 
-                if (formfield) {
+                if ($formField) {
 
                     // itemurl = $(html).attr( 'href' ); // Use the URL to the main image.
 
@@ -35,25 +37,9 @@
                     } // End IF Statement
 
                     var image = /(^.*\.jpg|jpeg|png|gif|ico*)/gi;
-//                    var document = /(^.*\.pdf|doc|docx|ppt|pptx|odt*)/gi;
-//                    var audio = /(^.*\.mp3|m4a|ogg|wav*)/gi;
-//                    var video = /(^.*\.mp4|m4v|mov|wmv|avi|mpg|ogv|3gp|3g2*)/gi;
 
-                    if (itemurl.match(image)) {
-                        //btnContent = '<img src="'+itemurl+'" alt="" /><a href="#" class="mlu_remove button">Remove Image</a>';
-                    } else {
+                    $formField.val(itemurl);
 
-                        // No output preview if it's not an image.
-                        // btnContent = '';
-
-                        // Standard generic output if it's not an image.
-//                        html = '<a href="'+itemurl+'" target="_blank" rel="external">View File</a>';
-//
-//                        btnContent = '<div class="no_image"><span class="file_link">'+html+'</span><a href="#" class="mlu_remove button">Remove</a></div>';
-                    }
-
-                    $( '#' + formfield).val(itemurl);
-//                    $( '#' + formfield).siblings( '.screenshot').slideDown().html(btnContent);
                     tb_remove();
 
                 } else {
@@ -61,7 +47,7 @@
                 }
 
                 // Clear the formfield value so the other media library popups can work as they are meant to. - 2010-11-11.
-                formfield = '';
+                $formField = null;
 
             };
             tb_show('', 'media-upload.php?post_id=0&amp;type=image&amp;TB_iframe=true');

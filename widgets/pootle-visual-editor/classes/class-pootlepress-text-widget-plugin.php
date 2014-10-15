@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * public $token
  * public $version
- * 
+ *
  * - __construct()
  * - add_theme_options()
  * - get_menu_styles()

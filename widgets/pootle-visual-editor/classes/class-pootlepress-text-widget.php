@@ -10,7 +10,7 @@ if (!class_exists('Pootle_Text_Widget')) {
         {
             $widget_ops = array('classname' => 'widget_pootle_tinymce', 'description' => __('Arbitrary text or HTML with visual editor', 'pp-ptw'));
             $control_ops = array('width' => 800, 'height' => 800);
-            parent::__construct('pootle-text-widget', __('Pootle Visual Editor Widget', 'pp-ptw'), $widget_ops, $control_ops);
+            parent::__construct('pootle-text-widget', __('Pootle Visual Editor', 'pp-ptw'), $widget_ops, $control_ops);
         }
 
         function widget($args, $instance)
@@ -22,6 +22,9 @@ if (!class_exists('Pootle_Text_Widget')) {
             }
             extract($args);
             $title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $this->id_base);
+
+            $displayTitle = isset($instance['display-title']) ? $instance['display-title'] : false;
+
             $text = apply_filters('widget_text', $instance['text'], $instance);
             if (function_exists('icl_t')) {
                 $title = icl_t("Widgets", 'widget title - ' . md5($title), $title);
@@ -29,7 +32,7 @@ if (!class_exists('Pootle_Text_Widget')) {
             }
             $text = do_shortcode($text);
             echo $before_widget;
-            if (!empty($title)) {
+            if (!empty($title) && $displayTitle) {
                 echo $before_title . $title . $after_title;
             }
             ?>
@@ -42,6 +45,9 @@ if (!class_exists('Pootle_Text_Widget')) {
         {
             $instance = $old_instance;
             $instance['title'] = strip_tags($new_instance['title']);
+
+            $instance['display-title'] = (isset($new_instance['display-title']) && $new_instance['display-title'] == 'true') ? true : false;
+
             if (current_user_can('unfiltered_html')) {
                 $instance['text'] = $new_instance['text'];
             } else {
@@ -57,8 +63,12 @@ if (!class_exists('Pootle_Text_Widget')) {
 
         function form($instance)
         {
-            $instance = wp_parse_args((array)$instance, array('title' => '', 'text' => '', 'type' => 'visual'));
+            $instance = wp_parse_args((array)$instance, array('title' => '', 'text' => '', 'type' => 'visual', 'display-title' => false));
             $title = strip_tags($instance['title']);
+
+            $displayTitle = $instance['display-title'];
+            $displayTitleChecked = checked($displayTitle, true, false);
+
             if (function_exists('esc_textarea')) {
                 $text = esc_textarea($instance['text']);
             } else {
@@ -72,6 +82,8 @@ if (!class_exists('Pootle_Text_Widget')) {
                 $toggle_buttons_extra_class = "wp-toggle-buttons";
                 $media_buttons_extra_class = "wp-media-buttons";
             }
+
+            add_filter('gform_display_add_form_button', '__return_true');
             ?>
             <input id="<?php echo $this->get_field_id('type'); ?>" name="<?php echo $this->get_field_name('type'); ?>"
                    type="hidden" value="<?php echo esc_attr($type); ?>"/>
@@ -79,6 +91,12 @@ if (!class_exists('Pootle_Text_Widget')) {
                 <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>"
                        name="<?php echo $this->get_field_name('title'); ?>" type="text"
                        value="<?php echo esc_attr($title); ?>"/></p>
+
+            <label class="checkbox">Show title on site <input id="<?php echo $this->get_field_id('display-title') ?>"
+                                                              name="<?php echo $this->get_field_name('display-title'); ?>"
+                                                              value="true" <?php echo $displayTitleChecked; ?>
+                                                              type="checkbox"/></label>
+
             <div class="editor_toggle_buttons hide-if-no-js <?php echo $toggle_buttons_extra_class; ?>">
                 <a id="widget-<?php echo $this->id_base; ?>-<?php echo $this->number; ?>-html"<?php if ($type == 'html') { ?> class="active"<?php } ?>><?php _e('HTML'); ?></a>
                 <a id="widget-<?php echo $this->id_base; ?>-<?php echo $this->number; ?>-visual"<?php if ($type == 'visual') { ?> class="active"<?php } ?>><?php _e(' Visual'); ?></a>

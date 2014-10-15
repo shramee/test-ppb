@@ -168,6 +168,9 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
+msgid "Copy"
+msgstr ""
+
 #: siteorigin-panels.php:246
 msgid "Edit"
 msgstr ""

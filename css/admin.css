@@ -205,7 +205,9 @@ html {
 	text-align: right;
 }
 
-#panels-container .grid-container .controls .ui-button {
+#panels-container .grid-container .controls .ui-button,
+#panels-container .grid-container .controls .row-button
+{
 	margin-left: 5px;
 }
 
@@ -374,7 +376,10 @@ html {
 #panels-dialog,
 #grid-setting-dialog,
 #grid-add-dialog,
-#grid-prebuilt-dialog {
+#grid-prebuilt-dialog,
+#page-setting-dialog,
+#hide-element-dialog,
+#remove-row-dialog {
 	display: none;
 }
 
@@ -428,7 +433,7 @@ html {
 	padding: 4px 9px 4px 9px;
 }
 
-#so-panels-panels h3.hndle button {
+#so-panels-panels h3.hndle button:not(.add-button):not(.page-settings):not(.hide-elements) {
 	background: #f0f0f0;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f0f0f0), color-stop(1, #f6f6f6));
 	background: -ms-linear-gradient(bottom, #f0f0f0, #f6f6f6);
@@ -447,11 +452,19 @@ html {
 	visibility: visible;
 }
 
-#so-panels-panels h3.hndle button:hover {
+#so-panels-panels h3.hndle button.page-settings,
+#so-panels-panels h3.hndle button.hide-elements
+{
+    float: right;
+    margin-top: 0;
+    margin-left: 3px;
+}
+
+#so-panels-panels h3.hndle button:not(.add-button):not(.page-settings):hover {
 	background: #FFFFFF;
 }
 
-#so-panels-panels h3.hndle button:active {
+#so-panels-panels h3.hndle button:not(.add-button):not(.page-settings):active {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
@@ -868,22 +881,34 @@ html {
 	display: block;
 }
 
-#grid-styles-dialog p {
+#grid-styles-dialog p,
+#page-setting-dialog p,
+#hide-element-dialog p
+{
 	margin-bottom: 20px;
 }
 
-#grid-styles-dialog p:last-child {
+#grid-styles-dialog p:last-child,
+#page-setting-dialog p:last-child,
+#hide-element-dialog p:last-child
+{
 	margin-bottom: 0;
 }
 
-#grid-styles-dialog label {
+#grid-styles-dialog label,
+#page-setting-dialog label,
+#hide-element-dialog label
+{
 	width: 160px;
 	
 	display: inline-block;
 	font-weight: bold;
 }
 
-#grid-styles-dialog label.siteorigin-panels-checkbox-label {
+#grid-styles-dialog label.siteorigin-panels-checkbox-label,
+#page-setting-dialog label.siteorigin-panels-checkbox-label,
+#hide-element-dialog label.siteorigin-panels-checkbox-label
+{
 	width: auto;
 	
 	display: inline;
@@ -893,6 +918,15 @@ html {
 	-ms-user-select: none;
 	user-select: none;
 	-webkit-touch-callout: none;
+}
+
+#grid-prebuilt-dialog .chosen-container
+{
+    width: 500px !important;
+}
+
+#add-to-panels {
+    font-size: 10px;
 }
 
 #panels .ui-button,
@@ -906,7 +940,7 @@ html {
 	margin-right: .1em;
 	outline: none;
 	overflow: visible;
-	padding: 5px;
+	padding: 4px !important;
 	text-align: center;
 	text-decoration: none !important;
 	zoom: 1;
@@ -956,8 +990,21 @@ html {
 }
 
 #panels .ui-button .ui-icon.ui-icon-gear,
-#add-to-panels .ui-button .ui-icon.ui-icon-gear {
-	background: url(images/icons/gear.png);
+#add-to-panels .ui-button .ui-icon.ui-icon-gear
+{
+	/*background: url(images/icons/gear-18x18.png) !important;*/
+    /*background-size: 24px 24px !important;*/
+    /*background-repeat: no-repeat !important;*/
+    /*background-position: center center !important;*/
+    width: 20px !important;
+    height: 20px !important;
+    box-sizing: content-box;
+    padding: 4px !important;
+}
+
+#panels .ui-button .ui-icon.ui-icon-times,
+#add-to-panels .ui-button .ui-icon.ui-icon-times {
+    background: url(images/icons/times.png);
 }
 
 .ui-dialog.panels-admin-dialog {
@@ -980,3 +1027,112 @@ html {
 	margin-bottom: 0;
 }
 
+.grid-add.button, .panels-add.button, .prebuilt-set.button
+{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 1px !important;
+}
+
+#panels-container .controls .row-button
+{
+    height: 18px;
+    width: 18px;
+    padding: 0;
+}
+
+#panels-container .controls .row-button:before
+{
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+}
+
+#panels-container .controls .style-button:before
+{
+    font-size: 13px;
+}
+
+#panels-container .cell-wrapper
+{
+    position: relative;
+}
+
+#panels-container .cell-wrapper .add-widget-button
+{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -14px;
+    margin-top: -14px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+#panels-container .cell-wrapper .add-widget-button:before
+{
+    font-size: 28px;
+}
+
+#so-panels-panels .add-row-container
+{
+    text-align: right;
+    padding: 0 12px 10px;
+}
+
+#so-panels-panels .add-row-button
+{
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+#so-panels-panels .add-row-button:before
+{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
+}
+
+#widget-styles-dialog .field
+{
+    margin-bottom: 15px;
+}
+
+#widget-styles-dialog .field > label
+{
+    width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+#widget-styles-dialog .field > span > .wp-picker-container
+{
+    margin: 0;
+    vertical-align: middle;
+}
+
+#widget-styles-dialog .field > span > .wp-picker-container > .wp-color-result
+{
+    margin: 0;
+}
+
+#widget-styles-dialog .field > span > input
+{
+    vertical-align: middle;
+}
+
+.widget-dialog-siteorigin_panels_widgets_postloop > p > label[for]
+{
+    display: inline-block;
+    width: 200px;
+}
+
+.widget-dialog-siteorigin_panels_widgets_postloop > p > input[type=checkbox]
+{
+    margin-left: 1px;
+}

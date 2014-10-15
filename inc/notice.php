@@ -6,18 +6,18 @@
 function siteorigin_panels_update_notice(){
 	$dismissed = get_option('siteorigin_panels_notice_dismissed');
 
-	if(empty($dismissed) || $dismissed != PP_PAGE_BUILDER_VERSION) {
-		wp_enqueue_script('siteorigin-panels-admin-notice', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'js/panels.admin.notice.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
+	if(empty($dismissed) || $dismissed != POOTLEPAGE_VERSION) {
+		wp_enqueue_script('siteorigin-panels-admin-notice', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'js/panels.admin.notice.min.js', array('jquery'), POOTLEPAGE_VERSION);
 
 		?>
 		<div class="updated">
 			<p>
 				<?php
-				if( get_option('siteorigin_panels_initial_version') == PP_PAGE_BUILDER_VERSION ) {
-					printf( __("You've successfully installed <strong>Page Builder</strong> version %s. ", 'siteorigin-panels'), PP_PAGE_BUILDER_VERSION );
+				if( get_option('siteorigin_panels_initial_version') == POOTLEPAGE_VERSION ) {
+					printf( __("You've successfully installed <strong>Page Builder</strong> version %s. ", 'siteorigin-panels'), POOTLEPAGE_VERSION );
 				}
 				else {
-					printf( __("You've successfully updated <strong>Page Builder</strong> to version %s. ", 'siteorigin-panels'), PP_PAGE_BUILDER_VERSION );
+					printf( __("You've successfully updated <strong>Page Builder</strong> to version %s. ", 'siteorigin-panels'), POOTLEPAGE_VERSION );
 				}
 
 				printf(
@@ -36,16 +36,16 @@ function siteorigin_panels_update_notice(){
 			</p>
 		</div>
 		<?php
-		if( !empty($dismissed) && $dismissed != PP_PAGE_BUILDER_VERSION ) {
+		if( !empty($dismissed) && $dismissed != POOTLEPAGE_VERSION ) {
 			// The user has already dismissed this message, so we'll show it once and update the dismissed version
-			update_option('siteorigin_panels_notice_dismissed', PP_PAGE_BUILDER_VERSION);
+			update_option('siteorigin_panels_notice_dismissed', POOTLEPAGE_VERSION);
 		}
 	}
 }
 //add_action('siteorigin_panels_before_interface', 'siteorigin_panels_update_notice');
 
 function siteorigin_panels_get_incompatible_plugins(){
-	$incompatible = array_map('trim', (array) file( plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE).'/incompatible.txt' ) );
+	$incompatible = array_map('trim', (array) file( plugin_dir_path(POOTLEPAGE_BASE_FILE).'/incompatible.txt' ) );
 	return array_slice($incompatible, 1);
 }
 
@@ -65,7 +65,7 @@ function siteorigin_panels_incompatibility_notice(){
 			if( empty($non_dismissed) ) return;
 		}
 
-		wp_enqueue_script('siteorigin-panels-admin-notice', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'js/panels.admin.notice.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
+		wp_enqueue_script('siteorigin-panels-admin-notice', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'js/panels.admin.notice.min.js', array('jquery'), POOTLEPAGE_VERSION);
 
 		?>
 		<div class="error">
@@ -99,7 +99,7 @@ function siteorigin_panels_incompatibility_notice(){
  * This action handles dismissing the updated notice.
  */
 function siteorigin_panels_update_notice_dismiss_action(){
-	add_option('siteorigin_panels_notice_dismissed', PP_PAGE_BUILDER_VERSION, '', 'no');
+	add_option('siteorigin_panels_notice_dismissed', POOTLEPAGE_VERSION, '', 'no');
 	exit();
 }
 add_action('wp_ajax_siteorigin_panels_update_notice_dismiss', 'siteorigin_panels_update_notice_dismiss_action');

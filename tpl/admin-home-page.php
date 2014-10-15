@@ -9,7 +9,7 @@
 			<div id="panels-toggle-switch" class="<?php echo (!get_option('siteorigin_panels_home_page_enabled', $settings['home-page-default'])) ? 'state-off' : 'state-on'; ?>">
 				<div class="on-text"><?php _e('ON', 'siteorigin-panels') ?></div>
 				<div class="off-text"><?php _e('OFF', 'siteorigin-panels') ?></div>
-				<img src="<?php echo plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) ?>css/images/handle.png" class="handle" />
+				<img src="<?php echo plugin_dir_url(POOTLEPAGE_BASE_FILE) ?>css/images/handle.png" class="handle" />
 			</div>
 		</h2>
 

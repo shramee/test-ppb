@@ -41,19 +41,19 @@ function siteorigin_panels_black_studio_tinymce_admin_enqueue($page) {
 
 		if( version_compare($black_studio_tinymce_widget_version, '1.3.3', '<=') ) {
 			// Use the old compatibility file.
-			wp_enqueue_script( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( PP_PAGE_BUILDER_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.old.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
+			wp_enqueue_script( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.old.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		}
 		else {
 			// Use the new compatibility file
-			wp_enqueue_script( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( PP_PAGE_BUILDER_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.min.js', array( 'jquery' ), PP_PAGE_BUILDER_VERSION );
+			wp_enqueue_script( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		}
 
-		wp_enqueue_style('black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.css', array(), PP_PAGE_BUILDER_VERSION);
+		wp_enqueue_style('black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url(POOTLEPAGE_BASE_FILE).'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.css', array(), POOTLEPAGE_VERSION);
 
 
 		if(version_compare($black_studio_tinymce_widget_version, '1.2.0', '<=')) {
 			// We also need a modified javascript for older versions of Black Studio TinyMCE
-			wp_enqueue_script('black-studio-tinymce-widget', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
+			wp_enqueue_script('black-studio-tinymce-widget', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget.min.js', array('jquery'), POOTLEPAGE_VERSION);
 		}
 	}
 }

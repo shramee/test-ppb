@@ -62,38 +62,193 @@ add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu' );
  * Display the admin page.
  */
 function siteorigin_panels_options_page(){
-	include plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE) . '/tpl/options.php';
+	include plugin_dir_path(POOTLEPAGE_BASE_FILE) . '/tpl/options.php';
 }
 
 /**
  * Register all the settings fields.
  */
 function siteorigin_panels_options_init() {
-	register_setting( 'siteorigin-panels', 'siteorigin_panels_post_types', 'siteorigin_panels_options_sanitize_post_types' );
-	register_setting( 'siteorigin-panels', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
+	register_setting( 'pootlepage-general', 'siteorigin_panels_post_types', 'siteorigin_panels_options_sanitize_post_types' );
+	register_setting( 'pootlepage-display', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
+    register_setting( 'pootlepage-widgets', 'pootlepage-widgets');
 
-	add_settings_section( 'general', __('General', 'siteorigin-panels'), '__return_false', 'siteorigin-panels' );
-	add_settings_section( 'display', __('Display', 'siteorigin-panels'), '__return_false', 'siteorigin-panels' );
+	add_settings_section( 'general', __('General', 'siteorigin-panels'), '__return_false', 'pootlepage-general' );
+    add_settings_section( 'widgets', __('Widgets', 'siteorigin-panels'), '__return_false', 'pootlepage-widgets' );
+    add_settings_section( 'styling', __('Widgets', 'siteorigin-panels'), 'pootlepage_options_page_styling', 'pootlepage-styling' );
+	add_settings_section( 'display', __('Display', 'siteorigin-panels'), '__return_false', 'pootlepage-display' );
 
-	add_settings_field( 'post-types', __('Post Types', 'siteorigin-panels'), 'siteorigin_panels_options_field_post_types', 'siteorigin-panels', 'general' );
-	add_settings_field( 'copy-content', __('Copy Content to Post Content', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'general', array( 'type' => 'copy-content' ) );
-	add_settings_field( 'animations', __('Animations', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'general', array(
+	add_settings_field( 'post-types', __('Post Types', 'siteorigin-panels'), 'siteorigin_panels_options_field_post_types', 'pootlepage-general', 'general' );
+	add_settings_field( 'copy-content', __('Copy Content to Post Content', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array( 'type' => 'copy-content' ) );
+	add_settings_field( 'animations', __('Animations', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array(
 		'type' => 'animations',
 		'description' => __('Disable animations to improve Page Builder interface performance', 'siteorigin-panels'),
 	) );
-	add_settings_field( 'bundled-widgets', __('Bundled Widgets', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'general', array( 'type' => 'bundled-widgets' ) );
+	add_settings_field( 'bundled-widgets', __('Bundled Widgets', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array( 'type' => 'bundled-widgets' ) );
+
+    // widgets
+    add_settings_field( 'reorder-widgets', __('', 'siteorigin-panels'), 'pootlepage_reorder_widgets', 'pootlepage-widgets', 'widgets' );
+    add_settings_field( 'unused-widgets', __('', 'siteorigin-panels'), 'pootlepage_unused_widgets', 'pootlepage-widgets', 'widgets' );
 
 	// The display fields
-	add_settings_field( 'responsive', __('Responsive', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'responsive' ) );
-	add_settings_field( 'mobile-width', __('Mobile Width', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'mobile-width' ) );
-	add_settings_field( 'margin-sides', __('Margin Sides', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'margin-sides' ) );
-	add_settings_field( 'margin-bottom', __('Margin Bottom', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array( 'type' => 'margin-bottom' ) );
-	add_settings_field( 'inline-css', __('Inline CSS', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'siteorigin-panels', 'display', array(
+	add_settings_field( 'responsive', __('Responsive', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'responsive' ) );
+	add_settings_field( 'mobile-width', __('Mobile Width', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
+	add_settings_field( 'margin-sides', __('Margin Sides', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-sides' ) );
+	add_settings_field( 'margin-bottom', __('Margin Bottom', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-bottom' ) );
+	add_settings_field( 'inline-css', __('Inline CSS', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array(
 		'type' => 'inline-css',
 		'description' => __('Disabling this will generate CSS using a separate query.', 'siteorigin-panels'),
 	));
 }
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
+
+function pootlepage_options_page_styling() {
+    $customizeUrl = admin_url('customize.php');
+    echo "<p>Folio uses the WordPress customizer to allow you to style your widgets and preview them easily. Click <a href='" . esc_attr($customizeUrl) . "'>here</a> to go to these settings.</p>";
+}
+
+function pootlepage_reorder_widgets() {
+    global $wp_widget_factory;
+
+    $widgetSettings = get_option('pootlepage-widgets', array());
+    if (!is_array($widgetSettings)) {
+        $widgetSettings = array();
+    }
+    if (!isset($widgetSettings['reorder-widgets'])) {
+        $widgetSettings['reorder-widgets'] = '[]';
+    }
+    if (!isset($widgetSettings['unused-widgets'])) {
+        $widgetSettings['unused-widgets'] = '[]';
+    }
+
+    $widgetSettings['reorder-widgets'] = json_decode($widgetSettings['reorder-widgets'], true);
+    $widgetSettings['unused-widgets'] = json_decode($widgetSettings['unused-widgets'], true);
+
+    if (!is_array($widgetSettings['reorder-widgets'])) {
+        $widgetSettings['reorder-widgets'] = array();
+    }
+    if (!is_array($widgetSettings['unused-widgets'])) {
+        $widgetSettings['unused-widgets'] = array();
+    }
+
+    $usedSequence = $widgetSettings['reorder-widgets'];
+
+    foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
+        if (!in_array($class, $widgetSettings['reorder-widgets']) && !in_array($class, $widgetSettings['unused-widgets'])) {
+            $usedSequence[] = $class;
+        }
+    }
+
+    // make visual editor as first one
+    if (in_array('Pootle_Text_Widget', $usedSequence)) {
+        $temp = array();
+        $temp[] = 'Pootle_Text_Widget';
+        foreach ($usedSequence as $class) {
+            if ($class != 'Pootle_Text_Widget') {
+                $temp[] = $class;
+            }
+        }
+
+        $usedSequence = $temp;
+    }
+
+    ?>
+    <h3>Re-order how widgets appear in page builder by dragging them around</h3>
+    <ul class="panel-type-list used-list">
+
+        <?php for ($i = 0; $i < count($usedSequence); ++$i) :
+            $class = $usedSequence[$i];
+             if (isset($wp_widget_factory->widgets[$class])) {
+                 $widget_obj = $wp_widget_factory->widgets[$class];
+            ?>
+            <li class="panel-type"
+                    data-class="<?php echo esc_attr($class) ?>"
+                    data-title="<?php echo esc_attr($widget_obj->name) ?>"
+                        >
+                    <div class="panel-type-wrapper">
+                        <h3><?php echo esc_html($widget_obj->name) ?></h3>
+            <?php if(!empty($widget_obj->widget_options['description'])) : ?>
+                <small class="description"><?php echo esc_html($widget_obj->widget_options['description']) ?></small>
+            <?php endif; ?>
+            </div>
+            </li>
+        <?php
+             }
+
+        endfor; ?>
+
+        <div class="clear"></div>
+    </ul>
+
+    <?php
+        $json = json_encode($usedSequence);
+    ?>
+    <input type="hidden" id="pootlepage_widgets_used" name="pootlepage-widgets[reorder-widgets]" value="<?php esc_attr_e($json) ?>" />
+
+    <?php
+}
+
+function pootlepage_unused_widgets() {
+
+    global $wp_widget_factory;
+
+    $widgetSettings = get_option('pootlepage-widgets', array());
+    if (!is_array($widgetSettings)) {
+        $widgetSettings = array();
+    }
+    if (!isset($widgetSettings['reorder-widgets'])) {
+        $widgetSettings['reorder-widgets'] = '[]';
+    }
+    if (!isset($widgetSettings['unused-widgets'])) {
+        $widgetSettings['unused-widgets'] = '[]';
+    }
+
+    $widgetSettings['reorder-widgets'] = json_decode($widgetSettings['reorder-widgets'], true);
+    $widgetSettings['unused-widgets'] = json_decode($widgetSettings['unused-widgets'], true);
+
+    if (!is_array($widgetSettings['reorder-widgets'])) {
+        $widgetSettings['reorder-widgets'] = array();
+    }
+    if (!is_array($widgetSettings['unused-widgets'])) {
+        $widgetSettings['unused-widgets'] = array();
+    }
+
+    $sequence = $widgetSettings['unused-widgets'];
+?>
+    <h3>Drag them here if you don't want them to be used with PootlePage</h3>
+
+    <ul class="panel-type-list unused-list">
+
+        <?php for ($i = 0; $i < count($sequence); ++$i) :
+            $class = $sequence[$i];
+            if (isset($wp_widget_factory->widgets[$class])) {
+                $widget_obj = $wp_widget_factory->widgets[$class];
+                ?>
+                <li class="panel-type"
+                    data-class="<?php echo esc_attr($class) ?>"
+                    data-title="<?php echo esc_attr($widget_obj->name) ?>"
+                    >
+                    <div class="panel-type-wrapper">
+                        <h3><?php echo esc_html($widget_obj->name) ?></h3>
+                        <?php if(!empty($widget_obj->widget_options['description'])) : ?>
+                            <small class="description"><?php echo esc_html($widget_obj->widget_options['description']) ?></small>
+                        <?php endif; ?>
+                    </div>
+                </li>
+            <?php
+            }
+
+        endfor; ?>
+
+        <div class="clear"></div>
+    </ul>
+    <?php
+
+    $json = json_encode($sequence);
+    ?>
+    <input type="hidden" id="pootlepage_widgets_unused" name="pootlepage-widgets[unused-widgets]" value="<?php esc_attr_e($json) ?>" />
+    <?php
+}
 
 /**
  * Display the field for selecting the post types

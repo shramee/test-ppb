@@ -29,6 +29,172 @@ function siteorigin_panels_style_get_fields(){
 	return (array) $fields;
 }
 
+function pootlepage_page_settings_fields() {
+
+    $fields = array();
+
+    $fields['background'] = array(
+        'name' => __('Background Color', 'pootlepage'),
+        'type' => 'color',
+    );
+
+    $fields['background_image'] = array(
+        'name' => __('Background Image', 'pootlepage'),
+        'type' => 'upload',
+    );
+
+    $fields['background_image_repeat'] = array(
+        'name' => __('Background Image Repeat', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['background_image_position'] = array(
+        'name' => __('Background Image Position', 'pootlepage'),
+        'type' => 'select',
+        'options' => array(
+            '' => 'default',
+            'top left' => 'top left',
+            'top center' => 'top center',
+            'top right' => 'top right',
+            'center left' => 'center left',
+            'center center' => 'center center',
+            'center right' => 'center right',
+            'bottom left' => 'bottom left',
+            'bottom center' => 'bottom center',
+            'bottom right' => 'bottom right'
+        )
+    );
+
+    $fields['background_image_attachment'] = array(
+        'name' => __('Background Attachment', 'pootlepage'),
+        'type' => 'select',
+        'options' => array(
+            '' => 'default',
+            'scroll' => 'scroll',
+            'fixed' => 'fixed'
+        )
+    );
+
+    $fields['remove_sidebar'] = array(
+        'name' => __('Remove Sidebar', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['full_width'] = array(
+        'name' => __('Make page go full width', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['keep_content_at_site_width'] = array(
+        'name' => __('Keep content at site width', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    return $fields;
+}
+
+function pootlepage_hide_elements_fields() {
+
+    $fields = array();
+
+    $fields['hide_logo_strapline'] = array(
+        'name' => __('Hide logo/strapline', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['hide_header'] = array(
+        'name' => __('Hide header', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['hide_main_navigation'] = array(
+        'name' => __('Hide main navigation', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['hide_page_title'] = array(
+        'name' => __('Hide page title', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['hide_footer_widgets'] = array(
+        'name' => __('Hide footer widgets', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['hide_footer'] = array(
+        'name' => __('Hide footer', 'pootlepage'),
+        'type' => 'checkbox',
+    );
+
+    return $fields;
+}
+
+function pootlepage_dialog_form_echo($fields) {
+
+    foreach($fields as $name => $attr) {
+
+        echo '<p>';
+        echo '<label>' . $attr['name'] . '</label>';
+
+        switch($attr['type']) {
+            case 'select':
+                ?>
+                <select name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>">
+                    <?php foreach($attr['options'] as $ov => $on) : ?>
+                        <option value="<?php echo esc_attr($ov) ?>"><?php echo esc_html($on) ?></option>
+                    <?php endforeach ?>
+                </select>
+                <?php
+                break;
+
+            case 'checkbox' :
+                ?>
+                <label class="siteorigin-panels-checkbox-label">
+                    <input type="checkbox" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" />
+                    Enabled
+                </label>
+                <?php
+                break;
+
+            case 'number' :
+                ?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
+                break;
+
+            case 'upload':
+                ?><input type="text" id="pp-pb-<?php esc_attr_e($name) ?>" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /><button class="button upload-button thickbox">Upload</button><?php
+                break;
+            default :
+                ?><input type="text" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
+                break;
+        }
+
+        echo '</p>';
+    }
+}
+
+function pootlepage_hide_elements_dialog_echo($fields) {
+
+    foreach($fields as $name => $attr) {
+
+        echo '<p>';
+        echo '<label>' . $attr['name'] . '</label>';
+
+        switch($attr['type']) {
+            case 'checkbox' :
+                ?>
+                <input type="checkbox" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" />
+                <?php
+                break;
+            default :
+                ?><input type="text" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
+                break;
+        }
+
+        echo '</p>';
+    }
+}
+
 function siteorigin_panels_style_dialog_form(){
 	$fields = siteorigin_panels_style_get_fields();
 

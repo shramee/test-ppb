@@ -378,23 +378,23 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		wp_reset_query();
 	}
 
-    public function option_css() {
-        if (isset($this->instance['column_count'])) {
-            $count = (int)$this->instance['column_count'];
-            if ($count > 1) {
-                $columnWidth = (100 / $count) . "%";
-
-//                $css = '';
-//                $css .= ".widget_siteorigin-panels-postloop > article {\n";
-//                $css .= "\t" . "display: inline-block;" . "\n";
-//                $css .= "\t" . "width: " . $columnWidth . ";\n";
-//                $css .= "\t" . "padding-right: 10px;" . "\n";
+//    public function option_css() {
+//        if (isset($this->instance['column_count'])) {
+//            $count = (int)$this->instance['column_count'];
+//            if ($count > 1) {
+//                $columnWidth = (100 / $count) . "%";
 //
-//                echo "<style>\n" . $css . "</style>\n";
-            }
-
-        }
-    }
+////                $css = '';
+////                $css .= ".widget_siteorigin-panels-postloop > article {\n";
+////                $css .= "\t" . "display: inline-block;" . "\n";
+////                $css .= "\t" . "width: " . $columnWidth . ";\n";
+////                $css .= "\t" . "padding-right: 10px;" . "\n";
+////
+////                echo "<style>\n" . $css . "</style>\n";
+//            }
+//
+//        }
+//    }
 
     public function filter_excerpt($excerpt) {
         if (isset($this->instance['excerpt_length'])) {
@@ -519,16 +519,17 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
 			'sticky' => '',
 
-            'additional' => '',
+			'additional' => '',
 
             'thumbnail_enable' => '1',
             'thumbnail_size' => '',
             'thumbnail_position' => '',
-            'excerpt_enable' => '0',
+            'excerpt_enable' => '1',
             'excerpt_length' => '',
             'continue_reading_enable' => '0',
             'pagination_enable' => '1',
             'titles_show' => '1',
+            'post_meta_enable' => '1'
 
 		));
 
@@ -578,7 +579,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		</p>
 
 		<p>
-			<label <?php echo $this->get_field_id('orderby') ?>><?php _e('Order By', 'siteorigin-panels') ?></label>
+			<label for="<?php echo $this->get_field_id('orderby') ?>" ><?php _e('Order By', 'siteorigin-panels') ?></label>
 			<select id="<?php echo $this->get_field_id( 'orderby' ) ?>" name="<?php echo $this->get_field_name( 'orderby' ) ?>" value="<?php echo esc_attr($instance['orderby']) ?>">
 				<option value="none" <?php selected($instance['orderby'], 'none') ?>><?php esc_html_e('None', 'siteorigin-panels') ?></option>
 				<option value="ID" <?php selected($instance['orderby'], 'ID') ?>><?php esc_html_e('Post ID', 'siteorigin-panels') ?></option>
@@ -615,10 +616,10 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 		</p>
 
         <p>
-            <label>
-                <input type="checkbox" <?php checked($instance['thumbnail_enable'], '1') ?>  id="<?php echo $this->get_field_id( 'thumbnail_enable' ) ?>" name="<?php echo $this->get_field_name( 'thumbnail_enable' ) ?>" value="1" />
-                <?php _e('Enable/disable thumbnail', 'siteorigin-panels') ?>
+            <label for="<?php echo $this->get_field_id( 'thumbnail_enable' ) ?>" >
+                <?php _e('Enable thumbnail', 'siteorigin-panels') ?>
             </label>
+            <input type="checkbox" <?php checked($instance['thumbnail_enable'], '1') ?>  id="<?php echo $this->get_field_id( 'thumbnail_enable' ) ?>" name="<?php echo $this->get_field_name( 'thumbnail_enable' ) ?>" value="1" />
         </p>
 
         <p>
@@ -637,41 +638,48 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
         </p>
 
         <p>
-            <label>
-                <input type="checkbox" <?php checked($instance['excerpt_enable'], true) ?>  id="<?php echo $this->get_field_id( 'excerpt_enable' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_enable' ) ?>" value="1" />
-                <?php _e('Enable/disable excerpt', 'siteorigin-panels') ?>
+            <label for="<?php echo $this->get_field_id( 'excerpt_enable' ) ?>" >
+                <?php _e('Enable excerpt', 'siteorigin-panels') ?>
             </label>
+            <input type="checkbox" <?php checked($instance['excerpt_enable'], '1') ?>  id="<?php echo $this->get_field_id( 'excerpt_enable' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_enable' ) ?>" value="1" />
         </p>
 
         <p>
-            <label for="<?php echo $this->get_field_id('excerpt_length') ?>"><?php _e('Excerpt length', 'siteorigin-panels') ?></label>
+            <label for="<?php echo $this->get_field_id('excerpt_length') ?>" ><?php _e('Excerpt length', 'siteorigin-panels') ?></label>
             <input type="number" min="0" max="1000" step="1" id="<?php echo $this->get_field_id( 'excerpt_length' ) ?>" name="<?php echo $this->get_field_name( 'excerpt_length' ) ?>" value="<?php echo esc_attr($instance['excerpt_length']) ?>" />
         </p>
 
         <p>
             <label for="<?php echo $this->get_field_id('continue_reading_enable') ?>">
-                <input type="checkbox" <?php checked($instance['continue_reading_enable'], '1') ?> id="<?php echo $this->get_field_id( 'continue_reading_enable' ) ?>" name="<?php echo $this->get_field_name( 'continue_reading_enable' ) ?>" value="1" />
                 <?php _e('Enable continue reading', 'siteorigin-panels') ?>
             </label>
+            <input type="checkbox" <?php checked($instance['continue_reading_enable'], '1') ?> id="<?php echo $this->get_field_id( 'continue_reading_enable' ) ?>" name="<?php echo $this->get_field_name( 'continue_reading_enable' ) ?>" value="1" />
         </p>
 
         <p>
             <label for="<?php echo $this->get_field_id('pagination_enable') ?>">
-                <input type="checkbox" <?php checked($instance['pagination_enable']) ?> id="<?php echo $this->get_field_id( 'pagination_enable' ) ?>" name="<?php echo $this->get_field_name( 'pagination_enable' ) ?>" value="1" />
                 <?php _e('Enable pagination', 'siteorigin-panels') ?>
             </label>
+            <input type="checkbox" <?php checked($instance['pagination_enable'], '1') ?> id="<?php echo $this->get_field_id( 'pagination_enable' ) ?>" name="<?php echo $this->get_field_name( 'pagination_enable' ) ?>" value="1" />
         </p>
 
-        <p>
+		<p>
             <label for="<?php echo $this->get_field_id('titles_show') ?>">
-                <input type="checkbox" <?php checked($instance['titles_show']) ?> id="<?php echo $this->get_field_id( 'titles_show' ) ?>" name="<?php echo $this->get_field_name( 'titles_show' ) ?>" value="1" />
                 <?php _e('Show titles', 'siteorigin-panels') ?>
             </label>
+            <input type="checkbox" <?php checked($instance['titles_show'], '1') ?> id="<?php echo $this->get_field_id( 'titles_show' ) ?>" name="<?php echo $this->get_field_name( 'titles_show' ) ?>" value="1" />
         </p>
 
         <p>
             <label for="<?php echo $this->get_field_id('column_count') ?>"><?php _e('Number of columns', 'siteorigin-panels') ?></label>
             <input type="number" min="1" max="10" step="1" id="<?php echo $this->get_field_id( 'column_count' ) ?>" name="<?php echo $this->get_field_name( 'column_count' ) ?>" value="<?php echo esc_attr($instance['column_count']) ?>" />
+        </p>
+
+        <p>
+            <label for="<?php echo $this->get_field_id('post_meta_enable') ?>">
+                <?php _e('Enable post meta', 'siteorigin-panels') ?>
+            </label>
+            <input type="checkbox" <?php checked($instance['post_meta_enable'], '1') ?> id="<?php echo $this->get_field_id( 'post_meta_enable' ) ?>" name="<?php echo $this->get_field_name( 'post_meta_enable' ) ?>" value="1" />
         </p>
 
         <p>
@@ -682,7 +690,6 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 	<?php
 	}
 }
-
 
 /**
  * A panel that lets you embed video.
@@ -708,10 +715,10 @@ class SiteOrigin_Panels_Widgets_EmbeddedVideo extends WP_Widget {
 		$embed = new WP_Embed();
 
 		if(!wp_script_is('fitvids'))
-			wp_enqueue_script('fitvids', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'widgets/js/jquery.fitvids.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION);
+			wp_enqueue_script('fitvids', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'widgets/js/jquery.fitvids.min.js', array('jquery'), POOTLEPAGE_VERSION);
 
 		if(!wp_script_is('siteorigin-panels-embedded-video'))
-			wp_enqueue_script('siteorigin-panels-embedded-video', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'widgets/js/embedded-video.min.js', array('jquery', 'fitvids'), PP_PAGE_BUILDER_VERSION);
+			wp_enqueue_script('siteorigin-panels-embedded-video', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'widgets/js/embedded-video.min.js', array('jquery', 'fitvids'), POOTLEPAGE_VERSION);
 
 		echo $args['before_widget'];
 		?><div class="siteorigin-fitvids"><?php echo $embed->run_shortcode( '[embed]' . $instance['video'] . '[/embed]' ) ?></div><?php
@@ -767,15 +774,15 @@ class SiteOrigin_Panels_Widgets_Video extends WP_Widget {
 		));
 
 		// Enqueue jPlayer scripts and intializer
-		wp_enqueue_script( 'siteorigin-panels-video-jplayer', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'video/jplayer/jquery.jplayer.min.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION, true);
-		wp_enqueue_script( 'siteorigin-panels-video', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE) . 'video/panels.video.jquery.min.js', array('jquery'), PP_PAGE_BUILDER_VERSION, true);
+		wp_enqueue_script( 'siteorigin-panels-video-jplayer', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'video/jplayer/jquery.jplayer.min.min.js', array('jquery'), POOTLEPAGE_VERSION, true);
+		wp_enqueue_script( 'siteorigin-panels-video', plugin_dir_url(POOTLEPAGE_BASE_FILE) . 'video/panels.video.jquery.min.js', array('jquery'), POOTLEPAGE_VERSION, true);
 
 		// Enqueue the SiteOrigin jPlayer skin
 		$skin = sanitize_file_name($instance['skin']);
-		wp_enqueue_style('siteorigin-panels-video-jplayer-skin', plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'video/jplayer/skins/'.$skin.'/jplayer.'.$skin.'.css', array(), PP_PAGE_BUILDER_VERSION);
+		wp_enqueue_style('siteorigin-panels-video-jplayer-skin', plugin_dir_url(POOTLEPAGE_BASE_FILE).'video/jplayer/skins/'.$skin.'/jplayer.'.$skin.'.css', array(), POOTLEPAGE_VERSION);
 
 		$file = $instance['url'];
-		$poster = !empty($instance['poster']) ? $instance['poster'] :  plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'video/poster.jpg';
+		$poster = !empty($instance['poster']) ? $instance['poster'] :  plugin_dir_url(POOTLEPAGE_BASE_FILE).'video/poster.jpg';
 		$instance['ratio'] = floatval($instance['ratio']);
 		if(empty($instance['ratio'])) $instance['ratio'] = 1.777;
 
@@ -789,7 +796,7 @@ class SiteOrigin_Panels_Widgets_Video extends WP_Widget {
 				     data-poster="<?php echo esc_url($poster) ?>"
 				     data-ratio="<?php echo floatval($instance['ratio']) ?>"
 				     data-autoplay="<?php echo esc_attr($instance['autoplay']) ?>"
-				     data-swfpath="<?php echo plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'video/jplayer/' ?>"
+				     data-swfpath="<?php echo plugin_dir_url(POOTLEPAGE_BASE_FILE).'video/jplayer/' ?>"
 				     data-mobile="<?php echo wp_is_mobile() ? 'true' : 'false' ?>"></div>
 
 				<?php $this->display_gui($instance['skin']) ?>
@@ -802,8 +809,8 @@ class SiteOrigin_Panels_Widgets_Video extends WP_Widget {
 	}
 
 	function display_gui($skin){
-		$file = plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE).'video/jplayer/skins/'.$skin.'/gui.php';
-		if(file_exists($file)) include plugin_dir_path(PP_PAGE_BUILDER_BASE_FILE).'video/jplayer/skins/'.$skin.'/gui.php';
+		$file = plugin_dir_path(POOTLEPAGE_BASE_FILE).'video/jplayer/skins/'.$skin.'/gui.php';
+		if(file_exists($file)) include plugin_dir_path(POOTLEPAGE_BASE_FILE).'video/jplayer/skins/'.$skin.'/gui.php';
 	}
 
 	function update( $new, $old ) {
@@ -869,7 +876,7 @@ function siteorigin_panels_video_shortcode($atts){
 	$instance = shortcode_atts( array(
 		'url' => '',
 		'src' => '',
-		'poster' => plugin_dir_url(PP_PAGE_BUILDER_BASE_FILE).'video/poster.jpg',
+		'poster' => plugin_dir_url(POOTLEPAGE_BASE_FILE).'video/poster.jpg',
 		'skin' => 'siteorigin',
 		'ratio' => 1.777,
 		'autoplay' => 0,
@@ -914,8 +921,8 @@ function siteorigin_panels_comatibility_init(){
 //    }
 }
 add_action('admin_init', 'siteorigin_panels_comatibility_init', 5);
-
-add_action('wp_head', 'pp_page_builder_pootle_text_widget_frontend_style');
+//TODO check this part later
+//add_action('wp_head', 'pp_page_builder_pootle_text_widget_frontend_style');
 
 function pp_page_builder_pootle_text_widget_frontend_style() {
     include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
@@ -923,44 +930,59 @@ function pp_page_builder_pootle_text_widget_frontend_style() {
 //    if (is_plugin_active('wx-pootle-text-widget/pootlepress-text-widget.php') ||
 //        is_plugin_active('pootle-text-widget-master/pootlepress-text-widget.php')
 //    ) {
-//
-//        $output = '';
-//
-//        global $woo_options;
-//
-//        $font_text = get_option('woo_font_text');
-//        $font_h1 = get_option('woo_font_h1');
-//        $font_h2 = $woo_options['woo_font_h2'];
-//        $font_h3 = $woo_options['woo_font_h3'];
-//        $font_h4 = $woo_options['woo_font_h4'];
-//        $font_h5 = $woo_options['woo_font_h5'];
-//        $font_h6 = $woo_options['woo_font_h6'];
-//
-//        if ($font_text)
-//            $output .= '.panel-grid  .widget_pootle-text-widget p { ' . woo_generate_font_css($font_text, 1.5) . ' }' . "\n";
-//        if ($font_h1)
-//            $output .= '.panel-grid  .widget_pootle-text-widget h1 { ' . woo_generate_font_css($font_h1, 1.2) . ' }';
-//        if ($font_h2)
-//            $output .= '.panel-grid  .widget_pootle-text-widget h2 { ' . woo_generate_font_css($font_h2, 1.2) . ' }';
-//        if ($font_h3)
-//            $output .= '.panel-grid  .widget_pootle-text-widget h3 { ' . woo_generate_font_css($font_h3, 1.2) . '; margin-bottom: 0.5em; padding: 0; border-bottom: none; }';
-//        if ($font_h4)
-//            $output .= '.panel-grid  .widget_pootle-text-widget h4 { ' . woo_generate_font_css($font_h4, 1.2) . ' }';
-//        if ($font_h5)
-//            $output .= '.panel-grid  .widget_pootle-text-widget h5 { ' . woo_generate_font_css($font_h5, 1.2) . ' }';
-//        if ($font_h6)
-//            $output .= '.panel-grid  .widget_pootle-text-widget h6 { ' . woo_generate_font_css($font_h6, 1.2) . ' }' . "\n";
-//
-//
-//        echo "<style>\n $output \n</style>\n";
+
+        $output = '';
+
+        global $woo_options;
+
+        $font_text = get_option('woo_font_text');
+        $font_h1 = get_option('woo_font_h1');
+        $font_h2 = $woo_options['woo_font_h2'];
+        $font_h3 = $woo_options['woo_font_h3'];
+        $font_h4 = $woo_options['woo_font_h4'];
+        $font_h5 = $woo_options['woo_font_h5'];
+        $font_h6 = $woo_options['woo_font_h6'];
+
+        if ($font_text)
+            $output .= '.panel-grid  .widget_pootle-text-widget p { ' . pp_page_builder_generate_font_css($font_text, 1.5) . ' }' . "\n";
+        if ($font_h1)
+            $output .= '.panel-grid  .widget_pootle-text-widget h1 { ' . pp_page_builder_generate_font_css($font_h1, 1.2) . ' }';
+        if ($font_h2)
+            $output .= '.panel-grid  .widget_pootle-text-widget h2 { ' . pp_page_builder_generate_font_css($font_h2, 1.2) . ' }';
+        if ($font_h3)
+            $output .= '.panel-grid  .widget_pootle-text-widget h3 { ' . pp_page_builder_generate_font_css($font_h3, 1.2) . '; margin-bottom: 0.5em; padding: 0; border-bottom: none; }';
+        if ($font_h4)
+            $output .= '.panel-grid  .widget_pootle-text-widget h4 { ' . pp_page_builder_generate_font_css($font_h4, 1.2) . ' }';
+        if ($font_h5)
+            $output .= '.panel-grid  .widget_pootle-text-widget h5 { ' . pp_page_builder_generate_font_css($font_h5, 1.2) . ' }';
+        if ($font_h6)
+            $output .= '.panel-grid  .widget_pootle-text-widget h6 { ' . pp_page_builder_generate_font_css($font_h6, 1.2) . ' }' . "\n";
+
+
+        echo "<style>\n $output \n</style>\n";
 //    }
 }
 
+function pp_page_builder_generate_font_css( $option, $em = '1' ) {
+
+    // Test if font-face is a Google font
+    global $google_fonts;
+    if (is_array($google_fonts)) {
+        foreach ($google_fonts as $google_font) {
+
+            // Add single quotation marks to font name and default arial sans-serif ending
+            if ($option['face'] == $google_font['name'])
+                $option['face'] = "'" . $option['face'] . "', arial, sans-serif";
+
+        } // END foreach
+    }
+
+    if ( !@$option['style'] && !@$option['size'] && !@$option['unit'] && !@$option['color'] )
+        return 'font-family: '.stripslashes($option["face"]).';';
+    else
+        return 'font:'.$option['style'].' '.$option['size'].$option['unit'].'/'.$em.'em '.stripslashes($option['face']).';color:'.$option['color'].';';
+}
 
 include plugin_dir_path(__FILE__) . '/compat/woo-tabs.php';
 
-//add_action('init', 'pp_pb_include_pootle_visual_editor');
-//
-//function pp_pb_include_pootle_visual_editor() {
-    require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');
-//}
+require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');

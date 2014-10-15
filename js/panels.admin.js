@@ -27,7 +27,7 @@ jQuery( function ( $ ) {
                 $( this ).find( 'input[name$="[grid]"]' ).val( $( '#panels-container .grid-container' ).index( $( this ).closest( '.grid-container' ) ) );
             } );
 
-            $( '#panels-container .panels-container' ).trigger( 'refreshcells' );
+            $( '#panels-container .grid-container' ).trigger( 'refreshcells' );
         }
     } );
 
@@ -50,6 +50,200 @@ jQuery( function ( $ ) {
 
         $( '#grid-add-dialog' ).dialog( 'close' );
     };
+
+    window.pootlePagePageSettingUploadButton = function () {
+
+        $('#page-setting-dialog .upload-button').click(function () {
+
+            var $textField = $(this).parent().find('input');
+            var textFieldID = $textField.attr('id');
+
+            window.formfield = textFieldID;
+
+            window.send_to_editor = function (html) {
+
+                if (formfield) {
+
+                    // itemurl = $(html).attr( 'href' ); // Use the URL to the main image.
+
+                    if ( $(html).html(html).find( 'img').length > 0 ) {
+
+                        itemurl = $(html).html(html).find( 'img').attr( 'src' ); // Use the URL to the size selected.
+
+                    } else {
+
+                        // It's not an image. Get the URL to the file instead.
+
+                        var htmlBits = html.split( "'" ); // jQuery seems to strip out XHTML when assigning the string to an object. Use alternate method.
+
+                        itemurl = htmlBits[1]; // Use the URL to the file.
+
+                        var itemtitle = htmlBits[2];
+
+                        itemtitle = itemtitle.replace( '>', '' );
+                        itemtitle = itemtitle.replace( '</a>', '' );
+
+                    } // End IF Statement
+
+                    var image = /(^.*\.jpg|jpeg|png|gif|ico*)/gi;
+
+                    if (itemurl.match(image)) {
+                        //btnContent = '<img src="'+itemurl+'" alt="" /><a href="#" class="mlu_remove button">Remove Image</a>';
+                    } else {
+                    }
+
+                    $( '#' + formfield).val(itemurl);
+//                    $( '#' + formfield).siblings( '.screenshot').slideDown().html(btnContent);
+                    tb_remove();
+
+                } else {
+                    window.original_send_to_editor(html);
+                }
+
+                // Clear the formfield value so the other media library popups can work as they are meant to. - 2010-11-11.
+                formfield = '';
+
+            };
+            tb_show('', 'media-upload.php?post_id=0&amp;title=Background%20Image&amp;type=image&amp;TB_iframe=true');
+            return false;
+        });
+    };
+
+    $( '#page-setting-dialog').data('html', $( '#page-setting-dialog').html() );
+
+    $('#page-setting-dialog').dialog({
+        dialogClass: 'panels-admin-dialog',
+        modal: false,
+        autoOpen: false,
+        width: 500,
+        maxHeight:   Math.round($(window).height() * 0.8),
+        draggable:   false,
+        resizable:   false,
+        title: $('#page-setting-dialog').attr('data-title'),
+        open:    function () {
+            var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+            $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
+
+            window.pootlePagePageSettingUploadButton();
+
+            var fieldValues = JSON.parse($('#page-settings').val());
+            if (typeof fieldValues != 'undefined' || fieldValues != null) {
+
+                for (var fieldName in fieldValues) {
+
+                    // Save the dialog field
+                    var df = $( '#page-setting-dialog [data-style-field="' + fieldName + '"]' );
+                    switch( df.data('style-field-type') ) {
+                        case 'checkbox':
+                            df.attr('checked', fieldValues[fieldName]);
+                            break;
+                        case 'color':
+                            df.wpColorPicker('color', fieldValues[fieldName]);
+                            break;
+                        default :
+                            df.val(fieldValues[fieldName]);
+                            break;
+                    }
+                }
+            }
+
+        },
+        close : function(){
+            $(this).data('overlay').remove();
+
+            // Copy the dialog values back to the hidden value
+            var fieldValues = {};
+            $( '#page-setting-dialog [data-style-field]').each(function() {
+                var $$ = $(this);
+                var fieldName = $$.data('style-field');
+
+                switch($$.data('style-field-type')) {
+                    case 'checkbox':
+                        fieldValues[fieldName] = $$.is(':checked');
+                        break;
+                    default :
+                        fieldValues[fieldName] = $$.val();
+                        break;
+                }
+            });
+
+            $('#page-settings').val(JSON.stringify(fieldValues));
+        },
+        buttons: {
+            'Done': function () {
+                $('#page-setting-dialog').dialog('close');
+            }
+        }
+    });
+
+    $( '#page-setting-dialog [data-style-field-type="color"]')
+        .wpColorPicker()
+        .closest('p').find('a').click(function(){
+            $( '#page-setting-dialog').dialog("option", "position", "center");
+        });
+
+    //
+    // Hide Element Dialog
+    //
+    $('#hide-element-dialog').dialog({
+        dialogClass: 'panels-admin-dialog',
+        modal: false,
+        autoOpen: false,
+        width: 500,
+        maxHeight:   Math.round($(window).height() * 0.8),
+        draggable:   false,
+        resizable:   false,
+        title: $('#hide-element-dialog').attr('data-title'),
+        open:    function () {
+            var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+            $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
+
+            var fieldValues = JSON.parse($('#hide-elements').val());
+            if (typeof fieldValues != 'undefined' || fieldValues != null) {
+
+                for (var fieldName in fieldValues) {
+
+                    // Save the dialog field
+                    var df = $( '#hide-element-dialog [data-style-field="' + fieldName + '"]' );
+                    switch( df.data('style-field-type') ) {
+                        case 'checkbox':
+                            df.attr('checked', fieldValues[fieldName]);
+                            break;
+                        default :
+                            df.val(fieldValues[fieldName]);
+                            break;
+                    }
+                }
+            }
+
+        },
+        close : function(){
+            $(this).data('overlay').remove();
+
+            // Copy the dialog values back to the hidden value
+            var fieldValues = {};
+            $( '#hide-element-dialog [data-style-field]').each(function() {
+                var $$ = $(this);
+                var fieldName = $$.data('style-field');
+
+                switch($$.data('style-field-type')) {
+                    case 'checkbox':
+                        fieldValues[fieldName] = $$.is(':checked');
+                        break;
+                    default :
+                        fieldValues[fieldName] = $$.val();
+                        break;
+                }
+            });
+
+            $('#hide-elements').val(JSON.stringify(fieldValues));
+        },
+        buttons: {
+            'Done': function () {
+                $('#hide-element-dialog').dialog('close');
+            }
+        }
+    });
 
     // Create the dialog that we use to add new grids
     $( '#grid-add-dialog' )
@@ -117,10 +311,10 @@ jQuery( function ( $ ) {
 
     // The button for adding a panel
     $( '#panels .panels-add')
-        .button( {
-            icons: {primary: 'ui-icon-add'},
-            text:  false
-        } )
+//        .button( {
+//            //icons: {primary: 'ui-icon-add'},
+//            text:  'Add Widget'
+//        } )
         .click( function () {
             $('#panels-text-filter-input' ).val('').keyup();
             $( '#panels-dialog' ).dialog( 'open' );
@@ -129,14 +323,24 @@ jQuery( function ( $ ) {
 
     // The button for adding a grid
     $( '#panels .grid-add' )
-        .button( {
-            icons: { primary: 'ui-icon-columns' },
-            text:  false
-        } )
+//        .button( {
+////            icons: { primary: 'ui-icon-columns' },
+//            text:  'Add Row'
+//        } )
         .click( function () {
             $( '#grid-add-dialog' ).dialog( 'open' );
             return false;
         } );
+
+    $('#add-to-panels .page-settings').click(function () {
+        $( '#page-setting-dialog' ).dialog( 'open' );
+        return false;
+    });
+
+    $('#add-to-panels .hide-elements').click(function () {
+        $( '#hide-element-dialog' ).dialog( 'open' );
+        return false;
+    });
 
     // Set the default text of the SiteOrigin link
     $('#siteorigin-widgets-link').data('text', $('#siteorigin-widgets-link').html() );
@@ -203,6 +407,7 @@ jQuery( function ( $ ) {
         .prepend(
             $( '<a id="content-panels" class="hide-if-no-js wp-switch-editor switch-panels">' + $( '#so-panels-panels h3.hndle span' ).html() + '</a>' )
                 .click( function () {
+
                     var $$ = $( this );
                     // This is so the inactive tabs don't show as active
                     $( '#wp-content-wrap' ).removeClass( 'tmce-active html-active' );
@@ -227,6 +432,13 @@ jQuery( function ( $ ) {
         var $$ = $(this);
         var p = $$.attr('id' ).split('-');
         $( '#wp-content-wrap' ).addClass(p[1] + '-active');
+
+        if ($(this).is('.switch-panels')) {
+            $('#insert-media-button').hide();
+        } else {
+            $('#insert-media-button').show();
+        }
+
     });
 
     // This is for the home page panel
@@ -243,6 +455,16 @@ jQuery( function ( $ ) {
         .find( '.hndle' ).html('' ).append(
             $('#add-to-panels')
         );
+
+    // append add row button
+    var $addRowButton = $('<div class="add-row-button button dashicons-before dashicons-plus" data-tooltip="Add Row"></div>');
+    var $addRowContainer = $('<div class="add-row-container"></div>');
+    $addRowContainer.append($addRowButton);
+    $('#so-panels-panels').append($addRowContainer);
+
+    $('#so-panels-panels .add-row-container .add-row-button').click(function () {
+        $( '#grid-add-dialog' ).dialog( 'open' );
+    });
 
     // When the content panels button is clicked, trigger a window resize to set up the columns
     $('#content-panels' ).click(function(){
