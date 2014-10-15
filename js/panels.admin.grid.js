@@ -312,17 +312,31 @@
                             })
                         });
 
+                        var styleData = {};
+                        $container.find('> [data-style-field]').each(function () {
+                            var fieldName = $(this).attr('data-style-field');
+                            var fieldValue = $(this).val();
+                            styleData[fieldName] = fieldValue;
+                        });
+
                         // Register this with the undo manager
                         window.panels.undoManager.register(
                             that,
-                            function (containerData, position) {
-                                // Readd the grid
+                            function (containerData, position, styleData) {
+                                // Read the grid
                                 var weights = [];
                                 for (var i = 0; i < containerData.length; i++) {
                                     weights[i] = containerData[i].weight;
                                 }
 
                                 var gridContainer = window.panels.createGrid(weights.length, weights);
+
+                                // apply back style
+                                for (var fieldName in styleData) {
+                                    if (styleData.hasOwnProperty(fieldName)) {
+                                        gridContainer.find('> [data-style-field=' + fieldName + ']').val(styleData[fieldName]);
+                                    }
+                                }
 
                                 // Now, start adding the widgets
                                 for (var i = 0; i < containerData.length; i++) {
@@ -356,7 +370,7 @@
                                 else gridContainer.show();
 
                             },
-                            [containerData, $container.index()],
+                            [containerData, $container.index(), styleData],
                             'Remove Columns'
                         );
 
