@@ -215,7 +215,7 @@ function pootlepage_unused_widgets() {
 
     $sequence = $widgetSettings['unused-widgets'];
 ?>
-    <h3>Drag them here if you don't want them to be used with PootlePage</h3>
+    <h3>Drag them here if you don't want them to be used with Canvas Page Builder</h3>
 
     <ul class="panel-type-list unused-list">
 

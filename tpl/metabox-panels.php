@@ -49,20 +49,29 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
                 $widgetSettings['reorder-widgets'] = json_decode($widgetSettings['reorder-widgets'], true);
                 $widgetSettings['unused-widgets'] = json_decode($widgetSettings['unused-widgets'], true);
 
+
+                $usedSequence = $widgetSettings['reorder-widgets'];
+
+                foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
+                    if (!in_array($class, $widgetSettings['reorder-widgets']) && !in_array($class, $widgetSettings['unused-widgets'])) {
+                        $usedSequence[] = $class;
+                    }
+                }
+
                 // make visual editor as first one
-                if (in_array('Pootle_Text_Widget', $widgetSettings['reorder-widgets'])) {
+                if (in_array('Pootle_Text_Widget', $usedSequence)) {
                     $temp = array();
                     $temp[] = 'Pootle_Text_Widget';
-                    foreach ($widgetSettings['reorder-widgets'] as $class) {
+                    foreach ($usedSequence as $class) {
                         if ($class != 'Pootle_Text_Widget') {
                             $temp[] = $class;
                         }
                     }
 
-                    $widgetSettings['reorder-widgets'] = $temp;
+                    $usedSequence = $temp;
                 }
                 ?>
-                <?php foreach ($widgetSettings['reorder-widgets'] as $class) :
+                <?php foreach ($usedSequence as $class) :
                     if (!isset($wp_widget_factory->widgets[$class])) {
                         continue;
                     }
