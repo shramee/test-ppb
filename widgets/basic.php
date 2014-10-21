@@ -525,11 +525,12 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
             'thumbnail_size' => '',
             'thumbnail_position' => '',
             'excerpt_enable' => '1',
-            'excerpt_length' => '',
+            'excerpt_length' => '55',
             'continue_reading_enable' => '0',
             'pagination_enable' => '1',
             'titles_show' => '1',
-            'post_meta_enable' => '1'
+            'post_meta_enable' => '1',
+            'column_count' => '1',
 
 		));
 

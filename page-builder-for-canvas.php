@@ -495,8 +495,14 @@ function pp_get_default_widget_style() {
         'backgroundColor' => '',
         'borderWidth' => 0,
         'borderColor' => '',
-        'paddingTopBottom' => 0,
-        'paddingLeftRight' => 0,
+        'paddingTop' => 0,
+        'paddingBottom' => 0,
+        'paddingLeft' => 0,
+        'paddingRight' => 0,
+        'marginTop' => 0,
+        'marginBottom' => 0,
+        'marginLeft' => 0,
+        'marginRight' => 0,
         'borderRadius' => 0
     );
 
@@ -1285,9 +1291,16 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
     $inlineStyle .= !empty($styleArray['backgroundColor']) ? 'background-color: ' . $styleArray['backgroundColor'] . ';': '';
     $inlineStyle .= !empty($styleArray['borderWidth']) ? 'border-width: ' . $styleArray['borderWidth'] . 'px; border-style: solid;': '';
     $inlineStyle .= !empty($styleArray['borderColor']) ? 'border-color: ' . $styleArray['borderColor'] . ';': '';
-    $inlineStyle .= !empty($styleArray['paddingTopBottom']) ? 'padding-top: ' . $styleArray['paddingTopBottom'] . 'px; ' . 'padding-bottom: ' . $styleArray['paddingTopBottom'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['paddingLeftRight']) ? 'padding-left: ' . $styleArray['paddingLeftRight'] . 'px; ' . 'padding-right: ' . $styleArray['paddingLeftRight'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['borderRadius']) ? 'border-radius: ' . $styleArray['borderRadius'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['paddingTop']) ? 'padding-top: ' . $styleArray['paddingTop'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['paddingBottom']) ? 'padding-bottom: ' . $styleArray['paddingBottom'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['paddingLeft']) ? 'padding-left: ' . $styleArray['paddingLeft'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['paddingRight']) ? 'padding-right: ' . $styleArray['paddingRight'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['marginTop']) ? 'margin-top: ' . $styleArray['marginTop'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['marginBottom']) ? 'margin-bottom: ' . $styleArray['marginBottom'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['marginLeft']) ? 'margin-left: ' . $styleArray['marginLeft'] . 'px;': '';
+    $inlineStyle .= !empty($styleArray['marginRight']) ? 'margin-right: ' . $styleArray['marginRight'] . 'px;': '';
+    // allow user to set the border radius of 0 for a widget
+    $inlineStyle .= (isset($styleArray['borderRadius']) && $styleArray['borderRadius'] != '') ? 'border-radius: ' . $styleArray['borderRadius'] . 'px;': '';
 
 	$the_widget->widget( array(
 		'before_widget' => '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >',

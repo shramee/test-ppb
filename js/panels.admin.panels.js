@@ -380,16 +380,28 @@
                         var backgroundColor = $(this).find('.widget-bg-color').val();
                         var borderWidth = $(this).find('.widget-border-width').val();
                         var borderColor = $(this).find('.widget-border-color').val();
-                        var paddingTopBottom = $(this).find('.widget-padding-top-bottom').val();
-                        var paddingLeftRight = $(this).find('.widget-padding-left-right').val();
+                        var paddingTop = $(this).find('.widget-padding-top').val();
+                        var paddingBottom = $(this).find('.widget-padding-bottom').val();
+                        var paddingLeft = $(this).find('.widget-padding-left').val();
+                        var paddingRight = $(this).find('.widget-padding-right').val();
+                        var marginTop = $(this).find('.widget-margin-top').val();
+                        var marginBottom = $(this).find('.widget-margin-bottom').val();
+                        var marginLeft = $(this).find('.widget-margin-left').val();
+                        var marginRight = $(this).find('.widget-margin-right').val();
                         var borderRadius = $(this).find('.widget-rounded-corners').val();
 
                         var styleData = {
                             backgroundColor: backgroundColor,
                             borderWidth: borderWidth,
                             borderColor: borderColor,
-                            paddingTopBottom: paddingTopBottom,
-                            paddingLeftRight: paddingLeftRight,
+                            paddingTop: paddingTop,
+                            paddingBottom: paddingBottom,
+                            paddingLeft: paddingLeft,
+                            paddingRight: paddingRight,
+                            marginTop: marginTop,
+                            marginBottom: marginBottom,
+                            marginLeft: marginLeft,
+                            marginRight: marginRight,
                             borderRadius: borderRadius
                         };
                         $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
@@ -444,12 +456,36 @@
                         '<input class="widget-border-color" type="text" data-style-field-type="color" /></span>' +
                 '</div>' +
                 '<div class="field">' +
-                    '<label>Widget padding (top/bottom)</label>' +
-                    '<span><input class="widget-padding-top-bottom" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                    '<label>Widget top padding</label>' +
+                    '<span><input class="widget-padding-top" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
                 '</div>' +
                 '<div class="field">' +
-                    '<label>Widget padding (left/right)</label>' +
-                    '<span><input class="widget-padding-left-right" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                    '<label>Widget bottom padding</label>' +
+                    '<span><input class="widget-padding-bottom" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                '</div>' +
+                '<div class="field">' +
+                    '<label>Widget left padding</label>' +
+                    '<span><input class="widget-padding-left" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                '</div>' +
+                '<div class="field">' +
+                    '<label>Widget right padding</label>' +
+                    '<span><input class="widget-padding-right" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                '</div>' +
+                '<div class="field">' +
+                    '<label>Widget top margin</label>' +
+                    '<span><input class="widget-margin-top" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                '</div>' +
+                '<div class="field">' +
+                    '<label>Widget bottom margin</label>' +
+                    '<span><input class="widget-margin-bottom" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                '</div>' +
+                '<div class="field">' +
+                    '<label>Widget left margin</label>' +
+                    '<span><input class="widget-margin-left" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
+                '</div>' +
+                '<div class="field">' +
+                    '<label>Widget right margin</label>' +
+                    '<span><input class="widget-margin-right" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
                 '</div>' +
                 '<div class="field">' +
                     '<label>Widget rounded corners</label>' +
@@ -465,8 +501,14 @@
             activeDialog.find('.widget-bg-color').val(styleData.backgroundColor);
             activeDialog.find('.widget-border-width').val(styleData.borderWidth);
             activeDialog.find('.widget-border-color').val(styleData.borderColor);
-            activeDialog.find('.widget-padding-top-bottom').val(styleData.paddingTopBottom);
-            activeDialog.find('.widget-padding-left-right').val(styleData.paddingLeftRight);
+            activeDialog.find('.widget-padding-top').val(styleData.paddingTop);
+            activeDialog.find('.widget-padding-bottom').val(styleData.paddingBottom);
+            activeDialog.find('.widget-padding-left').val(styleData.paddingLeft);
+            activeDialog.find('.widget-padding-right').val(styleData.paddingRight);
+            activeDialog.find('.widget-margin-top').val(styleData.marginTop);
+            activeDialog.find('.widget-margin-bottom').val(styleData.marginBottom);
+            activeDialog.find('.widget-margin-left').val(styleData.marginLeft);
+            activeDialog.find('.widget-margin-right').val(styleData.marginRight);
             activeDialog.find('.widget-rounded-corners').val(styleData.borderRadius);
 
             activeDialog.find('[data-style-field-type="color"]')
