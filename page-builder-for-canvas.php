@@ -491,22 +491,37 @@ function siteorigin_panels_get_current_admin_panels_data(){
 }
 
 function pp_get_default_widget_style() {
-    $result = array(
-        'backgroundColor' => '',
-        'borderWidth' => 0,
-        'borderColor' => '',
-        'paddingTop' => 0,
-        'paddingBottom' => 0,
-        'paddingLeft' => 0,
-        'paddingRight' => 0,
-        'marginTop' => 0,
-        'marginBottom' => 0,
-        'marginLeft' => 0,
-        'marginRight' => 0,
-        'borderRadius' => 0
-    );
+    $widgetStyleFields = pp_pb_widget_styling_fields();
 
+    $result = array();
+    foreach ($widgetStyleFields as $key => $field) {
+        if ($field['type'] == 'border') {
+            $result[$key . '-width'] = 0;
+            $result[$key . '-color'] = '';
+        } else if ($field['type'] == 'number') {
+            $result[$key] = 0;
+        } else {
+            $result[$key] = '';
+        }
+    }
     return $result;
+
+//    $result = array(
+//        'backgroundColor' => '',
+//        'borderWidth' => 0,
+//        'borderColor' => '',
+//        'paddingTop' => 0,
+//        'paddingBottom' => 0,
+//        'paddingLeft' => 0,
+//        'paddingRight' => 0,
+//        'marginTop' => 0,
+//        'marginBottom' => 0,
+//        'marginLeft' => 0,
+//        'marginRight' => 0,
+//        'borderRadius' => 0
+//    );
+//
+//    return $result;
 }
 
 /**
@@ -1288,19 +1303,75 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 
     $styleArray = $widgetStyle;
     $inlineStyle = '';
-    $inlineStyle .= !empty($styleArray['backgroundColor']) ? 'background-color: ' . $styleArray['backgroundColor'] . ';': '';
-    $inlineStyle .= !empty($styleArray['borderWidth']) ? 'border-width: ' . $styleArray['borderWidth'] . 'px; border-style: solid;': '';
-    $inlineStyle .= !empty($styleArray['borderColor']) ? 'border-color: ' . $styleArray['borderColor'] . ';': '';
-    $inlineStyle .= !empty($styleArray['paddingTop']) ? 'padding-top: ' . $styleArray['paddingTop'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['paddingBottom']) ? 'padding-bottom: ' . $styleArray['paddingBottom'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['paddingLeft']) ? 'padding-left: ' . $styleArray['paddingLeft'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['paddingRight']) ? 'padding-right: ' . $styleArray['paddingRight'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['marginTop']) ? 'margin-top: ' . $styleArray['marginTop'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['marginBottom']) ? 'margin-bottom: ' . $styleArray['marginBottom'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['marginLeft']) ? 'margin-left: ' . $styleArray['marginLeft'] . 'px;': '';
-    $inlineStyle .= !empty($styleArray['marginRight']) ? 'margin-right: ' . $styleArray['marginRight'] . 'px;': '';
-    // allow user to set the border radius of 0 for a widget
-    $inlineStyle .= (isset($styleArray['borderRadius']) && $styleArray['borderRadius'] != '') ? 'border-radius: ' . $styleArray['borderRadius'] . 'px;': '';
+
+    $widgetStyleFields = pp_pb_widget_styling_fields();
+
+    foreach ($widgetStyleFields as $key => $field) {
+
+        if ($field['type'] == 'border') {
+            // a border field has 2 settings
+            $key1 = $key . '-width';
+            $key2 = $key . '-color';
+
+            if (isset($styleArray[$key1]) && $styleArray[$key1] != '') {
+                if (!is_array($field['css'])) {
+                    $cssArr = array($field['css']);
+                } else {
+                    $cssArr = $field['css'];
+                }
+
+                foreach ($cssArr as $cssProperty) {
+                    $inlineStyle .= $cssProperty . '-width: ' . $styleArray[$key1] . 'px; border-style: solid;';
+                }
+            }
+
+            if (isset($styleArray[$key2]) && $styleArray[$key2] != '') {
+                if (!is_array($field['css'])) {
+                    $cssArr = array($field['css']);
+                } else {
+                    $cssArr = $field['css'];
+                }
+
+                foreach ($cssArr as $cssProperty) {
+                    $inlineStyle .= $cssProperty . '-color: ' . $styleArray[$key2] . ';';
+                }
+            }
+
+        } else {
+            if (isset($styleArray[$key]) && $styleArray[$key] != '') {
+                if (!is_array($field['css'])) {
+                    $cssArr = array($field['css']);
+                } else {
+                    $cssArr = $field['css'];
+                }
+
+                foreach ($cssArr as $cssProperty) {
+                    if (isset($field['unit'])) {
+                        $unit = $field['unit'];
+                    } else {
+                        $unit = '';
+                    }
+                    $inlineStyle .= $cssProperty . ': ' . $styleArray[$key] . $unit . ';';
+                }
+            }
+        }
+    }
+
+
+
+//    $inlineStyle .= !empty($styleArray['backgroundColor']) ? 'background-color: ' . $styleArray['backgroundColor'] . ';': '';
+//    $inlineStyle .= !empty($styleArray['borderWidth']) ? 'border-width: ' . $styleArray['borderWidth'] . 'px; border-style: solid;': '';
+//    $inlineStyle .= !empty($styleArray['borderColor']) ? 'border-color: ' . $styleArray['borderColor'] . ';': '';
+//    $inlineStyle .= !empty($styleArray['paddingTop']) ? 'padding-top: ' . $styleArray['paddingTop'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['paddingBottom']) ? 'padding-bottom: ' . $styleArray['paddingBottom'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['paddingLeft']) ? 'padding-left: ' . $styleArray['paddingLeft'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['paddingRight']) ? 'padding-right: ' . $styleArray['paddingRight'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['marginTop']) ? 'margin-top: ' . $styleArray['marginTop'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['marginBottom']) ? 'margin-bottom: ' . $styleArray['marginBottom'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['marginLeft']) ? 'margin-left: ' . $styleArray['marginLeft'] . 'px;': '';
+//    $inlineStyle .= !empty($styleArray['marginRight']) ? 'margin-right: ' . $styleArray['marginRight'] . 'px;': '';
+//    // allow user to set the border radius of 0 for a widget
+//    $inlineStyle .= (isset($styleArray['borderRadius']) && $styleArray['borderRadius'] != '') ? 'border-radius: ' . $styleArray['borderRadius'] . 'px;': '';
 
 	$the_widget->widget( array(
 		'before_widget' => '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >',
@@ -1882,6 +1953,49 @@ function pp_pb_widget_area_init() {
 //        add_action('admin_head', 'pp_pb_widget_area_head');
     }
 } // End init()
+
+function pp_pb_widget_styling_fields() {
+    return array(
+        'background-color' => array(
+            'name' => 'Widget background color',
+            'type' => 'color',
+            'css' => 'background-color',
+        ),
+        'border' => array(
+            'name' => 'Widget border',
+            'type' => 'border',
+            'css' => 'border'
+        ),
+        'padding-top-bottom' => array(
+            'name' => 'Widget top/bottom padding',
+            'type' => 'number',
+            'min' => '0',
+            'max' => '100',
+            'step' => '1',
+            'unit' => '%',
+            'css' => array('padding-top', 'padding-bottom')
+        ),
+        'padding-left-right' => array(
+            'name' => 'Widget left/right padding',
+            'type' => 'number',
+            'min' => '0',
+            'max' => '100',
+            'step' => '1',
+            'unit' => '%',
+            'css' => array('padding-left', 'padding-right')
+        ),
+        'rounded-corners' => array(
+            'name' => 'Widget rounded corners',
+            'type' => 'number',
+            'min' => '0',
+            'max' => '100',
+            'step' => '1',
+            'unit' => 'px',
+            'css' => 'border-radius'
+        )
+    );
+}
+
 
 // No need to fix, since same as normal post edit screen
 //function pp_pb_widget_area_head() {

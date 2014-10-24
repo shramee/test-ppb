@@ -182,6 +182,146 @@ jQuery( function ( $ ) {
             $( '#page-setting-dialog').dialog("option", "position", "center");
         });
 
+    // The done button
+    var dialogButtons = {};
+    var doneClicked = false;
+    dialogButtons[ panels.i10n.buttons['done'] ] = function () {
+        doneClicked = true;
+
+        // Change the title of the panel
+        $('#widget-styles-dialog').dialog( 'close' );
+    };
+
+    // Create a dialog for this form
+    $('#widget-styles-dialog')
+        .dialog( {
+            dialogClass: 'panels-admin-dialog',
+            autoOpen:    false,
+            modal:       false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
+            draggable:   false,
+            resizable:   false,
+            title:       panels.i10n.messages.styleWidget,
+            minWidth:    500,
+            maxHeight:   Math.min( Math.round($(window).height() * 0.875), 800),
+//            create:      function(event, ui){
+//                $(this ).closest('.ui-dialog' ).find('.show-in-panels' ).show();
+//            },
+            open:        function () {
+                // This fixes the A element focus issue
+                $(this ).closest('.ui-dialog' ).find('a' ).blur();
+
+                var overlay = $('<div class="siteorigin-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                $(this).data( 'overlay', overlay ).closest( '.ui-dialog' ).before( overlay );
+
+                var $hidden = window.$currentPanel.find('input[name$="[style]"]');
+                var json = $hidden.val();
+                var styleData = JSON.parse(json);
+
+                // from style data in hidden field, set the widget style dialog fields with data
+                for (var key in styleData) {
+                    if (styleData.hasOwnProperty(key)) {
+
+                        var $field = $(this).find('input[dialog-field="' + key + '"]');
+                        if ($field.attr('data-style-field-type') == "color") {
+                            $field.wpColorPicker('color', styleData[key]);
+                        } else {
+                            $field.val(styleData[key]);
+                        }
+
+                    }
+                }
+            },
+            close: function(){
+                var $currentPanel = window.$currentPanel;
+                if(!doneClicked) {
+                    $( this ).trigger( 'panelsdone', $currentPanel,  $('#widget-styles-dialog') );
+                }
+
+                //
+                // from values in dialog fields, set style data into hidden fields
+                //
+
+                var styleData = {};
+                $(this).find('input[dialog-field]').each(function () {
+                    var key = $(this).attr('dialog-field');
+                    styleData[key] = $(this).val();
+                });
+
+//                        var backgroundColor = $(this).find('.widget-bg-color').val();
+//                        var borderWidth = $(this).find('.widget-border-width').val();
+//                        var borderColor = $(this).find('.widget-border-color').val();
+//                        var paddingTop = $(this).find('.widget-padding-top').val();
+//                        var paddingBottom = $(this).find('.widget-padding-bottom').val();
+//                        var paddingLeft = $(this).find('.widget-padding-left').val();
+//                        var paddingRight = $(this).find('.widget-padding-right').val();
+//                        var marginTop = $(this).find('.widget-margin-top').val();
+//                        var marginBottom = $(this).find('.widget-margin-bottom').val();
+//                        var marginLeft = $(this).find('.widget-margin-left').val();
+//                        var marginRight = $(this).find('.widget-margin-right').val();
+//                        var borderRadius = $(this).find('.widget-rounded-corners').val();
+
+//                        var styleData = {
+//                            backgroundColor: backgroundColor,
+//                            borderWidth: borderWidth,
+//                            borderColor: borderColor,
+//                            paddingTop: paddingTop,
+//                            paddingBottom: paddingBottom,
+//                            paddingLeft: paddingLeft,
+//                            paddingRight: paddingRight,
+//                            marginTop: marginTop,
+//                            marginBottom: marginBottom,
+//                            marginLeft: marginLeft,
+//                            marginRight: marginRight,
+//                            borderRadius: borderRadius
+//                        };
+                $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
+
+                var allData = JSON.parse($currentPanel.find('input[name$="[data]"]').val());
+                if (typeof allData.info == 'undefined') {
+                    allData.info = {};
+                }
+
+                allData.info.raw = $currentPanel.find( 'input[name$="[info][raw]"]' ).val();
+                allData.info.grid = $currentPanel.find( 'input[name$="[info][grid]"]' ).val();
+                allData.info.cell = $currentPanel.find( 'input[name$="[info][cell]"]' ).val();
+                allData.info.id = $currentPanel.find( 'input[name$="[info][id]"]' ).val();
+                allData.info.class = $currentPanel.find( 'input[name$="[info][class]"]' ).val();
+
+                allData.info.style = styleData;
+                $currentPanel.find('input[name$="[data]"]').val(JSON.stringify(allData));
+
+                // Destroy the dialog and remove it
+                $(this).data('overlay').remove();
+                activeDialog = undefined;
+            },
+            buttons: dialogButtons
+        } )
+        .keypress(function(e) {
+            if (e.keyCode == $.ui.keyCode.ENTER) {
+                if($(this ).closest('.ui-dialog' ).find('textarea:focus' ).length > 0) return;
+
+                // This is the same as clicking the add button
+                $(this ).closest('.ui-dialog').find('.ui-dialog-buttonpane .ui-button:eq(0)').click();
+                e.preventDefault();
+                return false;
+            }
+            else if (e.keyCode === $.ui.keyCode.ESCAPE) {
+                $(this ).closest('.ui-dialog' ).dialog('close');
+            }
+        });
+
+    $( '#widget-styles-dialog [data-style-field-type="color"]')
+        .wpColorPicker()
+        .closest('p').find('a').click(function(){
+            $( '#widget-styles-dialog').dialog("option", "position", "center");
+        });
+//    $(this).find('[data-style-field-type="color"]')
+//        .wpColorPicker()
+//        .closest('p').find('a').click(function(){
+//            $( '#widget-styles-dialog').dialog("option", "position", "center");
+//        });
+
+
     //
     // Hide Element Dialog
     //
@@ -380,8 +520,6 @@ jQuery( function ( $ ) {
         // Close the add panel dialog
         $( '#panels-dialog' ).dialog( 'close' );
     } );
-
-    
 
     // Either setup an initial grid or load one from the panels data
     if ( typeof panelsData != 'undefined' ) panels.loadPanels(panelsData);

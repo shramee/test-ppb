@@ -340,237 +340,114 @@
             // style dialog
             if( typeof activeDialog != 'undefined' ) return false;
 
-            // The done button
-            var dialogButtons = {};
-            var doneClicked = false;
-            dialogButtons[ panels.i10n.buttons['done'] ] = function () {
-                doneClicked = true;
+            window.$currentPanel = $currentPanel;
 
-                // Change the title of the panel
-                activeDialog.dialog( 'close' );
-            };
-
-            // Create a dialog for this form
-            activeDialog = $( '<div id="widget-styles-dialog" class="panel-dialog dialog-form"></div>' )
-                .dialog( {
-                    dialogClass: 'panels-admin-dialog',
-                    autoOpen:    true,
-                    modal:       false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
-                    draggable:   false,
-                    resizable:   false,
-                    title:       panels.i10n.messages.styleWidget,
-                    minWidth:    500,
-                    maxHeight:   Math.min( Math.round($(window).height() * 0.875), 800),
-                    create:      function(event, ui){
-                        $(this ).closest('.ui-dialog' ).find('.show-in-panels' ).show();
-                    },
-                    open:        function () {
-                        // This fixes the A element focus issue
-                        $(this ).closest('.ui-dialog' ).find('a' ).blur();
-
-                        var overlay = $('<div class="siteorigin-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
-                        $(this).data( 'overlay', overlay ).closest( '.ui-dialog' ).before( overlay );
-
-                    },
-                    close: function(){
-                        if(!doneClicked) {
-                            $( this ).trigger( 'panelsdone', $currentPanel, activeDialog );
-                        }
-
-                        var backgroundColor = $(this).find('.widget-bg-color').val();
-                        var borderWidth = $(this).find('.widget-border-width').val();
-                        var borderColor = $(this).find('.widget-border-color').val();
-                        var paddingTop = $(this).find('.widget-padding-top').val();
-                        var paddingBottom = $(this).find('.widget-padding-bottom').val();
-                        var paddingLeft = $(this).find('.widget-padding-left').val();
-                        var paddingRight = $(this).find('.widget-padding-right').val();
-                        var marginTop = $(this).find('.widget-margin-top').val();
-                        var marginBottom = $(this).find('.widget-margin-bottom').val();
-                        var marginLeft = $(this).find('.widget-margin-left').val();
-                        var marginRight = $(this).find('.widget-margin-right').val();
-                        var borderRadius = $(this).find('.widget-rounded-corners').val();
-
-                        var styleData = {
-                            backgroundColor: backgroundColor,
-                            borderWidth: borderWidth,
-                            borderColor: borderColor,
-                            paddingTop: paddingTop,
-                            paddingBottom: paddingBottom,
-                            paddingLeft: paddingLeft,
-                            paddingRight: paddingRight,
-                            marginTop: marginTop,
-                            marginBottom: marginBottom,
-                            marginLeft: marginLeft,
-                            marginRight: marginRight,
-                            borderRadius: borderRadius
-                        };
-                        $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
-
-                        var allData = JSON.parse($currentPanel.find('input[name$="[data]"]').val());
-                        if (typeof allData.info == 'undefined') {
-                            allData.info = {};
-                        }
-
-                        allData.info.raw = $currentPanel.find( 'input[name$="[info][raw]"]' ).val();
-                        allData.info.grid = $currentPanel.find( 'input[name$="[info][grid]"]' ).val();
-                        allData.info.cell = $currentPanel.find( 'input[name$="[info][cell]"]' ).val();
-                        allData.info.id = $currentPanel.find( 'input[name$="[info][id]"]' ).val();
-                        allData.info.class = $currentPanel.find( 'input[name$="[info][class]"]' ).val();
-
-                        allData.info.style = styleData;
-                        $currentPanel.find('input[name$="[data]"]').val(JSON.stringify(allData));
-
-                        // Destroy the dialog and remove it
-                        $(this).data('overlay').remove();
-                        $(this).dialog('destroy').remove();
-                        activeDialog = undefined;
-                    },
-                    buttons: dialogButtons
-                } )
-                .keypress(function(e) {
-                    if (e.keyCode == $.ui.keyCode.ENTER) {
-                        if($(this ).closest('.ui-dialog' ).find('textarea:focus' ).length > 0) return;
-
-                        // This is the same as clicking the add button
-                        $(this ).closest('.ui-dialog').find('.ui-dialog-buttonpane .ui-button:eq(0)').click();
-                        e.preventDefault();
-                        return false;
-                    }
-                    else if (e.keyCode === $.ui.keyCode.ESCAPE) {
-                        $(this ).closest('.ui-dialog' ).dialog('close');
-                    }
-                });
+            $('#widget-styles-dialog').dialog('open');
 
             // This is so we can access the dialog (and its forms) later.
             // this line cannot be used or will mess up panelsGetPanelData
 //                    panel.data('dialog', activeDialog);
 
-            activeDialog.html(
-                '<div class="field">' +
-                    '<label>Widget background color</label>' +
-                    '<span><input class="widget-bg-color" type="text" data-style-field-type="color"/></span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget border</label>' +
-                    '<span><input class="widget-border-width" type="number" min="0" max="100" step="1" value="0" /> px ' +
-                        '<input class="widget-border-color" type="text" data-style-field-type="color" /></span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget top padding</label>' +
-                    '<span><input class="widget-padding-top" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget bottom padding</label>' +
-                    '<span><input class="widget-padding-bottom" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget left padding</label>' +
-                    '<span><input class="widget-padding-left" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget right padding</label>' +
-                    '<span><input class="widget-padding-right" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget top margin</label>' +
-                    '<span><input class="widget-margin-top" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget bottom margin</label>' +
-                    '<span><input class="widget-margin-bottom" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget left margin</label>' +
-                    '<span><input class="widget-margin-left" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget right margin</label>' +
-                    '<span><input class="widget-margin-right" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>' +
-                '<div class="field">' +
-                    '<label>Widget rounded corners</label>' +
-                    '<span><input class="widget-rounded-corners" type="number" min="0" max="100" step="1" value="0" /> px</span>' +
-                '</div>'
 
-                );
 
-            var $hidden = $currentPanel.find('input[name$="[style]"]');
-            var json = $hidden.val();
-            var styleData = JSON.parse(json);
+//            activeDialog.find('.widget-bg-color').val(styleData.backgroundColor);
+//            activeDialog.find('.widget-border-width').val(styleData.borderWidth);
+//            activeDialog.find('.widget-border-color').val(styleData.borderColor);
+////            activeDialog.find('.widget-padding-top').val(styleData.paddingTop);
+////            activeDialog.find('.widget-padding-bottom').val(styleData.paddingBottom);
+////            activeDialog.find('.widget-padding-left').val(styleData.paddingLeft);
+////            activeDialog.find('.widget-padding-right').val(styleData.paddingRight);
+//            activeDialog.find('.widget-padding-top-bottom').val(styleData.paddingTopBottom);
+//            activeDialog.find('.widget-padding-left-right').val(styleData.paddingLeftRight);
+////            activeDialog.find('.widget-margin-top').val(styleData.marginTop);
+////            activeDialog.find('.widget-margin-bottom').val(styleData.marginBottom);
+////            activeDialog.find('.widget-margin-left').val(styleData.marginLeft);
+////            activeDialog.find('.widget-margin-right').val(styleData.marginRight);
+//            activeDialog.find('.widget-rounded-corners').val(styleData.borderRadius);
 
-            activeDialog.find('.widget-bg-color').val(styleData.backgroundColor);
-            activeDialog.find('.widget-border-width').val(styleData.borderWidth);
-            activeDialog.find('.widget-border-color').val(styleData.borderColor);
-            activeDialog.find('.widget-padding-top').val(styleData.paddingTop);
-            activeDialog.find('.widget-padding-bottom').val(styleData.paddingBottom);
-            activeDialog.find('.widget-padding-left').val(styleData.paddingLeft);
-            activeDialog.find('.widget-padding-right').val(styleData.paddingRight);
-            activeDialog.find('.widget-margin-top').val(styleData.marginTop);
-            activeDialog.find('.widget-margin-bottom').val(styleData.marginBottom);
-            activeDialog.find('.widget-margin-left').val(styleData.marginLeft);
-            activeDialog.find('.widget-margin-right').val(styleData.marginRight);
-            activeDialog.find('.widget-rounded-corners').val(styleData.borderRadius);
-
-            activeDialog.find('[data-style-field-type="color"]')
-                .wpColorPicker()
-                .closest('p').find('a').click(function(){
-                    $( '#widget-styles-dialog').dialog("option", "position", "center");
-                });
 
             return false;
         });
 
         $panel.find('> .panel-wrapper > .title > .actions > .delete').click(function(){
             var $currentPanel = $(this).closest('.panel');
-            // The delete button
-            var deleteFunction = function ($panel) {
-                // Add an entry to the undo manager
 
-                panels.undoManager.register(
-                    this,
-                    function(type, data, container, position){
-                        // Readd the panel
-                        var panel = $('#panels-dialog').panelsCreatePanel(type, data, container);
-                        panels.addPanel(panel, container, position, true);
+            $('#remove-widget-dialog').dialog( {
+                dialogClass: 'panels-admin-dialog',
+                autoOpen: false,
+                modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
+                title:   $( '#remove-widget-dialog' ).attr( 'data-title' ),
+                open:    function () {
+                    var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                    $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
+                },
+                close : function(){
+                    $(this).data('overlay').remove();
+                },
+                buttons: {
+                    Yes:    function () {
 
-                        // We don't want to animate the undone panels
-                        $( '#panels-container .panel' ).removeClass( 'new-panel' );
+                        // The delete button
+                        var deleteFunction = function ($panel) {
+                            // Add an entry to the undo manager
+
+                            panels.undoManager.register(
+                                this,
+                                function(type, data, container, position){
+                                    // Readd the panel
+                                    var panel = $('#panels-dialog').panelsCreatePanel(type, data, container);
+                                    panels.addPanel(panel, container, position, true);
+
+                                    // We don't want to animate the undone panels
+                                    $( '#panels-container .panel' ).removeClass( 'new-panel' );
+                                },
+                                [ $panel.attr('data-type'), $panel.panelsGetPanelData(), $panel.closest('.panels-container'), $panel.index() ],
+                                'Remove Panel'
+                            );
+
+                            // Create the undo notification
+                            $('#panels-undo-message' ).remove();
+                            $('<div id="panels-undo-message" class="updated"><p>' + panels.i10n.messages.deleteWidget + ' - <a href="#" class="undo">' + panels.i10n.buttons.undo + '</a></p></div>' )
+                                .appendTo('body')
+                                .hide()
+                                .slideDown()
+                                .find('a.undo')
+                                .click(function(){
+                                    panels.undoManager.undo();
+                                    $('#panels-undo-message' ).fadeOut(function(){
+                                        $(this ).remove();
+                                    });
+                                    return false;
+                                })
+                            ;
+
+                            var remove = function () {
+                                // Remove the panel and refresh the grid container cell sizes
+                                var gridContainer = $panel.closest('.grid-container');
+                                $panel.remove();
+                                gridContainer.panelsResizeCells();
+                            };
+
+                            if(panels.animations) $panel.slideUp( remove );
+                            else {
+                                $panel.hide();
+                                remove();
+                            }
+                        };
+
+                        deleteFunction($currentPanel);
+
+                        $(this).dialog('close');
                     },
-                    [ $panel.attr('data-type'), $panel.panelsGetPanelData(), $panel.closest('.panels-container'), $panel.index() ],
-                    'Remove Panel'
-                );
-
-                // Create the undo notification
-                $('#panels-undo-message' ).remove();
-                $('<div id="panels-undo-message" class="updated"><p>' + panels.i10n.messages.deleteWidget + ' - <a href="#" class="undo">' + panels.i10n.buttons.undo + '</a></p></div>' )
-                    .appendTo('body')
-                    .hide()
-                    .slideDown()
-                    .find('a.undo')
-                    .click(function(){
-                        panels.undoManager.undo();
-                        $('#panels-undo-message' ).fadeOut(function(){
-                            $(this ).remove();
-                        });
-                        return false;
-                    })
-                ;
-
-                var remove = function () {
-                    // Remove the panel and refresh the grid container cell sizes
-                    var gridContainer = $panel.closest('.grid-container');
-                    $panel.remove();
-                    gridContainer.panelsResizeCells();
-                };
-
-                if(panels.animations) $panel.slideUp( remove );
-                else {
-                    $panel.hide();
-                    remove();
+                    Cancel : function(){
+                        $(this).dialog('close');
+                    }
                 }
-            };
 
-            deleteFunction($currentPanel);
+            });
+
+            $('#remove-widget-dialog').dialog('open');
+
             return false;
         });
     };

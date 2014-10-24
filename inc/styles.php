@@ -13,15 +13,15 @@ function siteorigin_panels_style_get_fields(){
 
 	if($fields === false) {
 		$fields = array();
-		$styles = apply_filters( 'siteorigin_panels_row_styles', array() );
-		if(!empty($styles)){
-			$fields['class'] = array(
-				'name' => __('Class', 'siteorigin-panels'),
-				'type' => 'text',
-				'default' => '',
-				//'options' => wp_parse_args( $styles, array('' => __( 'Default', 'siteorigin-panels' ) ) ),
-			);
-		}
+//		$styles = apply_filters( 'siteorigin_panels_row_styles', array() );
+//		if(!empty($styles)){
+//			$fields['class'] = array(
+//				'name' => __('Class', 'siteorigin-panels'),
+//				'type' => 'text',
+//				'default' => '',
+//				//'options' => wp_parse_args( $styles, array('' => __( 'Default', 'siteorigin-panels' ) ) ),
+//			);
+//		}
 
 		$fields = apply_filters( 'siteorigin_panels_row_style_fields', $fields );
 	}
@@ -213,7 +213,7 @@ function siteorigin_panels_style_dialog_form(){
 				?>
 				<select name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>">
 					<?php foreach($attr['options'] as $ov => $on) : ?>
-						<option value="<?php echo esc_attr($ov) ?>"><?php echo esc_html($on) ?></option>
+						<option value="<?php echo esc_attr($ov) ?>" <?php if (isset($attr['default'])) selected($ov, $attr['default']) ?>  ><?php echo esc_html($on) ?></option>
 					<?php endforeach ?>
 				</select>
 				<?php
@@ -229,7 +229,12 @@ function siteorigin_panels_style_dialog_form(){
 				break;
 
 			case 'number' :
-				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" /> <?php
+				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" />
+                <?php
+                if (isset($attr['help-text'])) {
+                    // don't use div for this or else div will appear outside of <p>
+                    echo "<span class='small-help-text'>" . esc_html($attr['help-text']) . "</span>";
+                }
 				break;
 
             case 'upload':
@@ -243,6 +248,39 @@ function siteorigin_panels_style_dialog_form(){
 		echo '</p>';
 	}
 }
+
+function pp_pb_widget_styles_dialog_form(){
+    $fields = pp_pb_widget_styling_fields();
+
+    foreach($fields as $key => $field) {
+
+        echo "<div class='field'>";
+        echo "<label>" . esc_html($field['name']) . "</label>";
+        echo "<span>";
+
+        switch($field['type']) {
+            case 'color' :
+                ?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text" data-style-field-type="color"/>
+                <?php
+                break;
+            case 'border' :
+                ?><input dialog-field="<?php echo $key ?>-width" class="widget-<?php echo $key ?>-width" type="number" min="0" max="100" step="1" value="0" /> px
+                  <input dialog-field="<?php echo $key ?>-color" class="widget-<?php echo $key ?>-color" type="text" data-style-field-type="color" />
+                <?php
+                break;
+            case 'number' :
+                ?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="number" min="<?php esc_attr_e($field['min']) ?>" max="<?php esc_attr_e($field['max']) ?>" step="<?php esc_attr_e($field['step']) ?>" value="0" /> <?php esc_html_e($field['unit']) ?>
+                <?php
+                break;
+            default :
+                break;
+        }
+
+        echo "</span>";
+        echo '</div>';
+    }
+}
+
 
 /**
  * Check if we're using a color in any of the style fields.

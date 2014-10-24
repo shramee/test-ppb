@@ -49,27 +49,43 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
                 $widgetSettings['reorder-widgets'] = json_decode($widgetSettings['reorder-widgets'], true);
                 $widgetSettings['unused-widgets'] = json_decode($widgetSettings['unused-widgets'], true);
 
+                if (count($widgetSettings['reorder-widgets']) == 0 &&
+                    count($widgetSettings['unused-widgets']) == 0
+                ) {
+                    $widgetSettings['reorder-widgets'] = array('Pootle_Text_Widget',
+                        'SiteOrigin_Panels_Widgets_PostLoop', 'Woo_Widget_Component');
 
-                $usedSequence = $widgetSettings['reorder-widgets'];
-
-                foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
-                    if (!in_array($class, $widgetSettings['reorder-widgets']) && !in_array($class, $widgetSettings['unused-widgets'])) {
-                        $usedSequence[] = $class;
-                    }
-                }
-
-                // make visual editor as first one
-                if (in_array('Pootle_Text_Widget', $usedSequence)) {
-                    $temp = array();
-                    $temp[] = 'Pootle_Text_Widget';
-                    foreach ($usedSequence as $class) {
-                        if ($class != 'Pootle_Text_Widget') {
-                            $temp[] = $class;
+                    foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
+                        if (!in_array($class, $widgetSettings['reorder-widgets'])) {
+                            $widgetSettings['unused-widgets'][] = $class;
                         }
                     }
 
-                    $usedSequence = $temp;
+                    $usedSequence = $widgetSettings['reorder-widgets'];
+                } else {
+
+                    $usedSequence = $widgetSettings['reorder-widgets'];
+
+                    foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
+                        if (!in_array($class, $widgetSettings['reorder-widgets']) && !in_array($class, $widgetSettings['unused-widgets'])) {
+                            $usedSequence[] = $class;
+                        }
+                    }
+
+                    // make visual editor as first one
+                    if (in_array('Pootle_Text_Widget', $usedSequence)) {
+                        $temp = array();
+                        $temp[] = 'Pootle_Text_Widget';
+                        foreach ($usedSequence as $class) {
+                            if ($class != 'Pootle_Text_Widget') {
+                                $temp[] = $class;
+                            }
+                        }
+
+                        $usedSequence = $temp;
+                    }
                 }
+
                 ?>
                 <?php foreach ($usedSequence as $class) :
                     if (!isset($wp_widget_factory->widgets[$class])) {
@@ -91,8 +107,9 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 				<?php endforeach; ?>
 
 				<div class="clear"></div>
-			</ul>
 
+			</ul>
+            <div class='help-text'>To include more widgets for selection please go to Settings > Page Builder > Widgets and drag widgets into the selection area</div>
 			<?php do_action('siteorigin_panels_after_widgets'); ?>
 		</div>
 		
@@ -109,6 +126,9 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
         <p>Are you sure?</p>
     </div>
 
+    <div id="remove-widget-dialog" data-title="<?php esc_attr_e("Remove Widget", 'siteorigin-panels') ?>" class="panels-admin-dialog">
+        <p>Are you sure?</p>
+    </div>
 
     <div id="page-setting-dialog" data-title="<?php esc_attr_e('Page Settings', 'siteorigin-panels') ?>" class="panels-admin-dialog">
 
@@ -150,6 +170,10 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 	<div id="grid-styles-dialog" data-title="<?php esc_attr_e('Row Visual Style','siteorigin-panels') ?>" class="panels-admin-dialog">
 		<?php siteorigin_panels_style_dialog_form() ?>
 	</div>
+
+    <div id="widget-styles-dialog" data-title="Style Widget" class="panels-admin-dialog">
+        <?php pp_pb_widget_styles_dialog_form() ?>
+    </div>
 
     <?php
         global $post;

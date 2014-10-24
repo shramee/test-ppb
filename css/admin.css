@@ -211,6 +211,12 @@ html {
 	margin-left: 5px;
 }
 
+#panels-container .grid-container .controls .row-button.delete-button
+{
+    float: left;
+    margin-left: 0;
+}
+
 #panels-container .grid-container .controls .grid-handle {
 	cursor: move;
 }
@@ -291,7 +297,7 @@ html {
 
 #so-panels-panels .panels-container .panel .title a {
 	display: none;
-	margin-right: 3px;
+	margin-right: 5px;
 }
 
 #so-panels-panels .panels-container .panel .title .actions {
@@ -379,7 +385,10 @@ html {
 #grid-prebuilt-dialog,
 #page-setting-dialog,
 #hide-element-dialog,
-#remove-row-dialog {
+#widget-styles-dialog,
+#remove-row-dialog,
+#remove-widget-dialog
+{
 	display: none;
 }
 
@@ -920,6 +929,14 @@ html {
 	-webkit-touch-callout: none;
 }
 
+#grid-styles-dialog .small-help-text
+{
+    display: block;
+    margin-left: 160px;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
 #grid-prebuilt-dialog .chosen-container
 {
     width: 500px !important;
@@ -1064,15 +1081,15 @@ html {
     position: absolute;
     left: 50%;
     top: 50%;
-    margin-left: -14px;
-    margin-top: -14px;
+    margin-left: -13px;
+    margin-top: -13px;
     cursor: pointer;
     z-index: 100;
 }
 
 #panels-container .cell-wrapper .add-widget-button:before
 {
-    font-size: 28px;
+    font-size: 26px;
 }
 
 #so-panels-panels .add-row-container

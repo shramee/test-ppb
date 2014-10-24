@@ -13,72 +13,82 @@ add_filter('siteorigin_panels_row_styles', 'pp_vantage_panels_row_styles');
 
 function pp_vantage_panels_row_style_fields($fields) {
 
+    $fields['background'] = array(
+        'name' => __('Background Color', 'vantage'),
+        'type' => 'color',
+    );
+
+    $fields['background_image'] = array(
+        'name' => __('Background Image', 'vantage'),
+        'type' => 'upload',
+    );
+
+    $fields['background_image_repeat'] = array(
+        'name' => __('Repeat Background Image', 'vantage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['background_image_size'] = array(
+        'name' => __('Background Image Size', 'vantage'),
+        'type' => 'select',
+        'options' => array(
+            '' => 'No setting',
+            '100% auto' => '100% width',
+            'cover' => 'Cover'
+        ),
+        'default' => 'cover'
+    );
+
+    $fields['height'] = array(
+        'name' => __('Fixed Height', 'pp-pb'),
+        'type' => 'number',
+        'min' => '0',
+        'default' => '',
+        'help-text' => 'Fixed height is great to use when there is no content (e.g. text) in your row. We suggest you do NOT set a fixed height if you have content in your row as on smaller screens (e.g. smart-phones) the fixed height may cut off the content'
+    );
+
+    $fields['no_margin'] = array(
+        'name' => __('No Bottom Margin', 'vantage'),
+        'type' => 'checkbox',
+    );
+
+    $fields['top_border_height'] = array(
+        'name' => __('Top Border Height', 'pp-pb'),
+        'type' => 'number',
+        'min' => '0',
+        'default' => '0'
+    );
+
+    $fields['top_border'] = array(
+        'name' => __('Top Border Color', 'vantage'),
+        'type' => 'color',
+    );
+
+    $fields['bottom_border_height'] = array(
+        'name' => __('Bottom Border Height', 'pp-pb'),
+        'type' => 'number',
+        'min' => '0',
+        'default' => '0'
+    );
+
+    $fields['bottom_border'] = array(
+        'name' => __('Bottom Border Color', 'vantage'),
+        'type' => 'color',
+    );
+
+    $fields['class'] = array(
+        'name' => __('Class', 'siteorigin-panels'),
+        'type' => 'text',
+        'default' => '',
+    );
+
     $fields['id'] = array(
         'name' => __('ID', 'vantage'),
         'type' => 'text',
     );
 
-$fields['top_border'] = array(
-'name' => __('Top Border Color', 'vantage'),
-'type' => 'color',
-);
-
-$fields['top_border_height'] = array(
-    'name' => __('Top Border Height', 'pp-pb'),
-    'type' => 'number',
-    'min' => '0',
-    'default' => '0'
-);
-
-$fields['bottom_border'] = array(
-'name' => __('Bottom Border Color', 'vantage'),
-'type' => 'color',
-);
-
-$fields['bottom_border_height'] = array(
-    'name' => __('Bottom Border Height', 'pp-pb'),
-    'type' => 'number',
-    'min' => '0',
-    'default' => '0'
-);
-
-$fields['background'] = array(
-'name' => __('Background Color', 'vantage'),
-'type' => 'color',
-);
-
-$fields['background_image'] = array(
-'name' => __('Background Image', 'vantage'),
-'type' => 'upload',
-);
 
 
-$fields['height'] = array(
-    'name' => __('Height', 'pp-pb'),
-    'type' => 'number',
-    'min' => '0',
-    'default' => ''
-);
-
-$fields['background_image_repeat'] = array(
-'name' => __('Repeat Background Image', 'vantage'),
-'type' => 'checkbox',
-);
-
-$fields['background_image_size'] = array(
-    'name' => __('Background Image Size', 'vantage'),
-    'type' => 'select',
-    'options' => array(
-        '' => 'No setting',
-        '100% auto' => '100% width',
-        'cover' => 'Cover'
-    )
-);
-
-$fields['no_margin'] = array(
-'name' => __('No Bottom Margin', 'vantage'),
-'type' => 'checkbox',
-);
 
 return $fields;
 }

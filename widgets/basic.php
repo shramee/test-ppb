@@ -330,7 +330,8 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
         // add filter to further set other parameters
         add_filter('woo_get_dynamic_values', array($this, 'temporary_set_woo_settings'));
 
-        add_filter('get_the_excerpt', array($this, 'filter_excerpt'));
+        add_filter('excerpt_length', array($this, 'filter_excerpt_length'));
+//        apply_filters( 'excerpt_length', 55 );
 
         add_filter('the_title', array($this, 'filter_title'), 10, 2);
 
@@ -354,7 +355,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
         remove_filter('the_title', array($this, 'filter_title'), 10, 2);
 
-        remove_filter('get_the_excerpt', array($this, 'filter_excerpt'));
+        remove_filter('excerpt_length', array($this, 'filter_excerpt_length'));
 
         remove_filter('woo_get_dynamic_values', array($this, 'temporary_set_woo_settings'));
 
@@ -396,13 +397,12 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 //        }
 //    }
 
-    public function filter_excerpt($excerpt) {
+    public function filter_excerpt_length($length) {
         if (isset($this->instance['excerpt_length'])) {
             $length = (int)$this->instance['excerpt_length'];
-            $excerpt = substr($excerpt, 0, $length);
-            return $excerpt;
+            return $length;
         } else {
-            return $excerpt;
+            return $length;
         }
     }
 

@@ -91,6 +91,8 @@
                 else {
                     styleInput[fieldName].val(style[fieldName]);
                 }
+            } else {
+                styleInput[fieldName].val(panelsStyleFields[fieldName]['default']);
             }
         }
 
