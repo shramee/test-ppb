@@ -1092,6 +1092,12 @@ html {
     font-size: 26px;
 }
 
+#so-panels-panels
+{
+    margin-top: 0;
+    border-top-style: none;
+}
+
 #so-panels-panels .add-row-container
 {
     text-align: right;
