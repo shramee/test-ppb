@@ -62,9 +62,11 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
                     }
 
                     $usedSequence = $widgetSettings['reorder-widgets'];
+                    $unusedSequence = $widgetSettings['unused-widgets'];
                 } else {
 
                     $usedSequence = $widgetSettings['reorder-widgets'];
+                    $unusedSequence = $widgetSettings['unused-widgets'];
 
                     foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
                         if (!in_array($class, $widgetSettings['reorder-widgets']) && !in_array($class, $widgetSettings['unused-widgets'])) {
@@ -87,11 +89,14 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
                 }
 
                 ?>
-                <?php foreach ($usedSequence as $class) :
+                <?php
+
+                foreach ($usedSequence as $class) :
                     if (!isset($wp_widget_factory->widgets[$class])) {
                         continue;
                     }
                     $widget_obj = $wp_widget_factory->widgets[$class];
+
 				?>
 					<li class="panel-type"
 						data-class="<?php echo esc_attr($class) ?>"
@@ -105,6 +110,27 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 						</div>
 					</li>
 				<?php endforeach; ?>
+
+                <?php
+                foreach ($unusedSequence as $class) :
+                    if (!isset($wp_widget_factory->widgets[$class])) {
+                        continue;
+                    }
+                $widget_obj = $wp_widget_factory->widgets[$class];
+
+                ?>
+                <li class="panel-type unused"
+                    data-class="<?php echo esc_attr($class) ?>"
+                    data-title="<?php echo esc_attr($widget_obj->name) ?>"
+                    >
+                    <div class="panel-type-wrapper">
+                        <h3><?php echo esc_html($widget_obj->name) ?></h3>
+                        <?php if(!empty($widget_obj->widget_options['description'])) : ?>
+                            <small class="description"><?php echo esc_html($widget_obj->widget_options['description']) ?></small>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <?php endforeach; ?>
 
 				<div class="clear"></div>
 

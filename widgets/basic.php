@@ -233,6 +233,11 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 	 * @param array $instance
 	 */
 	function widget( $args, $instance ) {
+        // fixing template to loop.php
+        // and post type to post
+        $instance['template'] = 'loop.php';
+        $instance['post_type'] = 'post';
+
 		if( empty( $instance['template'] ) ) return;
 		if( is_admin() ) return;
 
@@ -534,6 +539,9 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
 		));
 
+        $instance['template'] = 'loop.php';
+        $instance['post_type'] = 'post';
+
 		$templates = $this->get_loop_templates();
 		if( empty($templates) ) {
 			?><p><?php _e("Your theme doesn't have any post loops.", 'siteorigin-panels') ?></p><?php
@@ -550,6 +558,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 			<label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Title', 'siteorigin-panels' ) ?></label>
 			<input type="text" class="widefat" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>">
 		</p>
+        <!-- TEMPLATE and POST TYPE are fixed now
 		<p>
 			<label for="<?php echo $this->get_field_id('template') ?>"><?php _e('Template', 'siteorigin-panels') ?></label>
 			<select id="<?php echo $this->get_field_id( 'template' ) ?>" name="<?php echo $this->get_field_name( 'template' ) ?>">
@@ -573,7 +582,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 				<?php endforeach; ?>
 			</select>
 		</p>
-
+        -->
 		<p>
 			<label for="<?php echo $this->get_field_id('posts_per_page') ?>"><?php _e('Posts Per Page', 'siteorigin-panels') ?></label>
 			<input type="text" class="small-text" id="<?php echo $this->get_field_id( 'posts_per_page' ) ?>" name="<?php echo $this->get_field_name( 'posts_per_page' ) ?>" value="<?php echo esc_attr($instance['posts_per_page']) ?>" />

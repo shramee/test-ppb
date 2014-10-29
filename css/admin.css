@@ -1159,3 +1159,8 @@ html {
 {
     margin-left: 1px;
 }
+
+#panels-dialog .panel-type.unused
+{
+    display: none !important;
+}
