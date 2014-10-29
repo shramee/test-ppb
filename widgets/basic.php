@@ -517,7 +517,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
 			// Query args
 			'post_type' => 'post',
-			'posts_per_page' => '',
+			'posts_per_page' => '5',
 
 			'order' => 'DESC',
 			'orderby' => 'date',
