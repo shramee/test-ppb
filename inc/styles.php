@@ -220,9 +220,10 @@ function siteorigin_panels_style_dialog_form(){
 				break;
 
 			case 'checkbox' :
+                $checked = (isset($attr['default']) ? checked($attr['default'], true, false) : '');
 				?>
 				<label class="siteorigin-panels-checkbox-label">
-					<input type="checkbox" name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" />
+					<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" />
 					Enabled
 				</label>
 				<?php

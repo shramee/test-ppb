@@ -50,6 +50,7 @@ function pp_vantage_panels_row_style_fields($fields) {
     $fields['no_margin'] = array(
         'name' => __('No Bottom Margin', 'vantage'),
         'type' => 'checkbox',
+        'default' => true
     );
 
     $fields['top_border_height'] = array(

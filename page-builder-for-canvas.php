@@ -754,9 +754,9 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 	$siteorigin_panels_current_post = $post_id;
 
 	// Try get the cached panel from in memory cache.
-	global $siteorigin_panels_cache;
-	if(!empty($siteorigin_panels_cache) && !empty($siteorigin_panels_cache[$post_id]))
-		return $siteorigin_panels_cache[$post_id];
+	//global $siteorigin_panels_cache;
+	//if(!empty($siteorigin_panels_cache) && !empty($siteorigin_panels_cache[$post_id]))
+	//	return $siteorigin_panels_cache[$post_id];
 
 	if( empty($panels_data) ) {
 		if($post_id == 'home'){
@@ -869,10 +869,11 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 		foreach ( $cells as $ci => $widgets ) {
 			// Themes can add their own styles to cells
+            $cellId = 'pgc-' . $post_id . '-' . $gi  . '-' . $ci;
 			$cell_classes = apply_filters( 'siteorigin_panels_row_cell_classes', array('panel-grid-cell'), $panels_data );
 			$cell_attributes = apply_filters( 'siteorigin_panels_row_cell_attributes', array(
 				'class' => implode( ' ', $cell_classes ),
-				'id' => 'pgc-' . $post_id . '-' . $gi  . '-' . $ci
+				'id' => $cellId
 			), $panels_data );
 
 			echo '<div ';
@@ -1357,22 +1358,6 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
         }
     }
 
-
-
-//    $inlineStyle .= !empty($styleArray['backgroundColor']) ? 'background-color: ' . $styleArray['backgroundColor'] . ';': '';
-//    $inlineStyle .= !empty($styleArray['borderWidth']) ? 'border-width: ' . $styleArray['borderWidth'] . 'px; border-style: solid;': '';
-//    $inlineStyle .= !empty($styleArray['borderColor']) ? 'border-color: ' . $styleArray['borderColor'] . ';': '';
-//    $inlineStyle .= !empty($styleArray['paddingTop']) ? 'padding-top: ' . $styleArray['paddingTop'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['paddingBottom']) ? 'padding-bottom: ' . $styleArray['paddingBottom'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['paddingLeft']) ? 'padding-left: ' . $styleArray['paddingLeft'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['paddingRight']) ? 'padding-right: ' . $styleArray['paddingRight'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['marginTop']) ? 'margin-top: ' . $styleArray['marginTop'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['marginBottom']) ? 'margin-bottom: ' . $styleArray['marginBottom'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['marginLeft']) ? 'margin-left: ' . $styleArray['marginLeft'] . 'px;': '';
-//    $inlineStyle .= !empty($styleArray['marginRight']) ? 'margin-right: ' . $styleArray['marginRight'] . 'px;': '';
-//    // allow user to set the border radius of 0 for a widget
-//    $inlineStyle .= (isset($styleArray['borderRadius']) && $styleArray['borderRadius'] != '') ? 'border-radius: ' . $styleArray['borderRadius'] . 'px;': '';
-
 	$the_widget->widget( array(
 		'before_widget' => '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >',
 		'after_widget' => '</div>',
@@ -1510,6 +1495,7 @@ function siteorigin_panels_enqueue_scripts(){
             'review_rating_required'    => get_option( 'woocommerce_review_rating_required' ),
         ) ) );
     }
+    wp_register_script('general', plugin_dir_url(__FILE__) . '/js/canvas-general.js', array('jquery', 'third-party'));
 
 }
 add_action('wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100);
@@ -1517,6 +1503,8 @@ add_action('wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100);
 /**
  * Add current pages as cloneable pages
  *
+    // register this to override canvas script
+
  * @param $layouts
  * @return mixed
  */
