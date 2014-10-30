@@ -22,6 +22,7 @@ Versions
  * New - confirm delete dialogue boxes on rows and widgets
  * New - widget level styling controls
  * New - widget title display on edit page to make it easier to see
+ * New - widget selection drag and drop (Settings > Page Builder > Widgets)
  * Tweak - re-order options in row styling and add help text
  * Tweak - make no bottom margin option in row styling enabled by default
  * Tweak - user interface improvements
