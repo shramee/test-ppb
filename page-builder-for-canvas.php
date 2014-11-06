@@ -966,7 +966,7 @@ add_action('wp_head', 'siteorigin_panels_print_inline_css', 12);
 add_action('wp_footer', 'siteorigin_panels_print_inline_css');
 
 
-add_action('wp_head', 'pootlepage_page_css', 100);
+//add_action('wp_head', 'pootlepage_page_css', 100);
 
 add_action('after_setup_theme', 'pootlepage_after_setup_theme');
 

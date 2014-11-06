@@ -90,13 +90,13 @@ if (!function_exists('pootle_text_widget_init_editor')) {
         // Convert newline characters to BR tags
         $initArray['convert_newlines_to_brs'] = false;
         // Force P newlines
-        $initArray['force_p_newlines'] = false;
+        $initArray['force_p_newlines'] = true;
         // Force P newlines
         $initArray['force_br_newlines'] = false;
         // Do not remove redundant BR tags
         $initArray['remove_redundant_brs'] = false;
         // Force p block
-        $initArray['forced_root_block'] = '';
+        $initArray['forced_root_block'] = 'p';
         // Apply source formatting
         $initArray['apply_source_formatting '] = true;
         // Return modified settings
