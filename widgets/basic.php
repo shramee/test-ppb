@@ -422,16 +422,20 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
     }
 
     public function loop_before() {
-        // https://wordpress.org/support/topic/turn-off-pagination-for-some-specific-pages
+        // if pagination is disabled, still use posts_per_page
+        global $wp_query;
+        if (isset($this->instance['posts_per_page'])) {
+            query_posts(
+                array_merge(
+                    $wp_query->query,
+                    array('posts_per_page' => $this->instance['posts_per_page'])
+                )
+            );
+        }
+
         if (isset($this->instance['pagination_enable'])) {
             if (!$this->instance['pagination_enable']) {
-                global $wp_query;
-                query_posts(
-                    array_merge(
-                        $wp_query->query,
-                        array('posts_per_page' => -1)
-                    )
-                );
+                $wp_query->max_num_pages = 1;
             }
         }
     }
