@@ -48,6 +48,7 @@ if (!class_exists('Pootlepress_Updater')) {
             add_filter('pre_set_site_transient_update_plugins', array(&$this, 'check_update'));
 
             // Define the alternative response for information checking
+            // this filter is called when display info in update-core.php
             add_filter('plugins_api', array(&$this, 'check_info'), 10, 3);
         }
 
@@ -105,7 +106,7 @@ if (!class_exists('Pootlepress_Updater')) {
         }
 
         /**
-         * Return the remote version
+         * Return the remote version, server will only return version number
          * @return string $remote_version
          */
         public function getRemote_version()
@@ -120,7 +121,7 @@ if (!class_exists('Pootlepress_Updater')) {
 
 
         /**
-         * Get information about the remote version
+         * Get information about the remote version, server will return info of the newer version
          * @return bool|object
          */
         public function getRemote_information()
@@ -133,7 +134,7 @@ if (!class_exists('Pootlepress_Updater')) {
         }
 
         /**
-         * Return the status of the plugin licensing
+         * Return the status of the plugin licensing, currently not used, server will return false
          * @return boolean $remote_license
          */
         public function getRemote_license()

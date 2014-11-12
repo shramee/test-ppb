@@ -2033,42 +2033,36 @@ function pp_pootlepage_updater()
     $wptuts_plugin_slug = plugin_basename(__FILE__);
     new Pootlepress_Updater ($wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug);
 }
-//
-//add_action( 'in_plugin_update_message-page-builder-for-canvas-master/page-builder-for-canvas.php', 'pp_pb_in_plugin_update_message');
-//
-//function pp_pb_in_plugin_update_message($args) {
-//    $transient_name = 'pp_pb_upgrade_notice_' . $args['Version'];
-//
-//    if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
-//
-////        $response = wp_remote_get( 'https://plugins.svn.wordpress.org/woocommerce/trunk/readme.txt' );
-//
-////        if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
-//
-//            // Output Upgrade Notice
-//            $matches        = null;
-//            $regexp         = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( WC_VERSION ) . '\s*=|$)~Uis';
-//            $upgrade_notice = '';
-//
-//            if ( preg_match( $regexp, $response['body'], $matches ) ) {
-//                $version        = trim( $matches[1] );
-//                $notices        = (array) preg_split('~[\r\n]+~', trim( $matches[2] ) );
-//
-//                if ( version_compare( WC_VERSION, $version, '<' ) ) {
-//
-//                    $upgrade_notice .= '<div class="wc_plugin_upgrade_notice">';
-//
-//                    foreach ( $notices as $index => $line ) {
-//                        $upgrade_notice .= wp_kses_post( preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line ) );
-//                    }
-//
-//                    $upgrade_notice .= '</div> ';
-//                }
-//            }
-//
-//            set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
-////        }
-//    }
-//
-//    echo wp_kses_post( $upgrade_notice );
-//}
+
+add_action( 'in_plugin_update_message-page-builder-for-canvas-master/page-builder-for-canvas.php', 'pp_pb_in_plugin_update_message', 10, 2);
+
+//$r is a object
+function pp_pb_in_plugin_update_message($args, $r) {
+    if ($args['update']) {
+        $transient_name = 'pp_pb_upgrade_notice_' . $args['Version'];
+
+        if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
+
+            $response = wp_remote_post($args['url'], array('body' => array('action' => 'upgrade-notice', 'plugin' => $args['slug'])));
+
+            if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) && $response['body'] != 'false' ) {
+
+                // Output Upgrade Notice
+                $upgrade_notice = '';
+
+                // css from WooCommerce
+                $upgrade_notice .= '<style>.wc_plugin_upgrade_notice{font-weight:400;color:#fff;background:#d54d21;padding:1em;margin:9px 0}.wc_plugin_upgrade_notice a{color:#fff;text-decoration:underline}.wc_plugin_upgrade_notice:before{content:"\f348";display:inline-block;font:400 18px/1 dashicons;speak:none;margin:0 8px 0 -2px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;vertical-align:top}</style>';
+
+                $upgrade_notice .= '<div class="wc_plugin_upgrade_notice">';
+
+                $upgrade_notice .= $response['body'];
+
+                $upgrade_notice .= '</div> ';
+
+                set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
+            }
+        }
+
+        echo $upgrade_notice;
+    }
+}
