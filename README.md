@@ -16,6 +16,12 @@ Support
 
 Versions
 
+12.11.2014 - Version 2.0.1
+ * Fix - visual editor inconsistencies
+ * Fix - background images not repeating
+ * Fix - WooCommerce data fields js conflict (e.g. was stopping bundles extension working)
+ * Tweak - improve way Post Loop widget pagination option works
+
 30.10.2014 - Version 2.0
  * New - revamped Post Loop widget
  * New - duplicate row button
