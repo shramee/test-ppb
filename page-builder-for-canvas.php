@@ -316,6 +316,13 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
 		}
 		$GLOBALS['post'] = $original_post;
 
+        // handle a special case for Event Calendar Pro,
+        // since it doesn't enqueue script if not in Widgets page
+        if (class_exists('TribeEventsMiniCalendarWidget')) {
+            Tribe_Template_Factory::asset_package( 'select2' );
+            wp_enqueue_script( 'calendar-widget-admin', TribeEventsPro::instance()->pluginUrl . 'resources/calendar-widget-admin.js', array(), apply_filters( 'tribe_events_pro_js_version', TribeEventsPro::VERSION ) );
+        }
+
 		// This gives panels a chance to enqueue scripts too, without having to check the screen ID.
 		do_action( 'siteorigin_panel_enqueue_admin_scripts' );
 		do_action( 'sidebar_admin_setup' );
@@ -355,7 +362,7 @@ add_action( 'admin_print_styles-appearance_page_so_panels_home_page', 'siteorigi
 
 function pootlepage_option_page_styles() {
     $screen = get_current_screen();
-    if ($screen->id == 'settings_page_page_builder') {
+    if ($screen->id == 'canvas_page_page_builder') {//old: settings_page_page_builder
         wp_enqueue_style( 'pootlepage-option-admin', plugin_dir_url(__FILE__) . 'css/option-admin.css', array( ), POOTLEPAGE_VERSION );
     }
 }
@@ -365,7 +372,7 @@ add_action('admin_print_styles', 'pootlepage_option_page_styles');
 function pootlepage_option_page_scripts() {
     $screen = get_current_screen();
 //    var_dump($screen);
-    if ($screen->id == 'settings_page_page_builder') {
+    if ($screen->id == 'canvas_page_page_builder') {
 
 //    global $pagenow;
 //    if ($pagenow == 'admin.php' &&
@@ -1691,7 +1698,8 @@ add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js');
 require_once('page-builder-for-canvas-functions.php');
 add_action( 'init', 'check_main_heading', 0 );
 
-add_filter( 'option_woo_template', 'pp_pb_add_theme_options'  );
+// no longer add the options using old method
+//add_filter( 'option_woo_template', 'pp_pb_add_theme_options'  );
 
 function pp_pb_add_theme_options ( $options ) {
 
@@ -1700,6 +1708,11 @@ function pp_pb_add_theme_options ( $options ) {
     for ( $i = 0; $i <= $total_possible_numbers; $i++ ) {
         $options_pixels[] = $i . 'px';
     }
+
+    $options[] = array(
+        'name' => 'Widget Styling',
+        'type' => 'heading'
+    );
 
     $options[] = array(
         'name' => 'Page Builder Widgets',
@@ -1988,7 +2001,6 @@ function pp_pb_widget_styling_fields() {
     );
 }
 
-
 // No need to fix, since same as normal post edit screen
 //function pp_pb_widget_area_head() {
 //    echo "<style>\n" .
@@ -1998,6 +2010,16 @@ function pp_pb_widget_styling_fields() {
 
 //$pootlepageCustomizer = new PootlePage_Customizer();
 $PootlePageFile = __FILE__;
+
+add_action('after_setup_theme', 'pp_pb_wf_settings');
+
+function pp_pb_wf_settings() {
+    require_once plugin_dir_path(__FILE__) . 'inc/class-pp-pb-wf-fields.php';
+    require_once plugin_dir_path(__FILE__) . 'inc/class-pp-pb-wf-fields-settings.php';
+    require_once plugin_dir_path(__FILE__) . 'inc/class-pp-pb-wf-settings.php';
+    $GLOBALS['PP_PB_WF_Settings'] = new PP_PB_WF_Settings();
+}
+
 
 add_action('init', 'pp_pootlepage_updater');
 function pp_pootlepage_updater()
@@ -2011,3 +2033,42 @@ function pp_pootlepage_updater()
     $wptuts_plugin_slug = plugin_basename(__FILE__);
     new Pootlepress_Updater ($wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug);
 }
+//
+//add_action( 'in_plugin_update_message-page-builder-for-canvas-master/page-builder-for-canvas.php', 'pp_pb_in_plugin_update_message');
+//
+//function pp_pb_in_plugin_update_message($args) {
+//    $transient_name = 'pp_pb_upgrade_notice_' . $args['Version'];
+//
+//    if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
+//
+////        $response = wp_remote_get( 'https://plugins.svn.wordpress.org/woocommerce/trunk/readme.txt' );
+//
+////        if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
+//
+//            // Output Upgrade Notice
+//            $matches        = null;
+//            $regexp         = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( WC_VERSION ) . '\s*=|$)~Uis';
+//            $upgrade_notice = '';
+//
+//            if ( preg_match( $regexp, $response['body'], $matches ) ) {
+//                $version        = trim( $matches[1] );
+//                $notices        = (array) preg_split('~[\r\n]+~', trim( $matches[2] ) );
+//
+//                if ( version_compare( WC_VERSION, $version, '<' ) ) {
+//
+//                    $upgrade_notice .= '<div class="wc_plugin_upgrade_notice">';
+//
+//                    foreach ( $notices as $index => $line ) {
+//                        $upgrade_notice .= wp_kses_post( preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line ) );
+//                    }
+//
+//                    $upgrade_notice .= '</div> ';
+//                }
+//            }
+//
+//            set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
+////        }
+//    }
+//
+//    echo wp_kses_post( $upgrade_notice );
+//}

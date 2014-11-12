@@ -54,9 +54,9 @@ function siteorigin_panels_setting($key = ''){
  * Add the options page
  */
 function siteorigin_panels_options_admin_menu() {
-	add_options_page( __('Page Builder for WooThemes Canvas', 'siteorigin-panels'), __('Page Builder', 'siteorigin-panels'), 'manage_options', 'page_builder', 'siteorigin_panels_options_page' );
+    $hookSuffix = add_submenu_page( 'woothemes', 'Page Builder', 'Page Builder', 'manage_options', 'page_builder', 'siteorigin_panels_options_page' );
 }
-add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu' );
+add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu', 100 );
 
 /**
  * Display the admin page.
@@ -74,8 +74,8 @@ function siteorigin_panels_options_init() {
     register_setting( 'pootlepage-widgets', 'pootlepage-widgets');
 
 	add_settings_section( 'general', __('General', 'siteorigin-panels'), '__return_false', 'pootlepage-general' );
-    add_settings_section( 'widgets', __('Widgets', 'siteorigin-panels'), '__return_false', 'pootlepage-widgets' );
-    add_settings_section( 'styling', __('Widgets', 'siteorigin-panels'), 'pootlepage_options_page_styling', 'pootlepage-styling' );
+    add_settings_section( 'widgets', __('Widget Selection', 'siteorigin-panels'), '__return_false', 'pootlepage-widgets' );
+    add_settings_section( 'styling', __('Widget Styling', 'siteorigin-panels'), 'pp_pb_options_page_styling', 'pootlepage-styling' );
 	add_settings_section( 'display', __('Display', 'siteorigin-panels'), '__return_false', 'pootlepage-display' );
 
 	add_settings_field( 'post-types', __('Post Types', 'siteorigin-panels'), 'siteorigin_panels_options_field_post_types', 'pootlepage-general', 'general' );
@@ -101,6 +101,41 @@ function siteorigin_panels_options_init() {
 	));
 }
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
+
+add_action('init', 'pp_pb_check_for_setting_page');
+
+function pp_pb_check_for_setting_page() {
+    if (isset($_REQUEST['page']) && $_REQUEST['page'] == 'page_builder') {
+        add_action( 'admin_init', 'wf_setup_screen_header_footer' );
+        add_action( 'admin_notices', 'pp_pb_admin_notices');
+    }
+}
+
+function pp_pb_admin_notices()
+{
+    $notices = array();
+
+    if ( isset( $_GET['page'] ) && 'page_builder' == $_GET['page'] &&
+        ((isset( $_GET['updated'] ) && 'true' == $_GET['updated']) ||
+        (isset( $_GET['settings-updated'] ) && 'true' == $_GET['settings-updated']))
+    ) {
+        $notices['settings-updated'] = array( 'type' => 'updated', 'message' => __( 'Settings saved.', 'woothemes' ) );
+    }
+
+    if ( 0 < count( $notices ) ) {
+        $html = '';
+        foreach ( $notices as $k => $v ) {
+            $html .= '<div id="' . esc_attr( $k ) . '" class="fade ' . esc_attr( $v['type'] ) . '">' . wpautop( '<strong>' . esc_html( $v['message'] ) . '</strong>' ) . '</div>' . "\n";
+        }
+        echo $html;
+    }
+}
+
+
+function pp_pb_options_page_styling() {
+    global $PP_PB_WF_Settings;
+    $PP_PB_WF_Settings->settings_screen();
+}
 
 function pootlepage_options_page_styling() {
     $customizeUrl = admin_url('customize.php');

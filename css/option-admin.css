@@ -75,3 +75,17 @@
     border-color: #C0C0C0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+span.logo img {
+    display: none;
+}
+
+.wrap .useful-links
+{
+    display: none;
+}
+
+.wrap > form > h3
+{
+    font-size: 23px;
+}
