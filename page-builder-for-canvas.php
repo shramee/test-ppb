@@ -302,10 +302,24 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
 
 		// Set up the row styles
 		wp_localize_script( 'so-panels-admin', 'panelsStyleFields', siteorigin_panels_style_get_fields() );
-		if( siteorigin_panels_style_is_using_color() ) {
-			wp_enqueue_script( 'wp-color-picker');
+
+        // we definitely need to use color picker
+		//if( siteorigin_panels_style_is_using_color() ) {
+
+            wp_dequeue_script("iris");
+
+            wp_enqueue_script("pp-pb-iris", plugin_dir_url(__FILE__) . '/js/iris.js', array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ));
+            wp_enqueue_script( 'pp-pb-color-picker', plugin_dir_url(__FILE__) . '/js/color-picker-custom.js', array('pp-pb-iris') );
+
+            wp_localize_script( 'pp-pb-color-picker', 'wpColorPickerL10n', array(
+                'clear' => __( 'Clear' ),
+                'defaultString' => __( 'Default' ),
+                'pick' => __( 'Select Color' ),
+                'current' => __( 'Current Color' ),
+            ) );
+
 			wp_enqueue_style( 'wp-color-picker' );
-		}
+		//}
 
 		// Render all the widget forms. A lot of widgets use this as a chance to enqueue their scripts
 		$original_post = isset($GLOBALS['post']) ? $GLOBALS['post'] : null; // Make sure widgets don't change the global post.
@@ -320,7 +334,7 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
         // since it doesn't enqueue script if not in Widgets page
         if (class_exists('TribeEventsMiniCalendarWidget')) {
             Tribe_Template_Factory::asset_package( 'select2' );
-            wp_enqueue_script( 'calendar-widget-admin', TribeEventsPro::instance()->pluginUrl . 'resources/calendar-widget-admin.js', array(), apply_filters( 'tribe_events_pro_js_version', TribeEventsPro::VERSION ) );
+            wp_enqueue_script( 'calendar-widget-admin',  plugin_dir_url(__FILE__) . '/js/calendar-widget-admin.js');
         }
 
 		// This gives panels a chance to enqueue scripts too, without having to check the screen ID.
@@ -746,7 +760,9 @@ function siteorigin_panels_filter_content( $content ) {
 
 	return $content;
 }
-add_filter( 'the_content', 'siteorigin_panels_filter_content' );
+
+// set priority to 5 so Paid Membership Pro can filter it later, and overwrite Page Builder content
+add_filter( 'the_content', 'siteorigin_panels_filter_content', 5 );
 
 
 /**
@@ -1696,7 +1712,8 @@ function pp_pb_load_slider_js($doLoad) {
 add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js');
 
 require_once('page-builder-for-canvas-functions.php');
-add_action( 'init', 'check_main_heading', 0 );
+// Remove "Canvas Extensions" section from Canvas theme setting page
+//add_action( 'init', 'check_main_heading', 0 );
 
 // no longer add the options using old method
 //add_filter( 'option_woo_template', 'pp_pb_add_theme_options'  );
@@ -1816,10 +1833,8 @@ function pp_pb_option_css()
     $widget_title_border = get_option('page_builder_widget_title_border', array('width' => '1', 'style' => 'solid', 'color' => '#e6e6e6'));
     $widget_border_radius = get_option('page_builder_widget_border_radius', '0px');
 
-    // reset this to general h3 styling, overwriting ".widget h3"
-//    $woo_font_h3 = get_option('woo_font_h3', array('size' => '20','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#222222'));
-//    if ( $woo_font_h3 )
-    $output .= 'h3 { border-bottom: none !important; }';
+    // in Visual Editor, dont set underline for h3
+    $output .= '.widget_pootle-text-widget > .textwidget h3 { border-bottom: none !important; }';
 
     $widget_title_css = '';
     if ( $widget_font_title )

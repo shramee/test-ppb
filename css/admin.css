@@ -1164,3 +1164,10 @@ html {
 {
     display: none !important;
 }
+
+/* Fix select2 drop down displayed below dialog overlay in edit page screen,
+when editing event widget from Event Calendar Pro */
+.select2-drop
+{
+    z-index: 90000 !important;
+}
