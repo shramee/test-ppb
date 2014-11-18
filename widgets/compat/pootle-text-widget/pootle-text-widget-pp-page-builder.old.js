@@ -19,7 +19,11 @@ jQuery(function($){
 
         if(dialog.data('bs_tinymce_setup') == null) {
             dialog.filter('.widget-dialog-pootle_text_widget').find('a[id$=visual]').click();
-            dialog.find('.editor_container iframe[id$="_ifr"]').css('height', 350);
+
+            // show full height, so scroll bar will appear in the visual editor if content is long
+            var fullHeight = dialog.find('.editor_container iframe[id$="_ifr"]').contents().find("body").outerHeight(true);
+            dialog.find('.editor_container iframe[id$="_ifr"]').css('height', fullHeight);
+            dialog.find('.editor_container iframe[id$="_ifr"]').css('min-height', 350);
             dialog.data('bs_tinymce_setup', true);
         }
     });
