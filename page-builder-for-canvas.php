@@ -375,8 +375,9 @@ add_action( 'admin_print_styles-post.php', 'siteorigin_panels_admin_enqueue_styl
 add_action( 'admin_print_styles-appearance_page_so_panels_home_page', 'siteorigin_panels_admin_enqueue_styles' );
 
 function pootlepage_option_page_styles() {
-    $screen = get_current_screen();
-    if ($screen->id == 'canvas_page_page_builder') {//old: settings_page_page_builder
+    // using $screen->id is not reliable, because it can change if using child theme
+    global $pagenow;
+    if ($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'page_builder') {
         wp_enqueue_style( 'pootlepage-option-admin', plugin_dir_url(__FILE__) . 'css/option-admin.css', array( ), POOTLEPAGE_VERSION );
     }
 }
@@ -384,15 +385,10 @@ function pootlepage_option_page_styles() {
 add_action('admin_print_styles', 'pootlepage_option_page_styles');
 
 function pootlepage_option_page_scripts() {
-    $screen = get_current_screen();
-//    var_dump($screen);
-    if ($screen->id == 'canvas_page_page_builder') {
 
-//    global $pagenow;
-//    if ($pagenow == 'admin.php' &&
-//        isset($_GET['page']) && $_GET['page'] == 'folio-settings' &&
-//        isset($_GET['tab']) && $_GET['tab'] == 'widgets'
-//    ) {
+    // using $screen->id is not reliable, because it can change if using child theme
+    global $pagenow;
+    if ($pagenow == 'admin.php' && isset($_GET['page']) && $_GET['page'] == 'page_builder') {
         wp_enqueue_script( 'jquery-ui-sortable' );
         wp_enqueue_script( 'pootlepage-option-admin', plugin_dir_url(__FILE__) . 'js/option-admin.js', array('jquery'), POOTLEPAGE_VERSION );
     }
