@@ -474,7 +474,45 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 	 * @return array
 	 */
 	function update($new, $old){
-		return $new;
+        $instance = $old;
+
+        $args = array(
+            'title' => '',
+			'template' => 'loop.php',
+
+			// Query args
+			'post_type' => 'post',
+			'posts_per_page' => '5',
+
+			'order' => 'DESC',
+			'orderby' => 'date',
+
+			'sticky' => '',
+
+			'additional' => '',
+
+            'thumbnail_enable' => '1',
+            'thumbnail_size' => '',
+            'thumbnail_position' => '',
+            'excerpt_enable' => '1',
+            'excerpt_length' => '55',
+            'continue_reading_enable' => '0',
+            'pagination_enable' => '1',
+            'titles_show' => '1',
+            'post_meta_enable' => '1',
+            'column_count' => '1',
+        );
+
+        foreach ($args as $key => $value) {
+            if (isset($new[$key])) {
+                $instance[$key] = $new[$key];
+            } else {
+                // if not found, that means it is a checkbox that is unchecked
+                $instance[$key] = '0';
+            }
+        }
+
+		return $instance;
 	}
 
 	/**
