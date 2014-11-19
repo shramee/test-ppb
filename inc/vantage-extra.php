@@ -104,8 +104,9 @@ if(!empty($style['top_border']) || !empty($style['top_border_height'])) {
 if(!empty($style['bottom_border']) || !empty($style['bottom_border_height'])) {
     $attr['style'] .= 'border-bottom: ' . $style['bottom_border_height'] . 'px solid '.$style['bottom_border'].'; ';
 }
-if(!empty($style['background'])) $attr['style'] .= 'background-color: '.$style['background'].'; ';
 if(!empty($style['background_image'])) $attr['style'] .= 'background-image: url('.esc_url($style['background_image']).'); ';
+if(!empty($style['background'])) $attr['style'] .= 'background-color: '.$style['background'].'; background-image: none; ';
+
 if(!empty($style['background_image_repeat'])) {
     $attr['style'] .= 'background-repeat: repeat; ';
 } else {
