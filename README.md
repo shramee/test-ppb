@@ -16,6 +16,17 @@ Support
 
 Versions
 
+19.11.2014 - Version 2.1
+ * New - ability for red warning notice on future major updates inside WordPress
+ * Tweak - improve way Visual Editor scrolling deals with long content
+ * Tweak - new Page Builder tab for all Page Builder settings in main Canvas admin area
+ * Tweak - show title on site widget option changed to hide title on site widget option
+ * Tweak - rgb colors now work in row border colors in row styling settings
+ * Fix - compatibility with Paid Membership Pro plugin
+ * Fix - compatibility with event widget for Events Pro plugin (Modern Tribe)
+ * Fix - new Page Builder tab not working with child themes
+ * Fix - bottom widget border in sidebar widgets
+
 12.11.2014 - Version 2.0.1
  * Fix - visual editor inconsistencies
  * Fix - background images not repeating
