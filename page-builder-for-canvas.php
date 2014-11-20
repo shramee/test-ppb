@@ -296,7 +296,8 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
 		}
 
 		// Add in the forms
-		if( !empty( $panels_data['widgets'] ) ) {
+		if(count($panels_data) > 0) {
+            // load all data even if no widget inside, so row styling will be loaded
 			wp_localize_script( 'so-panels-admin', 'panelsData', $panels_data );
 		}
 

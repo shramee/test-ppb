@@ -108,7 +108,8 @@ function siteorigin_panels_get_panels_data_from_post($form_post){
 	$panels_data = array();
 	$panels_data['widgets'] = array_values( stripslashes_deep( isset( $form_post['widgets'] ) ? $form_post['widgets'] : array() ) );
 
-	if ( empty( $panels_data['widgets'] ) ) return array();
+    // save data (e.g. row styling) even if no widget is in row
+//	if ( empty( $panels_data['widgets'] ) ) return array();
 
 	foreach ( $panels_data['widgets'] as $i => $widget ) {
 
