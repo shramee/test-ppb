@@ -55,7 +55,8 @@ class PP_PB_WF_Fields {
 
 		$this->_render_submit_button = true;
 
-		$this->_assets_url = WF()->get_assets_url();
+
+		$this->_assets_url = function_exists('WF') ? WF()->get_assets_url() : '';
 
 		$this->_wrappers = array();
 

@@ -604,10 +604,11 @@ function siteorigin_panels_generate_css($post_id, $panels_data){
 			$css[1920]['margin-bottom: '.$panels_margin_bottom.'px'][] = '#pg-' . $post_id . '-' . $gi;
 		}
 
-		if ( $cell_count > 1 ) {
-			if ( empty( $css[1920]['float:left'] ) ) $css[1920]['float:left'] = array();
-			$css[1920]['float:left'][] = '#pg-' . $post_id . '-' . $gi . ' .panel-grid-cell';
-		}
+        // do not set float, use inline-block instead
+//		if ( $cell_count > 1 ) {
+//			if ( empty( $css[1920]['float:left'] ) ) $css[1920]['float:left'] = array();
+//			$css[1920]['float:left'][] = '#pg-' . $post_id . '-' . $gi . ' .panel-grid-cell';
+//		}
 
 		if ( $settings['responsive'] ) {
 			// Mobile Responsive
@@ -698,7 +699,7 @@ function siteorigin_panels_prepare_home_content( ) {
 		$siteorigin_panels_cache['home'] = siteorigin_panels_render( 'home' );
 	}
 }
-add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_home_content', 11);
+//add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_home_content', 11);
 
 function siteorigin_panels_prepare_single_post_content(){
 	if( is_singular() ) {
@@ -708,7 +709,7 @@ function siteorigin_panels_prepare_single_post_content(){
 		}
 	}
 }
-add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_single_post_content');
+//add_action('wp_enqueue_scripts', 'siteorigin_panels_prepare_single_post_content');
 
 /**
  * Filter the content of the panel, adding all the widgets.
@@ -871,7 +872,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		}
 
 		// Themes can add their own attributes to the style wrapper
-		$style_attributes = apply_filters('siteorigin_panels_row_style_attributes', $style_attributes, !empty($panels_data['grids'][$gi]['style']) ? $panels_data['grids'][$gi]['style'] : array());
+        $styleArray = !empty($panels_data['grids'][$gi]['style']) ? $panels_data['grids'][$gi]['style'] : array();
+		$style_attributes = apply_filters('siteorigin_panels_row_style_attributes', $style_attributes, $styleArray);
 		if( !empty($style_attributes) ) {
 			if(empty($style_attributes['class'])) $style_attributes['class'] = array();
 			$style_attributes['class'][] = 'panel-row-style';
@@ -888,6 +890,14 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			}
 			echo '>';
 		}
+
+        if (isset($styleArray['background'])) {
+            echo "<style>\n" .
+                '#pg-' . $post_id . '-' . $gi . " > .panel-row-style:before {\n" .
+                "\tbackground-color: " . $styleArray['background'] . ";\n" .
+                "}\n" .
+                "</style>\n";
+        }
 
         echo "<div class='panel-grid-cell-container'>";
 
@@ -950,6 +960,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
                         }
                     }
                     echo "<style>\n" . $css . "</style>\n";
+                }
+
+                if ($widget_info['info']['class'] == "Woo_Widget_Component") {
+                    wp_reset_query();
                 }
 			}
 			if ( empty( $widgets ) ) echo '&nbsp;';
