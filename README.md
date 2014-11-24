@@ -16,6 +16,10 @@ Support
 
 Versions
 
+Version 2.1.1
+
+ * Fix - fix caching issue for WooCompontent blog widget
+
 19.11.2014 - Version 2.1
  * New - ability for red warning notice on future major updates inside WordPress
  * Tweak - improve way Visual Editor scrolling deals with long content
