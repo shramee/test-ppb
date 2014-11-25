@@ -39,6 +39,7 @@ function siteorigin_panels_setting($key = ''){
 			'copy-content' => !isset( $display_settings['copy-content'] ) ? true : $display_settings['copy-content'],			// Should we copy across content
 			'animations' => !isset( $display_settings['animations'] ) ? true : $display_settings['animations'],					// Do we need animations
 			'inline-css' => !isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'],				    // How to display CSS
+            'remove-list-padding' => !isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'],	// Remove left padding on list
 		) );
 
 		// Filter these settings
@@ -103,6 +104,10 @@ function siteorigin_panels_options_init() {
 		'type' => 'inline-css',
 		'description' => __('Disabling this will generate CSS using a separate query.', 'siteorigin-panels'),
 	));
+    add_settings_field( 'remove-list-padding', __('Remove list padding', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array(
+        'type' => 'remove-list-padding',
+        'description' => __('Remove left padding for list widgets used in page content container.', 'siteorigin-panels'),
+    ));
 }
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
 
@@ -386,6 +391,7 @@ function siteorigin_panels_options_field_display($args){
 		case 'animations' :
 		case 'inline-css' :
 		case 'bundled-widgets' :
+        case 'remove-list-padding' :
 			?><label><input type="checkbox" name="siteorigin_panels_display[<?php echo esc_attr($args['type']) ?>]" <?php checked($settings[$args['type']]) ?> /> <?php _e('Enabled', 'siteorigin-panels') ?></label><?php
 			break;
 		case 'margin-bottom' :
@@ -429,6 +435,7 @@ function siteorigin_panels_options_sanitize_display($vals){
 	foreach($vals as $f => $v){
 		switch($f){
 			case 'inline-css' :
+            case 'remove-list-padding' :
 			case 'responsive' :
 			case 'copy-content' :
 			case 'animations' :
@@ -446,6 +453,7 @@ function siteorigin_panels_options_sanitize_display($vals){
 	$vals['copy-content'] = !empty($vals['copy-content']);
 	$vals['animations'] = !empty($vals['animations']);
 	$vals['inline-css'] = !empty($vals['inline-css']);
+    $vals['remove-list-padding'] = !empty($vals['remove-list-padding']);
 	$vals['bundled-widgets'] = !empty($vals['bundled-widgets']);
 	return $vals;
 }

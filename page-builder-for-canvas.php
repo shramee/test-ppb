@@ -1928,6 +1928,11 @@ function pp_pb_option_css()
 //        $output .= $siteorigin_panels_inline_css;
 //    }
 
+	$removeListSetting = siteorigin_panels_setting('remove-list-padding');
+	if ($removeListSetting == true) {
+		$output .= ".entry .panel-grid .widget ul, .entry .panel-grid .widget ol { padding-left: 0; }\n";
+	}
+
     echo "<style>\n" . $output . "\n" . "</style>\n";
 }
 
