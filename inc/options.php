@@ -55,7 +55,11 @@ function siteorigin_panels_setting($key = ''){
  */
 function siteorigin_panels_options_admin_menu() {
     $hookSuffix = add_submenu_page( 'woothemes', 'Page Builder', 'Page Builder', 'manage_options', 'page_builder', 'siteorigin_panels_options_page' );
+
+    // to be used in PP_PB_WF_Settings, to hook save handler
+    $GLOBALS['PP_PB_WF_Settings']->page_hook = $hookSuffix;
 }
+
 add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu', 100 );
 
 /**

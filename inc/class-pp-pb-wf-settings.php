@@ -51,6 +51,8 @@ class PP_PB_WF_Settings {
 	 */
 	private $_field_obj;
 
+	public $page_hook;
+
 	/**
 	 * Constructor function.
 	 * @access  public
@@ -69,7 +71,7 @@ class PP_PB_WF_Settings {
 
 		$this->_fields = $this->_field_obj->__get( 'fields' );
 
-        add_action( 'admin_menu', array( $this, 'register_settings_screen' ), 1 );
+        add_action( 'admin_menu', array( $this, 'register_settings_screen' ), 110 );
 
 	} // End __construct()
 
@@ -82,7 +84,7 @@ class PP_PB_WF_Settings {
     public function register_settings_screen () {
 
         // Load validation and save logic for the settings screen.
-        add_action( 'load-' . 'canvas_page_page_builder', array( $this, 'settings_screen_logic' ) );
+        add_action( 'load-' . $this->page_hook, array( $this, 'settings_screen_logic' ) );
 
     } // End register_settings_screen()
 
