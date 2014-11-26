@@ -17,7 +17,7 @@ Support
 Versions
 
 Version 2.1.1
-
+ * New - remove padding on list widgets option in Page Builder > Display
  * Fix - fix caching issue for WooCompontent blog widget
  * Fix - Page builder widget settings not saving in Child Themes
 
