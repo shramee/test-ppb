@@ -21,6 +21,7 @@ Version 2.1.1
  * Tweak - Save row styling even if no widget is in cell
  * Fix - fix caching issue for WooCompontent blog widget
  * Fix - Page builder settings not saving in Child Themes
+ * Fix - issue when installing on WordPress multi-site
 
 19.11.2014 - Version 2.1
  * New - ability for red warning notice on future major updates inside WordPress
