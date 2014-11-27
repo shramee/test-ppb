@@ -46,7 +46,7 @@ if (!class_exists('Pootle_Text_Widget')) {
             $instance = $old_instance;
             $instance['title'] = strip_tags($new_instance['title']);
 
-            $instance['display-title'] = (isset($new_instance['display-title']) && $new_instance['display-title'] == 'true') ? true : false;
+            $instance['hide-title'] = (isset($new_instance['hide-title']) && $new_instance['hide-title'] == 'true') ? true : false;
 
             if (current_user_can('unfiltered_html')) {
                 $instance['text'] = $new_instance['text'];
