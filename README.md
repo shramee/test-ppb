@@ -16,7 +16,7 @@ Support
 
 Versions
 
-Version 2.1.1
+27.11.2014 - Version 2.1.1
  * New - remove padding on list widgets option in Page Builder > Display
  * Tweak - Save row styling even if no widget is in cell
  * Fix - fix caching issue for WooCompontent blog widget
