@@ -922,7 +922,16 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 				unset( $data['info'] );
 
+				// don't do shortcode or it will mess up shortcodes when WP do shortcode at the end
+				if ($widget_info['info']['class'] == 'Pootle_Text_Widget') {
+					remove_filter('widget_text', 'do_shortcode');
+				}
+
 				siteorigin_panels_the_widget( $widget_info['info']['class'], $data, $widgetStyle, $gi, $ci, $pi, $pi == 0, $pi == count( $widgets ) - 1, $post_id );
+
+				if ($widget_info['info']['class'] == 'Pootle_Text_Widget') {
+					add_filter('widget_text', 'do_shortcode');
+				}
 
                 // post loop css for multiple columns
                 if ($widget_info['info']['class'] == "SiteOrigin_Panels_Widgets_PostLoop") {

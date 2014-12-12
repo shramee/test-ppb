@@ -58,8 +58,15 @@
 								if ($$.is(':checked')) {
 									sub[parts[i]] = $$.val() != '' ? $$.val() : true;
 								} else {
-									// added this line of code for Pootle Post Loop Widget checkbox
-									sub[parts[i]] = $$.val() == '1' ? '0' : false;
+                                    // if it is text widget check box, handle differently, since this widget only checks
+                                    // for "isset" of the $instance['filter']
+                                    if (typeof $$.attr('id') != 'undefined' && $$.attr('id').indexOf('widget-text-') == 0) {
+                                        // do nothing
+                                    } else {
+                                        // added this line of code for Pootle Post Loop Widget checkbox
+                                        sub[parts[i]] = $$.val() == '1' ? '0' : false;
+                                    }
+
 								}
 							}
 						} else {

@@ -26,11 +26,12 @@ if (!class_exists('Pootle_Text_Widget')) {
             $hideTitle = isset($instance['hide-title']) ? $instance['hide-title'] : false;
 
             $text = apply_filters('widget_text', $instance['text'], $instance);
+
             if (function_exists('icl_t')) {
                 $title = icl_t("Widgets", 'widget title - ' . md5($title), $title);
                 $text = icl_t("Widgets", 'widget body - ' . $this->id_base . '-' . $this->number, $text);
             }
-            $text = do_shortcode($text);
+            //$text = do_shortcode($text);
             echo $before_widget;
             if (!empty($title) && !$hideTitle) {
                 echo $before_title . $title . $after_title;
