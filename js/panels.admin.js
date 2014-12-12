@@ -521,10 +521,6 @@ jQuery( function ( $ ) {
         $( '#panels-dialog' ).dialog( 'close' );
     } );
 
-    // Either setup an initial grid or load one from the panels data
-    if ( typeof panelsData != 'undefined' ) panels.loadPanels(panelsData);
-    else panels.createGrid( 1 );
-
     $( window ).resize( function () {
         // When the window is resized, we want to center any panels-admin-dialog dialogs
         $( '.panels-admin-dialog' ).filter( ':data(dialog)' ).dialog( 'option', 'position', 'center' );
@@ -545,6 +541,18 @@ jQuery( function ( $ ) {
         .prepend(
             $( '<a id="content-panels" class="hide-if-no-js wp-switch-editor switch-panels">' + $( '#so-panels-panels h3.hndle span' ).html() + '</a>' )
                 .click( function () {
+
+                    // load panels or create 1 lazily
+                    if (typeof window.PBPanelsNeedLoad != 'undefined' && window.PBPanelsNeedLoad) {
+                        // Either setup an initial grid or load one from the panels data
+                        if ( typeof panelsData != 'undefined' ) {
+                            panels.loadPanels(panelsData);
+                        } else {
+                            panels.createGrid( 1 );
+                        }
+
+                        window.PBPanelsNeedLoad = false;
+                    }
 
                     var $$ = $( this );
                     // This is so the inactive tabs don't show as active
@@ -609,12 +617,38 @@ jQuery( function ( $ ) {
         $(window ).resize();
     });
 
-    if ( typeof panelsData != 'undefined' || $('#panels-home-page' ).length) $( '#content-panels' ).click();
+    //if ( typeof panelsData != 'undefined' || $('#panels-home-page' ).length) {
+    //    $('#content-panels').click();
+    //}
+
     // Click again after the panels have been set up
     setTimeout(function(){
-        if ( typeof panelsData != 'undefined' || $('#panels-home-page' ).length) $( '#content-panels' ).click();
-        $('#so-panels-panels .hndle' ).unbind('click');
-        $('#so-panels-panels .cell' ).eq(0 ).click();
+        //if ( typeof panelsData != 'undefined' || $('#panels-home-page' ).length) {
+        //    $( '#content-panels' ).click();
+        //}
+
+        //$('#so-panels-panels .hndle' ).unbind('click');
+        //$('#so-panels-panels .cell' ).eq(0 ).click();
+
+        if (typeof panelsData != 'undefined') {
+            // this is a page that is created before
+            if (panelsData.grids.length == 0) {
+                // no grid was created
+                $('#content-tmce').click();
+                // create grid when click to PB tab
+                window.PBPanelsNeedLoad = true;
+            } else {
+                // has grid, load and show it
+                window.PBPanelsNeedLoad = true;
+                $( '#content-panels' ).click();
+            }
+        } else {
+            // this is new page
+            $('#content-tmce').click();
+            // create grid when click to PB tab
+            window.PBPanelsNeedLoad = true;
+        }
+
     }, 150);
 
     if($('#panels-home-page' ).length){
