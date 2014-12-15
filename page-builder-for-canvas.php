@@ -891,12 +891,34 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			echo '>';
 		}
 
-        if (isset($styleArray['background'])) {
-            echo "<style>\n" .
-                '#pg-' . $post_id . '-' . $gi . " > .panel-row-style:before {\n" .
-                "\tbackground-color: " . $styleArray['background'] . ";\n" .
-                "}\n" .
-                "</style>\n";
+        if (isset($styleArray['background']) && isset($styleArray['background_color_over_image'])) {
+			$rowID = '#pg-' . $post_id . '-' . $gi;
+            ?>
+
+            <style>
+            	/* make this sit under .panel-row-style:before, so background color will be on top on background image */
+                <?php echo $rowID ?> > .panel-row-style:before {
+                	background-color: <?php echo $styleArray['background'] ?>;
+                }
+				<?php echo $rowID ?> > .panel-row-style {
+					position: relative;
+					z-index: 10;
+				}
+				<?php echo $rowID ?> > .panel-row-style:before {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					content: "";
+					top: 0;
+					left: 0;
+					z-index: 20;
+				}
+				.panel-grid-cell-container {
+					position: relative;
+					z-index: 30; /* row content needs to be on top of row background color */
+				}
+				</style>
+				<?php
         }
 
         echo "<div class='panel-grid-cell-container'>";

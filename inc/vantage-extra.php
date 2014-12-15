@@ -18,6 +18,12 @@ function pp_vantage_panels_row_style_fields($fields) {
         'type' => 'color',
     );
 
+    $fields['background_color_over_image'] = array(
+        'name' => 'Put color on top of image',
+        'type' => 'checkbox',
+        'help-text' => 'Great for adjusting opacity with <a href="http://hex2rgba.devoth.com">rgba colors</a>'
+    );
+
     $fields['background_image'] = array(
         'name' => __('Background Image', 'vantage'),
         'type' => 'upload',
@@ -105,8 +111,11 @@ if(!empty($style['bottom_border']) || !empty($style['bottom_border_height'])) {
     $attr['style'] .= 'border-bottom: ' . $style['bottom_border_height'] . 'px solid '.$style['bottom_border'].'; ';
 }
 if(!empty($style['background_image'])) $attr['style'] .= 'background-image: url('.esc_url($style['background_image']).'); ';
-// background-color is set in :before element
-//if(!empty($style['background'])) $attr['style'] .= 'background-color: '.$style['background'].'; background-image: none; ';
+
+// background-color is set in :before element if color over image is set
+if (!empty($style['background']) && empty($style['background_color_over_image'])) {
+    $attr['style'] .= 'background-color: '.$style['background'].';';
+}
 
 if(!empty($style['background_image_repeat'])) {
     $attr['style'] .= 'background-repeat: repeat; ';

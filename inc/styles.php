@@ -226,7 +226,11 @@ function siteorigin_panels_style_dialog_form(){
 					<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr($name) ?>]" data-style-field="<?php echo esc_attr($name) ?>" data-style-field-type="<?php echo esc_attr($attr['type']) ?>" />
 					Enabled
 				</label>
-				<?php
+                <?php
+                if (isset($attr['help-text'])) {
+                    // don't use div for this or else div will appear outside of <p>
+                    echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
+                }
 				break;
 
 			case 'number' :
