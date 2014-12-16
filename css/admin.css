@@ -1171,3 +1171,9 @@ when editing event widget from Event Calendar Pro */
 {
     z-index: 90000 !important;
 }
+
+/* Hide Black Studio links */
+.widget-dialog-pootle_visual_editor_2 > .bstw-links
+{
+	display: none;
+}
