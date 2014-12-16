@@ -212,10 +212,11 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 * @since 2.0.0
 		 */
 		public function siteorigin_panels_admin_init() {
-			if ( is_admin() &&
-				(is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ||
-					is_plugin_active( 'page-builder-for-canvas-master/page-builder-for-canvas.php' ))
-			) {
+//			if ( is_admin() &&
+//				(is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ||
+//					is_plugin_active( 'page-builder-for-canvas-master/page-builder-for-canvas.php' ))
+			// This VE2 is bundled in Page Builder, so don't need to check for Page Builder
+			if (is_admin()) {
 				add_filter( 'siteorigin_panels_widget_object', array( $this, 'siteorigin_panels_widget_object' ), 10 );
 				add_filter( 'black_studio_tinymce_container_selectors', array( $this, 'siteorigin_panels_container_selectors' ) );
 				add_filter( 'black_studio_tinymce_activate_events', array( $this, 'siteorigin_panels_activate_events' ) );

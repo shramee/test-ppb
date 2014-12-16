@@ -971,7 +971,8 @@ function siteorigin_panels_compatibility_init()
         include plugin_dir_path(__FILE__) . '/compat/pootle-text-widget/pootle-text-widget.php';
 //    }
 }
-add_action('admin_init', 'siteorigin_panels_compatibility_init', 5);
+// Using VE2, this compatibility is for VE1
+//add_action('admin_init', 'siteorigin_panels_compatibility_init', 5);
 
 //TODO check this part later
 //add_action('wp_head', 'pp_page_builder_pootle_text_widget_frontend_style');
@@ -1037,5 +1038,5 @@ function pp_page_builder_generate_font_css( $option, $em = '1' ) {
 
 include plugin_dir_path(__FILE__) . '/compat/woo-tabs.php';
 
-require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');
+//require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor/pootlepress-text-widget.php');
 require_once(plugin_dir_path(__FILE__) . '/pootle-visual-editor-2/black-studio-tinymce-widget.php');
