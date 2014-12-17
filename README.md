@@ -16,6 +16,15 @@ Support
 
 Versions
 
+17.12.2014 - Version 2.2
+ * New - revamped Pootle Visual Editor widget with new text tab instead of html
+ * New - use row color over row background image option
+ * Tweak - hide widget title on site option moved to widget styling options
+ * Fix - fix Page Builder tab switching issue
+ * Fix - text editor automatic paragraph checkbox issue
+ * Fix - WooSlider issue
+ * Fix - Revolution Slider issue
+
 27.11.2014 - Version 2.1.1
  * New - remove padding on list widgets option in Page Builder > Display
  * Tweak - Save row styling even if no widget is in cell
