@@ -522,6 +522,8 @@ function pp_get_default_widget_style() {
             $result[$key . '-color'] = '';
         } else if ($field['type'] == 'number') {
             $result[$key] = 0;
+		} else if ($field['type'] == 'checkbox') {
+			$result[$key] = '';
         } else {
             $result[$key] = '';
         }
@@ -1376,6 +1378,8 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 
     $widgetStyleFields = pp_pb_widget_styling_fields();
 
+	$styleWithSelector = '';
+
     foreach ($widgetStyleFields as $key => $field) {
 
         if ($field['type'] == 'border') {
@@ -1408,6 +1412,8 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
             }
 
         } else {
+
+
             if (isset($styleArray[$key]) && $styleArray[$key] != '') {
                 if (!is_array($field['css'])) {
                     $cssArr = array($field['css']);
@@ -1421,7 +1427,13 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
                     } else {
                         $unit = '';
                     }
-                    $inlineStyle .= $cssProperty . ': ' . $styleArray[$key] . $unit . ';';
+
+					if (!isset($field['selector'])) {
+						$inlineStyle .= $cssProperty . ': ' . $styleArray[$key] . $unit . ';';
+					} else {
+						$styleWithSelector .= '#' . $id . ' > ' . $field['selector'] . ' { ' .$cssProperty . ': ' . $styleArray[$key] . $unit . '; }';
+					}
+
                 }
             }
         }
@@ -1434,6 +1446,12 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 		'after_title' => '</h3>',
 		'widget_id' => 'widget-' . $grid . '-' . $cell . '-' . $panel
 	), $instance );
+
+	if ($styleWithSelector != '') {
+		echo "<style>\n";
+		echo $styleWithSelector;
+		echo "</style>\n";
+	}
 
     // Add js file for WooTabs widget
     if ($widget == 'Woo_Widget_WooTabs') {
@@ -2059,7 +2077,14 @@ function pp_pb_widget_styling_fields() {
             'step' => '1',
             'unit' => 'px',
             'css' => 'border-radius'
-        )
+        ),
+		'hide-title' => array(
+			'name' => 'Hide widget title',
+			'type' => 'checkbox',
+			'value' => 'none',
+			'selector' => '.widget-title',
+			'css' => 'display'
+		)
     );
 }
 

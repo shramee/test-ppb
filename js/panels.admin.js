@@ -217,6 +217,12 @@ jQuery( function ( $ ) {
                 var json = $hidden.val();
                 var styleData = JSON.parse(json);
 
+                // by default, set checkbox to unchecked,
+                // so when a widget has no saved checkbox setting, and widget styling dialog is display,
+                // it will be set to unchecked,
+                // this is to set hide widget title checkbox
+                $(this).find('input[type=checkbox]').prop('checked', false);
+
                 // from style data in hidden field, set the widget style dialog fields with data
                 for (var key in styleData) {
                     if (styleData.hasOwnProperty(key)) {
@@ -224,6 +230,12 @@ jQuery( function ( $ ) {
                         var $field = $(this).find('input[dialog-field="' + key + '"]');
                         if ($field.attr('data-style-field-type') == "color") {
                             $field.wpColorPicker('color', styleData[key]);
+                        } else if ($field.attr('data-style-field-type') == "checkbox") {
+                            if (styleData[key] == $field.val()) {
+                                $field.prop('checked', true);
+                            } else {
+                                $field.prop('checked', false);
+                            }
                         } else {
                             $field.val(styleData[key]);
                         }
@@ -243,37 +255,19 @@ jQuery( function ( $ ) {
 
                 var styleData = {};
                 $(this).find('input[dialog-field]').each(function () {
-                    var key = $(this).attr('dialog-field');
-                    styleData[key] = $(this).val();
+                    if ($(this).attr('type') == 'checkbox') {
+                        // if the field is checkbox, only store value if it is checked
+                        if ($(this).prop('checked')) {
+                            var key = $(this).attr('dialog-field');
+                            styleData[key] = $(this).val();
+                        }
+                    } else {
+                        var key = $(this).attr('dialog-field');
+                        styleData[key] = $(this).val();
+                    }
+
                 });
 
-//                        var backgroundColor = $(this).find('.widget-bg-color').val();
-//                        var borderWidth = $(this).find('.widget-border-width').val();
-//                        var borderColor = $(this).find('.widget-border-color').val();
-//                        var paddingTop = $(this).find('.widget-padding-top').val();
-//                        var paddingBottom = $(this).find('.widget-padding-bottom').val();
-//                        var paddingLeft = $(this).find('.widget-padding-left').val();
-//                        var paddingRight = $(this).find('.widget-padding-right').val();
-//                        var marginTop = $(this).find('.widget-margin-top').val();
-//                        var marginBottom = $(this).find('.widget-margin-bottom').val();
-//                        var marginLeft = $(this).find('.widget-margin-left').val();
-//                        var marginRight = $(this).find('.widget-margin-right').val();
-//                        var borderRadius = $(this).find('.widget-rounded-corners').val();
-
-//                        var styleData = {
-//                            backgroundColor: backgroundColor,
-//                            borderWidth: borderWidth,
-//                            borderColor: borderColor,
-//                            paddingTop: paddingTop,
-//                            paddingBottom: paddingBottom,
-//                            paddingLeft: paddingLeft,
-//                            paddingRight: paddingRight,
-//                            marginTop: marginTop,
-//                            marginBottom: marginBottom,
-//                            marginLeft: marginLeft,
-//                            marginRight: marginRight,
-//                            borderRadius: borderRadius
-//                        };
                 $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
 
                 var allData = JSON.parse($currentPanel.find('input[name$="[data]"]').val());
