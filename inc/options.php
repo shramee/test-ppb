@@ -17,11 +17,14 @@ function siteorigin_panels_setting($key = ''){
 	}
 
 	if( empty($settings) ){
-		$display_settings = get_option('siteorigin_panels_display', array());
+		$display_settings = get_option('siteorigin_panels_settings', array());
+
+        $generalSettings = get_option('siteorigin_panels_general', array());
 
 		$settings = get_theme_support('siteorigin-panels');
 		if(!empty($settings)) $settings = $settings[0];
 		else $settings = array();
+
 
 		$settings = wp_parse_args( $settings, array(
 			'home-page' => false,																								// Is the home page supported
@@ -29,17 +32,18 @@ function siteorigin_panels_setting($key = ''){
 			'home-template' => 'home-panels.php',																				// The file used to render a home page.
 			'post-types' => get_option('siteorigin_panels_post_types', array('page', 'post')),									// Post types that can be edited using panels.
 
-			'bundled-widgets' => !isset( $display_settings['bundled-widgets'] ) ? true : $display_settings['bundled-widgets'],	// Include bundled widgets.
-			'responsive' => !isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'],				    // Should we use a responsive layout
+            // bundled-widgets option is removed
+//			'bundled-widgets' => !isset( $display_settings['bundled-widgets'] ) ? true : $display_settings['bundled-widgets'],	// Include bundled widgets.
+			'responsive' => !isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1',				    // Should we use a responsive layout
 			'mobile-width' => !isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],			// What is considered a mobile width?
 
 			'margin-bottom' => !isset( $display_settings['margin-bottom'] ) ? 30 : $display_settings['margin-bottom'],			// Bottom margin of a cell
 			'margin-sides' => !isset( $display_settings['margin-sides'] ) ? 30 : $display_settings['margin-sides'],				// Spacing between 2 cells
 			'affiliate-id' => false,																							// Set your affiliate ID
-			'copy-content' => !isset( $display_settings['copy-content'] ) ? true : $display_settings['copy-content'],			// Should we copy across content
-			'animations' => !isset( $display_settings['animations'] ) ? true : $display_settings['animations'],					// Do we need animations
-			'inline-css' => !isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'],				    // How to display CSS
-            'remove-list-padding' => !isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'],	// Remove left padding on list
+			'copy-content' => !isset( $generalSettings['copy-content'] ) ? true : $generalSettings['copy-content'] == '1',			// Should we copy across content
+			'animations' => !isset( $generalSettings['animations'] ) ? true : $generalSettings['animations'] == '1',					// Do we need animations
+			'inline-css' => !isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'] == '1',				    // How to display CSS
+            'remove-list-padding' => !isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'] == '1',	// Remove left padding on list
 		) );
 
 		// Filter these settings
@@ -75,6 +79,7 @@ function siteorigin_panels_options_page(){
  */
 function siteorigin_panels_options_init() {
 	register_setting( 'pootlepage-general', 'siteorigin_panels_post_types', 'siteorigin_panels_options_sanitize_post_types' );
+    register_setting( 'pootlepage-general', 'siteorigin_panels_general', 'siteorigin_panels_options_sanitize_general' );
 	register_setting( 'pootlepage-display', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
     register_setting( 'pootlepage-widgets', 'pootlepage-widgets');
 
@@ -84,12 +89,12 @@ function siteorigin_panels_options_init() {
 	add_settings_section( 'display', __('Display', 'siteorigin-panels'), '__return_false', 'pootlepage-display' );
 
 	add_settings_field( 'post-types', __('Post Types', 'siteorigin-panels'), 'siteorigin_panels_options_field_post_types', 'pootlepage-general', 'general' );
-	add_settings_field( 'copy-content', __('Copy Content to Post Content', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array( 'type' => 'copy-content' ) );
-	add_settings_field( 'animations', __('Animations', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array(
+	add_settings_field( 'copy-content', __('Copy Content to Post Content', 'siteorigin-panels'), 'siteorigin_panels_options_field_general', 'pootlepage-general', 'general', array( 'type' => 'copy-content' ) );
+	add_settings_field( 'animations', __('Animations', 'siteorigin-panels'), 'siteorigin_panels_options_field_general', 'pootlepage-general', 'general', array(
 		'type' => 'animations',
 		'description' => __('Disable animations to improve Page Builder interface performance', 'siteorigin-panels'),
 	) );
-	add_settings_field( 'bundled-widgets', __('Bundled Widgets', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array( 'type' => 'bundled-widgets' ) );
+//	add_settings_field( 'bundled-widgets', __('Bundled Widgets', 'siteorigin-panels'), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array( 'type' => 'bundled-widgets' ) );
 
     // widgets
     add_settings_field( 'reorder-widgets', __('', 'siteorigin-panels'), 'pootlepage_reorder_widgets', 'pootlepage-widgets', 'widgets' );
@@ -378,32 +383,40 @@ function siteorigin_panels_options_field_post_types($args){
 	?><p class="description"><?php _e('Post types that will have the page builder available', 'siteorigin-panels') ?></p><?php
 }
 
+function siteorigin_panels_options_field_generic($args, $groupName){
+    $settings = siteorigin_panels_setting();
+    switch($args['type']) {
+        case 'responsive' :
+        case 'copy-content' :
+        case 'animations' :
+        case 'inline-css' :
+        case 'bundled-widgets' :
+        case 'remove-list-padding' :
+            ?><label><input type="checkbox" name="<?php echo $groupName ?>[<?php echo esc_attr($args['type']) ?>]" <?php checked($settings[$args['type']]) ?> value="1" /> <?php _e('Enabled', 'siteorigin-panels') ?></label><?php
+            break;
+        case 'margin-bottom' :
+        case 'margin-sides' :
+        case 'mobile-width' :
+            ?><input type="text" name="<?php echo $groupName ?>[<?php echo esc_attr($args['type']) ?>]" value="<?php echo esc_attr($settings[$args['type']]) ?>" class="small-text" /> <?php _e('px', 'siteorigin-panels') ?><?php
+            break;
+    }
+
+    if(!empty($args['description'])) {
+        ?><p class="description"><?php echo esc_html($args['description']) ?></p><?php
+    }
+}
+
 /**
  * Display the fields for the other settings.
  *
  * @param $args
  */
 function siteorigin_panels_options_field_display($args){
-	$settings = siteorigin_panels_setting();
-	switch($args['type']) {
-		case 'responsive' :
-		case 'copy-content' :
-		case 'animations' :
-		case 'inline-css' :
-		case 'bundled-widgets' :
-        case 'remove-list-padding' :
-			?><label><input type="checkbox" name="siteorigin_panels_display[<?php echo esc_attr($args['type']) ?>]" <?php checked($settings[$args['type']]) ?> /> <?php _e('Enabled', 'siteorigin-panels') ?></label><?php
-			break;
-		case 'margin-bottom' :
-		case 'margin-sides' :
-		case 'mobile-width' :
-			?><input type="text" name="siteorigin_panels_display[<?php echo esc_attr($args['type']) ?>]" value="<?php echo esc_attr($settings[$args['type']]) ?>" class="small-text" /> <?php _e('px', 'siteorigin-panels') ?><?php
-			break;
-	}
+    siteorigin_panels_options_field_generic($args, 'siteorigin_panels_display');
+}
 
-	if(!empty($args['description'])) {
-		?><p class="description"><?php echo esc_html($args['description']) ?></p><?php
-	}
+function siteorigin_panels_options_field_general($args){
+    siteorigin_panels_options_field_generic($args, 'siteorigin_panels_general');
 }
 
 /**
@@ -431,6 +444,23 @@ function siteorigin_panels_options_sanitize_post_types($types){
  * @param $vals
  * @return mixed
  */
+
+function siteorigin_panels_options_sanitize_general($vals){
+    foreach($vals as $f => $v){
+        switch($f){
+            case 'copy-content' :
+            case 'animations' :
+                $vals[$f] = !empty($vals[$f]);
+                break;
+        }
+    }
+
+    $vals['copy-content'] = !empty($vals['copy-content']);
+    $vals['animations'] = !empty($vals['animations']);
+
+    return $vals;
+}
+
 function siteorigin_panels_options_sanitize_display($vals){
 	foreach($vals as $f => $v){
 		switch($f){
