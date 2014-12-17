@@ -2,7 +2,7 @@
 /*
 Plugin Name: Canvas Extension - Page Builder for Canvas
 Plugin URI: http://pootlepress.com/
-Description: A page builder for Canvas.
+Description: A page builder for WooThemes Canvas.
 Version: 2.1.1
 Author: PootlePress
 Author URI: http://pootlepress.com/
