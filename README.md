@@ -24,6 +24,7 @@ Versions
  * Fix - text editor automatic paragraph checkbox issue
  * Fix - WooSlider issue
  * Fix - Revolution Slider issue
+ * Fix- General settings not saving
 
 27.11.2014 - Version 2.1.1
  * New - remove padding on list widgets option in Page Builder > Display
