@@ -21,7 +21,7 @@ function pp_vantage_panels_row_style_fields($fields) {
     $fields['background_color_over_image'] = array(
         'name' => 'Put color on top of image',
         'type' => 'checkbox',
-        'help-text' => 'Great for adjusting opacity with <a href="http://hex2rgba.devoth.com">rgba colors</a>'
+        'help-text' => 'Great for adjusting opacity with <a target="_blank" href="http://hex2rgba.devoth.com">rgba colors</a>'
     );
 
     $fields['background_image'] = array(
