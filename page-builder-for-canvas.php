@@ -893,7 +893,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			echo '>';
 		}
 
-        if (isset($styleArray['background']) && isset($styleArray['background_color_over_image'])) {
+        if (isset($styleArray['background']) && isset($styleArray['background_color_over_image']) && $styleArray['background_color_over_image'] == true) {
 			$rowID = '#pg-' . $post_id . '-' . $gi;
             ?>
 
