@@ -2041,6 +2041,13 @@ function pp_pb_widget_area_init() {
 
 function pp_pb_widget_styling_fields() {
     return array(
+		'hide-title' => array(
+			'name' => 'Hide widget title on site',
+			'type' => 'checkbox',
+			'value' => 'none',
+			'selector' => '.widget-title',
+			'css' => 'display'
+		),
         'background-color' => array(
             'name' => 'Widget background color',
             'type' => 'color',
@@ -2078,13 +2085,6 @@ function pp_pb_widget_styling_fields() {
             'unit' => 'px',
             'css' => 'border-radius'
         ),
-		'hide-title' => array(
-			'name' => 'Hide widget title',
-			'type' => 'checkbox',
-			'value' => 'none',
-			'selector' => '.widget-title',
-			'css' => 'display'
-		)
     );
 }
 
