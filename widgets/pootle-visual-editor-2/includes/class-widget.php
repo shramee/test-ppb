@@ -25,7 +25,7 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 		 */
 		public function __construct() {
 			/* translators: title of the widget */
-			$widget_title = __( 'Pootle Visual Editor 2', 'black-studio-tinymce-widget' );
+			$widget_title = __( 'Pootle Visual Editor', 'black-studio-tinymce-widget' );
 			/* translators: description of the widget, shown in available widgets */
 			$widget_description = __( 'Arbitrary text or HTML with visual editor', 'black-studio-tinymce-widget' );
 			$widget_ops = array( 'classname' => 'widget_black_studio_tinymce', 'description' => $widget_description );

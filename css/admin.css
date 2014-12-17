@@ -1173,7 +1173,7 @@ when editing event widget from Event Calendar Pro */
 }
 
 /* Hide Black Studio links */
-.widget-dialog-pootle_visual_editor_2 > .bstw-links
+.widget-dialog-pootle_text_widget > .bstw-links
 {
 	display: none;
 }
