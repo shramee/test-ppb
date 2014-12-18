@@ -542,9 +542,11 @@ jQuery( function ( $ ) {
                         if ( typeof panelsData != 'undefined' ) {
                             panels.loadPanels(panelsData);
                         } else {
-                            panels.createGrid( 1 );
+                            // don't create a row, or else will cause tab switching after "update/publish"
+                            //panels.createGrid( 1 );
                         }
 
+                        // not need to check for "panelsData" anymore
                         window.PBPanelsNeedLoad = false;
                     }
 
@@ -568,15 +570,16 @@ jQuery( function ( $ ) {
         );
 
     $( '#wp-content-editor-tools .wp-switch-editor' ).click(function(){
+        // no longer need this fix
         // This fixes an occasional tab switching glitch
-        var $$ = $(this);
-        var p = $$.attr('id' ).split('-');
-        $( '#wp-content-wrap' ).addClass(p[1] + '-active');
+        //var $$ = $(this);
+        //var p = $$.attr('id' ).split('-');
+        //$( '#wp-content-wrap' ).addClass(p[1] + '-active');
 
         if ($(this).is('.switch-panels')) {
-            $('#insert-media-button').hide();
+            $('#wp-content-media-buttons').hide();
         } else {
-            $('#insert-media-button').show();
+            $('#wp-content-media-buttons').show();
         }
 
     });
