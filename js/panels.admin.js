@@ -631,7 +631,7 @@ jQuery( function ( $ ) {
             // this is a page that is created before
             if (panelsData.grids.length == 0) {
                 // no grid was created
-                $('#content-tmce').click();
+                //$('#content-tmce').click(); // this line will cause issue
                 // create grid when click to PB tab
                 window.PBPanelsNeedLoad = true;
             } else {
@@ -640,10 +640,10 @@ jQuery( function ( $ ) {
                 $( '#content-panels' ).click();
             }
         } else {
-            // this is new page
-            $('#content-tmce').click();
+            // this is new page, or a page created when PB is deactivated
+            //$('#content-tmce').click(); // this line will cause issue
             // create grid when click to PB tab
-            window.PBPanelsNeedLoad = true;
+            window.PBPanelsNeedLoad = false;
         }
 
     }, 150);
