@@ -20,10 +20,10 @@ Versions
  * New - revamped Pootle Visual Editor widget with new text tab instead of html
  * New - use row color over row background image option
  * Tweak - hide widget title on site option moved to widget styling options
+ * Fix - tab issue caused by WordPress 4.1
  * Fix - fix Page Builder tab switching issue
  * Fix - text editor automatic paragraph checkbox issue
  * Fix - WooSlider issue
- * Fix - Revolution Slider issue
  * Fix- General settings not saving
 
 27.11.2014 - Version 2.1.1
