@@ -521,18 +521,68 @@ jQuery( function ( $ ) {
     } );
 
     // Handle switching between the page builder and other tabs
-    $( '#wp-content-editor-tools' )
-        .find( '.wp-switch-editor' )
-        .click(function () {
-            var $$ = $(this);
+    // since version 4.1, html for editor tabs is different
+    if ($('body').is('.version-4-1')) {
+        $( '#wp-content-editor-tools .wp-editor-tabs' )
+            .find( '.wp-switch-editor' )
+            .click(function () {
+                var $$ = $(this);
 
-            $( '#wp-content-editor-container, #post-status-info' ).show();
-            $( '#so-panels-panels' ).hide();
-            $( '#wp-content-wrap' ).removeClass('panels-active');
+                $( '#wp-content-editor-container, #post-status-info' ).show();
+                $( '#so-panels-panels' ).hide();
+                $( '#wp-content-wrap' ).removeClass('panels-active');
 
-            $('#content-resize-handle' ).show();
-        } ).end()
-        .prepend(
+                $('#content-resize-handle' ).show();
+            } ).end()
+            .append(
+            $( '<button id="content-panels" type="button" class="hide-if-no-js wp-switch-editor switch-panels">' + $( '#so-panels-panels h3.hndle span' ).html() + '</button>' )
+                .click( function () {
+
+                    // load panels or create 1 lazily
+                    if (typeof window.PBPanelsNeedLoad != 'undefined' && window.PBPanelsNeedLoad) {
+                        // Either setup an initial grid or load one from the panels data
+                        if ( typeof panelsData != 'undefined' ) {
+                            panels.loadPanels(panelsData);
+                        } else {
+                            // don't create a row, or else will cause tab switching after "update/publish"
+                            //panels.createGrid( 1 );
+                        }
+
+                        // not need to check for "panelsData" anymore
+                        window.PBPanelsNeedLoad = false;
+                    }
+
+                    var $$ = $( this );
+                    // This is so the inactive tabs don't show as active
+                    $( '#wp-content-wrap' ).removeClass( 'tmce-active html-active' );
+
+                    // Hide all the standard content editor stuff
+                    $( '#wp-content-editor-container, #post-status-info' ).hide();
+
+                    // Show panels and the inside div
+                    $( '#so-panels-panels' ).show().find('> .inside').show();
+                    $( '#wp-content-wrap' ).addClass( 'panels-active' );
+
+                    // Triggers full refresh
+                    $( window ).resize();
+                    $('#content-resize-handle' ).hide();
+
+                    return false;
+                } )
+        );
+    } else {
+        $( '#wp-content-editor-tools' )
+            .find( '.wp-switch-editor' )
+            .click(function () {
+                var $$ = $(this);
+
+                $( '#wp-content-editor-container, #post-status-info' ).show();
+                $( '#so-panels-panels' ).hide();
+                $( '#wp-content-wrap' ).removeClass('panels-active');
+
+                $('#content-resize-handle' ).show();
+            } ).end()
+            .prepend(
             $( '<a id="content-panels" class="hide-if-no-js wp-switch-editor switch-panels">' + $( '#so-panels-panels h3.hndle span' ).html() + '</a>' )
                 .click( function () {
 
@@ -568,6 +618,9 @@ jQuery( function ( $ ) {
                     return false;
                 } )
         );
+    }
+
+
 
     $( '#wp-content-editor-tools .wp-switch-editor' ).click(function(){
         // no longer need this fix

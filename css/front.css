@@ -161,3 +161,19 @@
 {
     font-size: 0;
 }
+
+/* WooSlider slideshow in PB has margin in <p>, padding in <a>, and extra <br>  */
+.panel-grid-cell > .widget_wooslider_slideshow_slides > .wooslider > .wooslider-viewport > .slides > .slide > .slide-content > .entry > p
+{
+    margin-bottom: 0;
+}
+
+.panel-grid-cell > .widget_wooslider_slideshow_slides > .wooslider > .wooslider-viewport > .slides > .slide > .slide-content > .entry > p > a
+{
+    padding: 0;
+}
+
+.panel-grid-cell > .widget_wooslider_slideshow_slides > .wooslider > .wooslider-viewport > .slides > .slide br
+{
+    display: none;
+}
