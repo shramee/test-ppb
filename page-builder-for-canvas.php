@@ -288,7 +288,7 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
         // this is the data of the widget and row that have been setup
 		$panels_data = siteorigin_panels_get_current_admin_panels_data();
 
-		// Remove any widgets with classes thast don't exist
+		// Remove any widgets with classes that don't exist
 		if ( !empty( $panels_data['panels'] ) ) {
 			foreach ( $panels_data['panels'] as $i => $panel ) {
 				if ( !class_exists( $panel['info']['class'] ) ) unset( $panels_data['panels'][$i] );
@@ -297,6 +297,23 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
 
 		// Add in the forms
 		if(count($panels_data) > 0) {
+
+			foreach ( $panels_data['widgets'] as $i => $widget ) {
+				if ( !class_exists( $widget['info']['class'] ) ) unset( $panels_data['widgets'][$i] );
+
+				// bring over the hide title check box from old Pootle Visual Editor
+				if ($widget['info']['class'] == 'Pootle_Text_Widget') {
+					if (isset($widget['hide-title']) && $widget['hide-title'] == '1') {
+
+						$widgetStyle = isset($widget['info']['style']) ? json_decode($widget['info']['style'], true) : pp_get_default_widget_style();
+
+						$widgetStyle['hide-title'] = 'none';
+
+						$panels_data['widgets'][$i]['info']['style'] = json_encode($widgetStyle);
+					}
+				}
+			}
+
             // load all data even if no widget inside, so row styling will be loaded
 			wp_localize_script( 'so-panels-admin', 'panelsData', $panels_data );
 		}
@@ -949,6 +966,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				// don't do shortcode or it will mess up shortcodes when WP do shortcode at the end
 				if ($widget_info['info']['class'] == 'Pootle_Text_Widget') {
 					remove_filter('widget_text', 'do_shortcode');
+
+					if (isset($widget_info['hide-title']) && $widget_info['hide-title'] == '1') {
+						$widgetStyle['hide-title'] = 'none';
+					}
 				}
 
 				siteorigin_panels_the_widget( $widget_info['info']['class'], $data, $widgetStyle, $gi, $ci, $pi, $pi == 0, $pi == count( $widgets ) - 1, $post_id );
