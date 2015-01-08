@@ -674,7 +674,7 @@ function siteorigin_panels_generate_css($post_id, $panels_data){
 
 	// This is for the side margins
 	$magin_half = $settings['margin-sides']/2;
-	$side_margins = "HOOPLA:AWESOME;margin: 0 -{$magin_half}px 0 -{$magin_half}px";
+	$side_margins = "margin: 0 -{$magin_half}px 0 -{$magin_half}px";
 	$side_paddings = "padding: 0 {$magin_half}px 0";
 	if(empty($css[ 1920 ][ $side_margins ])) $css[ 1920 ][ $side_margins ] = array();
 	if(empty($css[ 1920 ][ $side_paddings ])) $css[ 1920 ][ $side_paddings ] = array();
