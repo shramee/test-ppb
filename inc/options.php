@@ -17,8 +17,9 @@ function siteorigin_panels_setting($key = ''){
 	}
 
 	if( empty($settings) ){
-		$display_settings = get_option('siteorigin_panels_settings', array());
-
+		$display_settings = get_option('siteorigin_panels_settings', array()); //This option does not exist
+		$display_settings = get_option('siteorigin_panels_display', array());
+		
         $generalSettings = get_option('siteorigin_panels_general', array());
 
 		$settings = get_theme_support('siteorigin-panels');

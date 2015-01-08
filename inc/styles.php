@@ -367,3 +367,28 @@ function siteorigin_panels_style_sanitize_data($panels_data){
 	return $panels_data;
 }
 add_filter('siteorigin_panels_panels_data_from_post', 'siteorigin_panels_style_sanitize_data');
+
+/*
+ * Sets missing styles
+ * 
+ */
+function pootle_page_display_setting_implement() {
+	//Changes made in the pre-existing functions
+	/*
+	$display_styles = siteorigin_panels_setting();
+	//Side and Bottom Margins
+	$bot_margin = $display_styles['margin-bottom'];
+	$margin_sides = $display_styles['margin-sides'] / 2; //halved to be applied to css directly
+	
+	?>
+<style type="text/css" id='cx-bc-stylesheet'>
+	.panel-grid-cell{
+		padding-bottom: <?php echo $bot_margin; ?>px;
+		padding-right: <?php echo $margin_sides; ?>px;
+		padding-left: <?php echo $margin_sides; ?>px;
+	}
+</style>
+<?php
+*/
+}
+add_action( 'wp_head', 'pootle_page_display_setting_implement' );

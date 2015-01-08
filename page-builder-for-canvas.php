@@ -578,7 +578,7 @@ function siteorigin_panels_css() {
 	$post_id = $_GET['post'];
 
 	header("Content-type: text/css");
-	echo siteorigin_panels_generate_css($_GET['post'], $panels_data);
+	echo ' '.siteorigin_panels_generate_css($_GET['post'], $panels_data);
 	exit();
 }
 add_action( 'wp_ajax_siteorigin_panels_post_css', 'siteorigin_panels_css' );
@@ -674,8 +674,8 @@ function siteorigin_panels_generate_css($post_id, $panels_data){
 
 	// This is for the side margins
 	$magin_half = $settings['margin-sides']/2;
-	$side_margins = "margin: 0 -{$magin_half}px 0 -{$magin_half}px";
-	$side_paddings = "padding: 0 {$magin_half}px 0 {$magin_half}px";
+	$side_margins = "HOOPLA:AWESOME;margin: 0 -{$magin_half}px 0 -{$magin_half}px";
+	$side_paddings = "padding: 0 {$magin_half}px 0";
 	if(empty($css[ 1920 ][ $side_margins ])) $css[ 1920 ][ $side_margins ] = array();
 	if(empty($css[ 1920 ][ $side_paddings ])) $css[ 1920 ][ $side_paddings ] = array();
 	$css[ 1920 ][ $side_margins ][] = '.panel-grid';
