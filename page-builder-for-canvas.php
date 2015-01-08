@@ -578,7 +578,7 @@ function siteorigin_panels_css() {
 	$post_id = $_GET['post'];
 
 	header("Content-type: text/css");
-	echo ' '.siteorigin_panels_generate_css($_GET['post'], $panels_data);
+	echo siteorigin_panels_generate_css($_GET['post'], $panels_data);
 	exit();
 }
 add_action( 'wp_ajax_siteorigin_panels_post_css', 'siteorigin_panels_css' );
