@@ -781,6 +781,16 @@ function siteorigin_panels_filter_content( $content ) {
 // set priority to 5 so Paid Membership Pro can filter it later, and overwrite Page Builder content
 add_filter( 'the_content', 'siteorigin_panels_filter_content', 5 );
 
+function getRevsliderFunctioning($content){
+	$isrwevslider = stristr($content, 'PREPARE PLACEHOLDER FOR SLIDER');
+	if($isrwevslider ){
+		remove_filter('the_content', 'wpautop'		);	//wpautop : Adds the Stupid Paragraphs for two line breaks
+		remove_filter( 'the_content', 'wptexturize' 	);	//wptexturize : Replaces each & with &#038; unless it already looks like an entity
+		remove_filter( 'the_content', 'convert_chars'	);	//convert_chars : Converts lone & characters into &#38; (a.k.a. &amp;)
+	}
+	return $content;
+}
+add_filter( 'the_content', 'getRevsliderFunctioning', 5 );
 
 /**
  * Render the panels
