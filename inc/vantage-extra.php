@@ -147,8 +147,8 @@ function pp_vantage_panels_panels_row_attributes($attr, $row) {
             $attr['style'] = '';
         }
 
-        //$attr['style'] .= 'margin-bottom: 0px;';
-        $attr['style'] .= '';
+        $attr['style'] .= 'margin-bottom: 0px;';
+
     } else {
         if(empty($attr['style'])) {
             $attr['style'] = '';
