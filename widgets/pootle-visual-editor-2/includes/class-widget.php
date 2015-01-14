@@ -12,9 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 0.5
  */
 
-if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
+if ( ! class_exists( 'WP_Widget_Black_Studio_TinyMCE' ) ) {
 
-	class Pootle_Text_Widget extends WP_Widget {
+	class WP_Widget_Black_Studio_TinyMCE extends WP_Widget {
 
 		/**
 		 * Widget Class constructor

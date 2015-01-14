@@ -2,7 +2,7 @@
 
 
 /* Widget class */
-if (!class_exists('Pootle_Text_Widget')) {
+if (!class_exists('WP_Widget_Black_Studio_TinyMCE')) {
     class Pootle_Text_Widget extends WP_Widget
     {
 

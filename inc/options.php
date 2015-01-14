@@ -184,7 +184,7 @@ function pootlepage_reorder_widgets() {
     if (count($widgetSettings['reorder-widgets']) == 0 &&
         count($widgetSettings['unused-widgets']) == 0
     ) {
-        $widgetSettings['reorder-widgets'] = array('Pootle_Text_Widget',
+        $widgetSettings['reorder-widgets'] = array('WP_Widget_Black_Studio_TinyMCE',
             'SiteOrigin_Panels_Widgets_PostLoop', 'Woo_Widget_Component');
 
         foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
@@ -205,11 +205,11 @@ function pootlepage_reorder_widgets() {
         }
 
         // make visual editor as first one
-        if (in_array('Pootle_Text_Widget', $usedSequence)) {
+        if (in_array('WP_Widget_Black_Studio_TinyMCE', $usedSequence)) {
             $temp = array();
-            $temp[] = 'Pootle_Text_Widget';
+            $temp[] = 'WP_Widget_Black_Studio_TinyMCE';
             foreach ($usedSequence as $class) {
-                if ($class != 'Pootle_Text_Widget') {
+                if ($class != 'WP_Widget_Black_Studio_TinyMCE') {
                     $temp[] = $class;
                 }
             }
@@ -282,7 +282,7 @@ function pootlepage_unused_widgets() {
     if (count($widgetSettings['reorder-widgets']) == 0 &&
         count($widgetSettings['unused-widgets']) == 0
     ) {
-        $widgetSettings['reorder-widgets'] = array('Pootle_Text_Widget',
+        $widgetSettings['reorder-widgets'] = array('WP_Widget_Black_Studio_TinyMCE',
             'SiteOrigin_Panels_Widgets_PostLoop', 'Woo_Widget_Component');
 
         foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
@@ -303,11 +303,11 @@ function pootlepage_unused_widgets() {
         }
 
         // make visual editor as first one
-        if (in_array('Pootle_Text_Widget', $usedSequence)) {
+        if (in_array('WP_Widget_Black_Studio_TinyMCE', $usedSequence)) {
             $temp = array();
-            $temp[] = 'Pootle_Text_Widget';
+            $temp[] = 'WP_Widget_Black_Studio_TinyMCE';
             foreach ($usedSequence as $class) {
-                if ($class != 'Pootle_Text_Widget') {
+                if ($class != 'WP_Widget_Black_Studio_TinyMCE') {
                     $temp[] = $class;
                 }
             }

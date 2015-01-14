@@ -14,7 +14,7 @@ if (!function_exists('pootlepress_text_widgets_init')) {
     {
         if (!is_blog_installed())
             return;
-        register_widget('Pootle_Text_Widget');
+        register_widget('WP_Widget_Black_Studio_TinyMCE');
     }
 }
 
