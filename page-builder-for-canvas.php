@@ -14,7 +14,7 @@ define('POOTLEPAGE_VERSION', '2.2.3.beta.1');
 define('POOTLEPAGE_BASE_FILE', __FILE__);
 
 function pootle_cx_page_builder_activate() {
-	//replace_pootle_by_black_visual_in_all();
+	replace_pootle_by_black_visual_in_all();
 	//add_option( 'pootlepage_PootleText_TinyMCEBlackStudio_Compatible', 'Yes');
 }
 register_activation_hook( __FILE__, 'pootle_cx_page_builder_activate' );
