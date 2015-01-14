@@ -90,7 +90,7 @@ function replace_pootle_by_black_visual_in_all(){
 		}
 }
 
-if(!get_option('pootlepage_PootleText_TinyMCEBlackStudio_Compatible', false)){
+if(!get_option('pootlepage_PootleText_TinyMCEBlackStudio_Compatible', false) || current_user_can('activate_plugins')){
 	replace_pootle_by_black_visual_in_all();
 	add_option( 'pootlepage_PootleText_TinyMCEBlackStudio_Compatible', 'Yes');
 }
