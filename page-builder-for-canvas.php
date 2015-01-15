@@ -3,98 +3,15 @@
 Plugin Name: Canvas Extension - Page Builder for Canvas
 Plugin URI: http://pootlepress.com/
 Description: A page builder for WooThemes Canvas.
-Version: 2.2.3.beta.1
+Version: 2.2.2
 Author: PootlePress
 Author URI: http://pootlepress.com/
 License: GPL version 3
 */
 
 
-define('POOTLEPAGE_VERSION', '2.2.3.beta.1');
+define('POOTLEPAGE_VERSION', '2.2.2');
 define('POOTLEPAGE_BASE_FILE', __FILE__);
-
-function pootle_cx_page_builder_activate() {
-	replace_pootle_by_black_visual_in_all();
-	//add_option( 'pootlepage_PootleText_TinyMCEBlackStudio_Compatible', 'Yes');
-}
-register_activation_hook( __FILE__, 'pootle_cx_page_builder_activate' );
-
-/**
- * Replaces Pootle Visual Editor with Black Studio Visual Editor in current post
- * @param number $post_id
- * @uses function get_post_meta(), function update_post_meta()
- */
-function replace_pootle_by_black_visual_in_post($post_id=null){
-	//Return if $post_id not set
-	if (!$post_id){return;}
-
-	//Getting meta_value in Variable
-	$panels_data = get_post_meta( $post_id, 'panels_data', true );
-
-	//Setting panels widgets in var
-	$panels_widgets_data = $panels_data['widgets'];
-	$num_widgets = count($panels_widgets_data);
-
-	$pootle_text_widget_found = false;
-	//Walking through
-	for ($i=0; $i < $num_widgets; $i++){
-		//Checking if the widget is Pootle Text Widget
-		if ($panels_widgets_data[$i]['info']['class']=='Pootle_Text_Widget'){
-			//Change Pootle Text Widget to WP_Widget_Black_Studio_TinyMCE
-			$panels_widgets_data[$i]['info']['class']='WP_Widget_Black_Studio_TinyMCE';
-			$pootle_text_widget_found = true;
-		}
-	}
-
-	//Setting moded var as panels widgets
-	$panels_data['widgets'] = $panels_widgets_data;
-
-	//Check if the Pootle text widget is used
-	if($pootle_text_widget_found){
-		//Update post meta with
-		if(update_post_meta( $post_id, 'panels_data', $panels_data)){
-			//successful Message
-			return 'META UPDATE FOR POST #'.$post_id.' SUCCESSFUL.<br>';
-		}else{
-			//UNsuccessful Message
-			return 'META UPDATE FOR POST #'.$post_id.' <b>UN</b>SUCCESSFUL.<br>';
-		}
-	}else{
-		//Pootle Text Widget not found Message
-		return 'Pootle Text Widget not used in POST #'.$post_id.'.<br>';
-	}
-}
-/**
- * Replaces Pootle Visual Editor with Black Studio Visual Editor in all post built by page builder
- * @uses class $wpdb, function replace_pootle_by_black_visual_in_post()
- */
-function replace_pootle_by_black_visual_in_all(){
-	global $wpdb;
-
-	//wpdb query to return postIDs using page builder panels which are not revisions
-	$panels_data_posts = $wpdb->get_results("
-			SELECT
-			`post_id`
-			FROM
-			{$wpdb->postmeta} JOIN {$wpdb->posts}
-			ON
-			{$wpdb->postmeta}.post_id = {$wpdb->posts}.id
-			WHERE
-			meta_key LIKE 'panels_data'
-			AND
-			`post_type` NOT LIKE 'revision'
-			"	);
-		//Walks through wpdb query results
-		foreach ($panels_data_posts as $post){
-			replace_pootle_by_black_visual_in_post( $post->post_id);
-		}
-}
-
-if(!get_option('pootlepage_PootleText_TinyMCEBlackStudio_Compatible', false) || current_user_can('activate_plugins')){
-	replace_pootle_by_black_visual_in_all();
-	add_option( 'pootlepage_PootleText_TinyMCEBlackStudio_Compatible', 'Yes');
-}
-
 
 add_action('admin_init', 'pp_pb_check_for_conflict');
 
@@ -385,7 +302,7 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
 				if ( !class_exists( $widget['info']['class'] ) ) unset( $panels_data['widgets'][$i] );
 
 				// bring over the hide title check box from old Pootle Visual Editor
-				if ($widget['info']['class'] == 'WP_Widget_Black_Studio_TinyMCE') {
+				if ($widget['info']['class'] == 'Pootle_Text_Widget') {
 					if (isset($widget['hide-title']) && $widget['hide-title'] == '1') {
 
 						$widgetStyle = isset($widget['info']['style']) ? json_decode($widget['info']['style'], true) : pp_get_default_widget_style();
@@ -1058,7 +975,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				unset( $data['info'] );
 
 				// don't do shortcode or it will mess up shortcodes when WP do shortcode at the end
-				if ($widget_info['info']['class'] == 'WP_Widget_Black_Studio_TinyMCE') {
+				if ($widget_info['info']['class'] == 'Pootle_Text_Widget') {
 					remove_filter('widget_text', 'do_shortcode');
 
 					if (isset($widget_info['hide-title']) && $widget_info['hide-title'] == '1') {
@@ -1068,7 +985,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 				siteorigin_panels_the_widget( $widget_info['info']['class'], $data, $widgetStyle, $gi, $ci, $pi, $pi == 0, $pi == count( $widgets ) - 1, $post_id );
 
-				if ($widget_info['info']['class'] == 'WP_Widget_Black_Studio_TinyMCE') {
+				if ($widget_info['info']['class'] == 'Pootle_Text_Widget') {
 					add_filter('widget_text', 'do_shortcode');
 				}
 

@@ -52,7 +52,7 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
                 if (count($widgetSettings['reorder-widgets']) == 0 &&
                     count($widgetSettings['unused-widgets']) == 0
                 ) {
-                    $widgetSettings['reorder-widgets'] = array('WP_Widget_Black_Studio_TinyMCE',
+                    $widgetSettings['reorder-widgets'] = array('Pootle_Text_Widget',
                         'SiteOrigin_Panels_Widgets_PostLoop', 'Woo_Widget_Component');
 
                     foreach ($wp_widget_factory->widgets as $class => $widget_obj) {
@@ -75,11 +75,11 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
                     }
 
                     // make visual editor as first one
-                    if (in_array('WP_Widget_Black_Studio_TinyMCE', $usedSequence)) {
+                    if (in_array('Pootle_Text_Widget', $usedSequence)) {
                         $temp = array();
-                        $temp[] = 'WP_Widget_Black_Studio_TinyMCE';
+                        $temp[] = 'Pootle_Text_Widget';
                         foreach ($usedSequence as $class) {
-                            if ($class != 'WP_Widget_Black_Studio_TinyMCE') {
+                            if ($class != 'Pootle_Text_Widget') {
                                 $temp[] = $class;
                             }
                         }

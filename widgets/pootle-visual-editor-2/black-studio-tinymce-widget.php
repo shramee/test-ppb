@@ -223,7 +223,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Plugin' ) ) {
 			if ( ! is_blog_installed() ) {
 				return;
 			}
-			register_widget( 'WP_Widget_Black_Studio_TinyMCE' );
+			register_widget( 'Pootle_Text_Widget' );
 		}
 
 		/**
@@ -234,7 +234,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Plugin' ) ) {
 		 * @since 2.0.0
 		 */
 		public function check_widget( $widget ) {
-			return gettype( $widget ) == 'object' && get_class( $widget ) == 'WP_Widget_Black_Studio_TinyMCE';
+			return gettype( $widget ) == 'object' && get_class( $widget ) == 'Pootle_Text_Widget';
 		}
 
 	} // END class Black_Studio_TinyMCE_Plugin
