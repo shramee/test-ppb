@@ -16,6 +16,12 @@ Support
 
 Versions
 
+22.01.2015 - Version 2.2.3
+ * Fix - fix for Revolution Slider issue
+ * Fix - settings not saving in Canvas > Settings > Page Builder
+ * Fix - 'No Bottom Margin' setting in Row Visual Style not working properly
+ * Fix - further fix to p tag issues in some widgets
+
 23.12.2014 - Version 2.2.2
  * Tweak - update version number
 
