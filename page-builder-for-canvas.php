@@ -1475,7 +1475,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 
 	if ($styleWithSelector != '') {
 		echo "<style>\n";
-		echo $styleWithSelector;
+		echo str_replace('inget','none',$styleWithSelector);
 		echo "</style>\n";
 	}
 
