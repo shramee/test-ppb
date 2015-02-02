@@ -781,18 +781,6 @@ function siteorigin_panels_filter_content( $content ) {
 // set priority to 5 so Paid Membership Pro can filter it later, and overwrite Page Builder content
 add_filter( 'the_content', 'siteorigin_panels_filter_content', 5 );
 
-function getRevsliderFunctioning($content){
-	$isrwevslider = stristr($content, 'PREPARE PLACEHOLDER FOR SLIDER');
-	if($isrwevslider ){
-		remove_filter( 'the_content', 'wptexturize' 	);	//wptexturize : Replaces each & with &#038; unless it already looks like an entity
-		remove_filter( 'the_content', 'convert_chars'	);	//convert_chars : Converts lone & characters into &#38; (a.k.a. &amp;)
-	}
-	return $content;
-}
-add_filter( 'the_content', 'getRevsliderFunctioning', 5 );
-
-remove_filter( 'the_content', 'wpautop' );	//wpautop : Adds the Stupid Paragraphs for two line breaks
-
 /**
  * Render the panels
  *
@@ -831,7 +819,13 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 	$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post_id );
 	if( empty( $panels_data ) || empty( $panels_data['grids'] ) ) return '';
-
+	
+	//Removing filters for proper functionality 
+	remove_filter( 'the_content', 'wptexturize' 	);	//wptexturize : Replaces each & with &#038; unless it already looks like an entity
+	remove_filter( 'the_content', 'convert_chars'	);	//convert_chars : Converts lone & characters into &#38; (a.k.a. &amp;)
+	remove_filter( 'the_content', 'wpautop' );	//wpautop : Adds the Stupid Paragraphs for two line breaks
+	
+	
 	// Create the skeleton of the grids
 	$grids = array();
 	if( !empty( $panels_data['grids'] ) && !empty( $panels_data['grids'] ) ) {
