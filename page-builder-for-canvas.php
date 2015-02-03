@@ -352,7 +352,7 @@ function siteorigin_panels_admin_enqueue_scripts($prefix) {
         // since it doesn't enqueue script if not in Widgets page
         if (class_exists('TribeEventsMiniCalendarWidget')) {
             Tribe_Template_Factory::asset_package( 'select2' );
-            wp_enqueue_script( 'calendar-widget-admin',  plugin_dir_url(__FILE__) . '/js/calendar-widget-admin.js');
+            //wp_enqueue_script( 'calendar-widget-admin',  plugin_dir_url(__FILE__) . '/js/calendar-widget-admin.js');
         }
 
 		// This gives panels a chance to enqueue scripts too, without having to check the screen ID.
