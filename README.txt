@@ -16,6 +16,11 @@ Support
 
 Versions
 
+04.02.2015 - Version 2.2.4
+ * Fix - Event Calendar Pro issues
+ * Fix - Issue with new lines not appearing in posts on front-end when using WP editor without Page Builder
+ * Fix - Hide widget title not working in different languages
+
 22.01.2015 - Version 2.2.3
  * Fix - fix for Revolution Slider issue
  * Fix - settings not saving in Canvas > Settings > Page Builder
