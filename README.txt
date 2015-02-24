@@ -16,6 +16,9 @@ Support
 
 Versions
 
+24.02.2015 - Version 2.2.5
+ * Fix - left align Page Builder tab issue in WordPress 4.1.1
+
 04.02.2015 - Version 2.2.4
  * Fix - Event Calendar Pro issues
  * Fix - Issue with new lines not appearing in posts on front-end when using WP editor without Page Builder
