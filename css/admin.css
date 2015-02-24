@@ -425,7 +425,7 @@ html {
 
 #content-panels {
 	position: relative;
-	
+	float:right;
 	z-index: 10;
 }
 
