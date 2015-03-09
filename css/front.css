@@ -176,3 +176,7 @@
 {
     display: none;
 }
+
+.panel-grid .widget ul, .panel-grid .widget ol {
+  list-style-position: inside;
+}
