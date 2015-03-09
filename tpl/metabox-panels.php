@@ -135,8 +135,8 @@ $layouts = apply_filters('siteorigin_panels_prebuilt_layouts', array());
 				<div class="clear"></div>
 
 			</ul>
-            <div class='help-text'>To include more widgets for selection please go to Settings > Page Builder > Widgets and drag widgets into the selection area</div>
-			<?php do_action('siteorigin_panels_after_widgets'); ?>
+            <div class='help-text'>To include more widgets for selection please go to Canvas > Page Builder > Widget Selection and drag widgets into the selection area</div>
+            <?php do_action('siteorigin_panels_after_widgets'); ?>
 		</div>
 		
 	</div>
