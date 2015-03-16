@@ -766,6 +766,11 @@ function siteorigin_panels_filter_content( $content ) {
         $postID = get_the_ID();
     }
 
+	//If product done once return content for TAB
+ 	if(isset($GLOBALS['canvasPB_ProductDoneOnce'])){return $content;}
+	//If its product set canvasPB_ProductDoneOnce to skip this for TAB
+	if(is_single() && is_product()){$GLOBALS['canvasPB_ProductDoneOnce']=TRUE;}
+
     $post = get_post($postID);
 
 	if ( empty( $post ) ) return $content;
