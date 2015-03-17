@@ -60,7 +60,7 @@ function siteorigin_panels_content_save_pre_get(){
 
 	// Use the signature to secure the request.
 	if( $sig != sha1( NONCE_SALT . serialize($data) ) ) exit();
-
+	
 	// This can cause a fatal error, so handle in a separate request.
 	$panels_data = siteorigin_panels_get_panels_data_from_post( $_POST );
 
@@ -105,9 +105,6 @@ add_action('wp_ajax_nopriv_siteorigin_panels_get_post_content', 'siteorigin_pane
  * @return array
  */
 function siteorigin_panels_get_panels_data_from_post($form_post){
-	if( !isset($_POST['_wpnonce']) ){
-		return;
-	}
 	$panels_data = array();
 	$panels_data['widgets'] = array_values( stripslashes_deep( isset( $form_post['widgets'] ) ? $form_post['widgets'] : array() ) );
 

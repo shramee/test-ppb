@@ -453,6 +453,9 @@ function siteorigin_panels_save_post( $post_id, $post ) {
 	if ( empty( $_POST['_sopanels_nonce'] ) || !wp_verify_nonce( $_POST['_sopanels_nonce'], 'save' ) ) return;
 	if ( empty($_POST['panels_js_complete']) ) return;
 	if ( !current_user_can( 'edit_post', $post_id ) ) return;
+	//Don't Save panels if $post_id is not same as current post ID
+	//(Prevents population product panels data in saving Tabs via Meta)
+	if( $_POST['post_ID'] != $post_id ) return;
 
 	$panels_data = siteorigin_panels_get_panels_data_from_post( $_POST );
 	if( function_exists('wp_slash') ) $panels_data = wp_slash($panels_data);
@@ -766,13 +769,27 @@ function siteorigin_panels_filter_content( $content ) {
         $postID = get_the_ID();
     }
 
-	//If product done once return content for TAB
- 	if(isset($GLOBALS['canvasPB_ProductDoneOnce'])){return $content;}
+	//If product done once set $postID to Tabs Post ID
+ 	if(isset($GLOBALS['canvasPB_ProductDoneOnce'])){
+		global $wpdb;
+		$results = $wpdb->get_results( 
+		    "SELECT ID FROM "
+		  . $wpdb->posts
+		  . " WHERE "
+		  . "post_content LIKE '"
+		  . $content
+		  . "'"
+		  . "AND post_type LIKE 'wc_product_tab'"
+		  . "AND post_status LIKE 'publish'" );
+		foreach($results as $id){
+		$postID = $id->ID;
+		}
+	}
 	//If its product set canvasPB_ProductDoneOnce to skip this for TAB
 	if(is_single() && is_product()){$GLOBALS['canvasPB_ProductDoneOnce']=TRUE;}
 
     $post = get_post($postID);
-
+	
 	if ( empty( $post ) ) return $content;
 	if ( in_array( $post->post_type, siteorigin_panels_setting('post-types') ) ) {
 		$panel_content = siteorigin_panels_render( $post->ID );
@@ -784,7 +801,8 @@ function siteorigin_panels_filter_content( $content ) {
 }
 
 // set priority to 5 so Paid Membership Pro can filter it later, and overwrite Page Builder content
-add_filter( 'the_content', 'siteorigin_panels_filter_content', 5 );
+// set to 0 to execute this before any other actions and get raw $content for db lookup for tab CPT
+add_filter( 'the_content', 'siteorigin_panels_filter_content', 0 );
 
 /**
  * Render the panels
@@ -796,7 +814,7 @@ add_filter( 'the_content', 'siteorigin_panels_filter_content', 5 );
  */
 function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panels_data = false ) {
 	if( empty($post_id) ) $post_id = get_the_ID();
-
+	
 	global $siteorigin_panels_current_post;
 	$old_current_post = $siteorigin_panels_current_post;
 	$siteorigin_panels_current_post = $post_id;
@@ -817,7 +835,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			}
 		}
 		else{
-			if ( post_password_required($post_id) ) return false;
+			//Allowing rendering for password protected Tab(wc_product_tab) post types
+			if ( post_password_required($post_id) && get_post_type($post_id)!='wc_product_tab' ) return false;
 			$panels_data = get_post_meta( $post_id, 'panels_data', true );
 		}
 	}
