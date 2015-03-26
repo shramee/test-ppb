@@ -180,3 +180,6 @@
 .panel-grid .widget ul, .panel-grid .widget ol {
   list-style-position: inside;
 }
+ul.wooTabs {
+  margin-bottom:0 !important;
+}
