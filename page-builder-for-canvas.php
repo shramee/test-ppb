@@ -1999,9 +1999,9 @@ function pp_pb_option_css()
 
     // Tabs Widget
     $widget_tabs_bg = get_option('page_builder_widget_tabs_bg', 'transparent');
-    $widget_tabs_bg_inside = get_option('page_builder_widget_tabs_bg_inside', 'transparent');
+    $widget_tabs_bg_inside = get_option('page_builder_widget_tabs_bg_inside', '');
     $widget_tabs_font = get_option('page_builder_widget_tabs_font', array('size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555'));
-    $widget_tabs_font_meta = get_option('page_builder_widget_tabs_font_meta', array('size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#999999'));
+    $widget_tabs_font_meta = get_option('page_builder_widget_tabs_font_meta', array('size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => ''));
 
     if ( $widget_tabs_bg ) {
         $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:' . $widget_tabs_bg . ';}' . "\n";
