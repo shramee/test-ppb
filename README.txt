@@ -16,6 +16,9 @@ Support
 
 Versions
 
+15.04.2015 - Version 2.2.6
+ * Fix - fatal error on posts
+
 14.04.2015 - Version 2.2.5
  * Fix - fix for WooCommerce Tab Manager
  * Fix - left align Page Builder tab issue in WordPress 4.1.1
