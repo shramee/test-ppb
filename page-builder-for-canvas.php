@@ -786,7 +786,9 @@ function siteorigin_panels_filter_content( $content ) {
 		}
 	}
 	//If its product set canvasPB_ProductDoneOnce to skip this for TAB
-	if(is_single() && is_product()){$GLOBALS['canvasPB_ProductDoneOnce']=TRUE;}
+	if(function_exists('is_product')){
+		if(is_single() && is_product()){$GLOBALS['canvasPB_ProductDoneOnce']=TRUE;}
+	}
 
     $post = get_post($postID);
 	
