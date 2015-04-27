@@ -777,10 +777,10 @@ function siteorigin_panels_filter_content( $content ) {
 		  . $wpdb->posts
 		  . " WHERE "
 		  . "post_content LIKE '"
-		  . $content
+		  . mysql_real_escape_string( $content )
 		  . "'"
-		  . "AND post_type LIKE 'wc_product_tab'"
-		  . "AND post_status LIKE 'publish'" );
+		  . " AND post_type LIKE 'wc_product_tab'"
+		  . " AND post_status LIKE 'publish'" );
 		foreach($results as $id){
 		$postID = $id->ID;
 		}
