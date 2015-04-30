@@ -947,14 +947,14 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
             <style>
             	/* make this sit under .panel-row-style:before, so background color will be on top on background image */
-                <?php echo $rowID ?> > .panel-row-style:before {
+                <?php echo esc_attr( $rowID ) ?> > .panel-row-style:before {
                 	background-color: <?php echo $styleArray['background'] ?>;
                 }
-				<?php echo $rowID ?> > .panel-row-style {
+				<?php echo esc_attr( $rowID ) ?> > .panel-row-style {
 					position: relative;
 					z-index: 10;
 				}
-				<?php echo $rowID ?> > .panel-row-style:before {
+				<?php echo esc_attr( $rowID ) ?> > .panel-row-style:before {
 					position: absolute;
 					width: 100%;
 					height: 100%;
