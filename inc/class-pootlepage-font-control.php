@@ -248,21 +248,12 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 		 *
 		 */
 		public function get_font_color_control() {
-			// Variables used in view
+			// Variables for color control
 			$value		 = $this->value( 'font_color' );
 			$default_color = $this->default['font_color'];
-			$current_color = isset( $value ) ? $value : $default_color;
+			// Output the color control
+			pootlepage_color_control( 'Font Color', $value, $default_color, $this->link( 'font_color' ) );
 
-			// Get control view
-			?>
-			<label><?php _e( 'Font Color', 'scratch' ); ?>
-				<input class="color-picker-hex sc-font-color-text-box" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value' ); ?>"
-					   value="<?php echo $current_color; ?>" data-default-color="<?php echo $default_color ?>"
-					<?php $this->link( 'font_color' ) ?>
-					/>
-			</label>
-
-		<?php
 		}
 
 		/**

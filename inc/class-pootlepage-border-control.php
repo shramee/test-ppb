@@ -105,21 +105,12 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 		}
 
 		public function get_border_color_control() {
-			// Variables used in view
+			// Variables for color control
 			$value		 = $this->value( 'border_color' );
 			$default_color = $this->default['border_color'];
-			$current_color = isset( $value ) ? $value : $default_color;
+			// Output the color control
+			pootlepage_color_control( 'Border Color', $value, $default_color, $this->link( 'border_color' ) );
 
-			// Get control view
-			?>
-			<label><?php _e( 'Border Color', 'scratch' ); ?>
-				<input class="color-picker-hex pp-font-color-text-box" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value' ); ?>"
-					   value="<?php echo $current_color; ?>" data-default-color="<?php echo $default_color ?>"
-					<?php $this->link( 'border_color' ) ?>
-					/>
-			</label>
-
-		<?php
 		}
 
 
