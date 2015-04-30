@@ -3,7 +3,7 @@
  * Created by Alan on 15/7/2014.
  */
 
-if (!class_exists('Pootlepress_Updater')) {
+if ( ! class_exists( 'Pootlepress_Updater' ) ) {
     class Pootlepress_Updater {
         /**
          * The plugin current version
@@ -18,13 +18,13 @@ if (!class_exists('Pootlepress_Updater')) {
         public $update_path;
 
         /**
-         * Plugin Slug (plugin_directory/plugin_file.php)
+         * Plugin Slug ( plugin_directory/plugin_file.php )
          * @var string
          */
         public $plugin_slug;
 
         /**
-         * Plugin name (plugin_file)
+         * Plugin name ( plugin_file )
          * @var string
          */
         public $slug;
@@ -35,21 +35,21 @@ if (!class_exists('Pootlepress_Updater')) {
          * @param string $update_path
          * @param string $plugin_slug
          */
-        function __construct($current_version, $update_path, $plugin_slug)
+        function __construct( $current_version, $update_path, $plugin_slug )
         {
             // Set the class public variables
             $this->current_version = $current_version;
             $this->update_path = $update_path;
             $this->plugin_slug = $plugin_slug;
-            list ($t1, $t2) = explode('/', $plugin_slug);
+            list ( $t1, $t2 ) = explode( '/', $plugin_slug );
             $this->slug = $t1;
 
             // define the alternative API for updating checking
-            add_filter('pre_set_site_transient_update_plugins', array(&$this, 'check_update'));
+            add_filter( 'pre_set_site_transient_update_plugins', array( &$this, 'check_update' ) );
 
             // Define the alternative response for information checking
             // this filter is called when display info in update-core.php
-            add_filter('plugins_api', array(&$this, 'check_info'), 10, 3);
+            add_filter( 'plugins_api', array( &$this, 'check_info' ), 10, 3 );
         }
 
         /**
@@ -58,9 +58,9 @@ if (!class_exists('Pootlepress_Updater')) {
          * @param $transient
          * @return object $ transient
          */
-        public function check_update($transient)
+        public function check_update( $transient )
         {
-            if (isset($transient->response[$this->plugin_slug])) {
+            if ( isset( $transient->response[$this->plugin_slug] ) ) {
                 return $transient;
             }
 
@@ -68,23 +68,23 @@ if (!class_exists('Pootlepress_Updater')) {
             $remote_version = $this->getRemote_version();
 
             // If a newer version is available, add the update
-            if (version_compare($this->current_version, $remote_version, '<')) {
+            if ( version_compare( $this->current_version, $remote_version, '<' ) ) {
                 $obj = new stdClass();
                 $obj->slug = $this->slug;
                 $obj->new_version = $remote_version;
                 $obj->url = $this->update_path;
 
-                $idx = strpos($this->update_path, '?');
+                $idx = strpos( $this->update_path, '?' );
                 $s = '?';
-                if ($idx !== false) {
+                if ( $idx ! == false ) {
                     $s = '&';
                 } else {
                     $s = '?';
                 }
-                $obj->package = $this->update_path . $s . "plugin=" . urlencode($this->slug); // this is the value that will be used to download package
+                $obj->package = $this->update_path . $s . "plugin=" . urlencode( $this->slug ); // this is the value that will be used to download package
                 $transient->response[$this->plugin_slug] = $obj;
             }
-//            var_dump($transient);
+//            var_dump( $transient );
             return $transient;
         }
 
@@ -96,9 +96,9 @@ if (!class_exists('Pootlepress_Updater')) {
          * @param object $arg
          * @return bool|object
          */
-        public function check_info($false, $action, $arg)
+        public function check_info( $false, $action, $arg )
         {
-            if ($arg->slug === $this->slug) {
+            if ( $arg->slug === $this->slug ) {
                 $information = $this->getRemote_information();
                 return $information;
             }
@@ -111,9 +111,9 @@ if (!class_exists('Pootlepress_Updater')) {
          */
         public function getRemote_version()
         {
-            $request = wp_remote_post($this->update_path, array('body' => array('action' => 'version', 'plugin' => $this->slug)));
+            $request = wp_remote_post( $this->update_path, array( 'body' => array( 'action' => 'version', 'plugin' => $this->slug ) ) );
 
-            if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
+            if ( ! is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) === 200 ) {
                 return $request['body'];
             }
             return false;
@@ -126,9 +126,9 @@ if (!class_exists('Pootlepress_Updater')) {
          */
         public function getRemote_information()
         {
-            $request = wp_remote_post($this->update_path, array('body' => array('action' => 'info', 'plugin' => $this->slug)));
-            if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
-                return unserialize($request['body']);
+            $request = wp_remote_post( $this->update_path, array( 'body' => array( 'action' => 'info', 'plugin' => $this->slug ) ) );
+            if ( ! is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) === 200 ) {
+                return unserialize( $request['body'] );
             }
             return false;
         }
@@ -139,8 +139,8 @@ if (!class_exists('Pootlepress_Updater')) {
          */
         public function getRemote_license()
         {
-            $request = wp_remote_post($this->update_path, array('body' => array('action' => 'license')));
-            if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
+            $request = wp_remote_post( $this->update_path, array( 'body' => array( 'action' => 'license' ) ) );
+            if ( ! is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) === 200 ) {
                 return $request['body'];
             }
             return false;

@@ -128,7 +128,7 @@ function black_studio_tinymce_apply_smilies_to_widget_text( $text ) {
  * @since 1.0.0
  * @deprecated 2.0.0
  */
-function black_studio_tinymce_upload_iframe_src( $arg ){
+function black_studio_tinymce_upload_iframe_src( $arg ) {
 	_deprecated_function( __FUNCTION__, '2.0.0', 'bstw()->compatibility()->wordpress()->wp_pre_35_upload_iframe_src( ... )' );
 	bstw()->compatibility()->wordpress()->wp_pre_35_upload_iframe_src( $arg );
 }

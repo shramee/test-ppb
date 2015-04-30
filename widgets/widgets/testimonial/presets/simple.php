@@ -2,5 +2,5 @@
 
 return array(
 	'clean' => array(
-	),
-);
+	 ),
+ );

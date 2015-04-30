@@ -126,7 +126,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Initialize compatibility for WP Page Widget plugin (only for WordPress 3.3+)
+		 * Initialize compatibility for WP Page Widget plugin ( only for WordPress 3.3+ )
 		 *
 		 * @uses add_filter()
 		 * @uses add_action()
@@ -183,11 +183,11 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 				array( 'jquery', 'editor', 'quicktags', $main_script ),
 				bstw()->get_version(),
 				true
-			);
+			 );
 		}
 
 		/**
-		 * Compatibility with Page Builder (SiteOrigin Panels)
+		 * Compatibility with Page Builder ( SiteOrigin Panels )
 		 *
 		 * @uses add_action()
 		 *
@@ -200,7 +200,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Initialize compatibility for Page Builder (SiteOrigin Panels)
+		 * Initialize compatibility for Page Builder ( SiteOrigin Panels )
 		 *
 		 * @uses add_filter()
 		 * @uses add_action()
@@ -213,10 +213,10 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 */
 		public function siteorigin_panels_admin_init() {
 //			if ( is_admin() &&
-//				(is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ||
-//					is_plugin_active( 'page-builder-for-canvas-master/page-builder-for-canvas.php' ))
+//				( is_plugin_active( 'siteorigin-panels/siteorigin-panels.php' ) ||
+//					is_plugin_active( 'page-builder-for-canvas-master/page-builder-for-canvas.php' ) )
 			// This VE2 is bundled in Page Builder, so don't need to check for Page Builder
-			if (is_admin()) {
+			if ( is_admin() ) {
 				add_filter( 'siteorigin_panels_widget_object', array( $this, 'siteorigin_panels_widget_object' ), 10 );
 				add_filter( 'black_studio_tinymce_container_selectors', array( $this, 'siteorigin_panels_container_selectors' ) );
 				add_filter( 'black_studio_tinymce_activate_events', array( $this, 'siteorigin_panels_activate_events' ) );
@@ -227,7 +227,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Remove widget number to prevent translation when using Page Builder (SiteOrigin Panels) + WPML String Translation
+		 * Remove widget number to prevent translation when using Page Builder ( SiteOrigin Panels ) + WPML String Translation
 		 *
 		 * @param object $the_widget
 		 * @return object
@@ -241,7 +241,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Add selector for widget detection for Page Builder (SiteOrigin Panels)
+		 * Add selector for widget detection for Page Builder ( SiteOrigin Panels )
 		 *
 		 * @param string[] $selectors
 		 * @return string[]
@@ -253,7 +253,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Add activate events for Page Builder (SiteOrigin Panels)
+		 * Add activate events for Page Builder ( SiteOrigin Panels )
 		 *
 		 * @param string[] $events
 		 * @return string[]
@@ -265,7 +265,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Add deactivate events for Page Builder (SiteOrigin Panels)
+		 * Add deactivate events for Page Builder ( SiteOrigin Panels )
 		 *
 		 * @param string[] $events
 		 * @return string[]
@@ -277,7 +277,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Add pages filter to enable editor for Page Builder (SiteOrigin Panels)
+		 * Add pages filter to enable editor for Page Builder ( SiteOrigin Panels )
 		 *
 		 * @param string[] $pages
 		 * @return string[]
@@ -293,12 +293,12 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		}
 
 		/**
-		 * Disable old compatibility code provided by Page Builder (SiteOrigin Panels)
+		 * Disable old compatibility code provided by Page Builder ( SiteOrigin Panels )
 		 *
 		 * @return void
 		 * @since 2.0.0
 		 */
-		public function siteorigin_panels_disable_compat( ) {
+		public function siteorigin_panels_disable_compat() {
 			remove_action( 'admin_init', 'siteorigin_panels_black_studio_tinymce_admin_init' );
 			remove_action( 'admin_enqueue_scripts', 'siteorigin_panels_black_studio_tinymce_admin_enqueue', 15 );
 		}

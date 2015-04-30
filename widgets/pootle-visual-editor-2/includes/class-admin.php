@@ -101,7 +101,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		}
 
 		/**
-		 * Add actions and filters (only in widgets admin page)
+		 * Add actions and filters ( only in widgets admin page )
 		 *
 		 * @uses add_action()
 		 * @uses add_filter()
@@ -142,7 +142,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		public function enqueue_media() {
 			// Add support for thickbox media dialog
 			add_thickbox();
-			// New media modal dialog (WP 3.5+)
+			// New media modal dialog ( WP 3.5+ )
 			if ( function_exists( 'wp_enqueue_media' ) ) {
 				wp_enqueue_media();
 			}
@@ -182,7 +182,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 				plugins_url( 'css/' . $style . $suffix. '.css', dirname( __FILE__ ) ),
 				array(),
 				bstw()->get_version()
-			);
+			 );
 		}
 
 		/**
@@ -223,7 +223,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 				array( 'jquery', 'editor', 'quicktags' ),
 				bstw()->get_version(),
 				true
-			);
+			 );
 		}
 
 		/**
@@ -245,7 +245,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 				'deactivate_events' => $deactivate_events,
 				/* translators: error message shown when a duplicated widget ID is detected */
 				'error_duplicate_id' => __( 'ERROR: Duplicate widget ID detected. To avoid content loss, please create a new widget with the same content and then delete this one.', 'black-studio-tinymce-widget' )
-			);
+			 );
 			wp_localize_script( apply_filters( 'black-studio-tinymce-widget-script', 'black-studio-tinymce-widget' ), 'bstw_data', $data );
 		}
 
@@ -315,7 +315,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 					'wp_skip_init' => 'widget-black-studio-tinymce-__i__-text' == $editor_id,
 					'add_unload_trigger' => false,
 					'wp_autoresize_on' => false,
-				);
+				 );
 				$settings['editor_height'] = 350;
 				$settings['dfw'] = true;
 				$settings['editor_class'] = 'black-studio-tinymce';
@@ -343,7 +343,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 				'https://twitter.com/blackstudioita' => __( 'Follow', 'black-studio-tinymce-widget' ),
 				/* translators: text used for donation link */
 				'http://www.blackstudio.it/en/wordpress-plugins/black-studio-tinymce-widget/' => __( 'Donate', 'black-studio-tinymce-widget' ),
-			);
+			 );
 		}
 
 		/**
@@ -394,7 +394,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 * @since 2.1.0
 		 */
 		public function tinymce_fix_rtl( $settings ) {
-			// This fix has to be applied to all editor instances (not just BSTW ones)
+			// This fix has to be applied to all editor instances ( not just BSTW ones )
 			if ( is_rtl() && isset( $settings['plugins'] ) && ',directionality' == $settings['plugins'] ) {
 				unset( $settings['plugins'] );
 			}

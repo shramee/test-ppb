@@ -1,8 +1,8 @@
 <?php
 
 if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
-    if (!class_exists( 'WP_Customize_Control' )) {
-        require_once(ABSPATH . '/wp-includes/class-wp-customize-control.php');
+    if ( ! class_exists( 'WP_Customize_Control' ) ) {
+        require_once( ABSPATH . '/wp-includes/class-wp-customize-control.php' );
     }
 
 	class PootlePage_Border_Control extends WP_Customize_Control {
@@ -39,11 +39,11 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
             wp_enqueue_script( 'wp-color-picker' );
 
             // load in footer, so will appear after WP customize-base.js and customize-controls.js
-            wp_enqueue_script('pootlepage-customize-controls', plugin_dir_url($PootlePageFile) . 'js/customize-controls.js', array('jquery'), false, true);
+            wp_enqueue_script( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'js/customize-controls.js', array( 'jquery' ), false, true );
 
 
             wp_enqueue_style( 'wp-color-picker' );
-            wp_enqueue_style('pootlepage-customize-controls', plugin_dir_url($PootlePageFile) . 'css/customize-controls.css');
+            wp_enqueue_style( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'css/customize-controls.css' );
 
             parent::enqueue();
         }
@@ -51,7 +51,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
         public function get_border_width_control() {
 
             // Variables used in view
-            $value          = $this->value('border_width');
+            $value          = $this->value( 'border_width' );
             $step           = 1;
             $min_range      = 0;
             $max_range      = 20;
@@ -68,7 +68,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
                 <input class='pp-border-width-number' type="number" min="<?php echo $min_range ?>"
                        max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
                        default="<?php echo $default_amount ?>"
-                    <?php $this->link('border_width') ?>
+                    <?php $this->link( 'border_width' ) ?>
                     />
                 px
 
@@ -80,7 +80,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
         public function get_border_style_control() {
 
             // Get defaults and current value
-            $this_value      = $this->value('border_style');
+            $this_value      = $this->value( 'border_style' );
             $default_value   = $this->default['border_style'];
             $current_value   = empty( $this_value ) ? $default_value : $this_value;
 
@@ -93,11 +93,11 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
             // Get control view
             ?>
             <label><?php _e( 'Border Style', 'scratch' ); ?>
-                <select class='pp-border-style-list' <?php $this->link('border_style') ?> data-default-value="<?php echo $default_value ?>" autocomplete="off">
+                <select class='pp-border-style-list' <?php $this->link( 'border_style' ) ?> data-default-value="<?php echo $default_value ?>" autocomplete="off">
 
 
                     <?php foreach ( $default_styles as $id => $text ) : ?>
-                        <option value="<?php echo $id; ?>" data-font-type="default" <?php selected( $current_value, $id ); ?>><?php esc_html_e($text) ?></option>
+                        <option value="<?php echo $id; ?>" data-font-type="default" <?php selected( $current_value, $id ); ?>><?php esc_html_e( $text ) ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
@@ -106,7 +106,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 
         public function get_border_color_control() {
             // Variables used in view
-            $value         = $this->value('border_color');
+            $value         = $this->value( 'border_color' );
             $default_color = $this->default['border_color'];
             $current_color = isset( $value ) ? $value : $default_color;
 
@@ -115,7 +115,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
             <label><?php _e( 'Border Color', 'scratch' ); ?>
                 <input class="color-picker-hex pp-font-color-text-box" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value' ); ?>"
                        value="<?php echo $current_color; ?>" data-default-color="<?php echo $default_color ?>"
-                    <?php $this->link('border_color') ?>
+                    <?php $this->link( 'border_color' ) ?>
                     />
             </label>
 

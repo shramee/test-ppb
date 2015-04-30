@@ -32,7 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * - woo_nav_custom()
  */
 
-if (!class_exists('Pootlepress_Text_Widget_Plugin')) {
+if ( ! class_exists( 'Pootlepress_Text_Widget_Plugin' ) ) {
 
     class Pootlepress_Text_Widget_Plugin
     {
@@ -47,14 +47,14 @@ if (!class_exists('Pootlepress_Text_Widget_Plugin')) {
          * @since  1.0.0
          * @return  void
          */
-        public function __construct($file)
+        public function __construct( $file )
         {
             $this->file = $file;
             $this->load_plugin_textdomain();
-            add_action('init', array(&$this, 'load_localisation'), 0);
+            add_action( 'init', array( &$this, 'load_localisation' ), 0 );
 
             // Run this on activation.
-            register_activation_hook($file, array(&$this, 'activation'));
+            register_activation_hook( $file, array( &$this, 'activation' ) );
 
         } // End __construct()
 
@@ -66,7 +66,7 @@ if (!class_exists('Pootlepress_Text_Widget_Plugin')) {
          */
         public function load_localisation()
         {
-            load_plugin_textdomain($this->token, false, dirname(plugin_basename($this->file)) . '/lang/');
+            load_plugin_textdomain( $this->token, false, dirname( plugin_basename( $this->file ) ) . '/lang/' );
         } // End load_localisation()
 
         /**
@@ -79,10 +79,10 @@ if (!class_exists('Pootlepress_Text_Widget_Plugin')) {
         {
             $domain = $this->token;
             // The "plugin_locale" filter is also used in load_plugin_textdomain()
-            $locale = apply_filters('plugin_locale', get_locale(), $domain);
+            $locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 
-            load_textdomain($domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo');
-            load_plugin_textdomain($domain, FALSE, dirname(plugin_basename($this->file)) . '/lang/');
+            load_textdomain( $domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo' );
+            load_plugin_textdomain( $domain, FALSE, dirname( plugin_basename( $this->file ) ) . '/lang/' );
         } // End load_plugin_textdomain()
 
         /**
@@ -104,8 +104,8 @@ if (!class_exists('Pootlepress_Text_Widget_Plugin')) {
          */
         private function register_plugin_version()
         {
-            if ($this->version != '') {
-                update_option($this->token . '-version', $this->version);
+            if ( $this->version ! = '' ) {
+                update_option( $this->token . '-version', $this->version );
             }
         } // End register_plugin_version()
 

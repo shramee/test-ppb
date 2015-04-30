@@ -2,14 +2,14 @@
 
 $health = 'ok';
 
-if (!function_exists('check_main_heading')) {
+if ( ! function_exists( 'check_main_heading' ) ) {
     function check_main_heading() {
         global $health;
-        if (!function_exists('woo_options_add') ) {
-            function woo_options_add($options) {
-                $cx_heading = array( 'name' => __('Canvas Extensions', 'pootlepress-canvas-extensions' ),
+        if ( ! function_exists( 'woo_options_add' ) ) {
+            function woo_options_add( $options ) {
+                $cx_heading = array( 'name' => __( 'Canvas Extensions', 'pootlepress-canvas-extensions' ),
                     'icon' => 'favorite', 'type' => 'heading' );
-                if (!in_array($cx_heading, $options))
+                if ( ! in_array( $cx_heading, $options ) )
                     $options[] = $cx_heading;
                 return $options;
             }
@@ -21,18 +21,18 @@ if (!function_exists('check_main_heading')) {
 
 add_action( 'admin_init', 'poo_commit_suicide' );
 
-if(!function_exists('poo_commit_suicide')) {
+if ( ! function_exists( 'poo_commit_suicide' ) ) {
     function poo_commit_suicide() {
         global $health;
-        $pluginFile = str_replace('-functions', '', __FILE__);
-        $plugin = plugin_basename($pluginFile);
+        $pluginFile = str_replace( '-functions', '', __FILE__ );
+        $plugin = plugin_basename( $pluginFile );
         $plugin_data = get_plugin_data( $pluginFile, false );
-        if ( $health == 'ng' && is_plugin_active($plugin) ) {
+        if ( $health == 'ng' && is_plugin_active( $plugin ) ) {
             deactivate_plugins( $plugin );
             wp_die( "ERROR: <strong>woo_options_add</strong> function already defined by another plugin. " .
                 $plugin_data['Name']. " is unable to continue and has been deactivated. " .
                 "<br /><br />Please contact PootlePress at <a href=\"mailto:support@pootlepress.com?subject=Woo_Options_Add Conflict\"> support@pootlepress.com</a> for additional information / assistance." .
-                "<br /><br />Back to the WordPress <a href='".get_admin_url(null, 'plugins.php')."'>Plugins page</a>." );
+                "<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
         }
     }
 }
@@ -42,8 +42,8 @@ if(!function_exists('poo_commit_suicide')) {
 //
 // Override Canvas woo_image, to add "enable" checking for Pootle Post Loop Widget
 //
-if ( !function_exists('woo_image') ) {
-    function woo_image($args) {
+if ( ! function_exists( 'woo_image' ) ) {
+    function woo_image( $args ) {
 
         /* ------------------------------------------------------------------------- */
         /* SET VARIABLES */
@@ -85,9 +85,9 @@ if ( !function_exists('woo_image') ) {
 
         extract( $args );
 
-        $enable = get_option('pp_pb_post_loop_thumbnail_enable', '1') == true;
-        if (!$enable) {
-            if ($return) {
+        $enable = get_option( 'pp_pb_post_loop_thumbnail_enable', '1' ) == true;
+        if ( ! $enable ) {
+            if ( $return ) {
                 return '';
             } else {
                 return;
@@ -120,7 +120,7 @@ if ( !function_exists('woo_image') ) {
         /* ------------------------------------------------------------------------- */
 
         // When a custom image is sent through
-        if ( $src != '' ) {
+        if ( $src ! = '' ) {
             $custom_field = esc_url( $src );
             $link = 'img';
 
@@ -136,7 +136,7 @@ if ( !function_exists('woo_image') ) {
 
                 // Dynamically resize the post thumbnail
                 $vt_crop = get_option( 'woo_pis_hard_crop' );
-                if ($vt_crop == 'true' ) $vt_crop = true; else $vt_crop = false;
+                if ( $vt_crop == 'true' ) $vt_crop = true; else $vt_crop = false;
                 $vt_image = vt_resize( $thumb_id, '', $width, $height, $vt_crop );
 
                 // Set fields for output
@@ -162,15 +162,15 @@ if ( !function_exists('woo_image') ) {
         // Automatic Image Thumbs - get first image from post attachment
         if ( empty( $custom_field ) && get_option( 'woo_auto_img' ) == 'true' && empty( $img_link ) && ! ( is_singular() && in_the_loop() && $link == 'src' ) ) {
 
-            if( $offset >= 1 )
+            if ( $offset >= 1 )
                 $repeat = $repeat + $offset;
 
-            $attachments = get_children( array(	'post_parent' => $id,
+            $attachments = get_children( array( 	'post_parent' => $id,
                     'numberposts' => $repeat,
                     'post_type' => 'attachment',
                     'post_mime_type' => 'image',
                     'order' => 'DESC',
-                    'orderby' => 'menu_order date')
+                    'orderby' => 'menu_order date' )
             );
 
             // Search for and get the post attachment
@@ -208,15 +208,15 @@ if ( !function_exists('woo_image') ) {
                 $post = get_post( $id );
                 ob_start();
                 ob_end_clean();
-                $output = preg_match_all( '/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches );
-                if ( !empty($matches[1][0]) ) {
+                $output = preg_match_all( '/<img.+src=[\'"]( [^\'"]+ )[\'"].*>/i', $post->post_content, $matches );
+                if ( ! empty( $matches[1][0] ) ) {
 
                     // Save Image URL
                     $custom_field = esc_url( $matches[1][0] );
 
                     // Search for ALT tag
-                    $output = preg_match_all( '/<img.+alt=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches );
-                    if ( !empty($matches[1][0]) ) {
+                    $output = preg_match_all( '/<img.+alt=[\'"]( [^\'"]+ )[\'"].*>/i', $post->post_content, $matches );
+                    if ( ! empty( $matches[1][0] ) ) {
                         $alt = esc_attr( $matches[1][0] );
                     }
                 }
@@ -238,14 +238,14 @@ if ( !function_exists('woo_image') ) {
             // Check if default placeholder image is uploaded
             // $placeholder = get_option( 'framework_woo_default_image' );
             $placeholder = WF()->get_placeholder_image_url();
-            if ( $placeholder && !(is_singular() && in_the_loop()) ) {
+            if ( $placeholder && ! ( is_singular() && in_the_loop() ) ) {
                 $custom_field = esc_url( $placeholder );
 
                 // Resize the placeholder if
                 if ( get_option( 'woo_post_image_support' ) == 'true' && get_option( 'woo_pis_resize' ) == 'true' ) {
                     // Dynamically resize the post thumbnail
                     $vt_crop = get_option( 'woo_pis_hard_crop' );
-                    if ($vt_crop == 'true' ) $vt_crop = true; else $vt_crop = false;
+                    if ( $vt_crop == 'true' ) $vt_crop = true; else $vt_crop = false;
                     $vt_image = vt_resize( '', $placeholder, $width, $height, $vt_crop );
 
                     // Set fields for output
@@ -258,7 +258,7 @@ if ( !function_exists('woo_image') ) {
             }
         }
 
-        if(empty( $src_arr ) && empty( $img_link ) ) { $src_arr[] = $custom_field; }
+        if ( empty( $src_arr ) && empty( $img_link ) ) { $src_arr[] = $custom_field; }
 
         /* ------------------------------------------------------------------------- */
         /* BEGIN OUTPUT */
@@ -277,16 +277,16 @@ if ( !function_exists('woo_image') ) {
         if ( $class ) $class = 'woo-image ' . esc_attr( $class ); else $class = 'woo-image';
 
         // Do check to verify if images are smaller then specified.
-        if($force == true){ $set_width = ''; $set_height = ''; }
+        if ( $force == true ) { $set_width = ''; $set_height = ''; }
 
         // WP Post Thumbnail
-        if( ! empty( $img_link ) ) {
+        if ( ! empty( $img_link ) ) {
 
-            if( $link == 'img' ) {  // Output the image without anchors
+            if ( $link == 'img' ) {  // Output the image without anchors
                 $output .= wp_kses_post( $before );
                 $output .= $img_link;
                 $output .= wp_kses_post( $after );
-            } elseif( $link == 'url' ) {  // Output the large image
+            } elseif ( $link == 'url' ) {  // Output the large image
                 $src = wp_get_attachment_image_src( $thumb_id, 'large', true );
                 $custom_field = esc_url( $src[0] );
                 $output .= $custom_field;
@@ -302,7 +302,7 @@ if ( !function_exists('woo_image') ) {
                 $title = 'title="' . esc_attr( get_the_title( $id ) ) .'"';
 
                 $output .= wp_kses_post( $before );
-                if($href == false){
+                if ( $href == false ) {
                     $output .= $img_link;
                 } else {
                     $output .= '<a ' . $title . ' href="' . esc_url( $href ) . '" '. $rel .'>' . $img_link . '</a>';
@@ -313,7 +313,7 @@ if ( !function_exists('woo_image') ) {
         }
 
         // Use thumb.php to resize. Skip if image has been natively resized with vt_resize. Make sure thumb.php exists on purpose in a child theme.
-        elseif ( get_option( 'woo_resize') == 'true' && empty( $vt_image['url'] )/* && file_exists( get_stylesheet_directory_uri() . '/thumb.php' )*/ ) {
+        elseif ( get_option( 'woo_resize' ) == 'true' && empty( $vt_image['url'] )/* && file_exists( get_stylesheet_directory_uri() . '/thumb.php' )*/ ) {
 
             foreach( $src_arr as $key => $custom_field ) {
 
@@ -322,14 +322,14 @@ if ( !function_exists('woo_image') ) {
                 $custom_field = cleanSource( $custom_field );
 
                 // Check if WPMU and set correct path AND that image isn't external
-                if ( function_exists( 'get_current_site') ) {
+                if ( function_exists( 'get_current_site' ) ) {
                     get_current_site();
                     //global $blog_id; Breaks with WP3 MS
-                    if ( !$blog_id ) {
+                    if ( ! $blog_id ) {
                         global $current_blog;
                         $blog_id = $current_blog->blog_id;
                     }
-                    if ( isset($blog_id) && $blog_id > 0 ) {
+                    if ( isset( $blog_id ) && $blog_id > 0 ) {
                         $imageParts = explode( 'files/', $custom_field );
                         if ( isset( $imageParts[1] ) )
                             $custom_field = '/blogs.dir/' . $blog_id . '/files/' . $imageParts[1];
@@ -337,18 +337,18 @@ if ( !function_exists('woo_image') ) {
                 }
 
                 //Set the ID to the Attachment's ID if it is an attachment
-                if($is_auto_image == true){
+                if ( $is_auto_image == true ) {
                     $quick_id = $attachment_id[$key];
                 } else {
                     $quick_id = $id;
                 }
 
                 //Set custom meta
-                if ($meta) {
+                if ( $meta ) {
                     $alt = $meta;
                     $title = 'title="' . esc_attr( $meta ) . '"';
                 } else {
-                    if ( ( $alt != '' ) || ! ( $alt = get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) ) ) {
+                    if ( ( $alt ! = '' ) || ! ( $alt = get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) ) ) {
                         $alt = esc_attr( get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) );
                     } else {
                         $alt = esc_attr( get_the_title( $quick_id ) );
@@ -357,21 +357,21 @@ if ( !function_exists('woo_image') ) {
                 }
 
                 // Set alignment parameter
-                if ( $alignment != '' )
+                if ( $alignment ! = '' )
                     $alignment = '&amp;a=' . urlencode( $alignment );
 
                 $img_url = esc_url( get_template_directory_uri() . '/functions/thumb.php?src=' . $custom_field . '&amp;w=' . $width . '&amp;h=' . $height . '&amp;zc=1&amp;q=' . $quality . $alignment );
                 $img_link = '<img src="' . $img_url . '" alt="' . esc_attr( $alt ) . '" class="' . esc_attr( stripslashes( $class ) ) . '" ' . $set_width . $set_height . ' />';
 
-                if( $link == 'img' ) {  // Just output the image
+                if ( $link == 'img' ) {  // Just output the image
                     $output .= wp_kses_post( $before );
                     $output .= $img_link;
                     $output .= wp_kses_post( $after );
 
-                } elseif( $link == 'url' ) {  // Output the image without anchors
+                } elseif ( $link == 'url' ) {  // Output the image without anchors
 
-                    if($is_auto_image == true){
-                        $src = wp_get_attachment_image_src($thumb_id, 'large', true);
+                    if ( $is_auto_image == true ) {
+                        $src = wp_get_attachment_image_src( $thumb_id, 'large', true );
                         $custom_field = esc_url( $src[0] );
                     }
                     $output .= $href;
@@ -396,14 +396,14 @@ if ( !function_exists('woo_image') ) {
             foreach( $src_arr as $key => $custom_field ) {
 
                 //Set the ID to the Attachment's ID if it is an attachment
-                if( $is_auto_image == true && isset( $attachment_id[$key] ) ){
+                if ( $is_auto_image == true && isset( $attachment_id[$key] ) ) {
                     $quick_id = $attachment_id[$key];
                 } else {
                     $quick_id = $id;
                 }
 
                 //Set custom meta
-                if ($meta) {
+                if ( $meta ) {
                     $alt = esc_attr( $meta );
                     $title = 'title="'. esc_attr( $meta ) .'"';
                 } else {
@@ -426,7 +426,7 @@ if ( !function_exists('woo_image') ) {
                     $output .= $img_link;
                     $output .= wp_kses_post( $after );
 
-                } elseif( $link == 'url' ) {  // Output the URL to original image
+                } elseif ( $link == 'url' ) {  // Output the URL to original image
                     if ( $vt_image['url'] || $is_auto_image ) {
                         $src = wp_get_attachment_image_src( $thumb_id, 'full', true );
                         $custom_field = esc_url( $src[0] );

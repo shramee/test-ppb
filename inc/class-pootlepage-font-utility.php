@@ -82,9 +82,9 @@ if ( ! class_exists( 'PootlePage_Font_Utility' ) ) :
 
         public static function get_all_fonts() {
 
-            if (function_exists('wf_get_system_fonts') &&
-                function_exists('wf_get_google_fonts') &&
-                function_exists('wf_get_system_fonts_test_cases')
+            if ( function_exists( 'wf_get_system_fonts' ) &&
+                function_exists( 'wf_get_google_fonts' ) &&
+                function_exists( 'wf_get_system_fonts_test_cases' )
             ) {
 
                 $font_faces = wf_get_system_fonts();
@@ -122,7 +122,7 @@ if ( ! class_exists( 'PootlePage_Font_Utility' ) ) :
                 );
 
                 $font_faces = array();
-                foreach ($font_list as $k => $v) {
+                foreach ( $font_list as $k => $v ) {
                     $font_faces[$k] = $k;
                 }
 

@@ -2,8 +2,8 @@
 do_action( 'wf_screen_get_header', 'woothemes', 'themes' );
 
 
-$tab = isset($_GET['tab']) ? $_GET['tab'] : 'general';
-if (empty($tab)) {
+$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
+if ( empty( $tab ) ) {
     $tab = 'general';
 }
 ?>
@@ -19,12 +19,12 @@ if (empty($tab)) {
     <div class="clear"></div>
 
     <?php
-    if ($tab != 'styling') {
+    if ( $tab ! = 'styling' ) {
 
         ?><form action='options.php' method="POST"><?php
 
         do_settings_sections( 'pootlepage-' . $tab );
-        settings_fields( 'pootlepage-' . $tab);
+        settings_fields( 'pootlepage-' . $tab );
         submit_button();
 
         ?></form><?php

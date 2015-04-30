@@ -1,8 +1,8 @@
 <?php
 
 if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
-    if (!class_exists( 'WP_Customize_Control' )) {
-        require_once(ABSPATH . '/wp-includes/class-wp-customize-control.php');
+    if ( ! class_exists( 'WP_Customize_Control' ) ) {
+        require_once( ABSPATH . '/wp-includes/class-wp-customize-control.php' );
     }
 
 	class PootlePage_Padding_Control extends WP_Customize_Control {
@@ -36,7 +36,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 
             global $PootlePageFile;
 
-            wp_enqueue_style('pootlepage-customize-controls', plugin_dir_url($PootlePageFile) . 'css/customize-controls.css');
+            wp_enqueue_style( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'css/customize-controls.css' );
 
             parent::enqueue();
         }
@@ -44,7 +44,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
         public function get_top_bottom_control() {
 
             // Variables used in view
-            $value          = $this->value('top_bottom_width');
+            $value          = $this->value( 'top_bottom_width' );
             $step           = 1;
             $min_range      = 0;
             $max_range      = 100;
@@ -59,7 +59,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
                 <input class='pp-top-bottom-width-number' type="number" min="<?php echo $min_range ?>"
                        max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
                        default="<?php echo $default_amount ?>"
-                    <?php $this->link('top_bottom_width') ?>
+                    <?php $this->link( 'top_bottom_width' ) ?>
                     />
                 px
 
@@ -71,7 +71,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
         public function get_left_right_control() {
 
             // Variables used in view
-            $value          = $this->value('left_right_width');
+            $value          = $this->value( 'left_right_width' );
             $step           = 1;
             $min_range      = 0;
             $max_range      = 100;
@@ -86,7 +86,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
                 <input class='pp-left-right-width-number' type="number" min="<?php echo $min_range ?>"
                        max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
                        default="<?php echo $default_amount ?>"
-                    <?php $this->link('left_right_width') ?>
+                    <?php $this->link( 'left_right_width' ) ?>
                     />
                 px
 

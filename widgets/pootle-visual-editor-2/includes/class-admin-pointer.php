@@ -65,7 +65,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		}
 
 		/**
-		 * Add actions and filters (only in widgets admin page)
+		 * Add actions and filters ( only in widgets admin page )
 		 *
 		 * @uses add_action()
 		 * @uses add_filter()
@@ -105,12 +105,12 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 				array( 'wp-pointer' ),
 				bstw()->get_version(),
 				true
-			);
+			 );
 			wp_localize_script( 'black-studio-tinymce-widget-pointer', 'bstw_pointers', $pointers );
 		}
 
 		/**
-		 * Load admin pointer(s)
+		 * Load admin pointer( s )
 		 *
 		 * @uses get_current_screen()
 		 * @uses apply_filters()
@@ -127,7 +127,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		}
 
 		/**
-		 * Remove dismissed pointer(s)
+		 * Remove dismissed pointer( s )
 		 *
 		 * @uses get_user_meta()
 		 * @uses get_current_user_id()
@@ -139,7 +139,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		public function filter_dismissed( $pointers ) {
 			$valid_pointers = array();
 			if ( is_array( $pointers ) ) {
-				$dismissed = explode( ',', (string) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
+				$dismissed = explode( ',', ( string ) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 				foreach ( $pointers as $pointer_id => $pointer ) {
 					if ( ! in_array( $pointer_id, $dismissed ) ) {
 						$pointer['pointer_id'] = $pointer_id;
@@ -151,7 +151,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		}
 
 		/**
-		 * Register admin pointer(s)
+		 * Register admin pointer( s )
 		 *
 		 * @param mixed[] $pointers
 		 * @return mixed[]
@@ -162,14 +162,14 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 				'target' => 'div[id$=black-studio-tinymce-__i__] .widget-top',
 				'options' => array(
 					'content' => sprintf( '<h3>%s</h3> <p>%s</p>',
-						/* translators: title for the dismissable admin pointer tooltip (same as plugin name) */
+						/* translators: title for the dismissable admin pointer tooltip ( same as plugin name ) */
 						__( 'Black Studio TinyMCE Widget', 'black-studio-tinymce-widget' ),
 						/* translators: text for the dismissable admin pointer tooltip */
 						__( 'The Visual Editor widget allows you to insert rich text and media objects in your sidebars', 'black-studio-tinymce-widget' )
-					),
+					 ),
 					'position' => array( 'edge' => 'left', 'align' => 'middle' )
-				)
-			);
+				 )
+			 );
 			return $pointers;
 		}
 

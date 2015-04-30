@@ -7,14 +7,14 @@
  * @return array|mixed|string
  * @filter content_save_pre
  */
-function siteorigin_panels_content_save_pre($content){
+function siteorigin_panels_content_save_pre( $content ) {
 	global $post;
 
-	if ( !siteorigin_panels_setting('copy-content') ) return $content;
+	if ( ! siteorigin_panels_setting( 'copy-content' ) ) return $content;
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return $content;
-	if ( empty( $_POST['_sopanels_nonce'] ) || !wp_verify_nonce( $_POST['_sopanels_nonce'], 'save' ) ) return $content;
-	if ( empty($_POST['panels_js_complete']) ) return $content;
-	if ( !current_user_can( 'edit_post', $post->ID ) ) return $content;
+	if ( empty( $_POST['_sopanels_nonce'] ) || ! wp_verify_nonce( $_POST['_sopanels_nonce'], 'save' ) ) return $content;
+	if ( empty( $_POST['panels_js_complete'] ) ) return $content;
+	if ( ! current_user_can( 'edit_post', $post->ID ) ) return $content;
 	if ( empty( $_POST['grids'] ) || empty( $_POST['grid_cells'] ) || empty( $_POST['widgets'] ) || empty( $_POST['panel_order'] ) ) return $content;
 
 	$data['grids'] = $_POST['grids'];
@@ -22,29 +22,29 @@ function siteorigin_panels_content_save_pre($content){
 	$data['widgets'] = $_POST['widgets'];
 	$data['panel_order'] = $_POST['panel_order'];
 	$data['action'] = 'siteorigin_panels_get_post_content';
-	$data['post_id'] = (string) $post->ID;
+	$data['post_id'] = ( string ) $post->ID;
 
-	$data['widgets'] = array_map('stripslashes_deep', $data['widgets']);
-	$data['_signature'] = sha1( NONCE_SALT . serialize($data) );
+	$data['widgets'] = array_map( 'stripslashes_deep', $data['widgets'] );
+	$data['_signature'] = sha1( NONCE_SALT . serialize( $data ) );
 
 	// This can cause a fatal error, so handle in a separate request.
-	$request = wp_remote_post( admin_url('admin-ajax.php?action=siteorigin_panels_get_post_content'), array(
+	$request = wp_remote_post( admin_url( 'admin-ajax.php?action=siteorigin_panels_get_post_content' ), array(
 		'method' => 'POST',
 		'timeout' => 5,
 		'redirection' => 0,
 		'body' => $data
-	) );
+	 ) );
 
-	if( !is_wp_error($request) && $request['response']['code'] == 200 && !empty($request['body']) ) $content = $request['body'];
+	if ( ! is_wp_error( $request ) && $request['response']['code'] == 200 && ! empty( $request['body'] ) ) $content = $request['body'];
 
 	return $content;
 }
-add_filter('content_save_pre', 'siteorigin_panels_content_save_pre');
+add_filter( 'content_save_pre', 'siteorigin_panels_content_save_pre' );
 
 /**
  * Ajax handler to get the HTML representation of the request.
  */
-function siteorigin_panels_content_save_pre_get(){
+function siteorigin_panels_content_save_pre_get() {
 	if ( empty( $_POST['grids'] ) || empty( $_POST['grid_cells'] ) || empty( $_POST['widgets'] ) || empty( $_POST['panel_order'] ) ) exit();
 	if ( empty( $_POST['_signature'] ) ) exit();
 
@@ -52,20 +52,20 @@ function siteorigin_panels_content_save_pre_get(){
 	$data = array(
 		'grids' => $_POST['grids'],
 		'grid_cells' => $_POST['grid_cells'],
-		'widgets' => array_map('stripslashes_deep', $_POST['widgets']),
+		'widgets' => array_map( 'stripslashes_deep', $_POST['widgets'] ),
 		'panel_order' => $_POST['panel_order'],
 		'action' => $_POST['action'],
 		'post_id' => $_POST['post_id'],
-	);
+	 );
 
 	// Use the signature to secure the request.
-	if( $sig != sha1( NONCE_SALT . serialize($data) ) ) exit();
+	if ( $sig ! = sha1( NONCE_SALT . serialize( $data ) ) ) exit();
 	
 	// This can cause a fatal error, so handle in a separate request.
 	$panels_data = siteorigin_panels_get_panels_data_from_post( $_POST );
 
 	$content = '';
-	if( !empty($panels_data['widgets']) ) {
+	if ( ! empty( $panels_data['widgets'] ) ) {
 		// Save the panels data into post_content for SEO and search plugins
 		$content = siteorigin_panels_render( $_POST['post_id'], false, $panels_data );
 		$content = preg_replace(
@@ -80,23 +80,23 @@ function siteorigin_panels_content_save_pre_get(){
 				'@<noframes[^>]*?.*?</noframes>@siu',
 				'@<noscript[^>]*?.*?</noscript>@siu',
 				'@<noembed[^>]*?.*?</noembed>@siu',
-			),
-			array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',),
+			 ),
+			array( ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ),
 			$content
-		);
-		$content = strip_tags($content, '<img><h1><h2><h3><h4><h5><h6><a><p><em><strong>');
-		$content = explode("\n", $content);
-		$content = array_map('trim', $content);
-		$content = implode("\n", $content);
+		 );
+		$content = strip_tags( $content, '<img><h1><h2><h3><h4><h5><h6><a><p><em><strong>' );
+		$content = explode( "\n", $content );
+		$content = array_map( 'trim', $content );
+		$content = implode( "\n", $content );
 
-		$content = preg_replace("/[\n]{2,}/", "\n\n", $content);
-		$content = trim($content);
+		$content = preg_replace( "/[\n]{2,}/", "\n\n", $content );
+		$content = trim( $content );
 	}
 
 	echo $content;
 	exit();
 }
-add_action('wp_ajax_nopriv_siteorigin_panels_get_post_content', 'siteorigin_panels_content_save_pre_get');
+add_action( 'wp_ajax_nopriv_siteorigin_panels_get_post_content', 'siteorigin_panels_content_save_pre_get' );
 
 /**
  * Convert form post data into more efficient panels data.
@@ -104,30 +104,30 @@ add_action('wp_ajax_nopriv_siteorigin_panels_get_post_content', 'siteorigin_pane
  * @param $form_post
  * @return array
  */
-function siteorigin_panels_get_panels_data_from_post($form_post){
+function siteorigin_panels_get_panels_data_from_post( $form_post ) {
 	$panels_data = array();
 	$panels_data['widgets'] = array_values( stripslashes_deep( isset( $form_post['widgets'] ) ? $form_post['widgets'] : array() ) );
 
-    // save data (e.g. row styling) even if no widget is in row
+    // save data ( e.g. row styling ) even if no widget is in row
 //	if ( empty( $panels_data['widgets'] ) ) return array();
 
 	foreach ( $panels_data['widgets'] as $i => $widget ) {
 
 		$info = $widget['info'];
-		if ( !class_exists( $info['class'] ) ) continue;
+		if ( ! class_exists( $info['class'] ) ) continue;
 
 		$the_widget = new $info['class'];
-		$widget = json_decode($widget['data'], true);
+		$widget = json_decode( $widget['data'], true );
 
-		if ( method_exists( $the_widget, 'update' ) && !empty($info['raw']) ) {
+		if ( method_exists( $the_widget, 'update' ) && ! empty( $info['raw'] ) ) {
 			$widget = $the_widget->update( $widget, $widget );
 		}
 
-		unset($info['raw']);
+		unset( $info['raw'] );
 		$widget['info'] = $info;
 
         // if widget style is not present in $_POST, set a default
-        if (!isset($info['style'])) {
+        if ( ! isset( $info['style'] ) ) {
             $widgetStyle = pp_get_default_widget_style();
 
             $info['style'] = $widgetStyle;
@@ -140,5 +140,5 @@ function siteorigin_panels_get_panels_data_from_post($form_post){
 	$panels_data['grids'] = array_values( stripslashes_deep( isset( $form_post['grids'] ) ? $form_post['grids'] : array() ) );
 	$panels_data['grid_cells'] = array_values( stripslashes_deep( isset( $form_post['grid_cells'] ) ? $form_post['grid_cells'] : array() ) );
 
-	return apply_filters('siteorigin_panels_panels_data_from_post', $panels_data);
+	return apply_filters( 'siteorigin_panels_panels_data_from_post', $panels_data );
 }

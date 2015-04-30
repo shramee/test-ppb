@@ -226,7 +226,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 
 		/**
 		 * Enable full media options in upload dialog for WordPress prior to 3.5
-		 * (this is done excluding post_id parameter in Thickbox iframe url)
+		 * ( this is done excluding post_id parameter in Thickbox iframe url )
 		 *
 		 * @global string $pagenow
 		 * @param string $upload_iframe_src
@@ -297,7 +297,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 				'remove_redundant_brs' => false,
 				'forced_root_block' => 'p',
 				'apply_source_formatting' => true,
-			);
+			 );
 			// Return modified settings
 			return array_merge( $settings, $custom_settings );
 		}

@@ -1,14 +1,14 @@
 <div class="jp-gui">
 	<ul class="jp-controls">
-		<li><a href="#" class="jp-play" tabindex="1"><?php esc_html_e('play', 'focus') ?></a></li>
-		<li><a href="#" class="jp-pause" tabindex="1"><?php esc_html_e('pause', 'focus') ?></a></li>
-		<li><a href="#" class="jp-stop" tabindex="1"><?php esc_html_e('stop', 'focus') ?></a></li>
+		<li><a href="#" class="jp-play" tabindex="1"><?php esc_html_e( 'play', 'focus' ) ?></a></li>
+		<li><a href="#" class="jp-pause" tabindex="1"><?php esc_html_e( 'pause', 'focus' ) ?></a></li>
+		<li><a href="#" class="jp-stop" tabindex="1"><?php esc_html_e( 'stop', 'focus' ) ?></a></li>
 
-		<li><a href="#" class="jp-full-screen" tabindex="1"><?php esc_html_e('full screen', 'focus') ?></a></li>
-		<li><a href="#" class="jp-restore-screen" tabindex="1"><?php esc_html_e('restore screen', 'focus') ?></a></li>
+		<li><a href="#" class="jp-full-screen" tabindex="1"><?php esc_html_e( 'full screen', 'focus' ) ?></a></li>
+		<li><a href="#" class="jp-restore-screen" tabindex="1"><?php esc_html_e( 'restore screen', 'focus' ) ?></a></li>
 
-		<li><a href="#" class="jp-mute" tabindex="1"><?php esc_html_e('mute', 'focus') ?></a></li>
-		<li><a href="#" class="jp-unmute" tabindex="1"><?php esc_html_e('unmute', 'focus') ?></a></li>
+		<li><a href="#" class="jp-mute" tabindex="1"><?php esc_html_e( 'mute', 'focus' ) ?></a></li>
+		<li><a href="#" class="jp-unmute" tabindex="1"><?php esc_html_e( 'unmute', 'focus' ) ?></a></li>
 	</ul>
 
 	<div class="sep jp-controls-sep"></div>

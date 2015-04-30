@@ -1,8 +1,8 @@
 <?php
 
 if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
-    if (!class_exists( 'WP_Customize_Control' )) {
-        require_once(ABSPATH . '/wp-includes/class-wp-customize-control.php');
+    if ( ! class_exists( 'WP_Customize_Control' ) ) {
+        require_once( ABSPATH . '/wp-includes/class-wp-customize-control.php' );
     }
 
 	class PootlePage_Font_Control extends WP_Customize_Control {
@@ -39,11 +39,11 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
             wp_enqueue_script( 'wp-color-picker' );
 
             // load in footer, so will appear after WP customize-base.js and customize-controls.js
-            wp_enqueue_script('pootlepage-customize-controls', plugin_dir_url($PootlePageFile) . 'js/customize-controls.js', array('jquery'), false, true);
+            wp_enqueue_script( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'js/customize-controls.js', array( 'jquery' ), false, true );
 
 
             wp_enqueue_style( 'wp-color-picker' );
-            wp_enqueue_style('pootlepage-customize-controls', plugin_dir_url($PootlePageFile) . 'css/customize-controls.css');
+            wp_enqueue_style( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'css/customize-controls.css' );
 
             parent::enqueue();
         }
@@ -65,7 +65,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
         public function get_font_family_control() {
 
             // Get defaults and current value
-            $this_value      = $this->value('font_id');
+            $this_value      = $this->value( 'font_id' );
             $default_value   = $this->default['font_id'];
             $current_value   = empty( $this_value ) ? '' : $this_value;
 
@@ -75,12 +75,12 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
             // Get control view
             ?>
             <label><?php _e( 'Font Family', 'scratch' ); ?>
-                <select class='sc-font-family-list' <?php $this->link('font_id') ?> data-default-value="<?php echo $default_value ?>" autocomplete="off">
-                    <option value="" <?php selected( $current_value, ''); ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
+                <select class='sc-font-family-list' <?php $this->link( 'font_id' ) ?> data-default-value="<?php echo $default_value ?>" autocomplete="off">
+                    <option value="" <?php selected( $current_value, '' ); ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
 
                     <?php
 
-                    if (function_exists('wf_get_system_fonts_test_cases')) {
+                    if ( function_exists( 'wf_get_system_fonts_test_cases' ) ) {
                         $test_cases = wf_get_system_fonts_test_cases();
                     } else {
                         $test_cases = array();
@@ -99,9 +99,9 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
                     }
 
                     ?>
-                    <!--                --><?php //foreach ( $all_fonts as $id => $properties ) : ?>
-                    <!--                    <option value="--><?php //echo $id; ?><!--" data-font-type="default" --><?php //selected( $current_value, $id ); ?><!-->--><?php //echo $properties['name']; ?><!--</option>-->
-                    <!--                --><?php //endforeach; ?>
+                    <! --                --><?php //foreach ( $all_fonts as $id => $properties ) : ?>
+                    <! --                    <option value="--><?php //echo $id; ?><! --" data-font-type="default" --><?php //selected( $current_value, $id ); ?><! -->--><?php //echo $properties['name']; ?><! --</option>-->
+                    <! --                --><?php //endforeach; ?>
                 </select>
             </label>
         <?php
@@ -111,7 +111,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
          * Test whether or not a typeface has been selected for a "typography" field.
          * @access  protected
          * @since   6.0.2
-         * @param   string $face      The noble warrior (typeface) to be tested.
+         * @param   string $face      The noble warrior ( typeface ) to be tested.
          * @param   string $test_case The test case. Does the warrior pass the ultimate test and reep eternal glory?
          * @return  bool       		  Whether or not eternal glory shall be achieved by the warrior.
          */
@@ -143,55 +143,55 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
          */
         public function get_font_weight_control() {
             // Get values
-            $this_value                = $this->value('font_weight_style');
-//			$font_id                   = $this->value('font_id');
-//            $font_id                   = empty($font_id) ? '' : $font_id;
-//            if ($font_id !== '') {
+            $this_value                = $this->value( 'font_weight_style' );
+//			$font_id                   = $this->value( 'font_id' );
+//            $font_id                   = empty( $font_id ) ? '' : $font_id;
+//            if ( $font_id ! == '' ) {
 //                $font                      = PNM_Font_Utility::get_font( $font_id );
 //            } else {
 //                $font = null;
 //            }
 
             $default_font_weight_style = $this->default['font_weight_style'];
-            $font_weight_style         = empty( $this_value) ? '' : $this_value;
+            $font_weight_style         = empty( $this_value ) ? '' : $this_value;
 
             // Get control view
             ?>
 
             <label><?php _e( 'Font Weight/Style', 'scratch' ); ?>
-                <select class="sc-font-weight-style-list" <?php $this->link('font_weight_style') ?> data-default-value="<?php echo $default_font_weight_style; ?>">
-                    <!--                --><?php //if ( $font ) : ?>
-                    <!--                    <option value="" --><?php //selected($font_weight_style, '') ?><!-- >--><?php //_e( '&mdash; Default &mdash;', 'scratch' ); ?><!--</option>-->
-                    <!---->
-                    <!--                    --><?php //foreach ( $font['font_weights'] as $key => $value ) : ?>
-                    <!--                        --><?php
+                <select class="sc-font-weight-style-list" <?php $this->link( 'font_weight_style' ) ?> data-default-value="<?php echo $default_font_weight_style; ?>">
+                    <! --                --><?php //if ( $font ) : ?>
+                    <! --                    <option value="" --><?php //selected( $font_weight_style, '' ) ?><! -- >--><?php //_e( '&mdash; Default &mdash;', 'scratch' ); ?><! --</option>-->
+                    <! ---->
+                    <! --                    --><?php //foreach ( $font['font_weights'] as $key => $value ) : ?>
+                    <! --                        --><?php
                     //                        $default_font_weight = '';
                     //
                     //                        // Set font style and weight
                     //                        $style_data = 'normal';
                     //                        $weight     = 500;
                     //
-                    //                        if ( strpos( $value, 'italic' ) !== false ) {
+                    //                        if ( strpos( $value, 'italic' ) ! == false ) {
                     //                            $style_data = 'italic';
                     //                        }
                     //
-                    //                        if ( $value !== 'regular' && $value !== 'italic' ) {
-                    //                            $weight = (int) substr( $value, 0, 3 );
+                    //                        if ( $value ! == 'regular' && $value ! == 'italic' ) {
+                    //                            $weight = ( int ) substr( $value, 0, 3 );
                     //                        }
                     //                        ?>
-                    <!--                        <option value="--><?php //echo $value ?><!--" --><?php //selected($font_weight_style, $value) ?><!-- data-stylesheet-url="--><?php //echo $font['urls'][ $value ] ?><!--" data-font-weight="--><?php //echo $weight; ?><!--" data-font-style="--><?php //echo $style_data; ?><!--">-->
-                    <!--                            --><?php //echo $value; ?>
-                    <!--                        </option>-->
-                    <!--                    --><?php //endforeach; ?>
-                    <!--                --><?php //else : ?>
-                    <option value="" <?php selected($font_weight_style, '') ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
+                    <! --                        <option value="--><?php //echo $value ?><! --" --><?php //selected( $font_weight_style, $value ) ?><! -- data-stylesheet-url="--><?php //echo $font['urls'][ $value ] ?><! --" data-font-weight="--><?php //echo $weight; ?><! --" data-font-style="--><?php //echo $style_data; ?><! --">-->
+                    <! --                            --><?php //echo $value; ?>
+                    <! --                        </option>-->
+                    <! --                    --><?php //endforeach; ?>
+                    <! --                --><?php //else : ?>
+                    <option value="" <?php selected( $font_weight_style, '' ) ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
                     <option value="100">100</option>
                     <option value="100italic">100italic</option>
                     <option value="400">400</option>
                     <option value="400italic">400italic</option>
                     <option value="700">700</option>
                     <option value="700italic">700italic</option>
-                    <!--                --><?php //endif; ?>
+                    <! --                --><?php //endif; ?>
                 </select>
             </label>
         <?php
@@ -249,7 +249,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
          */
         public function get_font_color_control() {
             // Variables used in view
-            $value         = $this->value('font_color');
+            $value         = $this->value( 'font_color' );
             $default_color = $this->default['font_color'];
             $current_color = isset( $value ) ? $value : $default_color;
 
@@ -258,7 +258,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
             <label><?php _e( 'Font Color', 'scratch' ); ?>
                 <input class="color-picker-hex sc-font-color-text-box" type="text" maxlength="7" placeholder="<?php esc_attr_e( 'Hex Value' ); ?>"
                        value="<?php echo $current_color; ?>" data-default-color="<?php echo $default_color ?>"
-                    <?php $this->link('font_color') ?>
+                    <?php $this->link( 'font_color' ) ?>
                     />
             </label>
 
@@ -277,7 +277,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
         public function get_font_size_control() {
 
             // Variables used in view
-            $value          = $this->value('font_size');
+            $value          = $this->value( 'font_size' );
             $step           = 1;//$this->font_properties['font_size_step'];
             $min_range      = 10;//$this->font_properties['font_size_min_range'];
             $max_range      = 100;//$this->font_properties['font_size_max_range'];
@@ -286,8 +286,8 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 
             $current_amount = isset( $value ) ? $value : $default_amount;
 
-            $unitValue      = $this->value('font_size_unit');
-            $current_unit   = isset($unitValue) ? $unitValue : $default_unit;
+            $unitValue      = $this->value( 'font_size_unit' );
+            $current_unit   = isset( $unitValue ) ? $unitValue : $default_unit;
 
             // Get control view
             ?>
@@ -296,11 +296,11 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
                 <input class='sc-font-size-number' type="number" min="<?php echo $min_range ?>"
                        max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
                        default="<?php echo $default_amount ?>"
-                    <?php $this->link('font_size') ?>
+                    <?php $this->link( 'font_size' ) ?>
                     />
-                <select class='sc-font-size-unit' data-default-value="<?php echo $default_unit ?>" <?php $this->link('font_size_unit') ?>  >
-                    <option value="px" <?php selected($current_unit, 'px') ?> >px</option>
-                    <option value="em" <?php selected($current_unit, 'em') ?> >em</option>
+                <select class='sc-font-size-unit' data-default-value="<?php echo $default_unit ?>" <?php $this->link( 'font_size_unit' ) ?>  >
+                    <option value="px" <?php selected( $current_unit, 'px' ) ?> >px</option>
+                    <option value="em" <?php selected( $current_unit, 'em' ) ?> >em</option>
                 </select>
 
             </label>
@@ -360,7 +360,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 
                     <?php $this->get_font_size_control(); ?>
 
-                    <!--                    <input type="hidden" class="sc-font-value" value="--><?php //esc_attr_e($this->value()) ?><!--" --><?php //$this->link(); ?><!-- />-->
+                    <! --                    <input type="hidden" class="sc-font-value" value="--><?php //esc_attr_e( $this->value() ) ?><! --" --><?php //$this->link(); ?><! -- />-->
                 </div>
             </label>
         <?php

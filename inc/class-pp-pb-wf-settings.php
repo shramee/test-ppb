@@ -64,8 +64,8 @@ class PP_PB_WF_Settings {
 
 		$this->_field_obj = new PP_PB_WF_Fields_Settings();
 
-        $options = pp_pb_add_theme_options(array());
-		$this->_field_obj->init($options);
+        $options = pp_pb_add_theme_options( array() );
+		$this->_field_obj->init( $options );
 
 		$this->_field_obj->__set( 'token', 'woo' );
 
@@ -95,7 +95,7 @@ class PP_PB_WF_Settings {
 	 * @return  void
 	 */
 	public function settings_screen_logic () {
-		if (isset($_REQUEST['tab']) && $_REQUEST['tab'] == 'styling' && ! empty( $_POST )) {
+		if ( isset( $_REQUEST['tab'] ) && $_REQUEST['tab'] == 'styling' && ! empty( $_POST ) ) {
             //check_admin_referer( $this->_field_obj->__get( 'token' ) . '_nonce', $this->_field_obj->__get( 'token' ) . '_nonce' )
 			$data = $_POST;
 
@@ -115,7 +115,7 @@ class PP_PB_WF_Settings {
 
 			do_action_ref_array( 'wf_settings_save_before', $data, $this );
 
-			$options_collection = (array)get_option( 'woo_options', array() );
+			$options_collection = ( array )get_option( 'woo_options', array() );
 
 			$update_tracker = array();
 
@@ -158,7 +158,7 @@ class PP_PB_WF_Settings {
 
 			// Redirect on settings save, and exit.
 			$url = add_query_arg( 'page', $page );
-			if ( '' != $tab ) {
+			if ( '' ! = $tab ) {
 				$url = add_query_arg( 'tab', $tab, $url );
 			}
 			$url = add_query_arg( 'updated', 'true', $url );
@@ -180,7 +180,7 @@ class PP_PB_WF_Settings {
 	 */
 	public function settings_screen () {
 		$hidden_fields = array( 'page' => 'page_builder' );
-		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) $hidden_fields['tab'] = sanitize_title_with_dashes( $_GET['tab'] );
+		if ( isset( $_GET['tab'] ) && '' ! = $_GET['tab'] ) $hidden_fields['tab'] = sanitize_title_with_dashes( $_GET['tab'] );
 
 //		do_action( 'wf_screen_get_header', 'woothemes', 'themes' );
 		$this->_field_obj->__set( 'has_tabs', true );
@@ -297,13 +297,13 @@ class PP_PB_WF_Settings {
 	 * Retrieve the fields.
 	 * @access  public
 	 * @since   6.0.0
-	 * @param   string $section The section to search for fields in (optional).
+	 * @param   string $section The section to search for fields in ( optional ).
 	 * @return  array           An array of the detected fields.
 	 */
 	public function get_fields ( $section = '' ) {
 		$fields = array();
 		foreach ( $this->_field_obj->__get( 'fields' ) as $k => $v ) {
-			if ( '' != $section ) {
+			if ( '' ! = $section ) {
 				if ( $section == $v['section'] ) {
 					$fields[$k] = $v;
 				}

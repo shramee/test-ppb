@@ -110,10 +110,10 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 		 * @since 0.5
 		 */
 		public function form( $instance ) {
-			$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'text' => '', 'type' => 'visual' ) );
-			// Guess (wpautop) filter value for widgets created with previous version
+			$instance = wp_parse_args( ( array ) $instance, array( 'title' => '', 'text' => '', 'type' => 'visual' ) );
+			// Guess ( wpautop ) filter value for widgets created with previous version
 			if ( ! isset( $instance['filter'] ) ) {
-				$instance['filter'] = $instance['type'] == 'visual' && substr( $instance['text'], 0, 3 ) != '<p>' ? 1 : 0;
+				$instance['filter'] = $instance['type'] == 'visual' && substr( $instance['text'], 0, 3 ) ! = '<p>' ? 1 : 0;
 			}
 			$title = strip_tags( $instance['title'] );
 			do_action( 'black_studio_tinymce_before_editor' );
