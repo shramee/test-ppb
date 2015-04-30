@@ -7,11 +7,11 @@ include 'widget-helper.php';
  * Include all the widget files and register their widgets
  */
 function origin_widgets_init() {
-	foreach( glob( plugin_dir_path( __FILE__ ).'/widgets/*/*.php' ) as $file ) {
+	foreach ( glob( plugin_dir_path( __FILE__ ).'/widgets/*/*.php' ) as $file ) {
 		include_once ( $file );
 
 		$p = pathinfo( $file );
-		$class = $p['filename'];
+		$class = $p[ 'filename' ];
 		$class = str_replace( '-', ' ', $class );
 		$class = ucwords( $class );
 		$class = str_replace( ' ', '_', $class );
@@ -29,12 +29,12 @@ add_action( 'admin_enqueue_scripts', 'origin_widgets_enqueue' );
 
 function origin_widgets_display_css() {
 	if ( is_admin() ) return;
-	if ( empty( $_GET['action'] ) || $_GET['action'] != 'origin_widgets_css' ) return;
-	if ( empty( $_GET['class'] ) || empty( $_GET['style'] ) || empty( $_GET['preset'] ) ) return;
-	if ( strpos( $_GET['class'], 'SiteOrigin_Panels_Widget_' ) !== 0 ) return;
+	if ( empty( $_GET[ 'action' ] ) || $_GET[ 'action' ] != 'origin_widgets_css' ) return;
+	if ( empty( $_GET[ 'class' ] ) || empty( $_GET[ 'style' ] ) || empty( $_GET[ 'preset' ] ) ) return;
+	if ( strpos( $_GET[ 'class' ], 'SiteOrigin_Panels_Widget_' ) !== 0 ) return;
 
 	header( "Content-type: text/css" );
-	echo origin_widgets_generate_css( $_GET['class'], $_GET['style'], $_GET['preset'], $_GET['ver'] );
+	echo origin_widgets_generate_css( $_GET[ 'class' ], $_GET[ 'style' ], $_GET[ 'preset' ], $_GET[ 'ver' ] );
 	exit();
 }
 add_action( 'init', 'origin_widgets_display_css' );
@@ -54,7 +54,7 @@ function origin_widgets_generate_css( $class, $style, $preset, $version = null )
 		// Recreate the CSS
 		$css = $widget->create_css( $style, $preset );
 		$css = preg_replace( '#/\*.*?\*/#s', '', $css );
-		$css = preg_replace( '/\s*( [{}|:;,] )\s+/', '$1', $css );
+		$css = preg_replace( '/\s*( [ {}|:;, ] )\s+/', '$1', $css );
 		$css = preg_replace( '/\s\s+( .* )/', '$1', $css );
 		$css = str_replace( ';}', '}', $css );
 
@@ -115,17 +115,17 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 		// We wont clear cache if this is a preview
 		if ( ! siteorigin_panels_is_preview() ) {
 			// Remove the old CSS file
-			if ( ! empty( $old['origin_style'] ) ) {
-				list( $style, $preset ) = explode( ':', $old['origin_style'] );
+			if ( ! empty( $old[ 'origin_style' ] ) ) {
+				list( $style, $preset ) = explode( ':', $old[ 'origin_style' ] );
 				$this->clear_css_cache( $style, $preset );
 			}
 
 			// Clear the cache for all sub widgets
 			if ( ! empty( $this->sub_widgets ) ) {
 				global $wp_widget_factory;
-				foreach( $this->sub_widgets as $id => $sub ) {
+				foreach ( $this->sub_widgets as $id => $sub ) {
 					if ( empty( $old[ 'origin_style_'.$id ] ) ) continue;
-					$the_widget = $wp_widget_factory->widgets[$sub[1]];
+					$the_widget = $wp_widget_factory->widgets[ $sub[ 1 ] ];
 					list( $style, $preset ) = explode( ':', $old[ 'origin_style_'.$id ] );
 
 					$the_widget->clear_css_cache( $style, $preset );
@@ -136,9 +136,9 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 
 		}
 
-		foreach( $this->form_args as $field_id => $field_args ) {
-			if ( $field_args['type'] == 'checkbox' ) {
-				$new[$field_id] = ! empty( $new[$field_id] );
+		foreach ( $this->form_args as $field_id => $field_args ) {
+			if ( $field_args[ 'type' ] == 'checkbox' ) {
+				$new[ $field_id ] = ! empty( $new[ $field_id ] );
 			}
 		}
 
@@ -160,17 +160,17 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 				__( "Either find an alternative in our <a href='%s' target='_blank'>recommended widgets</a> or install the <a href='%s' target='_blank'>Legacy Widgets plugin</a> to continue using it.", 'siteorigin-panels' ),
 				admin_url( 'plugin-install.php?tab=favorites&user=siteorigin-pagebuilder' ),
 				'http://siteorigin.com/page-builder-legacy-widgets/'
-			 )
+			)
 			?>
 		</p>
 		<?php
 
-		foreach( $this->form_args as $field_id => $field_args ) {
-			$this->helper->form_field_output( $field_id, $field_args );
+		foreach ( $this->form_args as $field_id => $field_args ) {
+			$this->helper->form_field_output( $field_id, $field_args, $this );
 		}
 
-		if ( ! isset( $instance['origin_style'] ) ) {
-			$instance['origin_style'] = ! empty( $this->widget_options['default_style'] ) ? $this->widget_options['default_style'] : false;
+		if ( ! isset( $instance[ 'origin_style' ] ) ) {
+			$instance[ 'origin_style' ] = ! empty( $this->widget_options[ 'default_style' ] ) ? $this->widget_options[ 'default_style' ] : false;
 		}
 
 		do_action( 'siteorigin_panels_widget_before_styles', $this, $instance );
@@ -183,17 +183,17 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 
 		do_action( 'siteorigin_panels_widget_before_substyles', $this, $instance );
 
-		foreach( $this->sub_widgets as $id => $sub ) {
+		foreach ( $this->sub_widgets as $id => $sub ) {
 			global $wp_widget_factory;
-			$the_widget = $wp_widget_factory->widgets[$sub[1]];
+			$the_widget = $wp_widget_factory->widgets[ $sub[ 1 ] ];
 
-			if ( ! isset( $instance['origin_style_'.$id ] ) ) $instance['origin_style_'.$id ] = ! empty( $this->widget_options['default_style_'.$id ] ) ? $this->widget_options['default_style_'.$id ] : false;
-			$this->form_style_options( $instance, $the_widget, 'origin_style_'.$id, $sub[0] );
+			if ( ! isset( $instance[ 'origin_style_'.$id ] ) ) $instance[ 'origin_style_'.$id ] = ! empty( $this->widget_options[ 'default_style_'.$id ] ) ? $this->widget_options[ 'default_style_'.$id ] : false;
+			$this->form_style_options( $instance, $the_widget, 'origin_style_'.$id, $sub[ 0 ] );
 		}
 		do_action( 'siteorigin_panels_widget_after_styles', $this, $instance );
 	}
 
-	public function form_style_options( $instance, $the_widget, $id = 'origin_style', $sub='' ){
+	public function form_style_options( $instance, $the_widget, $id = 'origin_style', $sub = '' ){
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( $id ) ?>"><?php printf( __( '%s Style', 'siteorigin-panels' ), $sub ) ?></label>
@@ -207,7 +207,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 				<?php endforeach ?>
 			</select>
 		</p>
-		<?php
+	<?php
 	}
 
 	/**
@@ -220,78 +220,35 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	function widget( $args, $instance ) {
 
 		// Set up defaults for all the widget args
-		foreach( $this->form_args as $field_id => $field_args ) {
-			if ( isset( $field_args['default'] ) && ! isset( $instance[$field_id] ) ) {
-				$instance[$field_id] = $field_args['default'];
+		foreach ( $this->form_args as $field_id => $field_args ) {
+			if ( isset( $field_args[ 'default' ] ) && ! isset( $instance[ $field_id ] ) ) {
+				$instance[ $field_id ] = $field_args[ 'default' ];
 			}
-			if ( ! isset( $instance[$field_id] ) ) $instance[$field_id] = false;
+			if ( ! isset( $instance[ $field_id ] ) ) $instance[ $field_id ] = false;
 		}
 
 		// Filter the title
-		if ( ! empty( $instance['title'] ) ) {
-			$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
+		if ( ! empty( $instance[ 'title' ] ) ) {
+			$instance[ 'title' ] = apply_filters( 'widget_title', $instance[ 'title' ], $instance, $this->id_base );
 		}
 
-		list( $style, $preset, $template ) = $this->widget_style_preset( $instance );
+		list( $style, $preset, $template ) = $this->widget_style_preset( $instance, $this );
 
-		$template_file = false;
-		$paths = $this->get_widget_paths();
+		$template_file = $this->helper->widget_check_template( $args, $template, $this );
+		if( empty( $template_file ) ) { return; }
 
-		foreach( $paths as $path ) {
-			if ( file_exists( $path.'/'.$this->origin_id.'/tpl/'.$template.'.php' ) ) {
-				$template_file = $path.'/'.$this->origin_id.'/tpl/'.$template.'.php';
-				break;
-			}
-		}
-		if ( empty( $template_file ) ) {
-			echo $args['before_widget'];
-			echo 'Template not found';
-			echo $args['after_widget'];
-			return false;
-		}
+		//Dynamically generate the CSS
+		$this->helper->widget_dynamically_generate_css( $style, $preset, $instance, $this );
 
-		// Dynamically generate the CSS
-		if ( ! empty( $instance['origin_style'] ) ) {
-			$filename = $this->origin_id.'-'.$style.'-'.$preset;
-			if ( siteorigin_panels_setting( 'inline-css' ) ) {
-				static $inlined_css = array();
-				if ( empty( $inlined_css[$filename] ) ) {
-					$inlined_css[$filename] = true;
-					?><style type="text/css" media="all"><?php echo origin_widgets_generate_css( get_class( $this ), $style, $preset ) ?></style><?php
-				}
-			}
-			else {
-				wp_enqueue_style( 'origin-widget-'.$filename, add_query_arg( array(
-					'class' => get_class( $this ),
-					'style' => $style,
-					'preset' => $preset,
-				 ), site_url( '?action=origin_widgets_css' ) ), array(), POOTLEPAGE_VERSION );
-			}
-		}
+		if ( method_exists( $this, 'enqueue_scripts' ) ) { $this->enqueue_scripts(); }
 
-		if ( method_exists( $this, 'enqueue_scripts' ) ) {
-			$this->enqueue_scripts();
-		}
+		$widget_classes = $this->helper->widget_dynamically_generate_css( $style, $preset, $instance, $this );
 
-		$widget_classes = apply_filters( 'siteorigin_widgets_classes', array(
-			'origin-widget',
-			'origin-widget-'.$this->origin_id,
-			'origin-widget-'.$this->origin_id.'-'. $style .'-' . $preset,
-		 ), $instance );
-
-		if ( method_exists( $this, 'widget_classes' ) ) {
-			$widget_classes = $this->widget_classes( array(
-				'origin-widget',
-				'origin-widget-'.$this->origin_id,
-				'origin-widget-'.$this->origin_id.'-'. $style .'-' . $preset,
-			 ), $instance );
-		}
-
-		echo $args['before_widget'];
-		echo '<div class="'.esc_attr( implode( ' ', $widget_classes ) ).'">';
+		echo $args[ 'before_widget' ];
+		echo '<div class = "'.esc_attr( implode( ' ', $widget_classes ) ).'">';
 		include $template_file;
 		echo '</div>';
-		echo $args['after_widget'];
+		echo $args[ 'after_widget' ];
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,7 +264,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	function sub_widget( $id, $instance ) {
 		$sub = $this->sub_widgets[ $id ];
 		global $wp_widget_factory;
-		$the_widget = $wp_widget_factory->widgets[$sub[1]];
+		$the_widget = $wp_widget_factory->widgets[ $sub[ 1 ] ];
 		$the_widget->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance );
 	}
 
@@ -323,7 +280,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 		$style_file = false;
 
 		// Find the file - exit if it can't be found.
-		foreach( $paths as $path ) {
+		foreach ( $paths as $path ) {
 			if ( file_exists( $path.'/'.$this->origin_id.'/styles/'.$style.'.less' ) ) {
 				$style_file = $path.'/'.$this->origin_id.'/styles/'.$style.'.less';
 				break;
@@ -333,7 +290,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 
 		if ( ! class_exists( 'lessc' ) ) include plugin_dir_path( __FILE__ ).'lib/lessc.inc.php';
 
-		foreach( $this->get_widget_folders() as $folder => $folder_url ) {
+		foreach ( $this->get_widget_folders() as $folder => $folder_url ) {
 			$filename = rtrim( $folder, '/' ) . '/' . $this->origin_id.'/styles/'.$style.'.less';
 			if ( file_exists( $filename ) ) {
 				$less = file_get_contents( $filename );
@@ -345,12 +302,12 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			'@import "../../../less/mixins";',
 			"\n\n".file_get_contents( plugin_dir_path( __FILE__ ).'less/mixins.less' ),
 			$less
-		 );
+		);
 
 		// Apply the preset variables to the LESS file
 		$presets = $this->get_style_presets( $style );
-		if ( ! empty( $presets[$preset] ) && is_array( $presets[$preset] ) ) {
-			foreach( $presets[$preset] as $k => $v ) {
+		if ( ! empty( $presets[ $preset ] ) && is_array( $presets[ $preset ] ) ) {
+			foreach ( $presets[ $preset ] as $k => $v ) {
 				$less = preg_replace( '/@'.preg_quote( $k ).':( .* );/', '@'.$k.': '.$v.';', $less );
 			}
 		}
@@ -408,7 +365,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 				get_stylesheet_directory().'/widgets' => get_stylesheet_directory_uri().'/widgets/widgets',
 				get_template_directory().'/widgets' => get_template_directory_uri().'/widgets',
 				plugin_dir_path( POOTLEPAGE_BASE_FILE ).'widgets/widgets' => plugin_dir_url( POOTLEPAGE_BASE_FILE ).'widgets/widgets',
-			 );
+			);
 			$folders = apply_filters( 'siteorigin_widget_folders', $folders );
 		}
 
@@ -427,7 +384,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 				get_stylesheet_directory().'/widgets/img' => get_stylesheet_directory_uri().'/widgets/img',
 				get_template_directory().'/widgets/img' => get_template_directory_uri().'/widgets/img',
 				plugin_dir_path( POOTLEPAGE_BASE_FILE ).'widgets/img' => plugin_dir_url( POOTLEPAGE_BASE_FILE ).'widgets/img',
-			 );
+			);
 			$folders = apply_filters( 'siteorigin_widget_image_folders', $folders );
 		}
 
@@ -442,14 +399,14 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	public function get_styles() {
 		if ( empty( $this->styles ) ) {
 			// We can add extra paths here
-			foreach( $this->get_widget_paths() as $path ) {
+			foreach ( $this->get_widget_paths() as $path ) {
 				if ( ! is_dir( $path ) ) continue;
 
 				$files = glob( $path.'/'.$this->origin_id.'/styles/*.less' );
 				if ( ! empty( $files ) ) {
-					foreach( glob( $path.'/'.$this->origin_id.'/styles/*.less' ) as $file ) {
+					foreach ( glob( $path.'/'.$this->origin_id.'/styles/*.less' ) as $file ) {
 						$p = pathinfo( $file );
-						$this->styles[$p['filename']] = $this->get_style_data( $p['filename'] );
+						$this->styles[ $p[ 'filename' ] ] = $this->get_style_data( $p[ 'filename' ] );
 					}
 				}
 			}
@@ -468,7 +425,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 
 		$presets = array();
 
-		foreach( $this->get_widget_folders() as $folder => $folder_uri ) {
+		foreach ( $this->get_widget_folders() as $folder => $folder_uri ) {
 			$filename = rtrim( $folder, '/' ) . '/' . $this->origin_id.'/presets/'.sanitize_file_name( $style_id ).'.php';
 
 			if ( file_exists( $filename ) ) {
@@ -491,7 +448,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	public function get_style_data( $name ) {
 		$paths = $this->get_widget_paths();
 
-		foreach( $paths as $path ) {
+		foreach ( $paths as $path ) {
 			$filename = $path.'/'.$this->origin_id.'/styles/'.sanitize_file_name( $name ).'.less';
 			if ( ! file_exists( $filename ) ) continue;
 
@@ -500,7 +457,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 				'Template' => 'Template',
 				'Author' => 'Author',
 				'Author URI' => 'Author URI',
-			 ), 'origin_widget' );
+			), 'origin_widget' );
 			return $data;
 		}
 		return false;
@@ -533,62 +490,62 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 		// Add the posts type field
 		$post_types = get_post_types( array( 'public' => true ) );
 		$post_types = array_values( $post_types );
-		$this->form_args['query_post_type'] = array(
+		$this->form_args[ 'query_post_type' ] = array(
 			'type' => 'select',
 			'options' => $post_types,
 			'label' => __( 'Post Type', 'siteorigin-panels' )
-		 );
+		);
 
 		// Add the posts per page field
-		$this->form_args['query_posts_per_page'] = array(
+		$this->form_args[ 'query_posts_per_page' ] = array(
 			'type' => 'number',
 			'default' => 10,
 			'label' => __( 'Posts Per Page', 'siteorigin-panels' ),
-		 );
+		);
 
-		$this->form_args['query_orderby'] = array(
+		$this->form_args[ 'query_orderby' ] = array(
 			'type' => 'select',
 			'label' => __( 'Order By', 'siteorigin-panels' ),
 			'options' => array(
-				'none'  => __( 'None', 'siteorigin-panels' ),
-				'ID'  => __( 'Post ID', 'siteorigin-panels' ),
-				'author'  => __( 'Author', 'siteorigin-panels' ),
-				'name'  => __( 'Name', 'siteorigin-panels' ),
-				'name'  => __( 'Name', 'siteorigin-panels' ),
-				'date'  => __( 'Date', 'siteorigin-panels' ),
-				'modified'  => __( 'Modified', 'siteorigin-panels' ),
-				'parent'  => __( 'Parent', 'siteorigin-panels' ),
-				'rand'  => __( 'Random', 'siteorigin-panels' ),
-				'comment_count'  => __( 'Comment Count', 'siteorigin-panels' ),
-				'menu_order'  => __( 'Menu Order', 'siteorigin-panels' ),
-			 )
-		 );
+				'none' => __( 'None', 'siteorigin-panels' ),
+				'ID' => __( 'Post ID', 'siteorigin-panels' ),
+				'author' => __( 'Author', 'siteorigin-panels' ),
+				'name' => __( 'Name', 'siteorigin-panels' ),
+				'name' => __( 'Name', 'siteorigin-panels' ),
+				'date' => __( 'Date', 'siteorigin-panels' ),
+				'modified' => __( 'Modified', 'siteorigin-panels' ),
+				'parent' => __( 'Parent', 'siteorigin-panels' ),
+				'rand' => __( 'Random', 'siteorigin-panels' ),
+				'comment_count' => __( 'Comment Count', 'siteorigin-panels' ),
+				'menu_order' => __( 'Menu Order', 'siteorigin-panels' ),
+			)
+		);
 
-		$this->form_args['query_order'] = array(
+		$this->form_args[ 'query_order' ] = array(
 			'type' => 'select',
 			'label' => __( 'Order', 'siteorigin-panels' ),
 			'options' => array(
-				'ASC'  => __( 'Ascending', 'siteorigin-panels' ),
-				'DESC'  => __( 'Descending', 'siteorigin-panels' ),
-			 )
-		 );
+				'ASC' => __( 'Ascending', 'siteorigin-panels' ),
+				'DESC' => __( 'Descending', 'siteorigin-panels' ),
+			)
+		);
 
-		$this->form_args['query_sticky'] = array(
+		$this->form_args[ 'query_sticky' ] = array(
 			'type' => 'select',
 			'label' => __( 'Sticky Posts', 'siteorigin-panels' ),
 			'options' => array(
-				''  => __( 'Default', 'siteorigin-panels' ),
-				'ignore'  => __( 'Ignore Sticky', 'siteorigin-panels' ),
-				'exclude'  => __( 'Exclude Sticky', 'siteorigin-panels' ),
-				'only'  => __( 'Only Sticky', 'siteorigin-panels' ),
-			 )
-		 );
+				'' => __( 'Default', 'siteorigin-panels' ),
+				'ignore' => __( 'Ignore Sticky', 'siteorigin-panels' ),
+				'exclude' => __( 'Exclude Sticky', 'siteorigin-panels' ),
+				'only' => __( 'Only Sticky', 'siteorigin-panels' ),
+			)
+		);
 
-		$this->form_args['query_additional'] = array(
+		$this->form_args[ 'query_additional' ] = array(
 			'type' => 'text',
 			'label' => __( 'Additional Arguments', 'siteorigin-panels' ),
-			'description' => sprintf( __( 'Additional query arguments. See <a href="%s" target="_blank">query_posts</a>.', 'siteorigin-panels' ), 'http://codex.wordpress.org/Function_Reference/query_posts' ),
-		 );
+			'description' => sprintf( __( 'Additional query arguments. See <a href = "%s" target = "_blank">query_posts</a>.', 'siteorigin-panels' ), 'http://codex.wordpress.org/Function_Reference/query_posts' ),
+		);
 	}
 
 	/**
@@ -599,34 +556,34 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	 */
 	static function get_query_posts( $instance ) {
 		$query_args = array();
-		foreach( $instance as $k => $v ) {
+		foreach ( $instance as $k => $v ) {
 			if ( strpos( $k, 'query_' ) === 0 ) {
-				$query_args[preg_replace( '/query_/', '', $k, 1 )] = $v;
+				$query_args[ preg_replace( '/query_/', '', $k, 1 ) ] = $v;
 			}
 		}
 		$query = $query_args;
-		unset( $query['additional'] );
-		unset( $query['sticky'] );
+		unset( $query[ 'additional' ] );
+		unset( $query[ 'sticky' ] );
 
 		// Add the additional arguments
-		$query = wp_parse_args( $query_args['additional'], $query );
+		$query = wp_parse_args( $query_args[ 'additional' ], $query );
 
 		// Add the sticky posts if required
-		switch( $query_args['sticky'] ) {
+		switch( $query_args[ 'sticky' ] ) {
 			case 'ignore' :
-				$query['ignore_sticky_posts'] = 1;
+				$query[ 'ignore_sticky_posts' ] = 1;
 				break;
 			case 'only' :
-				$query['post__in'] = get_option( 'sticky_posts' );
+				$query[ 'post__in' ] = get_option( 'sticky_posts' );
 				break;
 			case 'exclude' :
-				$query['post__not_in'] = get_option( 'sticky_posts' );
+				$query[ 'post__not_in' ] = get_option( 'sticky_posts' );
 				break;
 		}
 
 		// Add the current page
 		global $wp_query;
-		$query['paged'] = $wp_query->get( 'paged' );
+		$query[ 'paged' ] = $wp_query->get( 'paged' );
 
 		return new WP_Query( $query );
 	}

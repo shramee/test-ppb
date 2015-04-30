@@ -9,42 +9,38 @@
 class SiteOrigin_Panels_Widget_Helper {
 
 	/**
-	 * Outputs field for SiteOrigin_Panels_Widget::widget
+	 * Outputs field for SiteOrigin_Panels_Widget::form
 	 *
-	 * @param $field_id
-	 * @param $field_args
+	 * @param string $field_id
+	 * @param array $field_args
+	 * @param object $class The widget class
 	 *
 	 * @return string|void
-	 * @internal param array $instance
 	 */
-	public function form_field_output( $field_id, $field_args ) {
-
-		if ( isset( $field_args['default'] ) && ! isset( $instance[$field_id] ) ) {
-			$instance[$field_id] = $field_args['default'];
-		}
+	public function form_field_output( $field_id, $field_args, $class ) {
 
 		if ( ! isset( $instance[$field_id] ) ) { $instance[ $field_id ] = false; }
-		?><p><label for="<?php echo $this->get_field_id( $field_id ); ?>"><?php echo esc_html( $field_args['label'] ) ?></label><?php
+		?><p><label for="<?php echo $class->get_field_id( $field_id ); ?>"><?php echo esc_html( $field_args['label'] ) ?></label><?php
 		if ( $field_args['type'] != 'checkbox' ) echo '<br />';
 
 		switch( $field_args['type'] ) {
 			case 'text' :
-				?><input type="text" class="widefat" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" value="<?php echo esc_attr( $instance[$field_id] ) ?>" /><?php
+				?><input type="text" class="widefat" id="<?php echo $class->get_field_id( $field_id ); ?>" name="<?php echo $class->get_field_name( $field_id ); ?>" value="<?php echo esc_attr( $instance[$field_id] ) ?>" /><?php
 				break;
 			case 'textarea' :
 				if ( empty( $field_args['height'] ) ) $field_args['height'] = 6;
-				?><textarea class="widefat" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" rows="<?php echo intval( $field_args['height'] ) ?>"><?php echo esc_textarea( $instance[$field_id] ) ?></textarea><?php
+				?><textarea class="widefat" id="<?php echo $class->get_field_id( $field_id ); ?>" name="<?php echo $class->get_field_name( $field_id ); ?>" rows="<?php echo intval( $field_args['height'] ) ?>"><?php echo esc_textarea( $instance[$field_id] ) ?></textarea><?php
 				break;
 			case 'number' :
-				?><input type="number" class="small-text" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" value="<?php echo floatval( $instance[$field_id] ) ?>" /><?php
+				?><input type="number" class="small-text" id="<?php echo $class->get_field_id( $field_id ); ?>" name="<?php echo $class->get_field_name( $field_id ); ?>" value="<?php echo floatval( $instance[$field_id] ) ?>" /><?php
 				break;
 			case 'checkbox' :
-				?><input type="checkbox" class="small-text" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" <?php checked( ! empty( $instance[$field_id] ) ) ?>/><?php
+				?><input type="checkbox" class="small-text" id="<?php echo $class->get_field_id( $field_id ); ?>" name="<?php echo $class->get_field_name( $field_id ); ?>" <?php checked( ! empty( $instance[$field_id] ) ) ?>/><?php
 				break;
 			case 'select' :
 				?>
-				<select id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>">
-					<?php foreach( $field_args['options'] as $k => $v ) : ?>
+				<select id="<?php echo $class->get_field_id( $field_id ); ?>" name="<?php echo $class->get_field_name( $field_id ); ?>">
+					<?php foreach ( $field_args['options'] as $k => $v ) : ?>
 						<option value="<?php echo esc_attr( $k ) ?>" <?php selected( $instance[$field_id], $k ) ?>><?php echo esc_html( $v ) ?></option>
 					<?php endforeach; ?>
 				</select>
@@ -55,24 +51,118 @@ class SiteOrigin_Panels_Widget_Helper {
 		?></p><?php
 	}
 
-	function widget_style_preset( $instance ) {
+	/**
+	 * Returns $style, $preset and $template for SiteOrigin_Panels_Widget::widget
+	 *
+	 * @param array $instance
+	 * @param object $class The widget class
+	 * @return array
+	 */
+	function widget_style_preset( $instance, $class ) {
 
 		if ( ! empty( $instance['origin_style'] ) ) {
+
 			list( $style, $preset ) = explode( ':', $instance['origin_style'] );
 			$style = sanitize_file_name( $style );
 			$preset = sanitize_file_name( $preset );
 
-			$data = $this->get_style_data( $style );
+			$data = $class->get_style_data( $style );
 			$template = $data['Template'];
-		}
-		else {
+
+		} else {
+
 			$style = 'default';
 			$preset = 'default';
+
 		}
 
 		if ( empty( $template ) ) $template = 'default';
-
 		return array( $style, $preset, $template );
+
+	}
+
+	/**
+	 * Returns Checks if $template file exists and returns it for SiteOrigin_Panels_Widget::widget
+	 *
+	 * @param array $instance
+	 * @param object $class The widget class
+	 * @return bool|string
+	 */
+	function widget_check_template( $args, $template, $class ) {
+
+		$template_file = false;
+		$paths = $class->get_widget_paths();
+
+		foreach ( $paths as $path ) {
+			if ( file_exists( $path.'/'.$class->origin_id.'/tpl/'.$template.'.php' ) ) {
+				$template_file = $path.'/'.$class->origin_id.'/tpl/'.$template.'.php';
+				break;
+			}
+		}
+		if ( empty( $template_file ) ) {
+			echo $args['before_widget'];
+			echo 'Template not found';
+			echo $args['after_widget'];
+			return false;
+		}
+
+		return $template_file;
+
+	}
+
+	/**
+	 * Dynamically generates CSS for for SiteOrigin_Panels_Widget::widget
+	 *
+	 * @param $style
+	 * @param $preset
+	 * @param object $class The widget class
+	 */
+	function widget_dynamically_generate_css( $style, $preset, $instance, $class ) {
+
+		if ( ! empty( $instance['origin_style'] ) ) {
+			$filename = $class->origin_id.'-'.$style.'-'.$preset;
+			if ( siteorigin_panels_setting( 'inline-css' ) ) {
+				static $inlined_css = array();
+				if ( empty( $inlined_css[$filename] ) ) {
+					$inlined_css[$filename] = true;
+					?><style type = "text/css" media = "all"><?php echo origin_widgets_generate_css( get_class( $class ), $style, $preset ) ?></style><?php
+				}
+			} else {
+				wp_enqueue_style( 'origin-widget-'.$filename, add_query_arg( array(
+					'class' => get_class( $class ),
+					'style' => $style,
+					'preset' => $preset,
+				), site_url( '?action = origin_widgets_css' ) ), array(), POOTLEPAGE_VERSION );
+			}
+		}
+	}
+
+	/**
+	 * Dynamically generates CSS for for SiteOrigin_Panels_Widget::widget
+	 *
+	 * @param $style
+	 * @param $preset
+	 * @param object $class The widget class
+	 *
+	 * @return mixed
+	 */
+	function widget_classes( $style, $preset, $instance, $class ) {
+
+		$widget_classes = apply_filters( 'siteorigin_widgets_classes', array(
+			'origin-widget',
+			'origin-widget-'.$class->origin_id,
+			'origin-widget-'.$class->origin_id.'-'. $style .'-' . $preset,
+		), $instance );
+
+		if ( method_exists( $class, 'widget_classes' ) ) {
+			$widget_classes = $class->widget_classes( array(
+				'origin-widget',
+				'origin-widget-'.$class->origin_id,
+				'origin-widget-'.$class->origin_id.'-'. $style .'-' . $preset,
+			), $instance );
+		}
+
+		return $widget_classes;
 
 	}
 }
