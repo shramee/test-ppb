@@ -209,7 +209,7 @@ function pootlepage_reorder_widgets() {
             $temp = array();
             $temp[] = 'Pootle_Text_Widget';
             foreach ( $usedSequence as $class ) {
-                if ( $class ! = 'Pootle_Text_Widget' ) {
+                if ( $class != 'Pootle_Text_Widget' ) {
                     $temp[] = $class;
                 }
             }
@@ -307,7 +307,7 @@ function pootlepage_unused_widgets() {
             $temp = array();
             $temp[] = 'Pootle_Text_Widget';
             foreach ( $usedSequence as $class ) {
-                if ( $class ! = 'Pootle_Text_Widget' ) {
+                if ( $class != 'Pootle_Text_Widget' ) {
                     $temp[] = $class;
                 }
             }

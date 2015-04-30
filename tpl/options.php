@@ -19,7 +19,7 @@ if ( empty( $tab ) ) {
     <div class="clear"></div>
 
     <?php
-    if ( $tab ! = 'styling' ) {
+    if ( $tab != 'styling' ) {
 
         ?><form action='options.php' method="POST"><?php
 

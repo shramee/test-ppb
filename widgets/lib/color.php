@@ -25,7 +25,7 @@ class SiteOrigin_Color {
 
 	public static function hex2rgb( $hex ) {
 		$hex = ( string ) $hex;
-		if ( ! is_string( $hex ) || $hex[0] ! = '#' ) throw new Exception( 'Invalid hex color ['.$hex.']' );
+		if ( ! is_string( $hex ) || $hex[0] != '#' ) throw new Exception( 'Invalid hex color ['.$hex.']' );
 		$hex = preg_replace( "/[^0-9A-Fa-f]/", '', $hex ); // Gets a proper hex string
 		$rgb = array();
 
@@ -160,7 +160,7 @@ class SiteOrigin_Color {
 
 		$hsv = array( 0,0,$max );
 
-		if ( $del_max ! = 0 ) {
+		if ( $del_max != 0 ) {
 			$hsv[1] = $del_max / $max;
 
 			$del_r = ( ( ( $del_max - $rgb[0] ) / 6 ) + ( $del_max / 2 ) ) / $del_max;

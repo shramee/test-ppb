@@ -83,7 +83,7 @@ class PP_PB_WF_Fields_Settings extends PP_PB_WF_Fields {
 		$sections = array();
 
 		$current_tab = '';
-		if ( isset( $_GET['tab'] ) && '' ! = $_GET['tab'] ) $current_tab = sanitize_title_with_dashes( $_GET['tab'] );
+		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) $current_tab = sanitize_title_with_dashes( $_GET['tab'] );
 
 		$count = 0;
 		foreach ( $this->_tabs as $k => $v ) {
@@ -100,9 +100,9 @@ class PP_PB_WF_Fields_Settings extends PP_PB_WF_Fields {
 		foreach ( $sections as $k => $v ) {
 			$count++;
 			$html .= '<li><a href="' . $v['href'] . '"';
-			if ( isset( $v['id'] ) && ( $v['id'] ! = '' ) ) { $html .= ' id="' . esc_attr( $v['id'] ) . '"'; }
+			if ( isset( $v['id'] ) && ( $v['id'] != '' ) ) { $html .= ' id="' . esc_attr( $v['id'] ) . '"'; }
 
-			if ( isset( $v['class'] ) && ( $v['class'] ! = '' ) ) {
+			if ( isset( $v['class'] ) && ( $v['class'] != '' ) ) {
 				$html .= ' class="' . esc_attr( $v['class'] ) . '"';
 			}
 			$html .= '>' . esc_attr( $v['name'] ) . '</a>';

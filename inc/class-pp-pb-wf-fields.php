@@ -246,7 +246,7 @@ class PP_PB_WF_Fields {
 		$sections_to_scan = array();
 
 		// No section has been applied. Assume it's the first.
-		if ( '' == $section && 'all_fields' ! = $section ) {
+		if ( '' == $section && 'all_fields' != $section ) {
 			$all_sections = $this->_sections;
 			if ( is_array( $all_sections ) && 0 < count( $all_sections ) ) {
 				foreach ( $all_sections as $k => $v ) {
@@ -314,7 +314,7 @@ class PP_PB_WF_Fields {
 				}
 
 				// If we have an internal method for validation, filter and apply it.
-				if ( '' ! = $method ) {
+				if ( '' != $method ) {
 					add_filter( 'wf_validate_field_' . $fields[$k]['type'], array( $this, $method ), 10, 2 );
 				}
 
@@ -366,7 +366,7 @@ class PP_PB_WF_Fields {
 	 * @return string
 	 */
 	public function validate_field_checkbox ( $v ) {
-		if ( 'true' ! = $v ) {
+		if ( 'true' != $v ) {
 			return 'false';
 		} else {
 			return 'true';
@@ -552,7 +552,7 @@ class PP_PB_WF_Fields {
 		if ( 0 >= count( $this->_sections ) ) return;
 		$html = '';
 		$current_section = '';
-//		if ( isset( $_GET['tab'] ) && '' ! = $_GET['tab'] ) {
+//		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) {
 //			$current_section = sanitize_title_with_dashes( $_GET['tab'] );
 //		} else {
 			// Grab the key for the first section, using a short loop.
@@ -1043,7 +1043,7 @@ class PP_PB_WF_Fields {
 	 */
 	protected function render_field_info ( $key, $args ) {
 		$html = '<div id="' . esc_attr( $key ) . '" class="woo-notice">' . "\n";
-		if ( '' ! = $args['desc'] ) $html .= '<p>' . wp_kses_post( $args['desc'] ) . '</p>' . "\n";
+		if ( '' != $args['desc'] ) $html .= '<p>' . wp_kses_post( $args['desc'] ) . '</p>' . "\n";
 		$html .= '</div>' . "\n";
 		return $html;
 	} // End render_field_info()
@@ -1283,7 +1283,7 @@ class PP_PB_WF_Fields {
 		$id = $this->get_value( $key . '-id', 0 );
 		$placeholder = apply_filters( 'wf_placeholder_image_url', get_template_directory_uri() . '/functions/assets/images/placeholder.png' );
 		$class = ' no-image';
-		if ( '' ! = $url || 0 < intval( $id ) ) $class = ' has-image';
+		if ( '' != $url || 0 < intval( $id ) ) $class = ' has-image';
 
 		$html = '<span class="upload-field">' . "\n";
 		$html .= '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="34" type="text" class="input-upload" value="' . esc_attr( $url ) . '" /> <a href="#" class="button" data-uploader-title="' . esc_attr( sprintf( __( 'Select %s', 'woothemes' ), $args['name'] ) ) . '" data-uploader-button-text="' . esc_attr( sprintf( __( 'Use image as %s', 'woothemes' ), $args['name'] ) ) . '">' . __( 'Upload', 'woothemes' ) . '</a>' . "\n";
@@ -1313,7 +1313,7 @@ class PP_PB_WF_Fields {
 		$id = $this->get_value( $key . '-id', 0 );
 		$placeholder = WF()->get_placeholder_image_url();
 		$class = ' no-image';
-		if ( '' ! = $url || 0 < intval( $id ) ) $class = ' has-image';
+		if ( '' != $url || 0 < intval( $id ) ) $class = ' has-image';
 
 		$html = '<span class="upload-field">' . "\n";
 		$html .= '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" type="hidden" class="input-upload" value="' . esc_attr( $url ) . '" /> <a href="#" class="button" data-uploader-title="' . esc_attr( sprintf( __( 'Select %s', 'woothemes' ), $args['name'] ) ) . '" data-uploader-button-text="' . esc_attr( sprintf( __( 'Use image as %s', 'woothemes' ), $args['name'] ) ) . '">' . __( 'Upload', 'woothemes' ) . '</a>' . "\n";

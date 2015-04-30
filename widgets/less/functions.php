@@ -10,12 +10,12 @@
 function origin_widgets_less_lum_change( $args, $type = 'darken' ) {
 	if ( ! class_exists( 'SiteOrigin_Color_Object' ) ) include plugin_dir_path( __FILE__ ).'../lib/color.php';
 
-	if ( $args[0] ! = 'list' ) return false;
+	if ( $args[0] != 'list' ) return false;
 	@ list( $a1_type, $a1_value, $a1_unit ) = $args[2][0];
 	@ list( $a2_type, $a2_value, $a2_unit ) = $args[2][1];
 
-	if ( $a1_type ! = 'raw_color' ) return false;
-	if ( $a2_type ! = 'number' ) return false;
+	if ( $a1_type != 'raw_color' ) return false;
+	if ( $a2_type != 'number' ) return false;
 
 	$color = new SiteOrigin_Color_Object( $a1_value );
 	if ( $type == 'lighten' ) $color->lum += $a2_value/100;
@@ -39,7 +39,7 @@ function origin_widgets_less_lumdarken( $args ) {
  * @return string
  */
 function origin_widgets_less_texture( $texture ) {
-	if ( $texture[0] ! = 'list' ) return '';
+	if ( $texture[0] != 'list' ) return '';
 
 	$return = '';
 	foreach( $texture[2] as $arg ) {

@@ -76,7 +76,7 @@ if ( ! class_exists( 'Pootlepress_Updater' ) ) {
 
                 $idx = strpos( $this->update_path, '?' );
                 $s = '?';
-                if ( $idx ! == false ) {
+                if ( $idx !== false ) {
                     $s = '&';
                 } else {
                     $s = '?';

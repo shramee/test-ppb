@@ -36,7 +36,7 @@ if ( ! function_exists( 'woo_widget_tabs_latest' ) ) {
             setup_postdata( $post );
             ?>
             <li>
-                <?php if ( $size ! = 0 ) woo_image( 'height=' . $size . '&width=' . $size . '&class=thumbnail&single=true' ); ?>
+                <?php if ( $size != 0 ) woo_image( 'height=' . $size . '&width=' . $size . '&class=thumbnail&single=true' ); ?>
                 <a title="<?php the_title_attribute(); ?>" href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 <span class="meta"><?php the_time( get_option( 'date_format' ) ); ?></span>
                 <div class="fix"></div>

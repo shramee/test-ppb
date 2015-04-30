@@ -6,7 +6,7 @@
 function siteorigin_panels_update_notice() {
 	$dismissed = get_option( 'siteorigin_panels_notice_dismissed' );
 
-	if ( empty( $dismissed ) || $dismissed ! = POOTLEPAGE_VERSION ) {
+	if ( empty( $dismissed ) || $dismissed != POOTLEPAGE_VERSION ) {
 		wp_enqueue_script( 'siteorigin-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
 		?>
@@ -36,7 +36,7 @@ function siteorigin_panels_update_notice() {
 			</p>
 		</div>
 		<?php
-		if ( ! empty( $dismissed ) && $dismissed ! = POOTLEPAGE_VERSION ) {
+		if ( ! empty( $dismissed ) && $dismissed != POOTLEPAGE_VERSION ) {
 			// The user has already dismissed this message, so we'll show it once and update the dismissed version
 			update_option( 'siteorigin_panels_notice_dismissed', POOTLEPAGE_VERSION );
 		}

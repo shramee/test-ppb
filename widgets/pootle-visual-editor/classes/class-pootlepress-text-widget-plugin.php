@@ -104,7 +104,7 @@ if ( ! class_exists( 'Pootlepress_Text_Widget_Plugin' ) ) {
          */
         private function register_plugin_version()
         {
-            if ( $this->version ! = '' ) {
+            if ( $this->version != '' ) {
                 update_option( $this->token . '-version', $this->version );
             }
         } // End register_plugin_version()

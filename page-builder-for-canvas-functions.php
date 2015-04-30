@@ -120,7 +120,7 @@ if ( ! function_exists( 'woo_image' ) ) {
         /* ------------------------------------------------------------------------- */
 
         // When a custom image is sent through
-        if ( $src ! = '' ) {
+        if ( $src != '' ) {
             $custom_field = esc_url( $src );
             $link = 'img';
 
@@ -348,7 +348,7 @@ if ( ! function_exists( 'woo_image' ) ) {
                     $alt = $meta;
                     $title = 'title="' . esc_attr( $meta ) . '"';
                 } else {
-                    if ( ( $alt ! = '' ) || ! ( $alt = get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) ) ) {
+                    if ( ( $alt != '' ) || ! ( $alt = get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) ) ) {
                         $alt = esc_attr( get_post_meta( $thumb_id, '_wp_attachment_image_alt', true ) );
                     } else {
                         $alt = esc_attr( get_the_title( $quick_id ) );
@@ -357,7 +357,7 @@ if ( ! function_exists( 'woo_image' ) ) {
                 }
 
                 // Set alignment parameter
-                if ( $alignment ! = '' )
+                if ( $alignment != '' )
                     $alignment = '&amp;a=' . urlencode( $alignment );
 
                 $img_url = esc_url( get_template_directory_uri() . '/functions/thumb.php?src=' . $custom_field . '&amp;w=' . $width . '&amp;h=' . $height . '&amp;zc=1&amp;q=' . $quality . $alignment );

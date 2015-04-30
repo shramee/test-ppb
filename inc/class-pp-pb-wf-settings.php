@@ -158,7 +158,7 @@ class PP_PB_WF_Settings {
 
 			// Redirect on settings save, and exit.
 			$url = add_query_arg( 'page', $page );
-			if ( '' ! = $tab ) {
+			if ( '' != $tab ) {
 				$url = add_query_arg( 'tab', $tab, $url );
 			}
 			$url = add_query_arg( 'updated', 'true', $url );
@@ -180,7 +180,7 @@ class PP_PB_WF_Settings {
 	 */
 	public function settings_screen () {
 		$hidden_fields = array( 'page' => 'page_builder' );
-		if ( isset( $_GET['tab'] ) && '' ! = $_GET['tab'] ) $hidden_fields['tab'] = sanitize_title_with_dashes( $_GET['tab'] );
+		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) $hidden_fields['tab'] = sanitize_title_with_dashes( $_GET['tab'] );
 
 //		do_action( 'wf_screen_get_header', 'woothemes', 'themes' );
 		$this->_field_obj->__set( 'has_tabs', true );
@@ -303,7 +303,7 @@ class PP_PB_WF_Settings {
 	public function get_fields ( $section = '' ) {
 		$fields = array();
 		foreach ( $this->_field_obj->__get( 'fields' ) as $k => $v ) {
-			if ( '' ! = $section ) {
+			if ( '' != $section ) {
 				if ( $section == $v['section'] ) {
 					$fields[$k] = $v;
 				}

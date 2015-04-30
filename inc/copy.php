@@ -59,7 +59,7 @@ function siteorigin_panels_content_save_pre_get() {
 	 );
 
 	// Use the signature to secure the request.
-	if ( $sig ! = sha1( NONCE_SALT . serialize( $data ) ) ) exit();
+	if ( $sig != sha1( NONCE_SALT . serialize( $data ) ) ) exit();
 	
 	// This can cause a fatal error, so handle in a separate request.
 	$panels_data = siteorigin_panels_get_panels_data_from_post( $_POST );

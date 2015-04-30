@@ -146,7 +146,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
             $this_value                = $this->value( 'font_weight_style' );
 //			$font_id                   = $this->value( 'font_id' );
 //            $font_id                   = empty( $font_id ) ? '' : $font_id;
-//            if ( $font_id ! == '' ) {
+//            if ( $font_id !== '' ) {
 //                $font                      = PNM_Font_Utility::get_font( $font_id );
 //            } else {
 //                $font = null;
@@ -171,11 +171,11 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
                     //                        $style_data = 'normal';
                     //                        $weight     = 500;
                     //
-                    //                        if ( strpos( $value, 'italic' ) ! == false ) {
+                    //                        if ( strpos( $value, 'italic' ) !== false ) {
                     //                            $style_data = 'italic';
                     //                        }
                     //
-                    //                        if ( $value ! == 'regular' && $value ! == 'italic' ) {
+                    //                        if ( $value !== 'regular' && $value !== 'italic' ) {
                     //                            $weight = ( int ) substr( $value, 0, 3 );
                     //                        }
                     //                        ?>

@@ -28,9 +28,9 @@ add_action( 'admin_enqueue_scripts', 'origin_widgets_enqueue' );
 
 function origin_widgets_display_css() {
 	if ( is_admin() ) return;
-	if ( empty( $_GET['action'] ) || $_GET['action'] ! = 'origin_widgets_css' ) return;
+	if ( empty( $_GET['action'] ) || $_GET['action'] != 'origin_widgets_css' ) return;
 	if ( empty( $_GET['class'] ) || empty( $_GET['style'] ) || empty( $_GET['preset'] ) ) return;
-	if ( strpos( $_GET['class'], 'SiteOrigin_Panels_Widget_' ) ! == 0 ) return;
+	if ( strpos( $_GET['class'], 'SiteOrigin_Panels_Widget_' ) !== 0 ) return;
 
 	header( "Content-type: text/css" );
 	echo origin_widgets_generate_css( $_GET['class'], $_GET['style'], $_GET['preset'], $_GET['ver'] );
@@ -172,7 +172,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 
 			?><p><label for="<?php echo $this->get_field_id( $field_id ); ?>"><?php echo esc_html( $field_args['label'] ) ?></label><?php
 
-			if ( $field_args['type'] ! = 'checkbox' ) echo '<br />';
+			if ( $field_args['type'] != 'checkbox' ) echo '<br />';
 
 			switch( $field_args['type'] ) {
 				case 'text' :

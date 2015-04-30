@@ -60,7 +60,7 @@ function siteorigin_panels_init() {
 	$display_settings = get_option( 'siteorigin_panels_display', array() );
 	if ( isset( $display_settings['bundled-widgets'] ) && ! $display_settings['bundled-widgets'] ) return;
 
-	if ( ! defined( 'SITEORIGIN_PANELS_LEGACY_WIDGETS_ACTIVE' ) && ( ! is_admin() || basename( $_SERVER["SCRIPT_FILENAME"] ) ! = 'plugins.php' ) ) {
+	if ( ! defined( 'SITEORIGIN_PANELS_LEGACY_WIDGETS_ACTIVE' ) && ( ! is_admin() || basename( $_SERVER["SCRIPT_FILENAME"] ) != 'plugins.php' ) ) {
 		// Include the bundled widgets if the Legacy Widgets plugin isn't active.
 		include plugin_dir_path( __FILE__ ).'widgets/widgets.php';
 	}
@@ -198,7 +198,7 @@ function siteorigin_panels_is_home() {
  * @action update_option_show_on_front
  */
 function siteorigin_panels_disable_on_front_page_change( $old, $new ) {
-	if ( $new ! = 'posts' ) {
+	if ( $new != 'posts' ) {
 		// Disable panels home page
 		update_option( 'siteorigin_panels_home_page_enabled', '' );
 	}
@@ -214,7 +214,7 @@ add_action( 'update_option_show_on_front', 'siteorigin_panels_disable_on_front_p
  */
 function siteorigin_panels_is_panel( $can_edit = false ) {
 	// Check if this is a panel
-	$is_panel =  ( siteorigin_panels_is_home() || ( is_singular() && get_post_meta( get_the_ID(), 'panels_data', false ) ! = '' ) );
+	$is_panel =  ( siteorigin_panels_is_home() || ( is_singular() && get_post_meta( get_the_ID(), 'panels_data', false ) != '' ) );
 	return $is_panel && ( ! $can_edit || ( ( is_singular() && current_user_can( 'edit_post', get_the_ID() ) ) || ( siteorigin_panels_is_home() && current_user_can( 'edit_theme_options' ) ) ) );
 }
 
@@ -455,7 +455,7 @@ function siteorigin_panels_save_post( $post_id, $post ) {
 	if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 	//Don't Save panels if $post_id is not same as current post ID
 	//( Prevents population product panels data in saving Tabs via Meta )
-	if ( $_POST['post_ID'] ! = $post_id ) return;
+	if ( $_POST['post_ID'] != $post_id ) return;
 
 	$panels_data = siteorigin_panels_get_panels_data_from_post( $_POST );
 	if ( function_exists( 'wp_slash' ) ) $panels_data = wp_slash( $panels_data );
@@ -622,7 +622,7 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 		}
 
 		// Add the bottom margin to any grids that aren't the last
-		if ( $gi ! = count( $panels_data['grids'] )-1 ) {
+		if ( $gi != count( $panels_data['grids'] )-1 ) {
 			$css[1920]['margin-bottom: '.$panels_margin_bottom.'px'][] = '#pg-' . $post_id . '-' . $gi;
 		}
 
@@ -641,7 +641,7 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 			}
 
 			for ( $i = 0; $i < $cell_count; $i++ ) {
-				if ( $i ! = $cell_count - 1 ) {
+				if ( $i != $cell_count - 1 ) {
 					$css_new = 'margin-bottom:' . $panels_margin_bottom . 'px';
 					if ( empty( $css[$panels_mobile_width][$css_new] ) ) $css[$panels_mobile_width][$css_new] = array();
 					$css[$panels_mobile_width][$css_new][] = '#pgc-' . $post_id . '-' . $gi . '-' . $i;
@@ -838,7 +838,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		}
 		else {
 			//Allowing rendering for password protected Tab( wc_product_tab ) post types
-			if ( post_password_required( $post_id ) && get_post_type( $post_id )! ='wc_product_tab' ) return false;
+			if ( post_password_required( $post_id ) && get_post_type( $post_id )!='wc_product_tab' ) return false;
 			$panels_data = get_post_meta( $post_id, 'panels_data', true );
 		}
 	}
@@ -1036,7 +1036,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
                     }
 
                     if ( isset( $widget_info['post_meta_enable'] ) ) {
-                        if ( $widget_info['post_meta_enable'] ! = '1' ) {
+                        if ( $widget_info['post_meta_enable'] != '1' ) {
                             $cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
 
                             $css .= "#$cssId > article > .post-meta {\n";
@@ -1439,7 +1439,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
             $key1 = $key . '-width';
             $key2 = $key . '-color';
 
-            if ( isset( $styleArray[$key1] ) && $styleArray[$key1] ! = '' ) {
+            if ( isset( $styleArray[$key1] ) && $styleArray[$key1] != '' ) {
                 if ( ! is_array( $field['css'] ) ) {
                     $cssArr = array( $field['css'] );
                 } else {
@@ -1451,7 +1451,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
                 }
             }
 
-            if ( isset( $styleArray[$key2] ) && $styleArray[$key2] ! = '' ) {
+            if ( isset( $styleArray[$key2] ) && $styleArray[$key2] != '' ) {
                 if ( ! is_array( $field['css'] ) ) {
                     $cssArr = array( $field['css'] );
                 } else {
@@ -1466,7 +1466,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
         } else {
 
 
-            if ( isset( $styleArray[$key] ) && $styleArray[$key] ! = '' ) {
+            if ( isset( $styleArray[$key] ) && $styleArray[$key] != '' ) {
                 if ( ! is_array( $field['css'] ) ) {
                     $cssArr = array( $field['css'] );
                 } else {
@@ -1499,7 +1499,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 		'widget_id' => 'widget-' . $grid . '-' . $cell . '-' . $panel
 	 ), $instance );
 
-	if ( $styleWithSelector ! = '' ) {
+	if ( $styleWithSelector != '' ) {
 		echo "<style>\n";
 		echo str_replace( 'display','display:none;display',$styleWithSelector );
 		echo "</style>\n";
@@ -1661,7 +1661,7 @@ function siteorigin_panels_cloned_page_layouts( $layouts ) {
 		if ( empty( $panels_data ) ) continue;
 
 		$name =  empty( $page->post_title ) ? __( 'Untitled', 'siteorigin-panels' ) : $page->post_title;
-		if ( $page->post_status ! = 'publish' ) $name .= ' ( ' . __( 'Unpublished', 'siteorigin-panels' ) . ' )';
+		if ( $page->post_status != 'publish' ) $name .= ' ( ' . __( 'Unpublished', 'siteorigin-panels' ) . ' )';
 
 		if ( current_user_can( 'edit_post', $page->ID ) ) {
 			$layouts['post-'.$page->ID] = wp_parse_args(
@@ -1956,7 +1956,7 @@ function pp_pb_option_css()
     if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 )
         $widget_title_css .= 'margin-bottom:0 ! important;';
 
-    if ( $widget_title_css ! = '' )
+    if ( $widget_title_css != '' )
         $output .= '.panel-grid-cell .widget h3.widget-title {'. $widget_title_css . '}'. "\n";
 
 
@@ -1993,7 +1993,7 @@ function pp_pb_option_css()
     if ( $widget_border_radius )
         $widget_css .= 'border-radius:'.$widget_border_radius.';-moz-border-radius:'.$widget_border_radius.';-webkit-border-radius:'.$widget_border_radius.';';
 
-    if ( $widget_css ! = '' )
+    if ( $widget_css != '' )
         $output .= '.panel-grid-cell .widget {'. $widget_css . '}'. "\n";
 
     if ( $widget_border["width"] > 0 )
@@ -2184,7 +2184,7 @@ function pp_pb_in_plugin_update_message( $args, $r ) {
 
             $response = wp_remote_post( $args['url'], array( 'body' => array( 'action' => 'upgrade-notice', 'plugin' => $args['slug'] ) ) );
 
-            if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) && $response['body'] ! = 'false' ) {
+            if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) && $response['body'] != 'false' ) {
 
                 // Output Upgrade Notice
                 $upgrade_notice = '';

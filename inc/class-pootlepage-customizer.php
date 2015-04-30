@@ -724,11 +724,11 @@ class PootlePage_Customizer {
             $widget_css .= 'border-radius:' . $widget_border_radius . 'px; -moz-border-radius:' . $widget_border_radius . 'px; -webkit-border-radius:' . $widget_border_radius . 'px;';
         }
 
-        if ( $widget_css ! = '' ) {
+        if ( $widget_css != '' ) {
             $output .= '.panel-grid-cell .widget {' . $widget_css . '}' . "\n";
         }
 
-        if ( $widget_title_css ! = '' ) {
+        if ( $widget_title_css != '' ) {
             $output .= '.panel-grid-cell .widget > .widget-title {' . $widget_title_css . '}' . "\n";
         }
 

@@ -258,7 +258,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 				// When the widget appears on a sub page.
 				$query_args['paged'] = get_query_var( 'paged' );
 			}
-			elseif ( strpos( $_SERVER['REQUEST_URI'], '/page/' ) ! == false ) {
+			elseif ( strpos( $_SERVER['REQUEST_URI'], '/page/' ) !== false ) {
 				// When the widget appears on the home page.
 				preg_match( '/\/page\/( [0-9]+ )\//', $_SERVER['REQUEST_URI'], $matches );
 				if ( ! empty( $matches[1] ) ) $query_args['paged'] = intval( $matches[1] );
@@ -327,7 +327,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
         $thumbnailEnable = isset( $instance['thumbnail_enable'] ) && $instance['thumbnail_enable'] == true;
         $initialThumbnailEnable = get_option( 'pp_pb_post_loop_thumbnail_enable', '1' ) == true;
-        if ( $thumbnailEnable ! = $initialThumbnailEnable ) {
+        if ( $thumbnailEnable != $initialThumbnailEnable ) {
             update_option( 'pp_pb_post_loop_thumbnail_enable', $thumbnailEnable ? '1' : '0' );
         }
 
@@ -346,7 +346,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
         // hook for column count
 //        add_action( 'get_header', array( $this, 'option_css' ) );
 
-		if ( strpos( '/'.$instance['template'], '/content' ) ! == false ) {
+		if ( strpos( '/'.$instance['template'], '/content' ) !== false ) {
 			while( have_posts() ) {
 				the_post();
 				locate_template( $instance['template'], true, false );
@@ -364,7 +364,7 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
         remove_filter( 'woo_get_dynamic_values', array( $this, 'temporary_set_woo_settings' ) );
 
-        if ( $thumbnailEnable ! = $initialThumbnailEnable ) {
+        if ( $thumbnailEnable != $initialThumbnailEnable ) {
             update_option( 'pp_pb_post_loop_thumbnail_enable', $initialThumbnailEnable ? '1' : '0' );
         }
 
