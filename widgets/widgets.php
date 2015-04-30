@@ -124,9 +124,9 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			if ( ! empty( $this->sub_widgets ) ) {
 				global $wp_widget_factory;
 				foreach( $this->sub_widgets as $id => $sub ) {
-					if ( empty( $old['origin_style_'.$id] ) ) continue;
+					if ( empty( $old[ 'origin_style_'.$id ] ) ) continue;
 					$the_widget = $wp_widget_factory->widgets[$sub[1]];
-					list( $style, $preset ) = explode( ':', $old['origin_style_'.$id] );
+					list( $style, $preset ) = explode( ':', $old[ 'origin_style_'.$id ] );
 
 					$the_widget->clear_css_cache( $style, $preset );
 				}
@@ -178,20 +178,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 		// Now, lets add the style options.
 		$styles = $this->get_styles();
 		if ( ! empty( $styles ) ) {
-			?>
-			<p>
-				<label for="<?php echo $this->get_field_id( 'origin_style' ) ?>"><?php _e( 'Style', 'siteorigin-panels' ) ?></label>
-				<select name="<?php echo $this->get_field_name( 'origin_style' ) ?>" id="<?php echo $this->get_field_id( 'origin_style' ) ?>">
-					<?php foreach( $this->get_styles() as $style_id => $style_info ) : $presets = $this->get_style_presets( $style_id ); ?>
-						<?php if ( ! empty( $presets ) ) : foreach( $presets as $preset_id => $preset ) : ?>
-							<option value="<?php echo esc_attr( $style_id.':'.$preset_id ) ?>" <?php selected( $style_id.':'.$preset_id, $instance['origin_style'] ) ?>>
-								<?php echo esc_html( $style_info['Name'] . ' - ' . ucwords( str_replace( '_', ' ', $preset_id ) ) ) ?>
-							</option>
-						<?php endforeach; endif; ?>
-					<?php endforeach ?>
-				</select>
-			</p>
-			<?php
+			$this->form_style_options( $instance, $this );
 		}
 
 		do_action( 'siteorigin_panels_widget_before_substyles', $this, $instance );
@@ -200,24 +187,27 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			global $wp_widget_factory;
 			$the_widget = $wp_widget_factory->widgets[$sub[1]];
 
-			if ( ! isset( $instance['origin_style_'.$id] ) ) $instance['origin_style_'.$id] = ! empty( $this->widget_options['default_style_'.$id] ) ? $this->widget_options['default_style_'.$id] : false;
-
-			?>
-			<p>
-				<label for="<?php echo $this->get_field_id( 'origin_style_'.$id ) ?>"><?php printf( __( '%s Style', 'siteorigin-panels' ), $sub[0] ) ?></label>
-				<select name="<?php echo $this->get_field_name( 'origin_style_'.$id ) ?>" id="<?php echo $this->get_field_id( 'origin_style_'.$id ) ?>">
-					<?php foreach( $the_widget->get_styles() as $style_id => $style_info ) : $presets = $the_widget->get_style_presets( $style_id ); ?>
-						<?php if ( ! empty( $presets ) ) : foreach( $presets as $preset_id => $preset ) : ?>
-							<option value="<?php echo esc_attr( $style_id.':'.$preset_id ) ?>" <?php selected( $style_id.':'.$preset_id, $instance['origin_style_'.$id] ) ?>>
-								<?php echo esc_html( $style_info['Name'].' - ' . ucwords( str_replace( '_', ' ', $preset_id ) ) ) ?>
-							</option>
-						<?php endforeach; endif; ?>
-					<?php endforeach ?>
-				</select>
-			</p>
-			<?php
+			if ( ! isset( $instance['origin_style_'.$id ] ) ) $instance['origin_style_'.$id ] = ! empty( $this->widget_options['default_style_'.$id ] ) ? $this->widget_options['default_style_'.$id ] : false;
+			$this->form_style_options( $instance, $the_widget, 'origin_style_'.$id, $sub[0] );
 		}
 		do_action( 'siteorigin_panels_widget_after_styles', $this, $instance );
+	}
+
+	public function form_style_options( $instance, $the_widget, $id = 'origin_style', $sub='' ){
+		?>
+		<p>
+			<label for="<?php echo $this->get_field_id( $id ) ?>"><?php printf( __( '%s Style', 'siteorigin-panels' ), $sub ) ?></label>
+			<select name="<?php echo $this->get_field_name( $id ) ?>" id="<?php echo $this->get_field_id( $id ) ?>">
+				<?php foreach( $the_widget->get_styles() as $style_id => $style_info ) : $presets = $the_widget->get_style_presets( $style_id ); ?>
+					<?php if ( ! empty( $presets ) ) : foreach( $presets as $preset_id => $preset ) : ?>
+						<option value="<?php echo esc_attr( $style_id.':'.$preset_id ) ?>" <?php selected( $style_id.':'.$preset_id, $instance[ $id ] ) ?>>
+							<?php echo esc_html( $style_info['Name'] . ' - ' . ucwords( str_replace( '_', ' ', $preset_id ) ) ) ?>
+						</option>
+					<?php endforeach; endif; ?>
+				<?php endforeach ?>
+			</select>
+		</p>
+		<?php
 	}
 
 	/**
@@ -315,7 +305,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	 * @param $instance
 	 */
 	function sub_widget( $id, $instance ) {
-		$sub = $this->sub_widgets[$id];
+		$sub = $this->sub_widgets[ $id ];
 		global $wp_widget_factory;
 		$the_widget = $wp_widget_factory->widgets[$sub[1]];
 		$the_widget->widget( array( 'before_widget' => '', 'after_widget' => '' ), $instance );
@@ -533,7 +523,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	 * @param $class
 	 */
 	function add_sub_widget( $id, $name, $class ) {
-		$this->sub_widgets[$id] = array( $name, $class );
+		$this->sub_widgets[ $id ] = array( $name, $class );
 	}
 
 	/**

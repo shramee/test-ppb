@@ -9,7 +9,7 @@
 class SiteOrigin_Panels_Widget_Helper {
 
 	/**
-	 * Display the form for the widget. Auto generated from form array.
+	 * Outputs field for SiteOrigin_Panels_Widget::widget
 	 *
 	 * @param $field_id
 	 * @param $field_args
