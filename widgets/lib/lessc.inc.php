@@ -3403,26 +3403,7 @@ class lessc_formatter_classic {
 		$isSingle = ! $this->disableSingle &&
 			is_null( $block->type ) && count( $block->lines ) == 1;
 
-		if ( ! empty( $block->selectors ) ) {
-			$this->indentLevel++;
-
-			if ( $this->breakSelectors ) {
-				$selectorSeparator = $this->selectorSeparator . $this->break . $pre;
-			} else {
-				$selectorSeparator = $this->selectorSeparator;
-			}
-
-			echo $pre .
-				implode( $selectorSeparator, $block->selectors );
-			if ( $isSingle ) {
-				echo $this->openSingle;
-				$inner = "";
-			} else {
-				echo $this->open . $this->break;
-				$inner = $this->indentStr();
-			}
-
-		}
+		$this->block_if_selectors1( $block, $inner, $isSingle, $pre );
 
 		if ( ! empty( $block->lines ) ) {
 			$glue = $this->break.$inner;
@@ -3435,6 +3416,48 @@ class lessc_formatter_classic {
 		foreach ( $block->children as $child ) {
 			$this->block( $child );
 		}
+
+		$this->block_if_selectors2( $block, $isSingle, $pre );
+	}
+
+	/**
+	 * Extracting block()
+	 *
+	 * @param object $block
+	 * @param string $inner
+	 * @param bool $isSingle
+	 * @param string $pre
+	 */
+	public function block_if_selectors1( &$block, &$inner, $isSingle, $pre ){
+
+		if ( ! empty( $block->selectors ) ) {
+			$this->indentLevel++;
+
+			if ( $this->breakSelectors ) {
+				$selectorSeparator = $this->selectorSeparator . $this->break . $pre;
+			} else {
+				$selectorSeparator = $this->selectorSeparator;
+			}
+
+			echo $pre . implode( $selectorSeparator, $block->selectors );
+			if ( $isSingle ) {
+				echo $this->openSingle;
+				$inner = "";
+			} else {
+				echo $this->open . $this->break;
+				$inner = $this->indentStr();
+			}
+		}
+	}
+
+	/**
+	 * Extracting block()
+	 *
+	 * @param object $block
+	 * @param bool $isSingle
+	 * @param string $pre
+	 */
+	public function block_if_selectors2( &$block, $isSingle, $pre ){
 
 		if ( ! empty( $block->selectors ) ) {
 			if ( ! $isSingle && empty( $block->children ) ) echo $this->break;
