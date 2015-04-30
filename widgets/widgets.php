@@ -1,6 +1,7 @@
 <?php
 // Include all the basic widgets
 include plugin_dir_path( __FILE__ ) . '/less/functions.php';
+include 'widget-helper.php';
 
 /**
  * Include all the widget files and register their widgets
@@ -79,11 +80,11 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 	 *
 	 * @param string $name Name for the widget displayed on the configuration page.
 	 * @param array $widget_options Optional Passed to wp_register_sidebar_widget()
-	 *     - description: shown on the configuration page
-	 *     - classname
+	 *	 - description: shown on the configuration page
+	 *	 - classname
 	 * @param array $control_options Optional Passed to wp_register_widget_control()
-	 *     - width: required if more than 250px
-	 *     - height: currently not used but may be needed in the future
+	 *	 - width: required if more than 250px
+	 *	 - height: currently not used but may be needed in the future
 	 * @param array $form Form arguments.
 	 * @param array $demo Values for the demo of the page builder widget.
 	 * @internal param string $id_base
@@ -99,6 +100,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 		$this->demo = $demo;
 		$this->styles = array();
 		$this->sub_widgets = array();
+		$this->helper = new SiteOrigin_Panels_Widget_Helper();
 	}
 
 	/**
@@ -164,9 +166,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 		<?php
 
 		foreach( $this->form_args as $field_id => $field_args ) {
-
-			$this->form_field_output( $field_id, $field_args );
-
+			$this->helper->form_field_output( $field_id, $field_args );
 		}
 
 		if ( ! isset( $instance['origin_style'] ) ) {
@@ -217,55 +217,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			</p>
 			<?php
 		}
-
 		do_action( 'siteorigin_panels_widget_after_styles', $this, $instance );
-	}
-
-
-	/**
-	 * Display the form for the widget. Auto generated from form array.
-	 *
-	 * @param array $instance
-	 * @return string|void
-	 */
-	public function form_field_output( $field_id, $field_args ) {
-		if ( isset( $field_args['default'] ) && ! isset( $instance[$field_id] ) ) {
-				$instance[$field_id] = $field_args['default'];
-			}
-			if ( ! isset( $instance[$field_id] ) ) $instance[$field_id] = false;
-
-			?><p><label for="<?php echo $this->get_field_id( $field_id ); ?>"><?php echo esc_html( $field_args['label'] ) ?></label><?php
-
-			if ( $field_args['type'] != 'checkbox' ) echo '<br />';
-
-			switch( $field_args['type'] ) {
-				case 'text' :
-					?><input type="text" class="widefat" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" value="<?php echo esc_attr( $instance[$field_id] ) ?>" /><?php
-					break;
-				case 'textarea' :
-					if ( empty( $field_args['height'] ) ) $field_args['height'] = 6;
-					?><textarea class="widefat" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" rows="<?php echo intval( $field_args['height'] ) ?>"><?php echo esc_textarea( $instance[$field_id] ) ?></textarea><?php
-					break;
-				case 'number' :
-					?><input type="number" class="small-text" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" value="<?php echo floatval( $instance[$field_id] ) ?>" /><?php
-					break;
-				case 'checkbox' :
-					?><input type="checkbox" class="small-text" id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>" <?php checked( ! empty( $instance[$field_id] ) ) ?>/><?php
-					break;
-				case 'select' :
-					?>
-					<select id="<?php echo $this->get_field_id( $field_id ); ?>" name="<?php echo $this->get_field_name( $field_id ); ?>">
-						<?php foreach( $field_args['options'] as $k => $v ) : ?>
-							<option value="<?php echo esc_attr( $k ) ?>" <?php selected( $instance[$field_id], $k ) ?>><?php echo esc_html( $v ) ?></option>
-						<?php endforeach; ?>
-					</select>
-					<?php
-					break;
-			}
-			if ( ! empty( $field_args['description'] ) ) echo '<small class="description">'.esc_html( $field_args['description'] ).'</small>';
-
-			?></p><?php
-
 	}
 
 	/**
@@ -290,20 +242,7 @@ abstract class SiteOrigin_Panels_Widget extends WP_Widget{
 			$instance['title'] = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 		}
 
-		if ( ! empty( $instance['origin_style'] ) ) {
-			list( $style, $preset ) = explode( ':', $instance['origin_style'] );
-			$style = sanitize_file_name( $style );
-			$preset = sanitize_file_name( $preset );
-
-			$data = $this->get_style_data( $style );
-			$template = $data['Template'];
-		}
-		else {
-			$style = 'default';
-			$preset = 'default';
-		}
-
-		if ( empty( $template ) ) $template = 'default';
+		list( $style, $preset, $template ) = $this->widget_style_preset( $instance );
 
 		$template_file = false;
 		$paths = $this->get_widget_paths();

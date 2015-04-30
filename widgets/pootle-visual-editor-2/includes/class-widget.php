@@ -127,7 +127,7 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 			?>
 			<input id="<?php echo $this->get_field_id( 'filter' ); ?>-hidden" name="<?php echo $this->get_field_name( 'filter' ); ?>" type="hidden" value="0" />
 			<p><input id="<?php echo $this->get_field_id( 'filter' ); ?>" name="<?php echo $this->get_field_name( 'filter' ); ?>" type="checkbox" value="1" <?php checked( $instance['filter'] ); ?> />&nbsp;<label for="<?php echo $this->get_field_id( 'filter' ); ?>"><?php _e( 'Automatically add paragraphs' ); ?></label></p>
-            <?php
+			<?php
 		}
 
 	} // END class WP_Widget_Black_Studio_TinyMCE

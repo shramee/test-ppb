@@ -16,18 +16,18 @@ define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 add_action( 'admin_init', 'pp_pb_check_for_conflict' );
 
 function pp_pb_check_for_conflict() {
-    if ( is_plugin_active( 'wx-pootle-text-widget/pootlepress-text-widget.php' ) ||
-        is_plugin_active( 'pootle-text-widget-master/pootlepress-text-widget.php' ) ) {
+	if ( is_plugin_active( 'wx-pootle-text-widget/pootlepress-text-widget.php' ) ||
+		is_plugin_active( 'pootle-text-widget-master/pootlepress-text-widget.php' ) ) {
 
-        $pluginFile =  __FILE__;
-        $plugin = plugin_basename( $pluginFile );
-        if ( is_plugin_active( $plugin ) ) {
-            deactivate_plugins( $plugin );
-            wp_die( "ERROR: <strong>Page Builder</strong> cannot be activated if Pootle Text Widget is also activated. " .
-                "Page Builder is unable to continue and has been deactivated. " .
-                "<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
-        }
-    }
+		$pluginFile =  __FILE__;
+		$plugin = plugin_basename( $pluginFile );
+		if ( is_plugin_active( $plugin ) ) {
+			deactivate_plugins( $plugin );
+			wp_die( "ERROR: <strong>Page Builder</strong> cannot be activated if Pootle Text Widget is also activated. " .
+				"Page Builder is unable to continue and has been deactivated. " .
+				"<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
+		}
+	}
 }
 
 include plugin_dir_path( __FILE__ ) . 'widgets/basic.php';
@@ -246,10 +246,10 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 
 		wp_enqueue_script( 'so-undomanager', plugin_dir_url( __FILE__ ) . 'js/undomanager.min.js', array(), 'fb30d7f' );
 
-        // check if "chosen" is already used, e.g. by WooCommerce
-        if ( ! wp_script_is( 'chosen' ) ) {
-            wp_enqueue_script( 'so-panels-chosen', plugin_dir_url( __FILE__ ) . 'js/chosen/chosen.jquery.min.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
-        }
+		// check if "chosen" is already used, e.g. by WooCommerce
+		if ( ! wp_script_is( 'chosen' ) ) {
+			wp_enqueue_script( 'so-panels-chosen', plugin_dir_url( __FILE__ ) . 'js/chosen/chosen.jquery.min.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		}
 
 		wp_enqueue_script( 'so-panels-admin', plugin_dir_url( __FILE__ ) . 'js/panels.admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-panels', plugin_dir_url( __FILE__ ) . 'js/panels.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
@@ -259,7 +259,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		wp_enqueue_script( 'so-panels-admin-media', plugin_dir_url( __FILE__ ) . 'js/panels.admin.media.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-styles', plugin_dir_url( __FILE__ ) . 'js/panels.admin.styles.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
-        wp_enqueue_script( 'row-options', plugin_dir_url( __FILE__ ) . 'js/row.options.admin.js', array( 'jquery' ) );
+		wp_enqueue_script( 'row-options', plugin_dir_url( __FILE__ ) . 'js/row.options.admin.js', array( 'jquery' ) );
 
 		wp_localize_script( 'so-panels-admin', 'panels', array(
 			'previewUrl' => wp_nonce_url( add_query_arg( 'siteorigin_panels_preview', 'true', get_home_url() ), 'siteorigin-panels-preview' ),
@@ -269,7 +269,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 					'cancel' => __( 'cancel', 'siteorigin-panels' ),
 					'delete' => __( 'Delete', 'siteorigin-panels' ),
 					'duplicate' => __( 'Duplicate', 'siteorigin-panels' ),
-                    'style' => __( 'Style', 'siteorigin-panels' ),
+					'style' => __( 'Style', 'siteorigin-panels' ),
 					'edit' => __( 'Edit', 'siteorigin-panels' ),
 					'done' => __( 'Done', 'siteorigin-panels' ),
 					'undo' => __( 'Undo', 'siteorigin-panels' ),
@@ -280,12 +280,12 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 					'deleteWidget' => __( 'Widget deleted', 'siteorigin-panels' ),
 					'confirmLayout' => __( 'Are you sure you want to load this layout? It will overwrite your current page.', 'siteorigin-panels' ),
 					'editWidget' => __( 'Edit %s Widget', 'siteorigin-panels' ),
-                    'styleWidget' => __( 'Style Widget', 'siteorigin-panels' )
+					'styleWidget' => __( 'Style Widget', 'siteorigin-panels' )
 				 ),
 			 ),
 		 ) );
 
-        // this is the data of the widget and row that have been setup
+		// this is the data of the widget and row that have been setup
 		$panels_data = siteorigin_panels_get_current_admin_panels_data();
 
 		// Remove any widgets with classes that don't exist
@@ -314,27 +314,27 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 				}
 			}
 
-            // load all data even if no widget inside, so row styling will be loaded
+			// load all data even if no widget inside, so row styling will be loaded
 			wp_localize_script( 'so-panels-admin', 'panelsData', $panels_data );
 		}
 
 		// Set up the row styles
 		wp_localize_script( 'so-panels-admin', 'panelsStyleFields', siteorigin_panels_style_get_fields() );
 
-        // we definitely need to use color picker
+		// we definitely need to use color picker
 		//if ( siteorigin_panels_style_is_using_color() ) {
 
-            wp_dequeue_script( "iris" );
+			wp_dequeue_script( "iris" );
 
-            wp_enqueue_script( "pp-pb-iris", plugin_dir_url( __FILE__ ) . '/js/iris.js', array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ) );
-            wp_enqueue_script( 'pp-pb-color-picker', plugin_dir_url( __FILE__ ) . '/js/color-picker-custom.js', array( 'pp-pb-iris' ) );
+			wp_enqueue_script( "pp-pb-iris", plugin_dir_url( __FILE__ ) . '/js/iris.js', array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ) );
+			wp_enqueue_script( 'pp-pb-color-picker', plugin_dir_url( __FILE__ ) . '/js/color-picker-custom.js', array( 'pp-pb-iris' ) );
 
-            wp_localize_script( 'pp-pb-color-picker', 'wpColorPickerL10n', array(
-                'clear' => __( 'Clear' ),
-                'defaultString' => __( 'Default' ),
-                'pick' => __( 'Select Color' ),
-                'current' => __( 'Current Color' ),
-            ) );
+			wp_localize_script( 'pp-pb-color-picker', 'wpColorPickerL10n', array(
+				'clear' => __( 'Clear' ),
+				'defaultString' => __( 'Default' ),
+				'pick' => __( 'Select Color' ),
+				'current' => __( 'Current Color' ),
+			) );
 
 			wp_enqueue_style( 'wp-color-picker' );
 		//}
@@ -348,12 +348,12 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		}
 		$GLOBALS['post'] = $original_post;
 
-        // handle a special case for Event Calendar Pro,
-        // since it doesn't enqueue script if not in Widgets page
-        if ( class_exists( 'TribeEventsMiniCalendarWidget' ) ) {
-            Tribe_Template_Factory::asset_package( 'select2' );
-            //wp_enqueue_script( 'calendar-widget-admin',  plugin_dir_url( __FILE__ ) . '/js/calendar-widget-admin.js' );
-        }
+		// handle a special case for Event Calendar Pro,
+		// since it doesn't enqueue script if not in Widgets page
+		if ( class_exists( 'TribeEventsMiniCalendarWidget' ) ) {
+			Tribe_Template_Factory::asset_package( 'select2' );
+			//wp_enqueue_script( 'calendar-widget-admin',  plugin_dir_url( __FILE__ ) . '/js/calendar-widget-admin.js' );
+		}
 
 		// This gives panels a chance to enqueue scripts too, without having to check the screen ID.
 		do_action( 'siteorigin_panel_enqueue_admin_scripts' );
@@ -393,23 +393,23 @@ add_action( 'admin_print_styles-post.php', 'siteorigin_panels_admin_enqueue_styl
 add_action( 'admin_print_styles-appearance_page_so_panels_home_page', 'siteorigin_panels_admin_enqueue_styles' );
 
 function pootlepage_option_page_styles() {
-    // using $screen->id is not reliable, because it can change if using child theme
-    global $pagenow;
-    if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
-        wp_enqueue_style( 'pootlepage-option-admin', plugin_dir_url( __FILE__ ) . 'css/option-admin.css', array(), POOTLEPAGE_VERSION );
-    }
+	// using $screen->id is not reliable, because it can change if using child theme
+	global $pagenow;
+	if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
+		wp_enqueue_style( 'pootlepage-option-admin', plugin_dir_url( __FILE__ ) . 'css/option-admin.css', array(), POOTLEPAGE_VERSION );
+	}
 }
 
 add_action( 'admin_print_styles', 'pootlepage_option_page_styles' );
 
 function pootlepage_option_page_scripts() {
 
-    // using $screen->id is not reliable, because it can change if using child theme
-    global $pagenow;
-    if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
-        wp_enqueue_script( 'jquery-ui-sortable' );
-        wp_enqueue_script( 'pootlepage-option-admin', plugin_dir_url( __FILE__ ) . 'js/option-admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
-    }
+	// using $screen->id is not reliable, because it can change if using child theme
+	global $pagenow;
+	if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
+		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'pootlepage-option-admin', plugin_dir_url( __FILE__ ) . 'js/option-admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+	}
 }
 
 add_action( 'admin_print_scripts', 'pootlepage_option_page_scripts' );
@@ -461,14 +461,14 @@ function siteorigin_panels_save_post( $post_id, $post ) {
 	if ( function_exists( 'wp_slash' ) ) $panels_data = wp_slash( $panels_data );
 	update_post_meta( $post_id, 'panels_data', $panels_data );
 
-//    if ( isset( $_POST['page-settings'] ) ) {
-//        $pageSettingsJson = $_POST['page-settings'];
-//        update_post_meta( $post_id, 'pootlepage-page-settings', $pageSettingsJson );
-//    }
-//    if ( isset( $_POST['hide-elements'] ) ) {
-//        $hideElementsJson = $_POST['hide-elements'];
-//        update_post_meta( $post_id, 'pootlepage-hide-elements', $hideElementsJson );
-//    }
+//	if ( isset( $_POST['page-settings'] ) ) {
+//		$pageSettingsJson = $_POST['page-settings'];
+//		update_post_meta( $post_id, 'pootlepage-page-settings', $pageSettingsJson );
+//	}
+//	if ( isset( $_POST['hide-elements'] ) ) {
+//		$hideElementsJson = $_POST['hide-elements'];
+//		update_post_meta( $post_id, 'pootlepage-hide-elements', $hideElementsJson );
+//	}
 }
 add_action( 'save_post', 'siteorigin_panels_save_post', 10, 2 );
 
@@ -516,56 +516,56 @@ function siteorigin_panels_get_current_admin_panels_data() {
 
 	if ( empty( $panels_data ) ) $panels_data = array();
 
-    // widget style is new addition, it may not be present in panel data in database before,
-    // so set a default widget when loading panel data
-    if ( isset( $panels_data['widgets'] ) ) {
-        foreach ( $panels_data['widgets'] as &$widget ) {
-            if ( isset( $widget['info'] ) ) {
-                if ( ! isset( $widget['info']['style'] ) ) {
-                    $widget['info']['style'] = pp_get_default_widget_style();
-                }
-            }
-        }
-    }
+	// widget style is new addition, it may not be present in panel data in database before,
+	// so set a default widget when loading panel data
+	if ( isset( $panels_data['widgets'] ) ) {
+		foreach ( $panels_data['widgets'] as &$widget ) {
+			if ( isset( $widget['info'] ) ) {
+				if ( ! isset( $widget['info']['style'] ) ) {
+					$widget['info']['style'] = pp_get_default_widget_style();
+				}
+			}
+		}
+	}
 
 
 	return $panels_data;
 }
 
 function pp_get_default_widget_style() {
-    $widgetStyleFields = pp_pb_widget_styling_fields();
+	$widgetStyleFields = pp_pb_widget_styling_fields();
 
-    $result = array();
-    foreach ( $widgetStyleFields as $key => $field ) {
-        if ( $field['type'] == 'border' ) {
-            $result[$key . '-width'] = 0;
-            $result[$key . '-color'] = '';
-        } else if ( $field['type'] == 'number' ) {
-            $result[$key] = 0;
+	$result = array();
+	foreach ( $widgetStyleFields as $key => $field ) {
+		if ( $field['type'] == 'border' ) {
+			$result[$key . '-width'] = 0;
+			$result[$key . '-color'] = '';
+		} else if ( $field['type'] == 'number' ) {
+			$result[$key] = 0;
 		} else if ( $field['type'] == 'checkbox' ) {
 			$result[$key] = '';
-        } else {
-            $result[$key] = '';
-        }
-    }
-    return $result;
+		} else {
+			$result[$key] = '';
+		}
+	}
+	return $result;
 
-//    $result = array(
-//        'backgroundColor' => '',
-//        'borderWidth' => 0,
-//        'borderColor' => '',
-//        'paddingTop' => 0,
-//        'paddingBottom' => 0,
-//        'paddingLeft' => 0,
-//        'paddingRight' => 0,
-//        'marginTop' => 0,
-//        'marginBottom' => 0,
-//        'marginLeft' => 0,
-//        'marginRight' => 0,
-//        'borderRadius' => 0
-//    );
+//	$result = array(
+//		'backgroundColor' => '',
+//		'borderWidth' => 0,
+//		'borderColor' => '',
+//		'paddingTop' => 0,
+//		'paddingBottom' => 0,
+//		'paddingLeft' => 0,
+//		'paddingRight' => 0,
+//		'marginTop' => 0,
+//		'marginBottom' => 0,
+//		'marginLeft' => 0,
+//		'marginRight' => 0,
+//		'borderRadius' => 0
+//	);
 //
-//    return $result;
+//	return $result;
 }
 
 /**
@@ -626,7 +626,7 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 			$css[1920]['margin-bottom: '.$panels_margin_bottom.'px'][] = '#pg-' . $post_id . '-' . $gi;
 		}
 
-        // do not set float, use inline-block instead
+		// do not set float, use inline-block instead
 //		if ( $cell_count > 1 ) {
 //			if ( empty( $css[1920]['float:left'] ) ) $css[1920]['float:left'] = array();
 //			$css[1920]['float:left'][] = '#pg-' . $post_id . '-' . $gi . ' .panel-grid-cell';
@@ -659,12 +659,12 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 		$css[ $panels_mobile_width ][ $panel_grid_css ][] = '.panel-grid';
 		$css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
 	} else {
-        // TODO Copy changes back to Folio
-        $panel_grid_cell_css = 'display: inline-block ! important; vertical-align: top ! important;';
+		// TODO Copy changes back to Folio
+		$panel_grid_cell_css = 'display: inline-block ! important; vertical-align: top ! important;';
 
-        if ( empty( $css[ $panels_mobile_width ][ $panel_grid_cell_css ] ) ) $css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
+		if ( empty( $css[ $panels_mobile_width ][ $panel_grid_cell_css ] ) ) $css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
 
-        $css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
+		$css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
 	}
 
 	// Add the bottom margin
@@ -743,37 +743,37 @@ function siteorigin_panels_prepare_single_post_content() {
  */
 function siteorigin_panels_filter_content( $content ) {
 
-    $isWooCommerceInstalled =
-        function_exists( 'is_shop' ) && function_exists( 'wc_get_page_id' );
+	$isWooCommerceInstalled =
+		function_exists( 'is_shop' ) && function_exists( 'wc_get_page_id' );
 
-    if ( $isWooCommerceInstalled ) {
-        // prevent Page Builder overwrite taxonomy description with widget content
-        if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) == 0 ) {
-            return $content;
-        }
+	if ( $isWooCommerceInstalled ) {
+		// prevent Page Builder overwrite taxonomy description with widget content
+		if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) == 0 ) {
+			return $content;
+		}
 
-        if ( is_post_type_archive() && ! is_shop() ) {
-            return $content;
-        }
+		if ( is_post_type_archive() && ! is_shop() ) {
+			return $content;
+		}
 
-        if ( is_shop() ) {
-            $postID = wc_get_page_id( 'shop' );
-        } else {
-            $postID = get_the_ID();
-        }
-    } else {
-        if ( is_post_type_archive() ) {
-            return $content;
-        }
+		if ( is_shop() ) {
+			$postID = wc_get_page_id( 'shop' );
+		} else {
+			$postID = get_the_ID();
+		}
+	} else {
+		if ( is_post_type_archive() ) {
+			return $content;
+		}
 
-        $postID = get_the_ID();
-    }
+		$postID = get_the_ID();
+	}
 
 	//If product done once set $postID to Tabs Post ID
  	if ( isset( $GLOBALS['canvasPB_ProductDoneOnce'] ) ) {
 		global $wpdb;
 		$results = $wpdb->get_results(
-		    "SELECT ID FROM "
+			"SELECT ID FROM "
 		  . $wpdb->posts
 		  . " WHERE "
 		  . "post_content LIKE '"
@@ -790,7 +790,7 @@ function siteorigin_panels_filter_content( $content ) {
 		if ( is_single() && is_product() ) {$GLOBALS['canvasPB_ProductDoneOnce']=TRUE;}
 	}
 
-    $post = get_post( $postID );
+	$post = get_post( $postID );
 	
 	if ( empty( $post ) ) return $content;
 	if ( in_array( $post->post_type, siteorigin_panels_setting( 'post-types' ) ) ) {
@@ -922,7 +922,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		}
 
 		// Themes can add their own attributes to the style wrapper
-        $styleArray = ! empty( $panels_data['grids'][$gi]['style'] ) ? $panels_data['grids'][$gi]['style'] : array();
+		$styleArray = ! empty( $panels_data['grids'][$gi]['style'] ) ? $panels_data['grids'][$gi]['style'] : array();
 		$style_attributes = apply_filters( 'siteorigin_panels_row_style_attributes', $style_attributes, $styleArray );
 		if ( ! empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array();
@@ -941,15 +941,15 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			echo '>';
 		}
 
-        if ( isset( $styleArray['background'] ) && isset( $styleArray['background_color_over_image'] ) && $styleArray['background_color_over_image'] == true ) {
+		if ( isset( $styleArray['background'] ) && isset( $styleArray['background_color_over_image'] ) && $styleArray['background_color_over_image'] == true ) {
 			$rowID = '#pg-' . $post_id . '-' . $gi;
-            ?>
+			?>
 
-            <style>
-            	/* make this sit under .panel-row-style:before, so background color will be on top on background image */
-                <?php echo esc_attr( $rowID ) ?> > .panel-row-style:before {
-                	background-color: <?php echo $styleArray['background'] ?>;
-                }
+			<style>
+				/* make this sit under .panel-row-style:before, so background color will be on top on background image */
+				<?php echo esc_attr( $rowID ) ?> > .panel-row-style:before {
+					background-color: <?php echo $styleArray['background'] ?>;
+				}
 				<?php echo esc_attr( $rowID ) ?> > .panel-row-style {
 					position: relative;
 					z-index: 10;
@@ -969,13 +969,13 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				}
 				</style>
 				<?php
-        }
+		}
 
-        echo "<div class='panel-grid-cell-container'>";
+		echo "<div class='panel-grid-cell-container'>";
 
 		foreach ( $cells as $ci => $widgets ) {
 			// Themes can add their own styles to cells
-            $cellId = 'pgc-' . $post_id . '-' . $gi  . '-' . $ci;
+			$cellId = 'pgc-' . $post_id . '-' . $gi  . '-' . $ci;
 			$cell_classes = apply_filters( 'siteorigin_panels_row_cell_classes', array( 'panel-grid-cell' ), $panels_data );
 			$cell_attributes = apply_filters( 'siteorigin_panels_row_cell_attributes', array(
 				'class' => implode( ' ', $cell_classes ),
@@ -990,7 +990,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 			foreach ( $widgets as $pi => $widget_info ) {
 				$data = $widget_info;
-                $widgetStyle = isset( $data['info']['style'] ) ? json_decode( $data['info']['style'], true ) : pp_get_default_widget_style();
+				$widgetStyle = isset( $data['info']['style'] ) ? json_decode( $data['info']['style'], true ) : pp_get_default_widget_style();
 
 				unset( $data['info'] );
 
@@ -1009,52 +1009,52 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 					add_filter( 'widget_text', 'do_shortcode' );
 				}
 
-                // post loop css for multiple columns
-                if ( $widget_info['info']['class'] == "SiteOrigin_Panels_Widgets_PostLoop" ) {
-                    $css = '';
+				// post loop css for multiple columns
+				if ( $widget_info['info']['class'] == "SiteOrigin_Panels_Widgets_PostLoop" ) {
+					$css = '';
 
-                    if ( isset( $widget_info['column_count'] ) ) {
-                        $count = ( int )$widget_info['column_count'];
-                        // fix division by zero
-                        if ( $count < 1 ) {
-                            $count = 1;
-                        }
-                        $width = ( 100 / $count ) . "%";
-                        $cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
+					if ( isset( $widget_info['column_count'] ) ) {
+						$count = ( int )$widget_info['column_count'];
+						// fix division by zero
+						if ( $count < 1 ) {
+							$count = 1;
+						}
+						$width = ( 100 / $count ) . "%";
+						$cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
 
-                        $css .= "#$cssId {\n";
-                        $css .= "\t" . "font-size: 0; \n";
-                        $css .= "}\n";
+						$css .= "#$cssId {\n";
+						$css .= "\t" . "font-size: 0; \n";
+						$css .= "}\n";
 
-                        $css .= "#$cssId > article {\n";
-                        $css .= "\t" . "width: " . $width . ";\n";
-                        $css .= "\t" . 'display: inline-block;' . "\n";
-                        $css .= "\t" . 'box-sizing: border-box;' . "\n";
-                        $css .= "\t" . 'padding-right: 10px;' . "\n";
-                        $css .= "\t" . 'vertical-align: top;' . "\n";
-                        $css .= "}\n";
-                    }
+						$css .= "#$cssId > article {\n";
+						$css .= "\t" . "width: " . $width . ";\n";
+						$css .= "\t" . 'display: inline-block;' . "\n";
+						$css .= "\t" . 'box-sizing: border-box;' . "\n";
+						$css .= "\t" . 'padding-right: 10px;' . "\n";
+						$css .= "\t" . 'vertical-align: top;' . "\n";
+						$css .= "}\n";
+					}
 
-                    if ( isset( $widget_info['post_meta_enable'] ) ) {
-                        if ( $widget_info['post_meta_enable'] != '1' ) {
-                            $cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
+					if ( isset( $widget_info['post_meta_enable'] ) ) {
+						if ( $widget_info['post_meta_enable'] != '1' ) {
+							$cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
 
-                            $css .= "#$cssId > article > .post-meta {\n";
-                            $css .= "\t" . "display: none;\n";
-                            $css .= "}\n";
-                        }
-                    }
-                    echo "<style>\n" . $css . "</style>\n";
-                }
+							$css .= "#$cssId > article > .post-meta {\n";
+							$css .= "\t" . "display: none;\n";
+							$css .= "}\n";
+						}
+					}
+					echo "<style>\n" . $css . "</style>\n";
+				}
 
-                if ( $widget_info['info']['class'] == "Woo_Widget_Component" ) {
-                    wp_reset_query();
-                }
+				if ( $widget_info['info']['class'] == "Woo_Widget_Component" ) {
+					wp_reset_query();
+				}
 			}
 			if ( empty( $widgets ) ) echo '&nbsp;';
 			echo '</div>';
 		}
-        echo "</div>";
+		echo "</div>";
 		echo '</div>';
 
 		if ( ! empty( $style_attributes ) ) {
@@ -1094,306 +1094,306 @@ add_action( 'wp_footer', 'siteorigin_panels_print_inline_css' );
 add_action( 'after_setup_theme', 'pootlepage_after_setup_theme' );
 
 function pootlepage_after_setup_theme() {
-    if ( class_exists( 'WF' ) && class_exists( 'WF_Meta' ) ) {
-        add_action( 'admin_print_scripts', 'pootlepage_fix_framework_js_error' );
-    }
+	if ( class_exists( 'WF' ) && class_exists( 'WF_Meta' ) ) {
+		add_action( 'admin_print_scripts', 'pootlepage_fix_framework_js_error' );
+	}
 }
 
 function pootlepage_fix_framework_js_error() {
-    echo "<script>var wooSelectedShortcodeType = typeof wooSelectedShortcodeType == 'undefined' ? '' : wooSelectedShortcodeType;</script>\n";
+	echo "<script>var wooSelectedShortcodeType = typeof wooSelectedShortcodeType == 'undefined' ? '' : wooSelectedShortcodeType;</script>\n";
 }
 
 function pootlepage_page_css() {
-    global $post;
+	global $post;
 
-    if ( ! is_page() ) {
-        return;
-    }
+	if ( ! is_page() ) {
+		return;
+	}
 
-    $pageSettingsJson = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
-    if ( empty( $pageSettingsJson ) ) {
-        $pageSettingsJson = '{}';
-    }
-    $pageSettings = json_decode( $pageSettingsJson, true );
+	$pageSettingsJson = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
+	if ( empty( $pageSettingsJson ) ) {
+		$pageSettingsJson = '{}';
+	}
+	$pageSettings = json_decode( $pageSettingsJson, true );
 
-    $backgroundColor = isset( $pageSettings['background'] ) ? $pageSettings['background'] : false;
-    $backgroundImage = isset( $pageSettings['background_image'] ) ? $pageSettings['background_image'] : false;
-    $backgroundImageRepeat = isset( $pageSettings['background_image_repeat'] ) ? $pageSettings['background_image_repeat'] : false;
-    $backgroundImagePosition = isset( $pageSettings['background_image_position'] ) ? $pageSettings['background_image_position'] : false;
-    $backgroundImageAttachment = isset( $pageSettings['background_image_attachment'] ) ? $pageSettings['background_image_attachment'] : false;
-    $removeSideBar = isset( $pageSettings['remove_sidebar'] ) ? $pageSettings['remove_sidebar'] : false;
-    $fullWidth = isset( $pageSettings['full_width'] ) ? $pageSettings['full_width'] : false;
-    $keepContentAtSiteWidth = isset( $pageSettings['keep_content_at_site_width'] ) ? $pageSettings['keep_content_at_site_width'] : false;
+	$backgroundColor = isset( $pageSettings['background'] ) ? $pageSettings['background'] : false;
+	$backgroundImage = isset( $pageSettings['background_image'] ) ? $pageSettings['background_image'] : false;
+	$backgroundImageRepeat = isset( $pageSettings['background_image_repeat'] ) ? $pageSettings['background_image_repeat'] : false;
+	$backgroundImagePosition = isset( $pageSettings['background_image_position'] ) ? $pageSettings['background_image_position'] : false;
+	$backgroundImageAttachment = isset( $pageSettings['background_image_attachment'] ) ? $pageSettings['background_image_attachment'] : false;
+	$removeSideBar = isset( $pageSettings['remove_sidebar'] ) ? $pageSettings['remove_sidebar'] : false;
+	$fullWidth = isset( $pageSettings['full_width'] ) ? $pageSettings['full_width'] : false;
+	$keepContentAtSiteWidth = isset( $pageSettings['keep_content_at_site_width'] ) ? $pageSettings['keep_content_at_site_width'] : false;
 
-    $css = '';
+	$css = '';
 
-    $theme = get_stylesheet();
-    $parentTheme = get_template();
-    if ( $theme == 'twentyfourteen' ) {
-        $css .= "#page {\n";
-    } else if ( $theme == 'twentythirteen' ) {
-        $css .= "#page {\n";
-    } else if ( $parentTheme == 'make' ) {
-        $css .= "#site-header, #site-content { float: none ! important; }\n"; // do this or else #site-wrapper is height 0px
-        $css .= "body, #site-header > .site-header-main, #site-content { background: initial ! important; }\n";
-        $css .= "#site-wrapper {\n";
-    } else {
-        $css .= "body {\n";
-    }
+	$theme = get_stylesheet();
+	$parentTheme = get_template();
+	if ( $theme == 'twentyfourteen' ) {
+		$css .= "#page {\n";
+	} else if ( $theme == 'twentythirteen' ) {
+		$css .= "#page {\n";
+	} else if ( $parentTheme == 'make' ) {
+		$css .= "#site-header, #site-content { float: none ! important; }\n"; // do this or else #site-wrapper is height 0px
+		$css .= "body, #site-header > .site-header-main, #site-content { background: initial ! important; }\n";
+		$css .= "#site-wrapper {\n";
+	} else {
+		$css .= "body {\n";
+	}
 
-    if ( $backgroundColor ) {
-        $css .= "\t" . 'background-color: ' . $backgroundColor . " ! important;\n";
-    }
-    if ( $backgroundImage ) {
-        $css .= "\t" . 'background-image: url( "' . $backgroundImage . "\" ) ! important;\n";
-    }
-    if ( $backgroundImageRepeat ) {
-        $css .= "\t" . 'background-repeat: repeat' . " ! important;\n";
-    } else {
-        $css .= "\t" . 'background-repeat: no-repeat' . " ! important;\n";
-    }
-    if ( $backgroundImagePosition ) {
-        $css .= "\t" . 'background-position: ' . $backgroundImagePosition . " ! important;\n";
-    }
-    if ( $backgroundImageAttachment ) {
-        $css .= "\t" . 'background-attachment: ' . $backgroundImageAttachment . " ! important;\n";
-    }
-    $css .= "}\n";
+	if ( $backgroundColor ) {
+		$css .= "\t" . 'background-color: ' . $backgroundColor . " ! important;\n";
+	}
+	if ( $backgroundImage ) {
+		$css .= "\t" . 'background-image: url( "' . $backgroundImage . "\" ) ! important;\n";
+	}
+	if ( $backgroundImageRepeat ) {
+		$css .= "\t" . 'background-repeat: repeat' . " ! important;\n";
+	} else {
+		$css .= "\t" . 'background-repeat: no-repeat' . " ! important;\n";
+	}
+	if ( $backgroundImagePosition ) {
+		$css .= "\t" . 'background-position: ' . $backgroundImagePosition . " ! important;\n";
+	}
+	if ( $backgroundImageAttachment ) {
+		$css .= "\t" . 'background-attachment: ' . $backgroundImageAttachment . " ! important;\n";
+	}
+	$css .= "}\n";
 
-    if ( $removeSideBar ) {
-        if ( $theme == 'twentythirteen' ) {
-            $css .= "#tertiary { display: none ! important; }\n";
-        } else if ( $parentTheme == 'genesis' ) {
-            $css .= ".site-inner .sidebar { display: none ! important; }\n";
-        } else if ( $parentTheme == 'make' ) {
-            $css .= "#sidebar-left, #sidebar-right { display: none ! important; }\n";
-            $css .= "#site-main { width: 100% ! important; margin-left: 0 ! important; }\n";
-        } else {
-            $css .= "#sidebar { display: none ! important ; }\n";
-        }
-    }
+	if ( $removeSideBar ) {
+		if ( $theme == 'twentythirteen' ) {
+			$css .= "#tertiary { display: none ! important; }\n";
+		} else if ( $parentTheme == 'genesis' ) {
+			$css .= ".site-inner .sidebar { display: none ! important; }\n";
+		} else if ( $parentTheme == 'make' ) {
+			$css .= "#sidebar-left, #sidebar-right { display: none ! important; }\n";
+			$css .= "#site-main { width: 100% ! important; margin-left: 0 ! important; }\n";
+		} else {
+			$css .= "#sidebar { display: none ! important ; }\n";
+		}
+	}
 
-    if ( $theme == 'twentyfourteen' ) {
-        // theme specific fix
-        $css .= ".panel-grid-cell .panel { box-sizing: border-box ! important; }\n";
-    }
+	if ( $theme == 'twentyfourteen' ) {
+		// theme specific fix
+		$css .= ".panel-grid-cell .panel { box-sizing: border-box ! important; }\n";
+	}
 
-    if ( $fullWidth ) {
+	if ( $fullWidth ) {
 
-        if ( $theme == 'twentyfourteen' ) {
-            // if theme is twentyfourteen
+		if ( $theme == 'twentyfourteen' ) {
+			// if theme is twentyfourteen
 
-            $css .= "#content > article > .entry-content { \n";
-            $css .= "\t" . "margin-left: 0; margin-right: 0; width: 100%; max-width: 100%; padding-left: 0; padding-right: 0;\n";
-            $css .= "}\n";
+			$css .= "#content > article > .entry-content { \n";
+			$css .= "\t" . "margin-left: 0; margin-right: 0; width: 100%; max-width: 100%; padding-left: 0; padding-right: 0;\n";
+			$css .= "}\n";
 
-            $css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
-            $css .= ".panel-grid-cell:first-child { padding-left: 0; }\n";
-            $css .= ".panel-grid-cell:last-child { padding-right: 0; }\n";
+			$css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
+			$css .= ".panel-grid-cell:first-child { padding-left: 0; }\n";
+			$css .= ".panel-grid-cell:last-child { padding-right: 0; }\n";
 
-            if ( $keepContentAtSiteWidth ) {
-                global $content_width;
-                $css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $content_width . "px; }\n";
-            }
+			if ( $keepContentAtSiteWidth ) {
+				global $content_width;
+				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $content_width . "px; }\n";
+			}
 
-        } else if ( $theme == 'twentythirteen' ) {
-            // if theme is twentythirteen
+		} else if ( $theme == 'twentythirteen' ) {
+			// if theme is twentythirteen
 
-            $css .= "#content > article > .entry-content { padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0; width: 100%; max-width: 100% }\n";
+			$css .= "#content > article > .entry-content { padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0; width: 100%; max-width: 100% }\n";
 
-            $css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
-            $css .= ".panel-grid-cell:first-child { padding-left: 0; }\n";
-            $css .= ".panel-grid-cell:last-child { padding-right: 0; }\n";
+			$css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
+			$css .= ".panel-grid-cell:first-child { padding-left: 0; }\n";
+			$css .= ".panel-grid-cell:last-child { padding-right: 0; }\n";
 
-            if ( $keepContentAtSiteWidth ) {
-                global $content_width;
-                $css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $content_width . "px; }\n";
-            }
-        } else if ( $parentTheme == 'genesis' ) {
+			if ( $keepContentAtSiteWidth ) {
+				global $content_width;
+				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $content_width . "px; }\n";
+			}
+		} else if ( $parentTheme == 'genesis' ) {
 
-            $css .= ".site-inner { max-width: 100%; width: 100%; }\n";
-            $css .= "main.content { width: 100%; }\n";
-            $css .= "main.content > article { padding-left: 0; padding-right: 0; }\n";
+			$css .= ".site-inner { max-width: 100%; width: 100%; }\n";
+			$css .= "main.content { width: 100%; }\n";
+			$css .= "main.content > article { padding-left: 0; padding-right: 0; }\n";
 
-            if ( $keepContentAtSiteWidth ) {
-                $css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: 960px; }\n";
-            }
-        } else if ( $parentTheme == 'make' ) {
+			if ( $keepContentAtSiteWidth ) {
+				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: 960px; }\n";
+			}
+		} else if ( $parentTheme == 'make' ) {
 
-            $css .= "#site-content > .container { \n";
-            $css .= "\t" . 'margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; width: 100%; max-width: 100%;' . "\n";
-            $css .= "}\n";
-            $css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
-            $css .= ".panel-grid-cell { padding-left: 0; padding-right: 0; }\n";
+			$css .= "#site-content > .container { \n";
+			$css .= "\t" . 'margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; width: 100%; max-width: 100%;' . "\n";
+			$css .= "}\n";
+			$css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
+			$css .= ".panel-grid-cell { padding-left: 0; padding-right: 0; }\n";
 
-            if ( $keepContentAtSiteWidth ) {
-                $css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: 960px; }\n";
-            }
-        } else {
+			if ( $keepContentAtSiteWidth ) {
+				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: 960px; }\n";
+			}
+		} else {
 
-            $css .= "#content, #wrapper { max-width: 100% ! important; width:100%; margin-left:0; margin-right:0; padding-left: 0 ! important; padding-right: 0 ! important; }\n";
-            $css .= ".panel-grid { margin-left: 0 ! important; margin-right: 0 ! important; }\n";
-            $css .= ".panel-grid-cell { padding: 0 ! important; }\n";
+			$css .= "#content, #wrapper { max-width: 100% ! important; width:100%; margin-left:0; margin-right:0; padding-left: 0 ! important; padding-right: 0 ! important; }\n";
+			$css .= ".panel-grid { margin-left: 0 ! important; margin-right: 0 ! important; }\n";
+			$css .= ".panel-grid-cell { padding: 0 ! important; }\n";
 
-            if ( $keepContentAtSiteWidth ) {
-                $siteWidth = get_option( 'woo_layout_width', 960 );
-                if ( $siteWidth ) {
-                    $css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $siteWidth . "px; }\n";
-                }
-            }
-        }
+			if ( $keepContentAtSiteWidth ) {
+				$siteWidth = get_option( 'woo_layout_width', 960 );
+				if ( $siteWidth ) {
+					$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $siteWidth . "px; }\n";
+				}
+			}
+		}
 
-    }
+	}
 
-    $hideElementsJson = get_post_meta( $post->ID, 'pootlepage-hide-elements', true );
-    if ( empty( $hideElementsJson ) ) {
-        $hideElementsJson = '{}';
-    }
-    $hideElements = json_decode( $hideElementsJson, true );
+	$hideElementsJson = get_post_meta( $post->ID, 'pootlepage-hide-elements', true );
+	if ( empty( $hideElementsJson ) ) {
+		$hideElementsJson = '{}';
+	}
+	$hideElements = json_decode( $hideElementsJson, true );
 
-    $hideLogoStrapLine = isset( $hideElements['hide_logo_strapline'] ) ? $hideElements['hide_logo_strapline'] : false;
-    $hideHeader = isset( $hideElements['hide_header'] ) ? $hideElements['hide_header'] : false;
-    $hideMainNavigation = isset( $hideElements['hide_main_navigation'] ) ? $hideElements['hide_main_navigation'] : false;
-    $hidePageTitle = isset( $hideElements['hide_page_title'] ) ? $hideElements['hide_page_title'] : false;
-    $hideFooterWidgets = isset( $hideElements['hide_footer_widgets'] ) ? $hideElements['hide_footer_widgets'] : false;
-    $hideFooter = isset( $hideElements['hide_footer'] ) ? $hideElements['hide_footer'] : false;
+	$hideLogoStrapLine = isset( $hideElements['hide_logo_strapline'] ) ? $hideElements['hide_logo_strapline'] : false;
+	$hideHeader = isset( $hideElements['hide_header'] ) ? $hideElements['hide_header'] : false;
+	$hideMainNavigation = isset( $hideElements['hide_main_navigation'] ) ? $hideElements['hide_main_navigation'] : false;
+	$hidePageTitle = isset( $hideElements['hide_page_title'] ) ? $hideElements['hide_page_title'] : false;
+	$hideFooterWidgets = isset( $hideElements['hide_footer_widgets'] ) ? $hideElements['hide_footer_widgets'] : false;
+	$hideFooter = isset( $hideElements['hide_footer'] ) ? $hideElements['hide_footer'] : false;
 
-    if ( $theme == 'twentyfourteen' ) {
-        if ( $hideLogoStrapLine ) {
-            $css .= ".site-title { display: none ! important; }\n";
-            $css .= "#secondary .site-description { display: none ! important; }\n";
-        }
-        if ( $hideHeader ) {
-            $css .= "#site-header { display: none ! important; }\n";
-        }
-        if ( $hideMainNavigation ) {
-            $css .= "#primary-navigation { display: none ! important;  }\n";
-        }
-        if ( $hidePageTitle ) {
-            $css .= "#content > article > header.entry-header { display: none ! important; }\n";
-        }
-        if ( $hideFooterWidgets ) {
-            $css .= "#footer-sidebar { display: none ! important; }\n";
-        }
-        if ( $hideFooter ) {
-            $css .= "#colophon > .site-info { display: none ! important; }\n";
-        }
-    } else if ( $theme == 'twentythirteen' ) {
-        if ( $hideLogoStrapLine ) {
-            $css .= "#masthead .site-title { display: none ! important; }\n";
-            $css .= "#masthead .site-description { display: none ! important; }\n";
-        }
-        if ( $hideHeader ) {
-            $css .= "#masthead .home-link { display: none ! important; }\n";
-        }
-        if ( $hideMainNavigation ) {
-            $css .= "#navbar { display: none ! important;  }\n";
-        }
-        if ( $hidePageTitle ) {
-            $css .= "#content > article > header.entry-header { display: none ! important; }\n";
-        }
-        if ( $hideFooterWidgets ) {
-            $css .= "#secondary { display: none ! important; }\n";
-        }
-        if ( $hideFooter ) {
-            $css .= "#colophon > .site-info { display: none ! important; }\n";
-        }
-    } else if ( $parentTheme == 'genesis' ) {
-        if ( $hideLogoStrapLine ) {
-            $css .= ".title-area { display: none ! important; }\n";
-        }
-        if ( $hideHeader ) {
-            $css .= ".site-header { display: none ! important; }\n";
-        }
-        if ( $hideMainNavigation ) {
-            $css .= ".nav-primary { display: none ! important; }\n";
-        }
-        if ( $hidePageTitle ) {
-            $css .= ".site-inner .content > article > .entry-header { display: none ! important; }\n";
-        }
-        if ( $hideFooterWidgets ) {
-            $css .= ".footer-widgets { display: none ! important; }\n";
-        }
-        if ( $hideFooter ) {
-            $css .= ".site-footer { display: none ! important; }\n";
-        }
-    } else if ( $theme == 'make' ) {
+	if ( $theme == 'twentyfourteen' ) {
+		if ( $hideLogoStrapLine ) {
+			$css .= ".site-title { display: none ! important; }\n";
+			$css .= "#secondary .site-description { display: none ! important; }\n";
+		}
+		if ( $hideHeader ) {
+			$css .= "#site-header { display: none ! important; }\n";
+		}
+		if ( $hideMainNavigation ) {
+			$css .= "#primary-navigation { display: none ! important;  }\n";
+		}
+		if ( $hidePageTitle ) {
+			$css .= "#content > article > header.entry-header { display: none ! important; }\n";
+		}
+		if ( $hideFooterWidgets ) {
+			$css .= "#footer-sidebar { display: none ! important; }\n";
+		}
+		if ( $hideFooter ) {
+			$css .= "#colophon > .site-info { display: none ! important; }\n";
+		}
+	} else if ( $theme == 'twentythirteen' ) {
+		if ( $hideLogoStrapLine ) {
+			$css .= "#masthead .site-title { display: none ! important; }\n";
+			$css .= "#masthead .site-description { display: none ! important; }\n";
+		}
+		if ( $hideHeader ) {
+			$css .= "#masthead .home-link { display: none ! important; }\n";
+		}
+		if ( $hideMainNavigation ) {
+			$css .= "#navbar { display: none ! important;  }\n";
+		}
+		if ( $hidePageTitle ) {
+			$css .= "#content > article > header.entry-header { display: none ! important; }\n";
+		}
+		if ( $hideFooterWidgets ) {
+			$css .= "#secondary { display: none ! important; }\n";
+		}
+		if ( $hideFooter ) {
+			$css .= "#colophon > .site-info { display: none ! important; }\n";
+		}
+	} else if ( $parentTheme == 'genesis' ) {
+		if ( $hideLogoStrapLine ) {
+			$css .= ".title-area { display: none ! important; }\n";
+		}
+		if ( $hideHeader ) {
+			$css .= ".site-header { display: none ! important; }\n";
+		}
+		if ( $hideMainNavigation ) {
+			$css .= ".nav-primary { display: none ! important; }\n";
+		}
+		if ( $hidePageTitle ) {
+			$css .= ".site-inner .content > article > .entry-header { display: none ! important; }\n";
+		}
+		if ( $hideFooterWidgets ) {
+			$css .= ".footer-widgets { display: none ! important; }\n";
+		}
+		if ( $hideFooter ) {
+			$css .= ".site-footer { display: none ! important; }\n";
+		}
+	} else if ( $theme == 'make' ) {
 
-        if ( $hideLogoStrapLine ) {
-            $css .= ".site-branding { display: none ! important; }\n";
-        }
-        if ( $hideHeader ) {
-            $css .= "#site-header { display: none ! important; }\n";
-        }
-        if ( $hideMainNavigation ) {
-            $css .= "#site-navigation { display: none ! important; }\n";
-        }
-        if ( $hidePageTitle ) {
-            $css .= "#site-main > article > .entry-header { display: none ! important; }\n";
-        }
-        if ( $hideFooterWidgets ) {
-            $css .= "#site-footer .footer-widget-container { display: none ! important; }\n";
-        }
-        if ( $hideFooter ) {
-            $css .= "#site-footer { display: none ! important; }\n";
-        }
+		if ( $hideLogoStrapLine ) {
+			$css .= ".site-branding { display: none ! important; }\n";
+		}
+		if ( $hideHeader ) {
+			$css .= "#site-header { display: none ! important; }\n";
+		}
+		if ( $hideMainNavigation ) {
+			$css .= "#site-navigation { display: none ! important; }\n";
+		}
+		if ( $hidePageTitle ) {
+			$css .= "#site-main > article > .entry-header { display: none ! important; }\n";
+		}
+		if ( $hideFooterWidgets ) {
+			$css .= "#site-footer .footer-widget-container { display: none ! important; }\n";
+		}
+		if ( $hideFooter ) {
+			$css .= "#site-footer { display: none ! important; }\n";
+		}
 
-    } else {
-        if ( $hideLogoStrapLine ) {
-            $css .= "#logo { visibility: hidden ! important; }\n";
-        }
-        if ( $hideHeader ) {
-            $css .= "#header { display: none ! important; }\n";
-        }
-        if ( $hideMainNavigation ) {
-            $css .= "#nav-container, #navigation { display: none ! important;  }\n";
-        }
-        if ( $hidePageTitle ) {
-            $css .= "#main > article > header > .entry-title { display: none ! important; }\n";
-        }
-        if ( $hideFooterWidgets ) {
-            $css .= "#footer-widgets { display: none ! important; }\n";
-        }
-        if ( $hideFooter ) {
-            $css .= "#footer { display: none ! important; }\n";
-        }
-    }
+	} else {
+		if ( $hideLogoStrapLine ) {
+			$css .= "#logo { visibility: hidden ! important; }\n";
+		}
+		if ( $hideHeader ) {
+			$css .= "#header { display: none ! important; }\n";
+		}
+		if ( $hideMainNavigation ) {
+			$css .= "#nav-container, #navigation { display: none ! important;  }\n";
+		}
+		if ( $hidePageTitle ) {
+			$css .= "#main > article > header > .entry-title { display: none ! important; }\n";
+		}
+		if ( $hideFooterWidgets ) {
+			$css .= "#footer-widgets { display: none ! important; }\n";
+		}
+		if ( $hideFooter ) {
+			$css .= "#footer { display: none ! important; }\n";
+		}
+	}
 
-    echo "<style>\n" . $css . "</style>\n";
+	echo "<style>\n" . $css . "</style>\n";
 }
 
 add_filter( 'body_class', 'pootlepage_body_class', 100 );
 
 function pootlepage_body_class( $classes ) {
-    // possible layout classes added by Canvas is
-    $allLayouts = array( 'one-col', 'two-col-left', 'two-col-right', 'three-col-left', 'three-col-middle', 'three-col-right' );
+	// possible layout classes added by Canvas is
+	$allLayouts = array( 'one-col', 'two-col-left', 'two-col-right', 'three-col-left', 'three-col-middle', 'three-col-right' );
 
-    global $post;
+	global $post;
 
-    if ( ! is_page() ) {
-        return $classes;
-    }
+	if ( ! is_page() ) {
+		return $classes;
+	}
 
-    $pageSettingsJson = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
-    if ( empty( $pageSettingsJson ) ) {
-        $pageSettingsJson = '{}';
-    }
-    $pageSettings = json_decode( $pageSettingsJson, true );
-    $removeSideBar = isset( $pageSettings['remove_sidebar'] ) ? $pageSettings['remove_sidebar'] : false;
+	$pageSettingsJson = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
+	if ( empty( $pageSettingsJson ) ) {
+		$pageSettingsJson = '{}';
+	}
+	$pageSettings = json_decode( $pageSettingsJson, true );
+	$removeSideBar = isset( $pageSettings['remove_sidebar'] ) ? $pageSettings['remove_sidebar'] : false;
 
-    if ( $removeSideBar ) {
-        $newClasses = array();
-        for ( $i = 0; $i < count( $classes ); ++$i ) {
-            if ( ! in_array( $classes[$i], $allLayouts ) ) {
-                 $newClasses[] = $classes[$i];
-            }
-        }
-        $newClasses[] = 'one-col';
+	if ( $removeSideBar ) {
+		$newClasses = array();
+		for ( $i = 0; $i < count( $classes ); ++$i ) {
+			if ( ! in_array( $classes[$i], $allLayouts ) ) {
+				 $newClasses[] = $classes[$i];
+			}
+		}
+		$newClasses[] = 'one-col';
 
-        return $newClasses;
-    } else {
-        return $classes;
-    }
+		return $newClasses;
+	} else {
+		return $classes;
+	}
 }
 
 /**
@@ -1412,10 +1412,10 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 	if ( ! class_exists( $widget ) ) return;
 	if ( empty( $post_id ) ) $post_id = get_the_ID();
 
-    $panelData = get_post_meta( $post_id, 'panels_data', true );
-    if ( ! is_array( $panelData ) ) {
-        $panelData = array();
-    }
+	$panelData = get_post_meta( $post_id, 'panels_data', true );
+	if ( ! is_array( $panelData ) ) {
+		$panelData = array();
+	}
 
 	$the_widget = new $widget;
 
@@ -1425,60 +1425,60 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 	if ( $is_last ) $classes[] = 'panel-last-child';
 	$id = 'panel-' . $post_id . '-' . $grid . '-' . $cell . '-' . $panel;
 
-    $styleArray = $widgetStyle;
-    $inlineStyle = '';
+	$styleArray = $widgetStyle;
+	$inlineStyle = '';
 
-    $widgetStyleFields = pp_pb_widget_styling_fields();
+	$widgetStyleFields = pp_pb_widget_styling_fields();
 
 	$styleWithSelector = '';
 
-    foreach ( $widgetStyleFields as $key => $field ) {
+	foreach ( $widgetStyleFields as $key => $field ) {
 
-        if ( $field['type'] == 'border' ) {
-            // a border field has 2 settings
-            $key1 = $key . '-width';
-            $key2 = $key . '-color';
+		if ( $field['type'] == 'border' ) {
+			// a border field has 2 settings
+			$key1 = $key . '-width';
+			$key2 = $key . '-color';
 
-            if ( isset( $styleArray[$key1] ) && $styleArray[$key1] != '' ) {
-                if ( ! is_array( $field['css'] ) ) {
-                    $cssArr = array( $field['css'] );
-                } else {
-                    $cssArr = $field['css'];
-                }
+			if ( isset( $styleArray[$key1] ) && $styleArray[$key1] != '' ) {
+				if ( ! is_array( $field['css'] ) ) {
+					$cssArr = array( $field['css'] );
+				} else {
+					$cssArr = $field['css'];
+				}
 
-                foreach ( $cssArr as $cssProperty ) {
-                    $inlineStyle .= $cssProperty . '-width: ' . $styleArray[$key1] . 'px; border-style: solid;';
-                }
-            }
+				foreach ( $cssArr as $cssProperty ) {
+					$inlineStyle .= $cssProperty . '-width: ' . $styleArray[$key1] . 'px; border-style: solid;';
+				}
+			}
 
-            if ( isset( $styleArray[$key2] ) && $styleArray[$key2] != '' ) {
-                if ( ! is_array( $field['css'] ) ) {
-                    $cssArr = array( $field['css'] );
-                } else {
-                    $cssArr = $field['css'];
-                }
+			if ( isset( $styleArray[$key2] ) && $styleArray[$key2] != '' ) {
+				if ( ! is_array( $field['css'] ) ) {
+					$cssArr = array( $field['css'] );
+				} else {
+					$cssArr = $field['css'];
+				}
 
-                foreach ( $cssArr as $cssProperty ) {
-                    $inlineStyle .= $cssProperty . '-color: ' . $styleArray[$key2] . ';';
-                }
-            }
+				foreach ( $cssArr as $cssProperty ) {
+					$inlineStyle .= $cssProperty . '-color: ' . $styleArray[$key2] . ';';
+				}
+			}
 
-        } else {
+		} else {
 
 
-            if ( isset( $styleArray[$key] ) && $styleArray[$key] != '' ) {
-                if ( ! is_array( $field['css'] ) ) {
-                    $cssArr = array( $field['css'] );
-                } else {
-                    $cssArr = $field['css'];
-                }
+			if ( isset( $styleArray[$key] ) && $styleArray[$key] != '' ) {
+				if ( ! is_array( $field['css'] ) ) {
+					$cssArr = array( $field['css'] );
+				} else {
+					$cssArr = $field['css'];
+				}
 
-                foreach ( $cssArr as $cssProperty ) {
-                    if ( isset( $field['unit'] ) ) {
-                        $unit = $field['unit'];
-                    } else {
-                        $unit = '';
-                    }
+				foreach ( $cssArr as $cssProperty ) {
+					if ( isset( $field['unit'] ) ) {
+						$unit = $field['unit'];
+					} else {
+						$unit = '';
+					}
 
 					if ( ! isset( $field['selector'] ) ) {
 						$inlineStyle .= $cssProperty . ': ' . $styleArray[$key] . $unit . ';';
@@ -1486,10 +1486,10 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 						$styleWithSelector .= '#' . $id . ' > ' . $field['selector'] . ' { ' .$cssProperty . ': ' . $styleArray[$key] . $unit . '; }';
 					}
 
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 
 	$the_widget->widget( array(
 		'before_widget' => '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >',
@@ -1505,12 +1505,12 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 		echo "</style>\n";
 	}
 
-    // Add js file for WooTabs widget
-    if ( $widget == 'Woo_Widget_WooTabs' ) {
-        if ( function_exists( 'woo_widget_tabs_js' ) ) {
-            add_action( 'wp_footer','woo_widget_tabs_js' );
-        }
-    }
+	// Add js file for WooTabs widget
+	if ( $widget == 'Woo_Widget_WooTabs' ) {
+		if ( function_exists( 'woo_widget_tabs_js' ) ) {
+			add_action( 'wp_footer','woo_widget_tabs_js' );
+		}
+	}
 }
 
 /**
@@ -1622,19 +1622,19 @@ function siteorigin_panels_enqueue_styles() {
 add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_styles', 1 );
 
 function siteorigin_panels_enqueue_scripts() {
-    $isWooCommerceInstalled = /* isset( $GLOBALS['woocommerce'] ) && */
-        function_exists( 'is_product' );
+	$isWooCommerceInstalled = /* isset( $GLOBALS['woocommerce'] ) && */
+		function_exists( 'is_product' );
 
-    if ( $isWooCommerceInstalled ) {
-        if ( is_product() )
-            wp_dequeue_script( 'wc-single-product' );
-            wp_enqueue_script( 'pb-wc-single-product', plugin_dir_url( __FILE__ ) . 'js/wc-single-product.js', array( 'jquery' ) );
-            wp_localize_script( 'pb-wc-single-product', 'wc_single_product_params', apply_filters( 'wc_single_product_params', array(
-            'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'woocommerce' ),
-            'review_rating_required'    => get_option( 'woocommerce_review_rating_required' ),
-        ) ) );
-    }
-    wp_register_script( 'general', plugin_dir_url( __FILE__ ) . '/js/canvas-general.js', array( 'jquery', 'third-party' ) );
+	if ( $isWooCommerceInstalled ) {
+		if ( is_product() )
+			wp_dequeue_script( 'wc-single-product' );
+			wp_enqueue_script( 'pb-wc-single-product', plugin_dir_url( __FILE__ ) . 'js/wc-single-product.js', array( 'jquery' ) );
+			wp_localize_script( 'pb-wc-single-product', 'wc_single_product_params', apply_filters( 'wc_single_product_params', array(
+			'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'woocommerce' ),
+			'review_rating_required'	=> get_option( 'woocommerce_review_rating_required' ),
+		) ) );
+	}
+	wp_register_script( 'general', plugin_dir_url( __FILE__ ) . '/js/canvas-general.js', array( 'jquery', 'third-party' ) );
 
 }
 add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100 );
@@ -1642,7 +1642,7 @@ add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100 );
 /**
  * Add current pages as cloneable pages
  *
-    // register this to override canvas script
+	// register this to override canvas script
 
  * @param $layouts
  * @return mixed
@@ -1818,7 +1818,7 @@ function siteorigin_panels_plugin_action_links( $links ) {
 //add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'siteorigin_panels_plugin_action_links' );
 
 function pp_pb_load_slider_js( $doLoad ) {
-    return true;
+	return true;
 }
 
 add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js' );
@@ -1832,100 +1832,100 @@ require_once( 'page-builder-for-canvas-functions.php' );
 
 function pp_pb_add_theme_options ( $options ) {
 
-    $options_pixels = array();
-    $total_possible_numbers = intval( apply_filters( 'woo_total_possible_numbers', 20 ) );
-    for ( $i = 0; $i <= $total_possible_numbers; $i++ ) {
-        $options_pixels[] = $i . 'px';
-    }
+	$options_pixels = array();
+	$total_possible_numbers = intval( apply_filters( 'woo_total_possible_numbers', 20 ) );
+	for ( $i = 0; $i <= $total_possible_numbers; $i++ ) {
+		$options_pixels[] = $i . 'px';
+	}
 
-    $options[] = array(
-        'name' => 'Widget Styling',
-        'type' => 'heading'
-    );
+	$options[] = array(
+		'name' => 'Widget Styling',
+		'type' => 'heading'
+	);
 
-    $options[] = array(
-        'name' => 'Page Builder Widgets',
-        'type' => 'subheading'
-    );
+	$options[] = array(
+		'name' => 'Page Builder Widgets',
+		'type' => 'subheading'
+	);
 
-    $shortname = 'page_builder';
+	$shortname = 'page_builder';
 
-    $options[] = array( "name" => __( 'Page Builder Widget Background Color', 'woothemes' ),
-        "desc" => __( 'Pick a custom color for the widget background or add a hex color code e.g. #cccccc', 'woothemes' ),
-        "id" => $shortname."_widget_bg",
-        "std" => "",
-        "type" => "color" );
+	$options[] = array( "name" => __( 'Page Builder Widget Background Color', 'woothemes' ),
+		"desc" => __( 'Pick a custom color for the widget background or add a hex color code e.g. #cccccc', 'woothemes' ),
+		"id" => $shortname."_widget_bg",
+		"std" => "",
+		"type" => "color" );
 
-    $options[] = array( "name" => __( 'Page Builder Widget Border', 'woothemes' ),
-        "desc" => __( 'Specify border properties for widgets.', 'woothemes' ),
-        "id" => $shortname."_widget_border",
-        "std" => array( 'width' => '0','style' => 'solid','color' => '#dbdbdb' ),
-        "type" => "border" );
+	$options[] = array( "name" => __( 'Page Builder Widget Border', 'woothemes' ),
+		"desc" => __( 'Specify border properties for widgets.', 'woothemes' ),
+		"id" => $shortname."_widget_border",
+		"std" => array( 'width' => '0','style' => 'solid','color' => '#dbdbdb' ),
+		"type" => "border" );
 
-    $options[] = array( "name" => __( 'Page Builder Widget Padding', 'woothemes' ),
-        "desc" => __( 'Enter an integer value i.e. 20 for the desired widget padding.', 'woothemes' ),
-        "id" => $shortname."_widget_padding",
-        "std" => "",
-        "type" => array(
-            array(  'id' => $shortname. '_widget_padding_tb',
-                'type' => 'text',
-                'std' => '',
-                'meta' => __( 'Top/Bottom', 'woothemes' ) ),
-            array(  'id' => $shortname. '_widget_padding_lr',
-                'type' => 'text',
-                'std' => '',
-                'meta' => __( 'Left/Right', 'woothemes' ) )
-        ) );
+	$options[] = array( "name" => __( 'Page Builder Widget Padding', 'woothemes' ),
+		"desc" => __( 'Enter an integer value i.e. 20 for the desired widget padding.', 'woothemes' ),
+		"id" => $shortname."_widget_padding",
+		"std" => "",
+		"type" => array(
+			array(  'id' => $shortname. '_widget_padding_tb',
+				'type' => 'text',
+				'std' => '',
+				'meta' => __( 'Top/Bottom', 'woothemes' ) ),
+			array(  'id' => $shortname. '_widget_padding_lr',
+				'type' => 'text',
+				'std' => '',
+				'meta' => __( 'Left/Right', 'woothemes' ) )
+		) );
 
-    $options[] = array( "name" => __( 'Page Builder Widget Title', 'woothemes' ),
-        "desc" => __( 'Select the typography you want for the widget title.', 'woothemes' ),
-        "id" => $shortname."_widget_font_title",
-        "std" => array( 'size' => '14','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ),
-        "type" => "typography" );
+	$options[] = array( "name" => __( 'Page Builder Widget Title', 'woothemes' ),
+		"desc" => __( 'Select the typography you want for the widget title.', 'woothemes' ),
+		"id" => $shortname."_widget_font_title",
+		"std" => array( 'size' => '14','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ),
+		"type" => "typography" );
 
-    $options[] = array( "name" => __( 'Page Builder Widget Title Bottom Border', 'woothemes' ),
-        "desc" => __( 'Specify border property for the widget title.', 'woothemes' ),
-        "id" => $shortname."_widget_title_border",
-        "std" => array( 'width' => '1','style' => 'solid','color' => '#e6e6e6' ),
-        "type" => "border" );
+	$options[] = array( "name" => __( 'Page Builder Widget Title Bottom Border', 'woothemes' ),
+		"desc" => __( 'Specify border property for the widget title.', 'woothemes' ),
+		"id" => $shortname."_widget_title_border",
+		"std" => array( 'width' => '1','style' => 'solid','color' => '#e6e6e6' ),
+		"type" => "border" );
 
-    $options[] = array( "name" => __( 'Page Builder Widget Text', 'woothemes' ),
-        "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
-        "id" => $shortname."_widget_font_text",
-        "std" => array( 'size' => '13','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#555555' ),
-        "type" => "typography" );
+	$options[] = array( "name" => __( 'Page Builder Widget Text', 'woothemes' ),
+		"desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
+		"id" => $shortname."_widget_font_text",
+		"std" => array( 'size' => '13','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#555555' ),
+		"type" => "typography" );
 
-    $options[] = array( "name" => __( 'Page Builder Widget Rounded Corners', 'woothemes' ),
-        "desc" => __( 'Set amount of pixels for border radius ( rounded corners ). Will only show in CSS3 compatible browser.', 'woothemes' ),
-        "id" => $shortname."_widget_border_radius",
-        "type" => "select",
-        "options" => $options_pixels );
+	$options[] = array( "name" => __( 'Page Builder Widget Rounded Corners', 'woothemes' ),
+		"desc" => __( 'Set amount of pixels for border radius ( rounded corners ). Will only show in CSS3 compatible browser.', 'woothemes' ),
+		"id" => $shortname."_widget_border_radius",
+		"type" => "select",
+		"options" => $options_pixels );
 
-    $options[] = array( "name" => __( 'Page Builder Tabs Widget Background color', 'woothemes' ),
-        "desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
-        "id" => $shortname."_widget_tabs_bg",
-        "std" => "",
-        "type" => "color" );
+	$options[] = array( "name" => __( 'Page Builder Tabs Widget Background color', 'woothemes' ),
+		"desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
+		"id" => $shortname."_widget_tabs_bg",
+		"std" => "",
+		"type" => "color" );
 
-    $options[] = array( "name" => __( 'Page Builder Tabs Widget Inside Background Color', 'woothemes' ),
-        "desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
-        "id" => $shortname."_widget_tabs_bg_inside",
-        "std" => "",
-        "type" => "color" );
+	$options[] = array( "name" => __( 'Page Builder Tabs Widget Inside Background Color', 'woothemes' ),
+		"desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
+		"id" => $shortname."_widget_tabs_bg_inside",
+		"std" => "",
+		"type" => "color" );
 
-    $options[] = array( "name" => __( 'Page Builder Tabs Widget Title', 'woothemes' ),
-        "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
-        "id" => $shortname."_widget_tabs_font",
-        "std" => array( 'size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ),
-        "type" => "typography" );
+	$options[] = array( "name" => __( 'Page Builder Tabs Widget Title', 'woothemes' ),
+		"desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
+		"id" => $shortname."_widget_tabs_font",
+		"std" => array( 'size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ),
+		"type" => "typography" );
 
-    $options[] = array( "name" => __( 'Page Builder Tabs Widget Meta / Tabber Font', 'woothemes' ),
-        "desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
-        "id" => $shortname."_widget_tabs_font_meta",
-        "std" => array( 'size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#999999' ),
-        "type" => "typography" );
+	$options[] = array( "name" => __( 'Page Builder Tabs Widget Meta / Tabber Font', 'woothemes' ),
+		"desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
+		"id" => $shortname."_widget_tabs_font_meta",
+		"std" => array( 'size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#999999' ),
+		"type" => "typography" );
 
-    return $options;
+	return $options;
 }
 
 add_action( 'wp_head', 'pp_pb_option_css' );
@@ -1933,166 +1933,166 @@ add_action( 'wp_head', 'pp_pb_option_css' );
 function pp_pb_option_css()
 {
 
-    $output = '';
+	$output = '';
 
-    // Widget Styling
-    $widget_font_title = get_option( 'page_builder_widget_font_title', array( 'size' => '14', 'unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif', 'style' => 'bold', 'color' => '#555555' ) );
-    $widget_font_text = get_option( 'page_builder_widget_font_text', array( 'size' => '13', 'unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif', 'style' => 'thin', 'color' => '#555555' ) );
-    $widget_padding_tb = get_option( 'page_builder_widget_padding_tb', '0' );
-    $widget_padding_lr = get_option( 'page_builder_widget_padding_lr', '0' );
-    $widget_bg = get_option( 'page_builder_widget_bg', 'transparent' );
-    $widget_border = get_option( 'page_builder_widget_border', array( 'width' => '0', 'style' => 'solid', 'color' => '#dbdbdb' ) );
-    $widget_title_border = get_option( 'page_builder_widget_title_border', array( 'width' => '1', 'style' => 'solid', 'color' => '#e6e6e6' ) );
-    $widget_border_radius = get_option( 'page_builder_widget_border_radius', '0px' );
+	// Widget Styling
+	$widget_font_title = get_option( 'page_builder_widget_font_title', array( 'size' => '14', 'unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif', 'style' => 'bold', 'color' => '#555555' ) );
+	$widget_font_text = get_option( 'page_builder_widget_font_text', array( 'size' => '13', 'unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif', 'style' => 'thin', 'color' => '#555555' ) );
+	$widget_padding_tb = get_option( 'page_builder_widget_padding_tb', '0' );
+	$widget_padding_lr = get_option( 'page_builder_widget_padding_lr', '0' );
+	$widget_bg = get_option( 'page_builder_widget_bg', 'transparent' );
+	$widget_border = get_option( 'page_builder_widget_border', array( 'width' => '0', 'style' => 'solid', 'color' => '#dbdbdb' ) );
+	$widget_title_border = get_option( 'page_builder_widget_title_border', array( 'width' => '1', 'style' => 'solid', 'color' => '#e6e6e6' ) );
+	$widget_border_radius = get_option( 'page_builder_widget_border_radius', '0px' );
 
-    // in Visual Editor, dont set underline for h3
-    $output .= '.widget_pootle-text-widget > .textwidget h3 { border-bottom: none ! important; }';
+	// in Visual Editor, dont set underline for h3
+	$output .= '.widget_pootle-text-widget > .textwidget h3 { border-bottom: none ! important; }';
 
-    $widget_title_css = '';
-    if ( $widget_font_title )
-        $widget_title_css .= 'font:'.$widget_font_title["style"].' '.$widget_font_title["size"].$widget_font_title["unit"].'/1.2em '.stripslashes( $widget_font_title["face"] ).';color:'.$widget_font_title["color"].';';
-    if ( $widget_title_border )
-        $widget_title_css .= 'border-bottom:'.$widget_title_border["width"].'px '.$widget_title_border["style"].' '.$widget_title_border["color"].' ! important;';
-    if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 )
-        $widget_title_css .= 'margin-bottom:0 ! important;';
+	$widget_title_css = '';
+	if ( $widget_font_title )
+		$widget_title_css .= 'font:'.$widget_font_title["style"].' '.$widget_font_title["size"].$widget_font_title["unit"].'/1.2em '.stripslashes( $widget_font_title["face"] ).';color:'.$widget_font_title["color"].';';
+	if ( $widget_title_border )
+		$widget_title_css .= 'border-bottom:'.$widget_title_border["width"].'px '.$widget_title_border["style"].' '.$widget_title_border["color"].' ! important;';
+	if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 )
+		$widget_title_css .= 'margin-bottom:0 ! important;';
 
-    if ( $widget_title_css != '' )
-        $output .= '.panel-grid-cell .widget h3.widget-title {'. $widget_title_css . '}'. "\n";
-
-
-    if ( $widget_title_border )
-        $output .= '.panel-grid-cell .widget_recent_comments li{ border-color: '.$widget_title_border["color"].';}'. "\n";
-
-    if ( $widget_font_text )
-        $output .= '.panel-grid-cell .widget p, .panel-grid-cell .widget .textwidget { ' . pp_pb_generate_font_css( $widget_font_text, 1.5 ) . ' }' . "\n";
-
-    $widget_css = '';
-    if ( $widget_font_text )
-        $widget_css .= 'font:'.$widget_font_text["style"].' '.$widget_font_text["size"].$widget_font_text["unit"].'/1.5em '.stripslashes( $widget_font_text["face"] ).';color:'.$widget_font_text["color"].';';
-
-    if ( ! $widget_padding_lr ) {
-        $widget_css .= 'padding-left: 0; padding-right: 0;';
-    } else {
-        $widget_css .= 'padding-left: ' . $widget_padding_lr . 'px ; padding-right: ' . $widget_padding_lr . 'px;';
-    }
-    if ( ! $widget_padding_tb ) {
-        $widget_css .= 'padding-top: 0; padding-bottom: 0;';
-    } else {
-        $widget_css .= 'padding-top: ' . $widget_padding_tb . 'px ; padding-bottom: ' . $widget_padding_tb . 'px;';
-    }
-
-    if ( $widget_bg ) {
-        $widget_css .= 'background-color:'.$widget_bg.';';
-    } else {
-        $widget_css .= 'background-color: transparent;';
-    }
+	if ( $widget_title_css != '' )
+		$output .= '.panel-grid-cell .widget h3.widget-title {'. $widget_title_css . '}'. "\n";
 
 
-    if ( $widget_border["width"] > 0 )
-        $widget_css .= 'border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';';
-    if ( $widget_border_radius )
-        $widget_css .= 'border-radius:'.$widget_border_radius.';-moz-border-radius:'.$widget_border_radius.';-webkit-border-radius:'.$widget_border_radius.';';
+	if ( $widget_title_border )
+		$output .= '.panel-grid-cell .widget_recent_comments li{ border-color: '.$widget_title_border["color"].';}'. "\n";
 
-    if ( $widget_css != '' )
-        $output .= '.panel-grid-cell .widget {'. $widget_css . '}'. "\n";
+	if ( $widget_font_text )
+		$output .= '.panel-grid-cell .widget p, .panel-grid-cell .widget .textwidget { ' . pp_pb_generate_font_css( $widget_font_text, 1.5 ) . ' }' . "\n";
 
-    if ( $widget_border["width"] > 0 )
-        $output .= '.panel-grid-cell #tabs {border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';}'. "\n";
+	$widget_css = '';
+	if ( $widget_font_text )
+		$widget_css .= 'font:'.$widget_font_text["style"].' '.$widget_font_text["size"].$widget_font_text["unit"].'/1.5em '.stripslashes( $widget_font_text["face"] ).';color:'.$widget_font_text["color"].';';
 
-    // Tabs Widget
-    $widget_tabs_bg = get_option( 'page_builder_widget_tabs_bg', 'transparent' );
-    $widget_tabs_bg_inside = get_option( 'page_builder_widget_tabs_bg_inside', '' );
-    $widget_tabs_font = get_option( 'page_builder_widget_tabs_font', array( 'size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ) );
-    $widget_tabs_font_meta = get_option( 'page_builder_widget_tabs_font_meta', array( 'size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '' ) );
+	if ( ! $widget_padding_lr ) {
+		$widget_css .= 'padding-left: 0; padding-right: 0;';
+	} else {
+		$widget_css .= 'padding-left: ' . $widget_padding_lr . 'px ; padding-right: ' . $widget_padding_lr . 'px;';
+	}
+	if ( ! $widget_padding_tb ) {
+		$widget_css .= 'padding-top: 0; padding-bottom: 0;';
+	} else {
+		$widget_css .= 'padding-top: ' . $widget_padding_tb . 'px ; padding-bottom: ' . $widget_padding_tb . 'px;';
+	}
 
-    if ( $widget_tabs_bg ) {
-        $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:' . $widget_tabs_bg . ';}' . "\n";
-    } else {
-        $output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color: transparent;}' . "\n";
-    }
-
-    if ( $widget_tabs_bg_inside ) {
-        $output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color:' . $widget_tabs_bg_inside . ';}' . "\n";
-    } else {
-        //$output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color: transparent; }' . "\n";
-    }
-
-    if ( $widget_tabs_font )
-        $output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . pp_pb_generate_font_css( $widget_tabs_font, 1.5 ) . ' }'. "\n";
-    if ( $widget_tabs_font_meta )
-        $output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
-    $output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
+	if ( $widget_bg ) {
+		$widget_css .= 'background-color:'.$widget_bg.';';
+	} else {
+		$widget_css .= 'background-color: transparent;';
+	}
 
 
-//    global $siteorigin_panels_inline_css;
-//    if ( ! empty( $siteorigin_panels_inline_css ) ) {
-//        $output .= $siteorigin_panels_inline_css;
-//    }
+	if ( $widget_border["width"] > 0 )
+		$widget_css .= 'border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';';
+	if ( $widget_border_radius )
+		$widget_css .= 'border-radius:'.$widget_border_radius.';-moz-border-radius:'.$widget_border_radius.';-webkit-border-radius:'.$widget_border_radius.';';
+
+	if ( $widget_css != '' )
+		$output .= '.panel-grid-cell .widget {'. $widget_css . '}'. "\n";
+
+	if ( $widget_border["width"] > 0 )
+		$output .= '.panel-grid-cell #tabs {border:'.$widget_border["width"].'px '.$widget_border["style"].' '.$widget_border["color"].';}'. "\n";
+
+	// Tabs Widget
+	$widget_tabs_bg = get_option( 'page_builder_widget_tabs_bg', 'transparent' );
+	$widget_tabs_bg_inside = get_option( 'page_builder_widget_tabs_bg_inside', '' );
+	$widget_tabs_font = get_option( 'page_builder_widget_tabs_font', array( 'size' => '12','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ) );
+	$widget_tabs_font_meta = get_option( 'page_builder_widget_tabs_font_meta', array( 'size' => '11','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '' ) );
+
+	if ( $widget_tabs_bg ) {
+		$output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:' . $widget_tabs_bg . ';}' . "\n";
+	} else {
+		$output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color: transparent;}' . "\n";
+	}
+
+	if ( $widget_tabs_bg_inside ) {
+		$output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color:' . $widget_tabs_bg_inside . ';}' . "\n";
+	} else {
+		//$output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color: transparent; }' . "\n";
+	}
+
+	if ( $widget_tabs_font )
+		$output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . pp_pb_generate_font_css( $widget_tabs_font, 1.5 ) . ' }'. "\n";
+	if ( $widget_tabs_font_meta )
+		$output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
+	$output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
+
+
+//	global $siteorigin_panels_inline_css;
+//	if ( ! empty( $siteorigin_panels_inline_css ) ) {
+//		$output .= $siteorigin_panels_inline_css;
+//	}
 
 	$removeListSetting = siteorigin_panels_setting( 'remove-list-padding' );
 	if ( $removeListSetting == true ) {
 		$output .= ".entry .panel-grid .widget ul, .entry .panel-grid .widget ol { padding-left: 0; }\n";
 	}
 
-    echo "<style>\n" . $output . "\n" . "</style>\n";
+	echo "<style>\n" . $output . "\n" . "</style>\n";
 }
 
 function pp_pb_generate_font_css( $option, $em = '1' ) {
 
-    // Test if font-face is a Google font
-    global $google_fonts;
-    if ( is_array( $google_fonts ) ) {
-        foreach ( $google_fonts as $google_font ) {
+	// Test if font-face is a Google font
+	global $google_fonts;
+	if ( is_array( $google_fonts ) ) {
+		foreach ( $google_fonts as $google_font ) {
 
-            // Add single quotation marks to font name and default arial sans-serif ending
-            if ( $option['face'] == $google_font['name'] )
-                $option['face'] = "'" . $option['face'] . "', arial, sans-serif";
+			// Add single quotation marks to font name and default arial sans-serif ending
+			if ( $option['face'] == $google_font['name'] )
+				$option['face'] = "'" . $option['face'] . "', arial, sans-serif";
 
-        } // END foreach
-    }
+		} // END foreach
+	}
 
-    if ( ! @$option['style'] && ! @$option['size'] && ! @$option['unit'] && ! @$option['color'] )
-        return 'font-family: '.stripslashes( $option["face"] ).' ! important;';
-    else
-        return 'font:'.$option['style'].' '.$option['size'].$option['unit'].'/'.$em.'em '.stripslashes( $option['face'] ).' ! important; color:'.$option['color'].' ! important;';
+	if ( ! @$option['style'] && ! @$option['size'] && ! @$option['unit'] && ! @$option['color'] )
+		return 'font-family: '.stripslashes( $option["face"] ).' ! important;';
+	else
+		return 'font:'.$option['style'].' '.$option['size'].$option['unit'].'/'.$em.'em '.stripslashes( $option['face'] ).' ! important; color:'.$option['color'].' ! important;';
 } // End pp_pb_generate_font_css()
 
 add_action( 'admin_init', 'pp_pb_widget_area_init' );
 function pp_pb_widget_area_init() {
 
-    global $woo_shortcode_generator;
-    global $pagenow;
+	global $woo_shortcode_generator;
+	global $pagenow;
 
-    if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) == 'true' && ( in_array( $pagenow, array( 'widgets.php' ) ) ) )  {
+	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) == 'true' && ( in_array( $pagenow, array( 'widgets.php' ) ) ) )  {
 
-        // Output the markup in the footer.
-        add_action( 'admin_footer', array( $woo_shortcode_generator, 'output_dialog_markup' ) );
+		// Output the markup in the footer.
+		add_action( 'admin_footer', array( $woo_shortcode_generator, 'output_dialog_markup' ) );
 
-        // Add the tinyMCE buttons and plugins.
-        add_filter( 'mce_buttons', array( $woo_shortcode_generator, 'filter_mce_buttons' ) );
-        add_filter( 'mce_external_plugins', array( $woo_shortcode_generator, 'filter_mce_external_plugins' ) );
+		// Add the tinyMCE buttons and plugins.
+		add_filter( 'mce_buttons', array( $woo_shortcode_generator, 'filter_mce_buttons' ) );
+		add_filter( 'mce_external_plugins', array( $woo_shortcode_generator, 'filter_mce_external_plugins' ) );
 
-        // Register the colourpicker JavaScript.
-        wp_register_script( 'woo-colourpicker', esc_url( $woo_shortcode_generator->framework_url() . 'js/colorpicker.js' ), array( 'jquery' ), '3.6', true ); // Loaded into the footer.
-        wp_enqueue_script( 'woo-colourpicker' );
+		// Register the colourpicker JavaScript.
+		wp_register_script( 'woo-colourpicker', esc_url( $woo_shortcode_generator->framework_url() . 'js/colorpicker.js' ), array( 'jquery' ), '3.6', true ); // Loaded into the footer.
+		wp_enqueue_script( 'woo-colourpicker' );
 
-        // Register the colourpicker CSS.
-        wp_register_style( 'woo-colourpicker', esc_url( $woo_shortcode_generator->framework_url() . 'css/colorpicker.css' ) );
-        wp_enqueue_style( 'woo-colourpicker' );
+		// Register the colourpicker CSS.
+		wp_register_style( 'woo-colourpicker', esc_url( $woo_shortcode_generator->framework_url() . 'css/colorpicker.css' ) );
+		wp_enqueue_style( 'woo-colourpicker' );
 
-        wp_register_style( 'woo-shortcode-icon', esc_url( $woo_shortcode_generator->framework_url() . 'css/shortcode-icon.css' ) );
-        wp_enqueue_style( 'woo-shortcode-icon' );
+		wp_register_style( 'woo-shortcode-icon', esc_url( $woo_shortcode_generator->framework_url() . 'css/shortcode-icon.css' ) );
+		wp_enqueue_style( 'woo-shortcode-icon' );
 
-        // Register the custom CSS styles.
-        wp_register_style( 'woo-shortcode-generator', esc_url( $woo_shortcode_generator->framework_url() . 'css/shortcode-generator.css' ) );
-        wp_enqueue_style( 'woo-shortcode-generator' );
+		// Register the custom CSS styles.
+		wp_register_style( 'woo-shortcode-generator', esc_url( $woo_shortcode_generator->framework_url() . 'css/shortcode-generator.css' ) );
+		wp_enqueue_style( 'woo-shortcode-generator' );
 
-//        add_action( 'admin_head', 'pp_pb_widget_area_head' );
-    }
+//		add_action( 'admin_head', 'pp_pb_widget_area_head' );
+	}
 } // End init()
 
 function pp_pb_widget_styling_fields() {
-    return array(
+	return array(
 		'hide-title' => array(
 			'name' => 'Hide widget title on site',
 			'type' => 'checkbox',
@@ -2100,51 +2100,51 @@ function pp_pb_widget_styling_fields() {
 			'selector' => '.widget-title',
 			'css' => 'display'
 		 ),
-        'background-color' => array(
-            'name' => 'Widget background color',
-            'type' => 'color',
-            'css' => 'background-color',
-        ),
-        'border' => array(
-            'name' => 'Widget border',
-            'type' => 'border',
-            'css' => 'border'
-        ),
-        'padding-top-bottom' => array(
-            'name' => 'Widget top/bottom padding',
-            'type' => 'number',
-            'min' => '0',
-            'max' => '100',
-            'step' => '1',
-            'unit' => '%',
-            'css' => array( 'padding-top', 'padding-bottom' )
-        ),
-        'padding-left-right' => array(
-            'name' => 'Widget left/right padding',
-            'type' => 'number',
-            'min' => '0',
-            'max' => '100',
-            'step' => '1',
-            'unit' => '%',
-            'css' => array( 'padding-left', 'padding-right' )
-        ),
-        'rounded-corners' => array(
-            'name' => 'Widget rounded corners',
-            'type' => 'number',
-            'min' => '0',
-            'max' => '100',
-            'step' => '1',
-            'unit' => 'px',
-            'css' => 'border-radius'
-        ),
-    );
+		'background-color' => array(
+			'name' => 'Widget background color',
+			'type' => 'color',
+			'css' => 'background-color',
+		),
+		'border' => array(
+			'name' => 'Widget border',
+			'type' => 'border',
+			'css' => 'border'
+		),
+		'padding-top-bottom' => array(
+			'name' => 'Widget top/bottom padding',
+			'type' => 'number',
+			'min' => '0',
+			'max' => '100',
+			'step' => '1',
+			'unit' => '%',
+			'css' => array( 'padding-top', 'padding-bottom' )
+		),
+		'padding-left-right' => array(
+			'name' => 'Widget left/right padding',
+			'type' => 'number',
+			'min' => '0',
+			'max' => '100',
+			'step' => '1',
+			'unit' => '%',
+			'css' => array( 'padding-left', 'padding-right' )
+		),
+		'rounded-corners' => array(
+			'name' => 'Widget rounded corners',
+			'type' => 'number',
+			'min' => '0',
+			'max' => '100',
+			'step' => '1',
+			'unit' => 'px',
+			'css' => 'border-radius'
+		),
+	);
 }
 
 // No need to fix, since same as normal post edit screen
 //function pp_pb_widget_area_head() {
-//    echo "<style>\n" .
-//        "#TB_ajaxContent { width: auto ! important; height: auto ! important; }\n" .
-//    "</style>\n";
+//	echo "<style>\n" .
+//		"#TB_ajaxContent { width: auto ! important; height: auto ! important; }\n" .
+//	"</style>\n";
 //}
 
 //$pootlepageCustomizer = new PootlePage_Customizer();
@@ -2153,55 +2153,55 @@ $PootlePageFile = __FILE__;
 add_action( 'after_setup_theme', 'pp_pb_wf_settings' );
 
 function pp_pb_wf_settings() {
-    require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields.php';
-    require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-settings.php';
-    require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-settings.php';
-    $GLOBALS['PP_PB_WF_Settings'] = new PP_PB_WF_Settings();
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields.php';
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-settings.php';
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-settings.php';
+	$GLOBALS['PP_PB_WF_Settings'] = new PP_PB_WF_Settings();
 }
 
 
 add_action( 'init', 'pp_pootlepage_updater' );
 function pp_pootlepage_updater()
 {
-    if ( ! function_exists( 'get_plugin_data' ) ) {
-        include( ABSPATH . 'wp-admin/includes/plugin.php' );
-    }
-    $data = get_plugin_data( __FILE__ );
-    $wptuts_plugin_current_version = $data['Version'];
-    $wptuts_plugin_remote_path = 'http://www.pootlepress.com/?updater=1';
-    $wptuts_plugin_slug = plugin_basename( __FILE__ );
-    new Pootlepress_Updater ( $wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug );
+	if ( ! function_exists( 'get_plugin_data' ) ) {
+		include( ABSPATH . 'wp-admin/includes/plugin.php' );
+	}
+	$data = get_plugin_data( __FILE__ );
+	$wptuts_plugin_current_version = $data['Version'];
+	$wptuts_plugin_remote_path = 'http://www.pootlepress.com/?updater=1';
+	$wptuts_plugin_slug = plugin_basename( __FILE__ );
+	new Pootlepress_Updater ( $wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug );
 }
 
 add_action( 'in_plugin_update_message-page-builder-for-canvas-master/page-builder-for-canvas.php', 'pp_pb_in_plugin_update_message', 10, 2 );
 
 //$r is a object
 function pp_pb_in_plugin_update_message( $args, $r ) {
-    if ( $args['update'] ) {
-        $transient_name = 'pp_pb_upgrade_notice_' . $args['Version'];
+	if ( $args['update'] ) {
+		$transient_name = 'pp_pb_upgrade_notice_' . $args['Version'];
 
-        if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
+		if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
 
-            $response = wp_remote_post( $args['url'], array( 'body' => array( 'action' => 'upgrade-notice', 'plugin' => $args['slug'] ) ) );
+			$response = wp_remote_post( $args['url'], array( 'body' => array( 'action' => 'upgrade-notice', 'plugin' => $args['slug'] ) ) );
 
-            if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) && $response['body'] != 'false' ) {
+			if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) && $response['body'] != 'false' ) {
 
-                // Output Upgrade Notice
-                $upgrade_notice = '';
+				// Output Upgrade Notice
+				$upgrade_notice = '';
 
-                // css from WooCommerce
-                $upgrade_notice .= '<style>.wc_plugin_upgrade_notice{font-weight:400;color:#fff;background:#d54d21;padding:1em;margin:9px 0}.wc_plugin_upgrade_notice a{color:#fff;text-decoration:underline}.wc_plugin_upgrade_notice:before{content:"\f348";display:inline-block;font:400 18px/1 dashicons;speak:none;margin:0 8px 0 -2px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;vertical-align:top}</style>';
+				// css from WooCommerce
+				$upgrade_notice .= '<style>.wc_plugin_upgrade_notice{font-weight:400;color:#fff;background:#d54d21;padding:1em;margin:9px 0}.wc_plugin_upgrade_notice a{color:#fff;text-decoration:underline}.wc_plugin_upgrade_notice:before{content:"\f348";display:inline-block;font:400 18px/1 dashicons;speak:none;margin:0 8px 0 -2px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;vertical-align:top}</style>';
 
-                $upgrade_notice .= '<div class="wc_plugin_upgrade_notice">';
+				$upgrade_notice .= '<div class="wc_plugin_upgrade_notice">';
 
-                $upgrade_notice .= $response['body'];
+				$upgrade_notice .= $response['body'];
 
-                $upgrade_notice .= '</div> ';
+				$upgrade_notice .= '</div> ';
 
-                set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
-            }
-        }
+				set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
+			}
+		}
 
-        echo $upgrade_notice;
-    }
+		echo $upgrade_notice;
+	}
 }

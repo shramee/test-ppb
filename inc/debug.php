@@ -4,7 +4,7 @@
  * If we're in debug mode, display the panels data.
  */
 function siteorigin_panels_dump() {
-	echo "<! --\n\n";
+	echo "<!--\n\n";
 	echo "// Panels Data dump\n\n";
 
 	if ( isset( $_GET['page'] ) && $_GET['page'] == 'so_panels_home_page' ) {

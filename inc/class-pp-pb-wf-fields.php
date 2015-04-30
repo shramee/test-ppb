@@ -577,7 +577,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The key/token.
 	 * @param   array  $args Arguments pertaining to this section.
-	 * @return  string       Rendered HTML markup for the section.
+	 * @return  string	   Rendered HTML markup for the section.
 	 */
 	public function render_single_section ( $key, $args, $heading_level = 2 ) {
 		if ( in_array( $key, $this->_processed_sections ) ) return; // Don't process a section more than once.
@@ -587,10 +587,10 @@ class PP_PB_WF_Fields {
 		$html = '';
 		$html .= '<div id="' . esc_attr( $key ) . '" class="settings-section">' . "\n";
 		if ( isset( $args['name'] ) ) {
-            // PP PB Modified
-            if ( $heading_level == 2 ) {
-                $html .= '<h' . intval( $heading_level ) . ' class="section-title">' . $args['name'] . '</h' . intval( $heading_level ) . '>' . "\n";
-            }
+			// PP PB Modified
+			if ( $heading_level == 2 ) {
+				$html .= '<h' . intval( $heading_level ) . ' class="section-title">' . $args['name'] . '</h' . intval( $heading_level ) . '>' . "\n";
+			}
 		}
 		$html .= $this->__get( 'wrapper_start' );
 		if ( 0 < count( $fields ) ) {
@@ -604,7 +604,7 @@ class PP_PB_WF_Fields {
 				$html .= $this->render_single_section( $k, $v, 3 );
 			}
 		}
-		$html .= '</div><! --/#' . esc_attr( $key ) . ' .settings-section-->' . "\n";
+		$html .= '</div><!--/#' . esc_attr( $key ) . ' .settings-section-->' . "\n";
 		return $html;
 	} // End render_single_section()
 
@@ -677,7 +677,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_text ( $key, $args ) {
 		$html = '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="40" type="text" value="' . esc_attr( $this->get_value( $key, $args['std'] ) ) . '" />' . "\n";
@@ -690,7 +690,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_multi_field ( $key, $args ) {
 		$html = '';
@@ -709,7 +709,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_typography ( $key, $args ) {
 		$this->_has_colourpicker = true;
@@ -845,9 +845,9 @@ class PP_PB_WF_Fields {
 	 * Test whether or not a typeface has been selected for a "typography" field.
 	 * @access  protected
 	 * @since   6.0.2
-	 * @param   string $face      The noble warrior ( typeface ) to be tested.
+	 * @param   string $face	  The noble warrior ( typeface ) to be tested.
 	 * @param   string $test_case The test case. Does the warrior pass the ultimate test and reep eternal glory?
-	 * @return  bool       		  Whether or not eternal glory shall be achieved by the warrior.
+	 * @return  bool	   		  Whether or not eternal glory shall be achieved by the warrior.
 	 */
 	protected function _test_typeface_against_test_case ( $face, $test_case ) {
 		$response = false;
@@ -869,7 +869,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_border ( $key, $args ) {
 		$this->_has_colourpicker = true;
@@ -931,7 +931,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_radio ( $key, $args ) {
 		$html = '';
@@ -950,7 +950,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_textarea ( $key, $args ) {
 		// Explore how best to escape this data, as esc_textarea() strips HTML tags, it seems.
@@ -964,7 +964,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_multicheck ( $key, $args ) {
 		$html = '';
@@ -992,7 +992,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_multicheck2 ( $key, $args ) {
 		$html = '';
@@ -1017,7 +1017,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_checkbox ( $key, $args ) {
 		$has_description = false;
@@ -1039,7 +1039,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_info ( $key, $args ) {
 		$html = '<div id="' . esc_attr( $key ) . '" class="woo-notice">' . "\n";
@@ -1054,7 +1054,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_select ( $key, $args ) {
 		$this->_has_select = true;
@@ -1076,7 +1076,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_select2 ( $key, $args ) {
 		$this->_has_select = true;
@@ -1098,29 +1098,29 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_select_taxonomy ( $key, $args ) {
 		$this->_has_select = true;
 
 		$defaults = array(
-			'show_option_all'    => '',
+			'show_option_all'	=> '',
 			'show_option_none'   => '',
-			'orderby'            => 'ID',
-			'order'              => 'ASC',
-			'show_count'         => 0,
-			'hide_empty'         => 1,
-			'child_of'           => 0,
-			'exclude'            => '',
-			'selected'           => $this->get_value( $key, $args['std'] ),
-			'hierarchical'       => 1,
-			'class'              => 'postform',
-			'depth'              => 0,
-			'tab_index'          => 0,
-			'taxonomy'           => 'category',
-			'hide_if_empty'      => false,
-			'walker'             => ''
-        );
+			'orderby'			=> 'ID',
+			'order'			  => 'ASC',
+			'show_count'		 => 0,
+			'hide_empty'		 => 1,
+			'child_of'		   => 0,
+			'exclude'			=> '',
+			'selected'		   => $this->get_value( $key, $args['std'] ),
+			'hierarchical'	   => 1,
+			'class'			  => 'postform',
+			'depth'			  => 0,
+			'tab_index'		  => 0,
+			'taxonomy'		   => 'category',
+			'hide_if_empty'	  => false,
+			'walker'			 => ''
+		);
 
 		if ( ! isset( $args['options'] ) ) {
 			$args['options'] = array();
@@ -1143,7 +1143,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_slider ( $key, $args ) {
 		$this->_has_range = true;
@@ -1165,7 +1165,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_masked_input ( $key, $args ) {
 		$this->_has_masked_input = true;
@@ -1183,7 +1183,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_time_masked ( $key, $args ) {
 		$this->_has_masked_input = true;
@@ -1201,7 +1201,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_time ( $key, $args ) {
 		$this->_has_masked_input = true;
@@ -1219,7 +1219,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_calendar ( $key, $args ) {
 		$this->_has_calendar = true;
@@ -1238,7 +1238,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_color ( $key, $args ) {
 		$this->_has_colourpicker = true;
@@ -1253,7 +1253,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_images ( $key, $args ) {
 		$this->_has_imageselector = true;
@@ -1274,7 +1274,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_upload ( $key, $args ) {
 		$this->_has_upload = true;
@@ -1293,7 +1293,7 @@ class PP_PB_WF_Fields {
 		$html .= '<div class="image-preview' . esc_attr( $class ) . '">' . "\n";
 		$html .= '<img src="' . esc_url( $url ) . '" data-placeholder="' . esc_url( $placeholder ) . '" />' . "\n";
 		$html .= '<a href="#" class="remove">' . sprintf( __( 'Remove %s', 'woothemes' ), $args['name'] ) . '</a>' . "\n";
-		$html .= '</div><! --/.image-preview-->' . "\n";
+		$html .= '</div><!--/.image-preview-->' . "\n";
 
 		return $html;
 	} // End render_field_upload()
@@ -1304,7 +1304,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_upload_min ( $key, $args ) {
 		$this->_has_upload = true;
@@ -1323,7 +1323,7 @@ class PP_PB_WF_Fields {
 		$html .= '<div class="image-preview' . esc_attr( $class ) . '">' . "\n";
 		$html .= '<img src="' . esc_url( $url ) . '" data-placeholder="' . esc_url( $placeholder ) . '" />' . "\n";
 		$html .= '<a href="#" class="remove">' . sprintf( __( 'Remove %s', 'woothemes' ), $args['name'] ) . '</a>' . "\n";
-		$html .= '</div><! --/.image-preview-->' . "\n";
+		$html .= '</div><!--/.image-preview-->' . "\n";
 
 		return $html;
 	} // End render_field_upload_min()
@@ -1334,7 +1334,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @param   string $key  The unique ID of this field.
 	 * @param   array $args  Arguments used to construct this field.
-	 * @return  string       HTML markup for the field.
+	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_timestamp ( $key, $args ) {
 		$this->_has_calendar = true;
@@ -1370,7 +1370,7 @@ class PP_PB_WF_Fields {
 				$html .= '<option value="' . esc_attr( $i ) . '"' . selected( date( 'i', $val ), $j, false ) .'>' . esc_html( $j ) . '</option>' . "\n";
 			}
 		$html .= '</select>' . "\n";
-		$html .= '</span><! --/.time-selectors-->' . "\n";
+		$html .= '</span><!--/.time-selectors-->' . "\n";
 		return $html;
 	} // End render_field_timestamp()
 
@@ -1523,7 +1523,7 @@ class PP_PB_WF_Fields {
 	 * @access  protected
 	 * @since   6.0.0
 	 * @param   string $section The section to search for fields in.
-	 * @return  array           An array of the detected fields.
+	 * @return  array		   An array of the detected fields.
 	 */
 	protected function _get_fields_by_section ( $section ) {
 		$fields = array();
@@ -1538,7 +1538,7 @@ class PP_PB_WF_Fields {
 	 * @access  public
 	 * @since   6.0.0
 	 * @param   array $data Data array of various sections and fields.
-	 * @return  array       Detected sections.
+	 * @return  array	   Detected sections.
 	 */
 	public function init_sections ( $data ) {
 		if ( 0 >= count( $data ) ) return new WP_Error( 'bad_settings_data', __( 'The settings data provided is malformed. Please try again.', 'woothemes' ) );
@@ -1580,7 +1580,7 @@ class PP_PB_WF_Fields {
 	 * @access  public
 	 * @since   6.0.0
 	 * @param   array $data Data array of various sections and fields.
-	 * @return  array       Detected fields.
+	 * @return  array	   Detected fields.
 	 */
 	public function init_fields ( $data ) {
 		if ( 0 >= count( $data ) ) return new WP_Error( 'bad_settings_data', __( 'The settings data provided is malformed. Please try again.', 'woothemes' ) );
@@ -1678,7 +1678,7 @@ class PP_PB_WF_Fields {
 	 * @access  public
 	 * @since   6.0.0
 	 * @param   string $key 	Specified key for the section.
-	 * @return  string      	Generated token for the section.
+	 * @return  string	  	Generated token for the section.
 	 */
 	public function _generate_section_token ( $key ) {
 		return sanitize_title_with_dashes( $key );

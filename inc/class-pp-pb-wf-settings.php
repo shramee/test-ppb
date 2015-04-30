@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class PP_PB_WF_Settings {
 	/**
 	 * The token.
-	 * @var     string
+	 * @var	 string
 	 * @access  private
 	 * @since   6.0.0
 	 */
@@ -21,7 +21,7 @@ class PP_PB_WF_Settings {
 
 	/**
 	 * The settings.
-	 * @var     object
+	 * @var	 object
 	 * @access  public
 	 * @since   6.0.0
 	 */
@@ -29,7 +29,7 @@ class PP_PB_WF_Settings {
 
 	/**
 	 * The settings sections.
-	 * @var     object
+	 * @var	 object
 	 * @access  public
 	 * @since   6.0.0
 	 */
@@ -37,7 +37,7 @@ class PP_PB_WF_Settings {
 
 	/**
 	 * The settings fields.
-	 * @var     object
+	 * @var	 object
 	 * @access  public
 	 * @since   6.0.0
 	 */
@@ -45,7 +45,7 @@ class PP_PB_WF_Settings {
 
 	/**
 	 * The field generator.
-	 * @var     object
+	 * @var	 object
 	 * @access  private
 	 * @since   6.0.0
 	 */
@@ -64,29 +64,29 @@ class PP_PB_WF_Settings {
 
 		$this->_field_obj = new PP_PB_WF_Fields_Settings();
 
-        $options = pp_pb_add_theme_options( array() );
+		$options = pp_pb_add_theme_options( array() );
 		$this->_field_obj->init( $options );
 
 		$this->_field_obj->__set( 'token', 'woo' );
 
 		$this->_fields = $this->_field_obj->__get( 'fields' );
 
-        add_action( 'admin_menu', array( $this, 'register_settings_screen' ), 110 );
+		add_action( 'admin_menu', array( $this, 'register_settings_screen' ), 110 );
 
 	} // End __construct()
 
-    /**
-     * Register the WooFramework admin menu.
-     * @access  public
-     * @since   6.0.0
-     * @return  void
-     */
-    public function register_settings_screen () {
+	/**
+	 * Register the WooFramework admin menu.
+	 * @access  public
+	 * @since   6.0.0
+	 * @return  void
+	 */
+	public function register_settings_screen () {
 
-        // Load validation and save logic for the settings screen.
-        add_action( 'load-' . $this->page_hook, array( $this, 'settings_screen_logic' ) );
+		// Load validation and save logic for the settings screen.
+		add_action( 'load-' . $this->page_hook, array( $this, 'settings_screen_logic' ) );
 
-    } // End register_settings_screen()
+	} // End register_settings_screen()
 
 	/**
 	 * Run logic on the WooFramework settings screen.
@@ -96,7 +96,7 @@ class PP_PB_WF_Settings {
 	 */
 	public function settings_screen_logic () {
 		if ( isset( $_REQUEST['tab'] ) && $_REQUEST['tab'] == 'styling' && ! empty( $_POST ) ) {
-            //check_admin_referer( $this->_field_obj->__get( 'token' ) . '_nonce', $this->_field_obj->__get( 'token' ) . '_nonce' )
+			//check_admin_referer( $this->_field_obj->__get( 'token' ) . '_nonce', $this->_field_obj->__get( 'token' ) . '_nonce' )
 			$data = $_POST;
 
 			$page = 'page_builder';
@@ -195,7 +195,7 @@ class PP_PB_WF_Settings {
 	 * Get the data for a single field.
 	 * @access  public
 	 * @since   6.0.0
-	 * @param   string $key      The key for which to retrieve the field data.
+	 * @param   string $key	  The key for which to retrieve the field data.
 	 * @return  mixed/boolean	False if no field is found.
 	 */
 	public function get_field ( $key ) {
@@ -208,7 +208,7 @@ class PP_PB_WF_Settings {
 	 * Update the data for a single field.
 	 * @access  public
 	 * @since   6.0.0
-	 * @param   string $key     The key for which to update the field data.
+	 * @param   string $key	 The key for which to update the field data.
 	 * @param 	array  $data 	Updated data for the specified field.
 	 * @return  mixed/boolean	False if no field is found.
 	 */
@@ -233,7 +233,7 @@ class PP_PB_WF_Settings {
 	 * Remove a single field.
 	 * @access  public
 	 * @since   6.0.0
-	 * @param   string $key     The key for which to remove the field data.
+	 * @param   string $key	 The key for which to remove the field data.
 	 * @return  mixed/boolean	False if no field is found.
 	 */
 	public function remove_field ( $key ) {
@@ -275,7 +275,7 @@ class PP_PB_WF_Settings {
 	 * @since   6.0.0
 	 * @param   string 		 $k The field key.
 	 * @param   string/array $v The stored value.
-	 * @return  string/array    The stored value, sanitized.
+	 * @return  string/array	The stored value, sanitized.
 	 */
 	private function _process_single_field ( $k, $v ) {
 		$default = '';
@@ -298,7 +298,7 @@ class PP_PB_WF_Settings {
 	 * @access  public
 	 * @since   6.0.0
 	 * @param   string $section The section to search for fields in ( optional ).
-	 * @return  array           An array of the detected fields.
+	 * @return  array		   An array of the detected fields.
 	 */
 	public function get_fields ( $section = '' ) {
 		$fields = array();

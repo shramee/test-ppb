@@ -37,12 +37,12 @@ function pp_page_builder_pootle_text_widget_admin_enqueue( $page ) {
 //			if ( function_exists( 'black_studio_tinymce_get_version' ) ) {
 //				$pootle_text_widget_version = black_studio_tinymce_get_version();
 			//}
-            $pootle_text_widget_version = '1.0.0';
+			$pootle_text_widget_version = '1.0.0';
 		}
 
 //		if ( version_compare( $pootle_text_widget_version, '1.3.3', '<=' ) ) {
 //			// Use the old compatibility file.
-            // pootle-text-widget is based on black-studio 1.3.3
+			// pootle-text-widget is based on black-studio 1.3.3
 			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.old.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 //		}
 //		else {

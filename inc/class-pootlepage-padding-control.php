@@ -1,16 +1,16 @@
 <?php
 
 if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
-    if ( ! class_exists( 'WP_Customize_Control' ) ) {
-        require_once( ABSPATH . '/wp-includes/class-wp-customize-control.php' );
-    }
+	if ( ! class_exists( 'WP_Customize_Control' ) ) {
+		require_once( ABSPATH . '/wp-includes/class-wp-customize-control.php' );
+	}
 
 	class PootlePage_Padding_Control extends WP_Customize_Control {
 
-        public $option_name;
-        public $type = 'padding';
+		public $option_name;
+		public $type = 'padding';
 
-        public $default;
+		public $default;
 		/**
 		 * Constructor.
 		 *
@@ -25,75 +25,75 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 		 */
 		public function __construct( $manager, $id, $args = array() ) {
 
-            $this->default = $args['defaults'];
+			$this->default = $args['defaults'];
 
 			parent::__construct( $manager, $id, $args );
 
 		}
 
 
-        public function enqueue() {
+		public function enqueue() {
 
-            global $PootlePageFile;
+			global $PootlePageFile;
 
-            wp_enqueue_style( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'css/customize-controls.css' );
+			wp_enqueue_style( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'css/customize-controls.css' );
 
-            parent::enqueue();
-        }
+			parent::enqueue();
+		}
 
-        public function get_top_bottom_control() {
+		public function get_top_bottom_control() {
 
-            // Variables used in view
-            $value          = $this->value( 'top_bottom_width' );
-            $step           = 1;
-            $min_range      = 0;
-            $max_range      = 100;
-            $default_amount = $this->default['top_bottom_width'];
+			// Variables used in view
+			$value		  = $this->value( 'top_bottom_width' );
+			$step		   = 1;
+			$min_range	  = 0;
+			$max_range	  = 100;
+			$default_amount = $this->default['top_bottom_width'];
 
-            $current_amount = isset( $value ) ? $value : $default_amount;
+			$current_amount = isset( $value ) ? $value : $default_amount;
 
-            // Get control view
-            ?>
-            <label><?php _e( 'Top/Bottom', 'scratch' ); ?>
+			// Get control view
+			?>
+			<label><?php _e( 'Top/Bottom', 'scratch' ); ?>
 
-                <input class='pp-top-bottom-width-number' type="number" min="<?php echo $min_range ?>"
-                       max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
-                       default="<?php echo $default_amount ?>"
-                    <?php $this->link( 'top_bottom_width' ) ?>
-                    />
-                px
+				<input class='pp-top-bottom-width-number' type="number" min="<?php echo $min_range ?>"
+					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
+					   default="<?php echo $default_amount ?>"
+					<?php $this->link( 'top_bottom_width' ) ?>
+					/>
+				px
 
-            </label>
+			</label>
 
-        <?php
-        }
+		<?php
+		}
 
-        public function get_left_right_control() {
+		public function get_left_right_control() {
 
-            // Variables used in view
-            $value          = $this->value( 'left_right_width' );
-            $step           = 1;
-            $min_range      = 0;
-            $max_range      = 100;
-            $default_amount = $this->default['left_right_width'];
+			// Variables used in view
+			$value		  = $this->value( 'left_right_width' );
+			$step		   = 1;
+			$min_range	  = 0;
+			$max_range	  = 100;
+			$default_amount = $this->default['left_right_width'];
 
-            $current_amount = isset( $value ) ? $value : $default_amount;
+			$current_amount = isset( $value ) ? $value : $default_amount;
 
-            // Get control view
-            ?>
-            <label><?php _e( 'Left/Right', 'scratch' ); ?>
+			// Get control view
+			?>
+			<label><?php _e( 'Left/Right', 'scratch' ); ?>
 
-                <input class='pp-left-right-width-number' type="number" min="<?php echo $min_range ?>"
-                       max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
-                       default="<?php echo $default_amount ?>"
-                    <?php $this->link( 'left_right_width' ) ?>
-                    />
-                px
+				<input class='pp-left-right-width-number' type="number" min="<?php echo $min_range ?>"
+					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
+					   default="<?php echo $default_amount ?>"
+					<?php $this->link( 'left_right_width' ) ?>
+					/>
+				px
 
-            </label>
+			</label>
 
-        <?php
-        }
+		<?php
+		}
 
 		/**
 		 * Render Control Content
@@ -108,20 +108,20 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 		 * 
 		 */
 		public function render_content() {
-            ?>
-            <label>
-                <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-                <div class="customize-control-content">
+			?>
+			<label>
+				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+				<div class="customize-control-content">
 
-                    <?php $this->get_top_bottom_control(); ?>
+					<?php $this->get_top_bottom_control(); ?>
 
-                    <div class="separator"></div>
+					<div class="separator"></div>
 
-                    <?php $this->get_left_right_control(); ?>
+					<?php $this->get_left_right_control(); ?>
 
-                </div>
-            </label>
-            <?php
+				</div>
+			</label>
+			<?php
 		}
 	}
 endif;

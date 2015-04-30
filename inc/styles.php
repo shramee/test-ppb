@@ -31,168 +31,168 @@ function siteorigin_panels_style_get_fields() {
 
 function pootlepage_page_settings_fields() {
 
-    $fields = array();
+	$fields = array();
 
-    $fields['background'] = array(
-        'name' => __( 'Background Color', 'pootlepage' ),
-        'type' => 'color',
-    );
+	$fields['background'] = array(
+		'name' => __( 'Background Color', 'pootlepage' ),
+		'type' => 'color',
+	);
 
-    $fields['background_image'] = array(
-        'name' => __( 'Background Image', 'pootlepage' ),
-        'type' => 'upload',
-    );
+	$fields['background_image'] = array(
+		'name' => __( 'Background Image', 'pootlepage' ),
+		'type' => 'upload',
+	);
 
-    $fields['background_image_repeat'] = array(
-        'name' => __( 'Background Image Repeat', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['background_image_repeat'] = array(
+		'name' => __( 'Background Image Repeat', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['background_image_position'] = array(
-        'name' => __( 'Background Image Position', 'pootlepage' ),
-        'type' => 'select',
-        'options' => array(
-            '' => 'default',
-            'top left' => 'top left',
-            'top center' => 'top center',
-            'top right' => 'top right',
-            'center left' => 'center left',
-            'center center' => 'center center',
-            'center right' => 'center right',
-            'bottom left' => 'bottom left',
-            'bottom center' => 'bottom center',
-            'bottom right' => 'bottom right'
-        )
-    );
+	$fields['background_image_position'] = array(
+		'name' => __( 'Background Image Position', 'pootlepage' ),
+		'type' => 'select',
+		'options' => array(
+			'' => 'default',
+			'top left' => 'top left',
+			'top center' => 'top center',
+			'top right' => 'top right',
+			'center left' => 'center left',
+			'center center' => 'center center',
+			'center right' => 'center right',
+			'bottom left' => 'bottom left',
+			'bottom center' => 'bottom center',
+			'bottom right' => 'bottom right'
+		)
+	);
 
-    $fields['background_image_attachment'] = array(
-        'name' => __( 'Background Attachment', 'pootlepage' ),
-        'type' => 'select',
-        'options' => array(
-            '' => 'default',
-            'scroll' => 'scroll',
-            'fixed' => 'fixed'
-        )
-    );
+	$fields['background_image_attachment'] = array(
+		'name' => __( 'Background Attachment', 'pootlepage' ),
+		'type' => 'select',
+		'options' => array(
+			'' => 'default',
+			'scroll' => 'scroll',
+			'fixed' => 'fixed'
+		)
+	);
 
-    $fields['remove_sidebar'] = array(
-        'name' => __( 'Remove Sidebar', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['remove_sidebar'] = array(
+		'name' => __( 'Remove Sidebar', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['full_width'] = array(
-        'name' => __( 'Make page go full width', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['full_width'] = array(
+		'name' => __( 'Make page go full width', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['keep_content_at_site_width'] = array(
-        'name' => __( 'Keep content at site width', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['keep_content_at_site_width'] = array(
+		'name' => __( 'Keep content at site width', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    return $fields;
+	return $fields;
 }
 
 function pootlepage_hide_elements_fields() {
 
-    $fields = array();
+	$fields = array();
 
-    $fields['hide_logo_strapline'] = array(
-        'name' => __( 'Hide logo/strapline', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['hide_logo_strapline'] = array(
+		'name' => __( 'Hide logo/strapline', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['hide_header'] = array(
-        'name' => __( 'Hide header', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['hide_header'] = array(
+		'name' => __( 'Hide header', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['hide_main_navigation'] = array(
-        'name' => __( 'Hide main navigation', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['hide_main_navigation'] = array(
+		'name' => __( 'Hide main navigation', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['hide_page_title'] = array(
-        'name' => __( 'Hide page title', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['hide_page_title'] = array(
+		'name' => __( 'Hide page title', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['hide_footer_widgets'] = array(
-        'name' => __( 'Hide footer widgets', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['hide_footer_widgets'] = array(
+		'name' => __( 'Hide footer widgets', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    $fields['hide_footer'] = array(
-        'name' => __( 'Hide footer', 'pootlepage' ),
-        'type' => 'checkbox',
-    );
+	$fields['hide_footer'] = array(
+		'name' => __( 'Hide footer', 'pootlepage' ),
+		'type' => 'checkbox',
+	);
 
-    return $fields;
+	return $fields;
 }
 
 function pootlepage_dialog_form_echo( $fields ) {
 
-    foreach( $fields as $name => $attr ) {
+	foreach( $fields as $name => $attr ) {
 
-        echo '<p>';
-        echo '<label>' . $attr['name'] . '</label>';
+		echo '<p>';
+		echo '<label>' . $attr['name'] . '</label>';
 
-        switch( $attr['type'] ) {
-            case 'select':
-                ?>
-                <select name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>">
-                    <?php foreach( $attr['options'] as $ov => $on ) : ?>
-                        <option value="<?php echo esc_attr( $ov ) ?>"><?php echo esc_html( $on ) ?></option>
-                    <?php endforeach ?>
-                </select>
-                <?php
-                break;
+		switch( $attr['type'] ) {
+			case 'select':
+				?>
+				<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>">
+					<?php foreach( $attr['options'] as $ov => $on ) : ?>
+						<option value="<?php echo esc_attr( $ov ) ?>"><?php echo esc_html( $on ) ?></option>
+					<?php endforeach ?>
+				</select>
+				<?php
+				break;
 
-            case 'checkbox' :
-                ?>
-                <label class="siteorigin-panels-checkbox-label">
-                    <input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-                    Enabled
-                </label>
-                <?php
-                break;
+			case 'checkbox' :
+				?>
+				<label class="siteorigin-panels-checkbox-label">
+					<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+					Enabled
+				</label>
+				<?php
+				break;
 
-            case 'number' :
-                ?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
-                break;
+			case 'number' :
+				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				break;
 
-            case 'upload':
-                ?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /><button class="button upload-button thickbox">Upload</button><?php
-                break;
-            default :
-                ?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
-                break;
-        }
+			case 'upload':
+				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /><button class="button upload-button thickbox">Upload</button><?php
+				break;
+			default :
+				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				break;
+		}
 
-        echo '</p>';
-    }
+		echo '</p>';
+	}
 }
 
 function pootlepage_hide_elements_dialog_echo( $fields ) {
 
-    foreach( $fields as $name => $attr ) {
+	foreach( $fields as $name => $attr ) {
 
-        echo '<p>';
-        echo '<label>' . $attr['name'] . '</label>';
+		echo '<p>';
+		echo '<label>' . $attr['name'] . '</label>';
 
-        switch( $attr['type'] ) {
-            case 'checkbox' :
-                ?>
-                <input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-                <?php
-                break;
-            default :
-                ?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
-                break;
-        }
+		switch( $attr['type'] ) {
+			case 'checkbox' :
+				?>
+				<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				<?php
+				break;
+			default :
+				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				break;
+		}
 
-        echo '</p>';
-    }
+		echo '</p>';
+	}
 }
 
 function siteorigin_panels_style_dialog_form() {
@@ -220,31 +220,31 @@ function siteorigin_panels_style_dialog_form() {
 				break;
 
 			case 'checkbox' :
-                $checked = ( isset( $attr['default'] ) ? checked( $attr['default'], true, false ) : '' );
+				$checked = ( isset( $attr['default'] ) ? checked( $attr['default'], true, false ) : '' );
 				?>
 				<label class="siteorigin-panels-checkbox-label">
 					<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
 					Enabled
 				</label>
-                <?php
-                if ( isset( $attr['help-text'] ) ) {
-                    // don't use div for this or else div will appear outside of <p>
-                    echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
-                }
+				<?php
+				if ( isset( $attr['help-text'] ) ) {
+					// don't use div for this or else div will appear outside of <p>
+					echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
+				}
 				break;
 
 			case 'number' :
 				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-                <?php
-                if ( isset( $attr['help-text'] ) ) {
-                    // don't use div for this or else div will appear outside of <p>
-                    echo "<span class='small-help-text'>" . esc_html( $attr['help-text'] ) . "</span>";
-                }
+				<?php
+				if ( isset( $attr['help-text'] ) ) {
+					// don't use div for this or else div will appear outside of <p>
+					echo "<span class='small-help-text'>" . esc_html( $attr['help-text'] ) . "</span>";
+				}
 				break;
 
-            case 'upload':
-                ?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /><button class="button upload-button thickbox">Upload</button><?php
-                break;
+			case 'upload':
+				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /><button class="button upload-button thickbox">Upload</button><?php
+				break;
 			default :
 				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
 				break;
@@ -255,38 +255,38 @@ function siteorigin_panels_style_dialog_form() {
 }
 
 function pp_pb_widget_styles_dialog_form() {
-    $fields = pp_pb_widget_styling_fields();
+	$fields = pp_pb_widget_styling_fields();
 
-    foreach( $fields as $key => $field ) {
+	foreach( $fields as $key => $field ) {
 
-        echo "<div class='field'>";
-        echo "<label>" . esc_html( $field['name'] ) . "</label>";
-        echo "<span>";
+		echo "<div class='field'>";
+		echo "<label>" . esc_html( $field['name'] ) . "</label>";
+		echo "<span>";
 
-        switch( $field['type'] ) {
-            case 'color' :
-                ?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text" data-style-field-type="color"/>
-                <?php
-                break;
-            case 'border' :
-                ?><input dialog-field="<?php echo $key ?>-width" class="widget-<?php echo $key ?>-width" type="number" min="0" max="100" step="1" value="" /> px
-                  <input dialog-field="<?php echo $key ?>-color" class="widget-<?php echo $key ?>-color" type="text" data-style-field-type="color" />
-                <?php
-                break;
-            case 'number' :
-                ?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="number" min="<?php esc_attr_e( $field['min'] ) ?>" max="<?php esc_attr_e( $field['max'] ) ?>" step="<?php esc_attr_e( $field['step'] ) ?>" value="" /> <?php esc_html_e( $field['unit'] ) ?>
-                <?php
-                break;
-            case 'checkbox':
-                ?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="checkbox" value="<?php esc_attr_e( $field['value'] ) ?>" data-style-field-type="checkbox" />
-                <?php
-            default :
-                break;
-        }
+		switch( $field['type'] ) {
+			case 'color' :
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text" data-style-field-type="color"/>
+				<?php
+				break;
+			case 'border' :
+				?><input dialog-field="<?php echo $key ?>-width" class="widget-<?php echo $key ?>-width" type="number" min="0" max="100" step="1" value="" /> px
+				  <input dialog-field="<?php echo $key ?>-color" class="widget-<?php echo $key ?>-color" type="text" data-style-field-type="color" />
+				<?php
+				break;
+			case 'number' :
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="number" min="<?php esc_attr_e( $field['min'] ) ?>" max="<?php esc_attr_e( $field['max'] ) ?>" step="<?php esc_attr_e( $field['step'] ) ?>" value="" /> <?php esc_html_e( $field['unit'] ) ?>
+				<?php
+				break;
+			case 'checkbox':
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="checkbox" value="<?php esc_attr_e( $field['value'] ) ?>" data-style-field-type="checkbox" />
+				<?php
+			default :
+				break;
+		}
 
-        echo "</span>";
-        echo '</div>';
-    }
+		echo "</span>";
+		echo '</div>';
+	}
 }
 
 
