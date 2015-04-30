@@ -10,6 +10,7 @@
  * Licensed under MIT or GPLv3, see LICENSE
  */
 
+include 'lessc-helper.php';
 
 /**
  * The less compiler and parser.
@@ -2043,7 +2044,6 @@ class lessc_parser {
 		'=' => 0,
 		'<' => 0,
 		'>' => 0,
-
 		'+' => 1,
 		'-' => 1,
 		'*' => 2,
@@ -2102,6 +2102,9 @@ class lessc_parser {
 
 			self::$commentMulti = $commentMultiLeft.'.*?'.$commentMultiRight;
 			self::$whitePattern = '/'.$commentSingle.'[^\n]*\s*|( '.self::$commentMulti.' )\s*|\s+/Ais';
+
+			$this->helper = new lessc_helper( $this );
+
 		}
 	}
 
@@ -2124,7 +2127,7 @@ class lessc_parser {
 
 		// parse the entire file
 		$lastCount = $this->count;
-		while ( false !== $this->parseChunk() );
+		while ( false !== $this->helper->parseChunk() );
 
 		if ( $this->count != strlen( $this->buffer ) )
 			$this->throwError();
@@ -2134,190 +2137,6 @@ class lessc_parser {
 			throw new exception( 'parse error: unclosed block' );
 
 		return $this->env;
-	}
-
-	/**
-	 * Parse a single chunk off the head of the buffer and append it to the
-	 * current parse environment.
-	 * Returns false when the buffer is empty, or when there is an error.
-	 *
-	 * This function is called repeatedly until the entire document is
-	 * parsed.
-	 *
-	 * This parser is most similar to a recursive descent parser. Single
-	 * functions represent discrete grammatical rules for the language, and
-	 * they are able to capture the text that represents those rules.
-	 *
-	 * Consider the function lessc::keyword(). ( all parse functions are
-	 * structured the same )
-	 *
-	 * The function takes a single reference argument. When calling the
-	 * function it will attempt to match a keyword on the head of the buffer.
-	 * If it is successful, it will place the keyword in the referenced
-	 * argument, advance the position in the buffer, and return true. If it
-	 * fails then it won't advance the buffer and it will return false.
-	 *
-	 * All of these parse functions are powered by lessc::match(), which behaves
-	 * the same way, but takes a literal regular expression. Sometimes it is
-	 * more convenient to use match instead of creating a new function.
-	 *
-	 * Because of the format of the functions, to parse an entire string of
-	 * grammatical rules, you can chain them together using &&.
-	 *
-	 * But, if some of the rules in the chain succeed before one fails, then
-	 * the buffer position will be left at an invalid state. In order to
-	 * avoid this, lessc::seek() is used to remember and set buffer positions.
-	 *
-	 * Before parsing a chain, use $s = $this->seek() to remember the current
-	 * position into $s. Then if a chain fails, use $this->seek( $s ) to
-	 * go back where we started.
-	 */
-	protected function parseChunk() {
-		if ( empty( $this->buffer ) ) return false;
-		$s = $this->seek();
-
-		// setting a property
-		if ( $this->keyword( $key ) && $this->assign() &&
-			$this->propertyValue( $value, $key ) && $this->end() )
-		{
-			$this->append( array( 'assign', $key, $value ), $s );
-			return true;
-		} else {
-			$this->seek( $s );
-		}
-
-
-		// look for special css blocks
-		if ( $this->literal( '@', false ) ) {
-			$this->count--;
-
-			// media
-			if ( $this->literal( '@media' ) ) {
-				if ( ( $this->mediaQueryList( $mediaQueries ) || true )
-					&& $this->literal( '{' ) )
-				{
-					$media = $this->pushSpecialBlock( "media" );
-					$media->queries = is_null( $mediaQueries ) ? array() : $mediaQueries;
-					return true;
-				} else {
-					$this->seek( $s );
-					return false;
-				}
-			}
-
-			if ( $this->literal( "@", false ) && $this->keyword( $dirName ) ) {
-				if ( $this->isDirective( $dirName, $this->blockDirectives ) ) {
-					if ( ( $this->openString( "{", $dirValue, null, array( ";" ) ) || true ) &&
-						$this->literal( "{" ) )
-					{
-						$dir = $this->pushSpecialBlock( "directive" );
-						$dir->name = $dirName;
-						if ( isset( $dirValue ) ) $dir->value = $dirValue;
-						return true;
-					}
-				} elseif ( $this->isDirective( $dirName, $this->lineDirectives ) ) {
-					if ( $this->propertyValue( $dirValue ) && $this->end() ) {
-						$this->append( array( "directive", $dirName, $dirValue ) );
-						return true;
-					}
-				}
-			}
-
-			$this->seek( $s );
-		}
-
-		// setting a variable
-		if ( $this->variable( $var ) && $this->assign() &&
-			$this->propertyValue( $value ) && $this->end() )
-		{
-			$this->append( array( 'assign', $var, $value ), $s );
-			return true;
-		} else {
-			$this->seek( $s );
-		}
-
-		if ( $this->import( $importValue ) ) {
-			$this->append( $importValue, $s );
-			return true;
-		}
-
-		// opening parametric mixin
-		if ( $this->tag( $tag, true ) && $this->argumentDef( $args, $isVararg ) &&
-			( $this->guards( $guards ) || true ) &&
-			$this->literal( '{' ) )
-		{
-			$block = $this->pushBlock( $this->fixTags( array( $tag ) ) );
-			$block->args = $args;
-			$block->isVararg = $isVararg;
-			if ( ! empty( $guards ) ) $block->guards = $guards;
-			return true;
-		} else {
-			$this->seek( $s );
-		}
-
-		// opening a simple block
-		if ( $this->tags( $tags ) && $this->literal( '{' ) ) {
-			$tags = $this->fixTags( $tags );
-			$this->pushBlock( $tags );
-			return true;
-		} else {
-			$this->seek( $s );
-		}
-
-		// closing a block
-		if ( $this->literal( '}', false ) ) {
-			try {
-				$block = $this->pop();
-			} catch ( exception $e ) {
-				$this->seek( $s );
-				$this->throwError( $e->getMessage() );
-			}
-
-			$hidden = false;
-			if ( is_null( $block->type ) ) {
-				$hidden = true;
-				if ( ! isset( $block->args ) ) {
-					foreach ( $block->tags as $tag ) {
-						if ( ! is_string( $tag ) || $tag{0} != $this->lessc->mPrefix ) {
-							$hidden = false;
-							break;
-						}
-					}
-				}
-
-				foreach ( $block->tags as $tag ) {
-					if ( is_string( $tag ) ) {
-						$this->env->children[$tag][] = $block;
-					}
-				}
-			}
-
-			if ( ! $hidden ) {
-				$this->append( array( 'block', $block ), $s );
-			}
-
-			// this is done here so comments aren't bundled into he block that
-			// was just closed
-			$this->whitespace();
-			return true;
-		}
-
-		// mixin
-		if ( $this->mixinTags( $tags ) &&
-			( $this->argumentValues( $argv ) || true ) &&
-			( $this->keyword( $suffix ) || true ) && $this->end() )
-		{
-			$tags = $this->fixTags( $tags );
-			$this->append( array( 'mixin', $tags, $argv, $suffix ), $s );
-			return true;
-		} else {
-			$this->seek( $s );
-		}
-
-		// spare ;
-		if ( $this->literal( ';' ) ) return true;
-
-		return false; // got nothing, throw error
 	}
 
 	protected function isDirective( $dirname, $directives ) {
