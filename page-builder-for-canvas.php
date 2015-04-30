@@ -41,6 +41,7 @@ include plugin_dir_path( __FILE__ ) . 'inc/notice.php';
 include plugin_dir_path( __FILE__ ) . 'inc/vantage-extra.php';
 include plugin_dir_path( __FILE__ ) . 'inc/class-pootlepress-updater.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/class-pootlepage-font-utility.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-pootlepage-output.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/class-pootlepage-customizer.php';
 
 if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) include plugin_dir_path( __FILE__ ).'inc/debug.php';
