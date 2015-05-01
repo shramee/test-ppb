@@ -246,6 +246,7 @@ class PP_PB_WF_Fields {
 	 * @return  void
 	 */
 	public function validate_fields ( $data, $section = '' ) {
+
 		if ( ! is_array( $data ) || 0 >= count( $data ) ) return new WP_Error( 'bad_field_data', __( 'The provided field data is invalid and cannot be validated.', 'woothemes' ) );
 
 		$sections_to_scan = array();
@@ -729,26 +730,9 @@ class PP_PB_WF_Fields {
 			'color' => get_option( $key . '_color', '' )
 			 );
 
-		if ( 0 < count( $defaults ) && isset( $args['std'] ) && is_array( $args['std'] ) ) {
-			foreach ( $defaults as $k => $v ) {
-				if ( '' == $v && isset( $args['std'][$k] ) ) {
-					$defaults[$k] = $args['std'][$k];
-				}
-			}
-		}
-
-		// Make sure we place our default values in if the key is empty. wp_parse_args() didn't seem to work for this.
-		foreach ( $defaults as $k => $v ) {
-			if ( ! isset( $value[$k] ) ) {
-				$value[$k] = $defaults[$k];
-			} else {
-				if ( '' == $value[$k] ) {
-					$value[$k] = $defaults[$k];
-				}
-			}
-		}
-
+		$defaults = wp_parse_args( $args['std'], $defaults );
 		$value = $this->get_value( $key, $defaults );
+		$value = wp_parse_args( $value, $defaults );
 
 		return $this->helper->render_field_typography( $key, $value );
 
