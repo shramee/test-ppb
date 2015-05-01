@@ -1179,8 +1179,6 @@ class PP_PB_WF_Fields {
 
 		$current_section = '';
 		foreach ( $data as $k => $v ) {
-			$field_counter = 0;
-			$field_counter++;
 
 			if ( in_array( $v['type'], array( 'heading', 'subheading' ) ) ) {
 				$current_section = $this->_generate_section_token( $v['name'] );
@@ -1194,69 +1192,17 @@ class PP_PB_WF_Fields {
 
 			// Process fields with an array as the type.
 			if ( is_array( $v['type'] ) ) {
-				foreach ( $v['type'] as $i => $j ) {
-					$v['multi_fields'] = $v['type'];
-				}
-				foreach ( $v['multi_fields'] as $i => $j ) {
-					unset( $v['multi_fields'][$i] );
-					// Change "meta" to "name".
-					if ( isset( $j['meta'] ) ) {
-						$j['name'] = $j['meta'];
-						unset( $j['meta'] );
-					}
-					$v['multi_fields'][$j['id']] = $j;
-				}
-				$v['type'] = 'multi_field';
+				$this->init_fields_type_array( $v );
 			}
 
 			// Add the field to the fields property.
 			$v['section'] = $current_section;
 
-			$key = '';
-			if ( isset( $v['id'] ) ) {
-				$key = $v['id'];
-			} else {
-				if ( isset( $v['name'] ) ) {
-					$key = sanitize_title_with_dashes( $v['name'] );
-				}
-			}
-
-			// Make sure we always have a key.
-			if ( '' == $key ) {
-				$key = 'field-' . $field_counter;
-			}
-
-			// Avoid duplicate keys by creating an adjusted key.
-			if ( isset( $this->_fields[$key] ) ) {
-				$counter = 0;
-				$new_key = '';
-
-				do {
-					$counter++;
-					$new_key = $key . '-' . $counter;
-				} while ( isset( $this->_fields[$key . '-' . $counter] ) );
-
-				$key = $new_key;
-			}
+			$key = $this->init_fields_get_key( $v );
 
 			// Cater for slider fields and create the necessary options, if none are present.
 			if ( 'slider' == $v['type'] && ! isset( $v['options'] ) ) {
-				if ( isset( $v['min'] ) && isset( $v['max'] ) ) {
-					$increment = 1;
-					$min = intval( $v['min'] );
-					$max = intval( $v['max'] );
-					if ( isset( $v['increment'] ) ) {
-						$increment = intval( $v['increment'] );
-					}
-
-					if ( $max > $min ) {
-						$options = array();
-						for ( $i = $min; $i <= $max; $i+=$increment ) {
-							$options[$i] = $i;
-						}
-						$v['options'] = $options;
-					}
-				}
+				$this->init_fields_check_slider( $v );
 			}
 
 			$this->_fields[$key] = $v;
@@ -1264,6 +1210,80 @@ class PP_PB_WF_Fields {
 
 		return $this->_fields;
 	} // End init_fields()
+
+	/**
+	 * Checks if the type of $v[type] is an array
+	 * @param array $v Field data
+	 */
+	public function init_fields_type_array( &$v ){
+
+		foreach ( $v['type'] as $i => $j ) {
+			$v['multi_fields'] = $v['type'];
+		}
+		foreach ( $v['multi_fields'] as $i => $j ) {
+			unset( $v['multi_fields'][$i] );
+			// Change "meta" to "name".
+			if ( isset( $j['meta'] ) ) {
+				$j['name'] = $j['meta'];
+				unset( $j['meta'] );
+			}
+			$v['multi_fields'][$j['id']] = $j;
+		}
+		$v['type'] = 'multi_field';
+	}
+
+	/**
+	 * Gets the key for _fields array
+	 * @param array $v Field data
+	 */
+	public function init_fields_get_key( &$v ){
+
+		$key = '';
+		if ( isset( $v['id'] ) ) {
+			$key = $v['id'];
+		} else {
+			if ( isset( $v['name'] ) ) {
+				$key = sanitize_title_with_dashes( $v['name'] );
+			}
+		}
+
+		if ( ! empty( $key ) ){
+			return $key;
+		}
+
+		// Avoid duplicate keys by creating an adjusted key.
+		for ( $i=1; $i < 99; $i++ ){
+			$key = "field-{$i}";
+			if( ! isset( $this->_fields[$key] ) ){
+				break;
+			}
+		}
+		return $key;
+	}
+
+	/**
+	 * Checks if the field type is slider
+	 * Then sets the options for it
+	 * @param array $v Field data
+	 */
+	public function init_fields_check_slider( &$v ){
+
+		if ( isset( $v['min'] ) && isset( $v['max'] ) ) {
+			$increment = 1;
+			$min = intval( $v['min'] );
+			$max = intval( $v['max'] );
+			if ( isset( $v['increment'] ) ) {
+				$increment = intval( $v['increment'] );
+			}
+			if ( $max > $min ) {
+				$options = array();
+				for ( $i = $min; $i <= $max; $i+=$increment ) {
+					$options[$i] = $i;
+				}
+					$v['options'] = $options;
+			}
+		}
+	}
 
 	/**
 	 * Generate a section token based on a specified key.
