@@ -183,24 +183,23 @@ class PP_PB_WF_Fields_Helper {
 	 * @return array Sections to scan
 	 */
 	public function prepare_sections( $section, $sections ){
-		$sections_to_scan = array();
-		// No section has been applied. Assume it's the first.
 
-		if ( '' == $section && 'all_fields' != $section ) {
-			$all_sections = $sections;
-			if ( is_array( $all_sections ) && 0 < count( $all_sections ) ) {
-				foreach ( $all_sections as $k => $v ) {
-					$section = $k;
-					break;
-				}
+		$sections_to_scan = array();
+
+		// No section has been applied. Assume it's the first.
+		if ( is_array( $sections ) && '' == $section && 0 < count( $sections ) ) {
+			foreach ( $sections as $k => $v ) {
+				$section = $k;
+				break;
 			}
 		}
 
 		// Store the current top section.
 		$sections_to_scan[] = $section;
+
 		// Check if we have sub-sections.
-		if ( isset( $sections[$section]['children'] ) && 0 < count( (array)$sections[ $section ]['children'] ) ) {
-			foreach ( $sections[$section]['children'] as $k => $v ) {
+		if ( isset( $sections[ $section ]['children'] ) && 0 < count( (array)$sections[ $section ]['children'] ) ) {
+			foreach ( $sections[ $section ]['children'] as $k => $v ) {
 				$sections_to_scan[] = $v['token'];
 			}
 		}
