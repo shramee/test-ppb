@@ -284,9 +284,7 @@ class PP_PB_WF_Fields {
 		if ( 0 >= count( $this->_sections ) ) return;
 		$html = '';
 		$current_section = '';
-//		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) {
-//			$current_section = sanitize_title_with_dashes( $_GET['tab'] );
-//		} else {
+
 			// Grab the key for the first section, using a short loop.
 			if ( 0 < count( $this->_sections ) ) {
 				foreach ( $this->_sections as $k => $v ) {
@@ -1059,42 +1057,35 @@ class PP_PB_WF_Fields {
 	 */
 	public function enqueue_scripts () {
 		wp_register_script( $this->_token . '-upload', esc_url( $this->_assets_url . 'js/uploaders.js' ), array( 'jquery' ) );
-		wp_register_script( $this->_token . '-datepicker', esc_url( $this->_assets_url . 'js/datepickers.js' ), array( 'jquery', 'jquery-ui-datepicker' ) );
+		wp_register_script( $this->_token . '-calendar', esc_url( $this->_assets_url . 'js/datepickers.js' ), array( 'jquery', 'jquery-ui-datepicker' ) );
 		wp_register_script( $this->_token . '-colourpicker', esc_url( $this->_assets_url . 'js/colourpickers.js' ), array( 'jquery', 'wp-color-picker' ) );
 		wp_register_script( $this->_token . '-typography', esc_url( $this->_assets_url . 'js/typography.js' ), array( 'jquery' ) );
 
 		wp_register_script( 'jquery-masked-input', esc_url( $this->_assets_url . 'js/lib/jquery-masked-input.js' ), array( 'jquery' ) );
-		wp_register_script( $this->_token . '-masked-input', esc_url( $this->_assets_url . 'js/masked-inputs.js' ), array( 'jquery', 'jquery-masked-input' ) );
+		wp_register_script( $this->_token . '-masked_input', esc_url( $this->_assets_url . 'js/masked-inputs.js' ), array( 'jquery', 'jquery-masked-input' ) );
 
 		wp_register_script( $this->_token . '-chosen', esc_url( $this->_assets_url . 'js/lib/jquery-chosen.js' ), array( 'jquery' ) );
-		wp_register_script( $this->_token . '-chosen-loader', esc_url( $this->_assets_url . 'js/chosen-selectors.js' ), array( 'jquery', $this->_token . '-chosen' ) );
+		wp_register_script( $this->_token . '-select', esc_url( $this->_assets_url . 'js/chosen-selectors.js' ), array( 'jquery', $this->_token . '-chosen' ) );
 
-		wp_register_script( $this->_token . '-image-selector', esc_url( $this->_assets_url . 'js/image-selectors.js' ), array( 'jquery' ) );
-		wp_register_script( $this->_token . '-range-selector', esc_url( $this->_assets_url . 'js/range-selectors.js' ), array( 'jquery' ) );
+		wp_register_script( $this->_token . '-imageselector', esc_url( $this->_assets_url . 'js/image-selectors.js' ), array( 'jquery' ) );
+		wp_register_script( $this->_token . '-range', esc_url( $this->_assets_url . 'js/range-selectors.js' ), array( 'jquery' ) );
 
-		if ( $this->_has_upload ) {
-			wp_enqueue_script( $this->_token . '-upload' );
-		}
-		if ( $this->_has_colourpicker ) {
-			wp_enqueue_script( $this->_token . '-colourpicker' );
-		}
-		if ( $this->_has_typography ) {
-			wp_enqueue_script( $this->_token . '-typography' );
-		}
-		if ( $this->_has_masked_input ) {
-			wp_enqueue_script( $this->_token . '-masked-input' );
-		}
-		if ( $this->_has_calendar ) {
-			wp_enqueue_script( $this->_token . '-datepicker' );
-		}
-		if ( $this->_has_imageselector ) {
-			wp_enqueue_script( $this->_token . '-image-selector' );
-		}
-		if ( $this->_has_range ) {
-			wp_enqueue_script( $this->_token . '-range-selector' );
-		}
-		if ( $this->_has_select ) {
-			wp_enqueue_script( $this->_token . '-chosen-loader' );
+		$scripts = array(
+			'upload',
+			'colourpicker',
+			'typography',
+			'masked_input',
+			'calendar',
+			'imageselector',
+			'range',
+			'select',
+		);
+
+		foreach ( $scripts as $s ){
+			$property = '_has_' . $s;
+			if ( $this->$property ) {
+				wp_enqueue_script( $this->_token . '-' . $s );
+			}
 		}
 	} // End enqueue_scripts()
 
