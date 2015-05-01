@@ -2156,6 +2156,7 @@ $PootlePageFile = __FILE__;
 add_action( 'after_setup_theme', 'pp_pb_wf_settings' );
 
 function pp_pb_wf_settings( ) {
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-helper.php';
 	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields.php';
 	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-settings.php';
 	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-settings.php';
