@@ -1175,7 +1175,9 @@ class PP_PB_WF_Fields {
 	 * @return  array	   Detected fields.
 	 */
 	public function init_fields ( $data ) {
-		if ( 0 >= count( $data ) ) return new WP_Error( 'bad_settings_data', __( 'The settings data provided is malformed. Please try again.', 'woothemes' ) );
+		if ( 0 >= count( $data ) ){
+			return new WP_Error( 'bad_settings_data', __( 'The settings data provided is malformed. Please try again.', 'woothemes' ) );
+		}
 
 		$current_section = '';
 		foreach ( $data as $k => $v ) {
@@ -1185,27 +1187,10 @@ class PP_PB_WF_Fields {
 				continue; // Ignore headings and sub-headings.
 			}
 
-			// Cater for the "std" field in "info" field types. We prefer to use "desc" as it is more logical.
-			if ( 'info' == $v['type'] && '' == $v['desc'] ) {
-				$v['desc'] = $v['std'];
-			}
+			//Process field data
+			$this->init_fields_process_field_data( $v, $current_section );
 
-			// Process fields with an array as the type.
-			if ( is_array( $v['type'] ) ) {
-				$this->init_fields_type_array( $v );
-			}
-
-			// Add the field to the fields property.
-			$v['section'] = $current_section;
-
-			$key = $this->init_fields_get_key( $v );
-
-			// Cater for slider fields and create the necessary options, if none are present.
-			if ( 'slider' == $v['type'] && ! isset( $v['options'] ) ) {
-				$this->init_fields_check_slider( $v );
-			}
-
-			$this->_fields[$key] = $v;
+			$this->_fields[ $this->get_key( $v ) ] = $v;
 		}
 
 		return $this->_fields;
@@ -1233,10 +1218,39 @@ class PP_PB_WF_Fields {
 	}
 
 	/**
+	 * Processes the field data before storing storing in $this->_fields
+	 *
+	 * @param array $v Field data
+	 * @param string $section
+	 */
+	public function init_fields_process_field_data( &$v, $section ){
+
+		// Cater for the "std" field in "info" field types. We prefer to use "desc" as it is more logical.
+		if ( 'info' == $v['type'] && '' == $v['desc'] ) {
+			$v['desc'] = $v['std'];
+		}
+
+		// Process fields with an array as the type.
+		if ( is_array( $v['type'] ) ) {
+			$this->init_fields_type_array( $v );
+		}
+
+		// Add the field to the fields property.
+		$v['section'] = $section;
+
+		// Cater for slider fields and create the necessary options, if none are present.
+		if ( 'slider' == $v['type'] && ! isset( $v['options'] ) ) {
+			$this->init_fields_check_slider( $v );
+		}
+
+	}
+
+	/**
 	 * Gets the key for _fields array
 	 * @param array $v Field data
+	 * @return string Key for the field
 	 */
-	public function init_fields_get_key( &$v ){
+	public function get_key( &$v ){
 
 		$key = '';
 		if ( isset( $v['id'] ) ) {
