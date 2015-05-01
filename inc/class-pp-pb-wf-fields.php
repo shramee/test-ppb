@@ -172,7 +172,7 @@ class PP_PB_WF_Fields {
 	 * Prepare the given data to be validated.
 	 * @access  public
 	 * @since   6.0.0
-	 * @return  void
+	 * @return  array
 	 */
 	public function prepare_data_for_validation ( $data ) {
 		$fields = $this->_fields;
@@ -249,54 +249,10 @@ class PP_PB_WF_Fields {
 
 		if ( ! is_array( $data ) || 0 >= count( $data ) ) return new WP_Error( 'bad_field_data', __( 'The provided field data is invalid and cannot be validated.', 'woothemes' ) );
 
-		$sections_to_scan = array();
+		$sections_to_scan = $this->helper->prepare_sections( $section, $this->_sections );
 
-		// No section has been applied. Assume it's the first.
-		if ( '' == $section && 'all_fields' != $section ) {
-			$all_sections = $this->_sections;
-			if ( is_array( $all_sections ) && 0 < count( $all_sections ) ) {
-				foreach ( $all_sections as $k => $v ) {
-					$section = $k;
-					break;
-				}
-			}
-		}
-
-		// Store the current top section.
-		$sections_to_scan[] = $section;
-		// Check if we have sub-sections.
-		if ( isset( $this->_sections[$section]['children'] ) && 0 < count( ( array )$this->_sections[$section]['children'] ) ) {
-			foreach ( $this->_sections[$section]['children'] as $k => $v ) {
-				$sections_to_scan[] = $v['token'];
-			}
-		}
-
-		// Retrieve all fields in this current screen ( main and sub-sections ).
-		$fields_by_section = array();
-
-		foreach ( $sections_to_scan as $k => $v ) {
-			$field_data = $this->_get_fields_by_section( $v );
-			$fields_by_section = array_merge( $fields_by_section, $field_data );
-		}
-
-		// Make sure checkboxes are taken care of.
-		// As well as multicheck fields.
-		if ( 0 < count( $fields_by_section ) ) {
-			foreach ( $fields_by_section as $k => $v ) {
-				if ( ! in_array( $v['type'], array( 'checkbox', 'multicheck', 'multicheck2' ) ) ) {
-					unset( $fields_by_section[$k] );
-				}
-			}
-		}
-
-		// If we have fields left, merge them in.
-		if ( 0 < count( $fields_by_section ) ) {
-			foreach ( $fields_by_section as $k => $v ) {
-				if ( ! isset( $data[$k] ) ) {
-					$data[$k] = '';
-				}
-			}
-		}
+		/** Filters $data */
+		$this->helper->validate_fields_filter_data( $data, $sections_to_scan );
 
 		$data = $this->prepare_data_for_validation( $data );
 
@@ -309,244 +265,14 @@ class PP_PB_WF_Fields {
 			foreach ( $data as $k => $v ) {
 				if ( ! isset( $fields[$k] ) ) continue;
 
-				// Determine if a method is available for validating this field.
-				$method = 'validate_field_' . $fields[$k]['type'];
-				if ( ! method_exists( $this, $method ) ) {
-					if ( true == ( bool )apply_filters( 'wf_validate_field_' . $fields[$k]['type'] . '_use_default', true ) ) {
-						$method = 'validate_field_text';
-					} else {
-						$method = '';
-					}
-				}
+				//Validating this field
+				$this->helper->validate_field( $data, $fields, $k, $v );
 
-				// If we have an internal method for validation, filter and apply it.
-				if ( '' != $method ) {
-					add_filter( 'wf_validate_field_' . $fields[$k]['type'], array( $this, $method ), 10, 2 );
-				}
-
-				$method_output = apply_filters( 'wf_validate_field_' . $fields[$k]['type'], $v, $fields[$k] );
-				// $method_output = apply_filters( 'wf_validate_field_' . $k, $v, $fields[$k] );
-
-				if ( is_wp_error( $method_output ) ) {
-					// if ( defined( 'WP_DEBUG' ) || true == constant( 'WP_DEBUG' ) ) print_r( $method_output ); // Add better error display.
-				} else {
-					$data[$k] = $method_output;
-				}
 			}
 		}
 
 		return $data;
 	} // End validate_fields()
-
-	/**
-	 * Validate the given data, assuming it is from a text input field.
-	 * @access  public
-	 * @since   6.0.0
-	 * @return  void
-	 */
-	public function validate_field_text ( $v ) {
-		return ( string )wp_kses_post( $v );
-	} // End validate_field_text()
-
-	/**
-	 * Validate the given data, assuming it is from a textarea field.
-	 * @access  public
-	 * @since   6.0.0
-	 * @return  void
-	 */
-	public function validate_field_textarea ( $v, $k ) {
-		// Allow iframe, object and embed tags in textarea fields.
-		$allowed = wp_kses_allowed_html( 'post' );
-		$allowed['iframe'] = array( 'src' => true, 'width' => true, 'height' => true, 'id' => true, 'class' => true, 'name' => true );
-		$allowed['object'] = array( 'src' => true, 'width' => true, 'height' => true, 'id' => true, 'class' => true, 'name' => true );
-		$allowed['embed'] = array( 'src' => true, 'width' => true, 'height' => true, 'id' => true, 'class' => true, 'name' => true );
-
-		return wp_kses( $v, $allowed );
-	} // End validate_field_textarea()
-
-	/**
-	 * Validate the given data, assuming it is from a checkbox input field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_checkbox ( $v ) {
-		if ( 'true' != $v ) {
-			return 'false';
-		} else {
-			return 'true';
-		}
-	} // End validate_field_checkbox()
-
-	/**
-	 * Validate the given data, assuming it is from a multicheck field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_multicheck ( $v ) {
-		$v = ( array ) $v;
-
-		$v = array_map( 'esc_attr', $v );
-
-		return $v;
-	} // End validate_field_multicheck()
-
-	/**
-	 * Validate the given data, assuming it is from a multicheck2 field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_multicheck2 ( $v ) {
-		$v = ( array ) $v;
-
-		$v = array_map( 'esc_attr', $v );
-
-		return $v;
-	} // End validate_field_multicheck2()
-
-	/**
-	 * Validate the given data, assuming it is from a slider field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_slider ( $v ) {
-		$v = floatval( $v );
-
-		return $v;
-	} // End validate_field_slider()
-
-	/**
-	 * Validate the given data, assuming it is from a URL field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_url ( $v ) {
-		return trim( esc_url( $v ) );
-	} // End validate_field_url()
-
-	/**
-	 * Validate the given data, assuming it is from a upload field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_upload ( $v ) {
-		return trim( esc_url( $v ) );
-	} // End validate_field_upload()
-
-	/**
-	 * Validate the given data, assuming it is from a upload_min field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_upload_min ( $v ) {
-		return trim( esc_url( $v ) );
-	} // End validate_field_upload()
-
-	/**
-	 * Validate the given data, assuming it is from a upload_field_id field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_upload_field_id ( $v ) {
-		return intval( $v );
-	} // End validate_field_upload_field_id()
-
-	/**
-	 * Validate the given data, assuming it is from a typography field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_typography ( $v ) {
-		$defaults = array( 'size' => '', 'unit' => '', 'face' => '', 'style' => '', 'color' => '' );
-		$v = wp_parse_args( $v, $defaults );
-
-		if ( isset( $v['size_' . $v['unit']] ) ) {
-			$v['size'] = $v['size_' . $v['unit']];
-		}
-
-		foreach ( $v as $i => $j ) {
-			if ( ! in_array( $i, array_keys( $defaults ) ) ) {
-				unset( $v[$i] );
-			}
-		}
-
-		$v = array_map( 'strip_tags', $v );
-		$v = array_map( 'stripslashes', $v );
-
-		return $v;
-	} // End validate_field_typography()
-
-	/**
-	 * Validate the given data, assuming it is from a border field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_border ( $v ) {
-		$defaults = array( 'width' => '', 'style' => '', 'color' => '' );
-		$v = wp_parse_args( $v, $defaults );
-
-		foreach ( $v as $i => $j ) {
-			if ( ! in_array( $i, array_keys( $defaults ) ) ) {
-				unset( $v[$i] );
-			}
-		}
-
-		$v = array_map( 'esc_html', $v );
-
-		return $v;
-	} // End validate_field_border()
-
-	/**
-	 * Validate the given data, assuming it is from a timestamp field.
-	 * @access public
-	 * @since  6.0.0
-	 * @param  string $v
-	 * @return string
-	 */
-	public function validate_field_timestamp ( $v ) {
-		$defaults = array( 'date' => '', 'hour' => '', 'minute' => '' );
-		$v = wp_parse_args( $v, $defaults );
-
-		foreach ( $v as $i => $j ) {
-			if ( ! in_array( $i, array_keys( $defaults ) ) ) {
-				unset( $v[$i] );
-			}
-		}
-
-		$date = $v['date'];
-
-		$hour = $v['hour'];
-		$minute = $v['minute'];
-		// $second = $output[$option_array['id']]['second'];
-		$second = '00';
-
-		$day = substr( $date, 3, 2 );
-		$month = substr( $date, 0, 2 );
-		$year = substr( $date, 6, 4 );
-
-		$timestamp = mktime( $hour, $minute, $second, $month, $day, $year );
-
-		return esc_attr( $timestamp );
-	} // End validate_field_timestamp()
 
 	/**
 	 * Render the various sections and their corresponding fields.

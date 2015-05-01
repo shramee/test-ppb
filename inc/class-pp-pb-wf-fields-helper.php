@@ -146,4 +146,312 @@ class PP_PB_WF_Fields_Helper {
 		return $response;
 	}
 
+	/**
+	 * Filters $data for PP_PB_WF_Fields::validate_fields()
+	 *
+	 * @param $data
+	 * @param $sections_to_scan
+	 */
+	public function validate_fields_filter_data( &$data, $sections_to_scan ) {
+
+		// Retrieve all fields in this current screen ( main and sub-sections ).
+		$fields_by_section = array();
+
+		foreach ( $sections_to_scan as $k => $v ) {
+			$field_data = $this->_get_fields_by_section( $v );
+			$fields_by_section = array_merge( $fields_by_section, $field_data );
+		}
+
+		// Make sure checkboxes and multicheck fields are taken care of.
+		if ( 0 < count( $fields_by_section ) ) {
+			foreach ( $fields_by_section as $k => $v ) {
+				if ( ! in_array( $v['type'], array( 'checkbox', 'multicheck', 'multicheck2' ) ) ) {
+					unset( $fields_by_section[$k] );
+				}
+				if ( ! isset( $data[$k] ) ) {
+					$data[$k] = '';
+				}
+			}
+		}
+	}
+
+	/**
+	 * Prepares sections to scan for PP_PB_WF_Fields::validate_fields()
+	 *
+	 * @param $section
+	 * @param $sections
+	 * @return array Sections to scan
+	 */
+	public function prepare_sections( $section, $sections ){
+		$sections_to_scan = array();
+		// No section has been applied. Assume it's the first.
+
+		if ( '' == $section && 'all_fields' != $section ) {
+			$all_sections = $sections;
+			if ( is_array( $all_sections ) && 0 < count( $all_sections ) ) {
+				foreach ( $all_sections as $k => $v ) {
+					$section = $k;
+					break;
+				}
+			}
+		}
+
+		// Store the current top section.
+		$sections_to_scan[] = $section;
+		// Check if we have sub-sections.
+		if ( isset( $sections[$section]['children'] ) && 0 < count( (array)$sections[ $section ]['children'] ) ) {
+			foreach ( $sections[$section]['children'] as $k => $v ) {
+				$sections_to_scan[] = $v['token'];
+			}
+		}
+
+		return $sections_to_scan;
+	}
+
+	/**
+	 * Filters $data for PP_PB_WF_Fields::validate_fields()
+	 *
+	 * @param $data
+	 * @param $fields
+	 * @param $data_key
+	 * @param $data_val
+	 */
+	public function validate_field( &$data, $fields, $data_key, $data_val ) {
+
+		// Determine if a method is available for validating this field.
+		$method = 'validate_field_' . $fields[$data_key]['type'];
+		if ( ! method_exists( $this, $method ) ) {
+			if ( true == ( bool )apply_filters( 'wf_validate_field_' . $fields[$data_key]['type'] . '_use_default', true ) ) {
+				$method = 'validate_field_text';
+			} else {
+				$method = '';
+			}
+		}
+
+		// If we have an internal method for validation, filter and apply it.
+		if ( '' != $method ) {
+			add_filter( 'wf_validate_field_' . $fields[$data_key]['type'], array( $this, $method ), 10, 2 );
+		}
+
+		$method_output = apply_filters( 'wf_validate_field_' . $fields[$data_key]['type'], $data_val, $fields[$data_key] );
+
+		if ( ! is_wp_error( $method_output ) ) {
+			$data[$data_key] = $method_output;
+		}
+
+	}
+
+
+
+
+	/**
+	 * Validate the given data, assuming it is from a text input field.
+	 * @access  public
+	 * @since   6.0.0
+	 * @return  void
+	 */
+	public function validate_field_text ( $v ) {
+		return ( string )wp_kses_post( $v );
+	} // End validate_field_text()
+
+	/**
+	 * Validate the given data, assuming it is from a textarea field.
+	 * @access  public
+	 * @since   6.0.0
+	 * @return  void
+	 */
+	public function validate_field_textarea ( $v, $k ) {
+		// Allow iframe, object and embed tags in textarea fields.
+		$allowed = wp_kses_allowed_html( 'post' );
+		$allowed['iframe'] = array( 'src' => true, 'width' => true, 'height' => true, 'id' => true, 'class' => true, 'name' => true );
+		$allowed['object'] = array( 'src' => true, 'width' => true, 'height' => true, 'id' => true, 'class' => true, 'name' => true );
+		$allowed['embed'] = array( 'src' => true, 'width' => true, 'height' => true, 'id' => true, 'class' => true, 'name' => true );
+
+		return wp_kses( $v, $allowed );
+	} // End validate_field_textarea()
+
+	/**
+	 * Validate the given data, assuming it is from a checkbox input field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_checkbox ( $v ) {
+		if ( 'true' != $v ) {
+			return 'false';
+		} else {
+			return 'true';
+		}
+	} // End validate_field_checkbox()
+
+	/**
+	 * Validate the given data, assuming it is from a multicheck field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_multicheck ( $v ) {
+		$v = ( array ) $v;
+
+		$v = array_map( 'esc_attr', $v );
+
+		return $v;
+	} // End validate_field_multicheck()
+
+	/**
+	 * Validate the given data, assuming it is from a multicheck2 field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_multicheck2 ( $v ) {
+		$v = ( array ) $v;
+
+		$v = array_map( 'esc_attr', $v );
+
+		return $v;
+	} // End validate_field_multicheck2()
+
+	/**
+	 * Validate the given data, assuming it is from a slider field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_slider ( $v ) {
+		$v = floatval( $v );
+
+		return $v;
+	} // End validate_field_slider()
+
+	/**
+	 * Validate the given data, assuming it is from a URL field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_url ( $v ) {
+		return trim( esc_url( $v ) );
+	} // End validate_field_url()
+
+	/**
+	 * Validate the given data, assuming it is from a upload field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_upload ( $v ) {
+		return trim( esc_url( $v ) );
+	} // End validate_field_upload()
+
+	/**
+	 * Validate the given data, assuming it is from a upload_min field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_upload_min ( $v ) {
+		return trim( esc_url( $v ) );
+	} // End validate_field_upload()
+
+	/**
+	 * Validate the given data, assuming it is from a upload_field_id field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_upload_field_id ( $v ) {
+		return intval( $v );
+	} // End validate_field_upload_field_id()
+
+	/**
+	 * Validate the given data, assuming it is from a typography field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_typography ( $v ) {
+		$defaults = array( 'size' => '', 'unit' => '', 'face' => '', 'style' => '', 'color' => '' );
+		$v = wp_parse_args( $v, $defaults );
+
+		if ( isset( $v['size_' . $v['unit']] ) ) {
+			$v['size'] = $v['size_' . $v['unit']];
+		}
+
+		foreach ( $v as $i => $j ) {
+			if ( ! in_array( $i, array_keys( $defaults ) ) ) {
+				unset( $v[$i] );
+			}
+		}
+
+		$v = array_map( 'strip_tags', $v );
+		$v = array_map( 'stripslashes', $v );
+
+		return $v;
+	} // End validate_field_typography()
+
+	/**
+	 * Validate the given data, assuming it is from a border field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_border ( $v ) {
+		$defaults = array( 'width' => '', 'style' => '', 'color' => '' );
+		$v = wp_parse_args( $v, $defaults );
+
+		foreach ( $v as $i => $j ) {
+			if ( ! in_array( $i, array_keys( $defaults ) ) ) {
+				unset( $v[$i] );
+			}
+		}
+
+		$v = array_map( 'esc_html', $v );
+
+		return $v;
+	} // End validate_field_border()
+
+	/**
+	 * Validate the given data, assuming it is from a timestamp field.
+	 * @access public
+	 * @since  6.0.0
+	 * @param  string $v
+	 * @return string
+	 */
+	public function validate_field_timestamp ( $v ) {
+		$defaults = array( 'date' => '', 'hour' => '', 'minute' => '' );
+		$v = wp_parse_args( $v, $defaults );
+
+		foreach ( $v as $i => $j ) {
+			if ( ! in_array( $i, array_keys( $defaults ) ) ) {
+				unset( $v[$i] );
+			}
+		}
+
+		$date = $v['date'];
+
+		$hour = $v['hour'];
+		$minute = $v['minute'];
+		// $second = $output[$option_array['id']]['second'];
+		$second = '00';
+
+		$day = substr( $date, 3, 2 );
+		$month = substr( $date, 0, 2 );
+		$year = substr( $date, 6, 4 );
+
+		$timestamp = mktime( $hour, $minute, $second, $month, $day, $year );
+
+		return esc_attr( $timestamp );
+	} // End validate_field_timestamp()
+
 }
