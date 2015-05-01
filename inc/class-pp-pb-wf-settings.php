@@ -96,81 +96,114 @@ class PP_PB_WF_Settings {
 	 */
 	public function settings_screen_logic () {
 		if ( isset( $_REQUEST['tab'] ) && $_REQUEST['tab'] == 'styling' && ! empty( $_POST ) ) {
-			//check_admin_referer( $this->_field_obj->__get( 'token' ) . '_nonce', $this->_field_obj->__get( 'token' ) . '_nonce' )
+
 			$data = $_POST;
-
-			$page = 'page_builder';
-			if ( isset( $data['page'] ) ) {
-				$page = $data['page'];
-				unset( $data['page'] );
-			}
-
-			$tab = '';
-			if ( isset( $data['tab'] ) ) {
-				$tab = $data['tab'];
-				unset( $data['tab'] );
-			}
 
 			$data = $this->_field_obj->validate_fields( $data, 'page-builder' );
 
 			do_action_ref_array( 'wf_settings_save_before', $data, $this );
 
-			$options_collection = ( array )get_option( 'woo_options', array() );
-
-			$update_tracker = array();
-
-			if ( 0 < count( $data ) ) {
-				foreach ( $data as $k => $v ) {
-					// Skip over the theme option if it's one of a selection of fields allowing unfiltered HTML, and the user can't edit it.
-					if ( ! current_user_can( 'unfiltered_html' ) && in_array( $k, woo_disabled_if_not_unfiltered_html_option_keys() ) ) {
-						continue;
-					}
-
-					// Handle the saving of the setting.
-					if ( true == apply_filters( 'wf_use_theme_mods', false ) ) {
-						$update_tracker[$k] = set_theme_mod( esc_attr( $k ), $v );
-					} else {
-						$update_tracker[$k] = update_option( esc_attr( $k ), $v );
-					}
-
-					// Update the options collection, in case any products still use it.
-					$options_collection[$k] = $v;
-				}
-
-				// Update the options collection in the database.
-				update_option( 'woo_options', $options_collection );
-			}
+			//Save WooFramework Settings
+			$update_tracker = $this->update_woo_options( $data );
 
 			do_action_ref_array( 'wf_settings_save_after', $data, $this );
 
 			// Store the status of the updates, so we can report back.
 			set_transient( $this->_field_obj->__get( 'token' ) . 'update_tracker', $update_tracker, 5 );
 
-			$update_status = true;
-			if ( 0 < count( $update_tracker ) ) {
-				foreach ( $update_tracker as $k => $v ) {
-					if ( false === $v ) {
-						$update_status = false;
-						break;
-					}
-				}
-			}
-
 			// Redirect on settings save, and exit.
-			$url = add_query_arg( 'page', $page );
-			if ( '' != $tab ) {
-				$url = add_query_arg( 'tab', $tab, $url );
-			}
-			$url = add_query_arg( 'updated', 'true', $url );
-
-			/*if ( false === $update_status ) {
-				$url = add_query_arg( 'some_didnt_update', 'true', $url );
-			}*/
-
-			wp_safe_redirect( $url );
+			$this->redirect_after_saved();
 			exit;
 		}
 	} // End settings_screen_logic()
+
+	/**
+	 * Saves woo_options
+	 *
+	 * @param array $data
+	 * @return array $update_tracker
+	 */
+	public function update_woo_options( $data ){
+
+		$options_collection = get_option( 'woo_options', array() );
+		$update_tracker = array();
+		if ( ! empty( $data ) ) {
+			foreach ( $data as $k => $v ) {
+				// Skip over the theme option if it's one of a selection of fields allowing unfiltered HTML, and the user can't edit it.
+				if (
+					! current_user_can( 'unfiltered_html' )
+					&&
+					in_array( $k, woo_disabled_if_not_unfiltered_html_option_keys() )
+				) { continue; }
+
+				$this->woo_options_from_data( $options_collection, $update_tracker, $k, $v );
+			}
+
+			// Update the options collection in the database.
+			update_option( 'woo_options', $options_collection );
+		}
+		return $update_tracker;
+	}
+
+	/**
+	 * Gets woo_options from data
+	 *
+	 * @param array $options_collection
+	 * @param array $update_tracker
+	 * @param string $k Key in loop
+	 * @param string $v Value in loop
+	 */
+	public function woo_options_from_data( &$options_collection, &$update_tracker, $k, $v ){
+		// Handle the saving of the setting.
+		if ( true == apply_filters( 'wf_use_theme_mods', false ) ) {
+			$update_tracker[$k] = set_theme_mod( esc_attr( $k ), $v );
+		} else {
+			$update_tracker[$k] = update_option( esc_attr( $k ), $v );
+		}
+
+		// Update the options collection, in case any products still use it.
+		$options_collection[$k] = $v;
+	}
+
+	/**
+	 * Gets page and tab for settings_screen_logic()
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function get_page_and_tab( $data ){
+
+		$page = 'page_builder';
+		if ( isset( $data['page'] ) ) {
+			$page = $data['page'];
+			unset( $data['page'] );
+		}
+
+		$tab = '';
+		if ( isset( $data['tab'] ) ) {
+			$tab = $data['tab'];
+			unset( $data['tab'] );
+		}
+
+		return array( $page, $tab );
+	}
+
+	/**
+	 * Redirects the page after settings are saved
+	 */
+	public function redirect_after_saved(){
+
+		list( $page, $tab ) = $this->get_page_and_tab( $_POST );
+
+		$url = add_query_arg( 'page', $page );
+		if ( '' != $tab ) {
+			$url = add_query_arg( 'tab', $tab, $url );
+		}
+		$url = add_query_arg( 'updated', 'true', $url );
+
+		wp_safe_redirect( $url );
+
+	}
 
 	/**
 	 * Output markup for the settings screen.
@@ -182,13 +215,10 @@ class PP_PB_WF_Settings {
 		$hidden_fields = array( 'page' => 'page_builder' );
 		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) $hidden_fields['tab'] = sanitize_title_with_dashes( $_GET['tab'] );
 
-//		do_action( 'wf_screen_get_header', 'woothemes', 'themes' );
 		$this->_field_obj->__set( 'has_tabs', true );
 		$this->_field_obj->__set( 'extra_hidden_fields', $hidden_fields );
 		$this->_field_obj->init_tabs();
-//		$this->_field_obj->render_tabs();
 		$this->_field_obj->render();
-//		do_action( 'wf_screen_get_footer', 'woothemes', 'themes' );
 	} // End settings_screen()
 
 	/**
