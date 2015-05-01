@@ -1720,7 +1720,7 @@ class PP_PB_WF_Fields {
 	 * @since   6.0.0
 	 * @return  mixed Returned value.
 	 */
-	public function get_value ( $key, $default ) {
+	public function get_value ( $key, $default='' ) {
 		$response = false;
 
 		if ( true == apply_filters( 'wf_use_theme_mods', false ) ) {

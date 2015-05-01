@@ -34,7 +34,7 @@ function origin_widgets_display_css() {
 	if ( strpos( $_GET[ 'class' ], 'SiteOrigin_Panels_Widget_' ) !== 0 ) return;
 
 	header( "Content-type: text/css" );
-	echo origin_widgets_generate_css( $_GET[ 'class' ], $_GET[ 'style' ], $_GET[ 'preset' ], $_GET[ 'ver' ] );
+	echo origin_widgets_generate_css( filter_input( INPUT_GET, 'class' ), filter_input( INPUT_GET, 'style' ), filter_input( INPUT_GET, 'preset' ), filter_input( INPUT_GET, 'ver' ) );
 	exit();
 }
 add_action( 'init', 'origin_widgets_display_css' );
