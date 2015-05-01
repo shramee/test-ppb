@@ -86,22 +86,10 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 						$test_cases = array();
 					}
 
-					foreach ( $all_fonts as $k => $v ) {
-						$selected = '';
-						// If one of the fonts requires a test case, use that value. Otherwise, use the key as the test case.
-						if ( in_array( $k, array_keys( $test_cases ) ) ) {
-							$value_to_test = $test_cases[$k];
-						} else {
-							$value_to_test = $k;
-						}
-						if ( _test_typeface_against_test_case( $current_value, $value_to_test ) ) $selected = ' selected="selected"';
-						echo '<option value="' . esc_attr( $k ) . '" ' . $selected . '>' . esc_html( $v ) . '</option>' . "\n";
-					}
+					//Font Options for select
+					echo output_font_select_options( $all_fonts, $test_cases, $current_value );
 
 					?>
-					<!--				--><?php //foreach ( $all_fonts as $id => $properties ) : ?>
-					<!--					<option value="--><?php //echo $id; ?><!--" data-font-type="default" --><?php //selected( $current_value, $id ); ?><!-->--><?php //echo $properties['name']; ?><!--</option>-->
-					<!--				--><?php //endforeach; ?>
 				</select>
 			</label>
 		<?php

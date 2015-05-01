@@ -498,7 +498,7 @@ function pootlepage_color_control( $label, $value, $default_color, $link ) {
  * @param   string $test_case The test case. Does the warrior pass the ultimate test and reep eternal glory?
  * @return  bool	   		  Whether or not eternal glory shall be achieved by the warrior.
  */
-function _test_typeface_against_test_case ( $face, $test_case ) {
+function pootlepage_test_typeface_against_test_case ( $face, $test_case ) {
 	$response = false;
 
 	$face = stripslashes( str_replace( '"', '', str_replace( '&quot;', '', $face ) ) );
@@ -510,4 +510,31 @@ function _test_typeface_against_test_case ( $face, $test_case ) {
 	}
 
 	return $response;
+}
+
+/**
+ * Outputs html for options in font face select field
+ *
+ * @param $font_faces
+ * @param $test_cases
+ * @param $value
+ *
+ * @return string
+ */
+function output_font_select_options( $font_faces, $test_cases, $value ){
+
+	$html = '';
+	foreach ( $font_faces as $k => $v ) {
+		$selected = '';
+		// If one of the fonts requires a test case, use that value. Otherwise, use the key as the test case.
+		if ( in_array( $k, array_keys( $test_cases ) ) ) {
+			$value_to_test = $test_cases[$k];
+		} else {
+			$value_to_test = $k;
+		}
+		if ( pootlepage_test_typeface_against_test_case( $value, $value_to_test ) ) $selected = ' selected="selected"';
+		$html .= '<option value="' . esc_attr( $k ) . '" ' . $selected . '>' . esc_html( $v ) . '</option>' . "\n";
+	}
+	return $html;
+
 }

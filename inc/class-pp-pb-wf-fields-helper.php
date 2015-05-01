@@ -131,17 +131,10 @@ class PP_PB_WF_Fields_Helper {
 			$test_cases = wf_get_system_fonts_test_cases();
 
 			$html .= '<select class="woo-typography woo-typography-font-face woo-typography-face" name="'. esc_attr( $key . '[face]' ) . '" id="'. esc_attr( $key . '_face' ) . '">' . "\n";
-			foreach ( $font_faces as $k => $v ) {
-				$selected = '';
-				// If one of the fonts requires a test case, use that value. Otherwise, use the key as the test case.
-				if ( in_array( $k, array_keys( $test_cases ) ) ) {
-					$value_to_test = $test_cases[$k];
-				} else {
-					$value_to_test = $k;
-				}
-				if ( _test_typeface_against_test_case( $value['face'], $value_to_test ) ) $selected = ' selected="selected"';
-				$html .= '<option value="' . esc_attr( $k ) . '" ' . $selected . '>' . esc_html( $v ) . '</option>' . "\n";
-			}
+
+			//Font Options for select
+			$html .= output_font_select_options( $font_faces, $test_cases, $value['face'] );
+
 			$html .= '</select>' . "\n";
 		}
 
@@ -201,7 +194,7 @@ class PP_PB_WF_Fields_Helper {
 		$sections_to_scan[] = $section;
 
 		// Check if we have sub-sections.
-		if ( isset( $sections[ $section ]['children'] ) && 0 < count( (array)$sections[ $section ]['children'] ) ) {
+		if ( ! empty( $sections[ $section ]['children'] ) ) {
 			foreach ( $sections[ $section ]['children'] as $k => $v ) {
 				$sections_to_scan[] = $v['token'];
 			}

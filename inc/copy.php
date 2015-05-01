@@ -67,7 +67,7 @@ function siteorigin_panels_content_save_pre_get() {
 	$content = '';
 	if ( ! empty( $panels_data['widgets'] ) ) {
 		// Save the panels data into post_content for SEO and search plugins
-		$content = siteorigin_panels_render( $_POST['post_id'], false, $panels_data );
+		$content = siteorigin_panels_render( filter_input( INPUT_POST, 'post_id' ), false, $panels_data );
 		$content = preg_replace(
 			array(
 				// Remove invisible content
