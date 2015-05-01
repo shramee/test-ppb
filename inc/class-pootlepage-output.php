@@ -114,59 +114,36 @@ class PootlePage_Output {
 	}
 
 	public function output_css() {
+		?>
+		<style>
+			/* Widget Title CSS */
+			.panel-grid-cell .widget > .widget-title {
+			<?php echo $this->widget_title_css() ?>
+			}
 
-		$output = '';
+			/* Widget CSS */
+			.panel-grid-cell .widget {
+				<?php echo $this->widget_css(); ?>
+			}
+		</style>
+		<?php
+	}
 
-		$widget_css = '';
-
-		$widget_bg = get_option( 'pp_widget_bg_color' );
-
-		if ( $widget_bg ) {
-			$widget_css .= 'background-color:'.$widget_bg.';';
-		} else {
-			$widget_css .= 'background-color: transparent;';
-		}
-
-		$widget_border_width = get_option( 'pp_widget_border_width', 0 );
-		$widget_border_style = get_option( 'pp_widget_border_style', 'solid' );
-		$widget_border_color = get_option( 'pp_widget_border_color', '#dbdbdb' );
-
-		if ( $widget_border_width > 0 ) {
-			$widget_css .= 'border:'.$widget_border_width.'px '.$widget_border_style . ' ' . $widget_border_color . ';';
-		}
-
-		$widget_padding_left_right = get_option( 'pp_widget_padding_left_right', 0 );
-		$widget_padding_top_bottom = get_option( 'pp_widget_padding_top_bottom', 0 );
-
-		if ( ! $widget_padding_left_right ) {
-			$widget_css .= 'padding-left: 0; padding-right: 0;';
-		} else {
-			$widget_css .= 'padding-left: ' . $widget_padding_left_right . 'px ; padding-right: ' . $widget_padding_left_right . 'px;';
-		}
-
-		if ( ! $widget_padding_top_bottom ) {
-			$widget_css .= 'padding-top: 0; padding-bottom: 0;';
-		} else {
-			$widget_css .= 'padding-top: ' . $widget_padding_top_bottom . 'px ; padding-bottom: ' . $widget_padding_top_bottom . 'px;';
-		}
-
-		$widget_text_font = $this->get_font_css_value( 'pp_widget_text' );
-
-		$widget_css .= 'font-family: ' . $widget_text_font['font-family'] .
-			' ! important; font-size: ' . $widget_text_font['font-size'] .
-			' ! important; font-style: ' . $widget_text_font['font-style'] .
-			' ! important; font-weight: ' . $widget_text_font['font-weight'] .
-			' ! important; color: ' . $widget_text_font['color'] . ' ! important; ';
-
+	/**
+	 * Returns the styles for the widget title
+	 *
+	 * @return string $widget_title_css
+	 */
+	public function widget_title_css(){
 
 		$widget_title_font = $this->get_font_css_value( 'pp_widget_title' );
 
 		$widget_title_css = '';
 		$widget_title_css .= 'font-family: ' . $widget_title_font['font-family'] .
-			'; font-size: ' . $widget_title_font['font-size'] .
-			'; font-style: ' . $widget_title_font['font-style'] .
-			'; font-weight: ' . $widget_title_font['font-weight'] .
-			'; color: ' . $widget_title_font['color'] . '; ';
+		                     '; font-size: ' . $widget_title_font['font-size'] .
+		                     '; font-style: ' . $widget_title_font['font-style'] .
+		                     '; font-weight: ' . $widget_title_font['font-weight'] .
+		                     '; color: ' . $widget_title_font['color'] . '; ';
 
 
 		$widget_title_border_width = get_option( 'pp_widget_title_bottom_border_width', 1 );
@@ -180,24 +157,108 @@ class PootlePage_Output {
 			$widget_title_css .= 'margin-bottom:0;';
 		}
 
+		return $widget_title_css;
+
+	}
+
+	/**
+	 * Returns the styles for widgets
+	 *
+	 * @return string $widget_title_css
+	 */
+	public function widget_css(){
+
+		$widget_css = '';
+
+		//Widget background styles
+		$widget_css .= $this->widget_bg_css();
+
+		//Widget border styles
+		$widget_css .= $this->widget_border_css();
+
+		//Widget padding styles
+		$widget_css .= $this->widget_padding_css();
+
+		//Widget typography styles
+		$widget_css .= $this->widget_typography_css();
+
+		return $widget_css;
+	}
+
+
+	/**
+	 * Returns the styles for widget background
+	 *
+	 * @return string $css
+	 */
+	public function widget_bg_css(){
+		$css = '';
+
+		//CSS background-color property
+		$widget_bg = get_option( 'pp_widget_bg_color', 'transparent' );
+		$css .= 'background-color:'.$widget_bg.';';
+
+		return $css;
+	}
+
+	/**
+	 * Returns the styles for widget section
+	 *
+	 * @return string $widget_title_css
+	 */
+	public function widget_border_css(){
+
+		$css = '';
+
+		//CSS border property
+		$widget_border_width = get_option( 'pp_widget_border_width', 0 );
+		$widget_border_style = get_option( 'pp_widget_border_style', 'solid' );
+		$widget_border_color = get_option( 'pp_widget_border_color', '#dbdbdb' );
+
+		$css .= 'border:'.$widget_border_width.'px '.$widget_border_style . ' ' . $widget_border_color . ';';
+
+		//CSS3 border radius property
 		$widget_border_radius = get_option( 'pp_widget_border_radius', 0 );
-		if ( $widget_border_radius > 0 ) {
-			$widget_css .= 'border-radius:' . $widget_border_radius . 'px; -moz-border-radius:' . $widget_border_radius . 'px; -webkit-border-radius:' . $widget_border_radius . 'px;';
-		}
+		$css .= 'border-radius:' . $widget_border_radius . 'px; -moz-border-radius:' . $widget_border_radius . 'px; -webkit-border-radius:' . $widget_border_radius . 'px;';
 
-		if ( $widget_css != '' ) {
-			$output .= '.panel-grid-cell .widget {' . $widget_css . '}' . "\n";
-		}
+		return $css;
+	}
 
-		if ( $widget_title_css != '' ) {
-			$output .= '.panel-grid-cell .widget > .widget-title {' . $widget_title_css . '}' . "\n";
-		}
+	/**
+	 * Returns the styles for widget section
+	 *
+	 * @return string $widget_title_css
+	 */
+	public function widget_padding_css(){
 
-		?>
-		<style>
-			<?php echo $output ?>
-		</style>
-	<?php
+		$css = '';
+
+		//CSS padding
+		$widget_padding_left_right = get_option( 'pp_widget_padding_left_right', 0 );
+		$widget_padding_top_bottom = get_option( 'pp_widget_padding_top_bottom', 0 );
+		$css .= "padding: {$widget_padding_top_bottom}px {$widget_padding_left_right}px;";
+
+		return $css;
+	}
+
+	/**
+	 * Returns the styles for widget section
+	 *
+	 * @return string $widget_title_css
+	 */
+	public function widget_typography_css(){
+
+		$css = '';
+
+		//CSS font properties
+		$widget_text_font = $this->get_font_css_value( 'pp_widget_text' );
+		$css .= "font-family: {$widget_text_font['font-family']} !important;";
+		$css .= "font-size: {$widget_text_font['font-size']} !important;";
+		$css .= "font-style: {$widget_text_font['font-style']} !important;";
+		$css .= "font-weight: {$widget_text_font['font-weight']} !important;";
+		$css .= "color: {$widget_text_font['color']} !important;";
+
+		return $css;
 	}
 
 }
