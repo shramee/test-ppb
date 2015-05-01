@@ -491,3 +491,23 @@ function pootlepage_color_control( $label, $value, $default_color, $link ) {
 	</label>
 	<?php
 }
+
+/**
+ * Test whether or not a typeface has been selected for a "typography" field.
+ * @param   string $face	  The noble warrior ( typeface ) to be tested.
+ * @param   string $test_case The test case. Does the warrior pass the ultimate test and reep eternal glory?
+ * @return  bool	   		  Whether or not eternal glory shall be achieved by the warrior.
+ */
+function _test_typeface_against_test_case ( $face, $test_case ) {
+	$response = false;
+
+	$face = stripslashes( str_replace( '"', '', str_replace( '&quot;', '', $face ) ) );
+
+	$parts = explode( ',', $face );
+
+	if ( $test_case == $parts[0] ) {
+		$response = true;
+	}
+
+	return $response;
+}

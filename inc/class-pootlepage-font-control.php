@@ -94,7 +94,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 						} else {
 							$value_to_test = $k;
 						}
-						if ( $this->_test_typeface_against_test_case( $current_value, $value_to_test ) ) $selected = ' selected="selected"';
+						if ( _test_typeface_against_test_case( $current_value, $value_to_test ) ) $selected = ' selected="selected"';
 						echo '<option value="' . esc_attr( $k ) . '" ' . $selected . '>' . esc_html( $v ) . '</option>' . "\n";
 					}
 
@@ -106,28 +106,6 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 			</label>
 		<?php
 		}
-
-		/**
-		 * Test whether or not a typeface has been selected for a "typography" field.
-		 * @access  protected
-		 * @since   6.0.2
-		 * @param   string $face	  The noble warrior ( typeface ) to be tested.
-		 * @param   string $test_case The test case. Does the warrior pass the ultimate test and reep eternal glory?
-		 * @return  bool	   		  Whether or not eternal glory shall be achieved by the warrior.
-		 */
-		protected function _test_typeface_against_test_case ( $face, $test_case ) {
-			$response = false;
-
-			$face = stripslashes( str_replace( '"', '', str_replace( '&quot;', '', $face ) ) );
-
-			$parts = explode( ',', $face );
-
-			if ( $test_case == $parts[0] ) {
-				$response = true;
-			}
-
-			return $response;
-		} // End _test_typeface_against_test_case()
 
 		/**
 		 * Get Font Weight Control
