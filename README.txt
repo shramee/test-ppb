@@ -16,6 +16,11 @@ Support
 
 Versions
 
+
+07.05.2015 - Version 2.2.8
+ * Fix - fatal error on activation
+
+
 07.05.2015 - Version 2.2.7
  * Fix - database errors for small number of users
  * Tweak - general Wordpress coding standard improvements
