@@ -1549,7 +1549,8 @@ function siteorigin_panels_preview( ) {
 		global $siteorigin_panels_is_preview;
 		$siteorigin_panels_is_preview = true;
 		// Set the panels home state to true
-		if ( empty( filter_input( INPUT_POST, 'post_id' ) ) ) $GLOBALS['siteorigin_panels_is_panels_home'] = true;
+		$post_id = filter_input( INPUT_POST, 'post_id' );
+		if ( empty( $post_id ) ) $GLOBALS['siteorigin_panels_is_panels_home'] = true;
 		add_action( 'option_siteorigin_panels_home_page', 'siteorigin_panels_preview_load_data' );
 		locate_template( siteorigin_panels_setting( 'home-template' ), true );
 		exit( );
