@@ -16,6 +16,10 @@ Support
 
 Versions
 
+07.05.2015 - Version 2.2.7
+ * Fix - database errors for small number of users
+ * Tweak - general Wordpress coding standard improvements
+
 15.04.2015 - Version 2.2.6
  * Fix - fatal error on posts
 
