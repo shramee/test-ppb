@@ -455,20 +455,12 @@ function siteorigin_panels_save_post( $post_id, $post ) {
 	if ( !current_user_can( 'edit_post', $post_id ) ) return;
 	//Don't Save panels if $post_id is not same as current post ID
 	//( Prevents population product panels data in saving Tabs via Meta )
-	if ( $_POST['post_ID'] != $post_id ) return;
+	if ( get_post_type( $_POST['post_ID'] ) != 'wc_product_tab' and get_post_type( $post_id ) == 'wc_product_tab' ) return;
 
 	$panels_data = siteorigin_panels_get_panels_data_from_post( $_POST );
+
 	if ( function_exists( 'wp_slash' ) ) $panels_data = wp_slash( $panels_data );
 	update_post_meta( $post_id, 'panels_data', $panels_data );
-
-//	if ( isset( $_POST['page-settings'] ) ) {
-//		$pageSettingsJson = $_POST['page-settings'];
-//		update_post_meta( $post_id, 'pootlepage-page-settings', $pageSettingsJson );
-//	}
-//	if ( isset( $_POST['hide-elements'] ) ) {
-//		$hideElementsJson = $_POST['hide-elements'];
-//		update_post_meta( $post_id, 'pootlepage-hide-elements', $hideElementsJson );
-//	}
 }
 add_action( 'save_post', 'siteorigin_panels_save_post', 10, 2 );
 
