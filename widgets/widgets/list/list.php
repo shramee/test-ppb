@@ -25,8 +25,8 @@ class SiteOrigin_Panels_Widget_List extends SiteOrigin_Panels_Widget  {
 
 	static function create_list( $text ) {
 		// Add the list items
-		$text = preg_replace( "/\*+( .* )?/i", "<ul><li>$1</li></ul>", $text );
-		$text = preg_replace( "/( \<\/ul\>\n( .* )\<ul\>* )+/", "", $text );
+		$text = preg_replace( "/\*+(.*)?/i", "<ul><li>$1</li></ul>", $text );
+		$text = preg_replace( "/(\<\/ul\>\n(.*)\<ul\>*)+/", "", $text );
 		$text = wpautop( $text );
 
 		// Return sanitized version of the list

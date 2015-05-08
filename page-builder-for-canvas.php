@@ -1716,7 +1716,7 @@ function siteorigin_panels_wp_import_post_meta( $post_meta ) {
 		if ( $meta['key'] == 'panels_data' ) {
 			$value = $meta['value'];
 			$value = preg_replace( "/[\r\n]/", "<<<br>>>", $value );
-			$value = preg_replace( '!s:( \d+ ):"( .*? )";!e', "'s:'.strlen( '$2' ).':\"$2\";'", $value );
+			$value = preg_replace( '!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $value );
 			$value = unserialize( $value );
 			$value = array_map( 'siteorigin_panels_wp_import_post_meta_map', $value );
 
@@ -1801,7 +1801,7 @@ function siteorigin_panels_render_form( $widget, $instance = array( ), $raw = fa
 
 	// Convert the widget field naming into ones that Page Builder uses
 	$exp = preg_quote( $widget_obj->get_field_name( '____' ) );
-	$exp = str_replace( '____', '( .*? )', $exp );
+	$exp = str_replace( '____', '(.*?)', $exp );
 	$form = preg_replace( '/'.$exp.'/', 'widgets[{$id}][$1]', $form );
 
 	// Add all the information fields
