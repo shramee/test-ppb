@@ -12,9 +12,32 @@
  * @Class PP_PB_WF_Fields_Helper
  */
 class PP_PB_WF_Fields_Helper {
-	public function __construct(){
+
+	protected $_fields;
+
+	/**
+	 * @param $fields
+	 */
+	public function __construct( $fields ){
+
+		$this->_fields = $fields;
 
 	}
+
+	/**
+	 * Retrieve the fields for a specified section.
+	 * @access  protected
+	 * @since   6.0.0
+	 * @param   string $section The section to search for fields in.
+	 * @return  array		   An array of the detected fields.
+	 */
+	public function _get_fields_by_section ( $section ) {
+		$fields = array();
+		foreach ( $this->_fields as $k => $v ) {
+			if ( $section == $v['section'] ) $fields[$k] = $v;
+		}
+		return $fields;
+	} // End _get_fields_by_section()
 
 	/**
 	 * Renders the typography field for PP_PB_WF_Fields::render_field_typography()

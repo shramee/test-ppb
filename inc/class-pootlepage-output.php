@@ -6,14 +6,16 @@
  * Time: 8:54 PM
  */
 
+/**
+ * Outputs PootlePage customizer styles
+ * Class PootlePage_Output
+ */
 class PootlePage_Output {
 
 	public $options;
 
 	public function __construct( $options ){
-
 		$this->options = $options;
-
 	}
 
 	public function google_webfonts() {
@@ -68,34 +70,21 @@ class PootlePage_Output {
 	}
 
 	private function get_font_css_value( $element ) {
-		$fontOption = $this->options[$element];
 
-		$fontFamily = get_option( $element . '_font_id' );
-		if ( empty( $fontFamily ) ) {
-			$fontFamily = $fontOption['defaults']['font_id'];
-		}
+		$fontOption = $this->options[ $element];
 
-		$fontSize = get_option( $element . '_font_size' );
-		if ( $fontSize === false ) {
-			$fontSize = $fontOption['defaults']['font_size'];
-		}
+		$fontFamily = get_option( $element . '_font_id', $fontOption['defaults']['font_id'] );
 
-		$fontSizeUnit = get_option( $element . '_font_size_unit' );
-		if ( $fontSizeUnit === false ) {
-			$fontSizeUnit = $fontOption['defaults']['font_size_unit'];
-		}
+		$fontSize = get_option( $element . '_font_size', $fontOption['defaults']['font_size'] );
 
-		$fontColor = get_option( $element . '_font_color' );
-		if ( $fontColor === false ) {
-			$fontColor = $fontOption['defaults']['font_color'];
-		}
+		$fontSizeUnit = get_option( $element . '_font_size_unit', $fontOption['defaults']['font_size_unit'] );
 
-		$fontWeightStyle = get_option( $element . '_font_weight_style' );
-		if ( empty( $fontWeightStyle ) ) {
-			$fontWeightStyle = $fontOption['defaults']['font_weight_style'];
-		}
+		$fontColor = get_option( $element . '_font_color', $fontOption['defaults']['font_color'] );
+
+		$fontWeightStyle = get_option( $element . '_font_weight_style', $fontOption['defaults']['font_weight_style'] );
 
 		$fontStyle = ( strpos( $fontWeightStyle, 'italic' ) === false ? 'normal' : 'italic' );
+
 		$fontWeight = str_replace( 'italic', '', $fontWeightStyle );
 
 		if ( empty( $fontWeight ) ) {
@@ -117,7 +106,7 @@ class PootlePage_Output {
 		?>
 		<style>
 			/* Widget Title CSS */
-			.panel-grid-cell .widget > .widget-title {
+			.panel-grid-cell .widget > h3.widget-title {
 			<?php echo $this->widget_title_css() ?>
 			}
 

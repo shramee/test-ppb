@@ -11,7 +11,6 @@ class PP_PB_WF_Fields_Settings extends PP_PB_WF_Fields {
 	 * Constructor function.
 	 * @access  public
 	 * @since   6.0.0
-	 * @return  void
 	 */
 	public function __construct () {
 		parent::__construct();
@@ -28,7 +27,7 @@ class PP_PB_WF_Fields_Settings extends PP_PB_WF_Fields {
 	 * Validate the given data, assuming it is from a textarea field.
 	 * @access  public
 	 * @since   6.0.0
-	 * @return  void
+	 * @return  string
 	 */
 	public function validate_field_textarea ( $v, $k ) {
 		// Allow iframe, object and embed tags in textarea fields.
@@ -49,10 +48,10 @@ class PP_PB_WF_Fields_Settings extends PP_PB_WF_Fields {
 	 * Return an array of fields which are allowed to support <script> tags.
 	 * @access  public
 	 * @since   6.0.4
-	 * @return  void
+	 * @return  array
 	 */
 	public function get_script_supported_fields () {
-		return ( array )apply_filters( 'wf_get_script_supported_fields', array( 'woo_ad_top_adsense', 'woo_google_analytics' ) );
+		return apply_filters( 'wf_get_script_supported_fields', array( 'woo_ad_top_adsense', 'woo_google_analytics' ) );
 	} // End get_script_supported_fields()
 
 	/**
@@ -82,14 +81,15 @@ class PP_PB_WF_Fields_Settings extends PP_PB_WF_Fields {
 
 		$sections = array();
 
-		$current_tab = '';
-		if ( isset( $_GET['tab'] ) && '' != $_GET['tab'] ) $current_tab = sanitize_title_with_dashes( $_GET['tab'] );
+		$current_tab = filter_input( INPUT_GET, 'tab' );
 
 		$count = 0;
 		foreach ( $this->_tabs as $k => $v ) {
 			$count++;
 			$class = 'tab';
-			if ( ( '' == $current_tab && 1 == $count ) || $current_tab == $k ) $class .= ' current'; // If no current tab is set, highlight the first one. Otherwise, highlight the current tab.
+			if ( ( empty( $current_tab ) && 1 == $count ) || $current_tab == $k ) {
+				$class .= ' current'; // If no current tab is set, highlight the first one
+			}
 			$tab = $k;
 			$tab = $this->_generate_section_token( $tab, $count );
 

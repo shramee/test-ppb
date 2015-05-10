@@ -42,9 +42,6 @@ class PP_PB_WF_Fields {
 		$this->_sections = array();
 		$this->_fields = array();
 
-		//Instantiating the helper
-		$this->helper = new PP_PB_WF_Fields_Helper();
-
 		$this->_has_range = false;
 		$this->_has_imageselector = false;
 		$this->_has_colourpicker = false;
@@ -82,6 +79,9 @@ class PP_PB_WF_Fields {
 
 		$this->init_sections( $data );
 		$this->init_fields( $data );
+		//Instantiating the helper
+		$this->helper = new PP_PB_WF_Fields_Helper( $this->_fields );
+
 	} // End init()
 
 	/**
@@ -311,30 +311,39 @@ class PP_PB_WF_Fields {
 	 */
 	public function render_single_section ( $key, $args, $heading_level = 2 ) {
 		if ( in_array( $key, $this->_processed_sections ) ) return; // Don't process a section more than once.
+
 		if ( 6 < intval( $heading_level ) ) $heading_level = 2; // Set a default heading level.
 
-		$fields = $this->_get_fields_by_section( $key );
+		$fields = $this->helper->_get_fields_by_section( $key );
+
 		$html = '';
 		$html .= '<div id="' . esc_attr( $key ) . '" class="settings-section">' . "\n";
+
 		if ( isset( $args['name'] ) ) {
 			// PP PB Modified
 			if ( $heading_level == 2 ) {
 				$html .= '<h' . intval( $heading_level ) . ' class="section-title">' . $args['name'] . '</h' . intval( $heading_level ) . '>' . "\n";
 			}
 		}
+
 		$html .= $this->__get( 'wrapper_start' );
+
 		if ( 0 < count( $fields ) ) {
 			$html .= $this->render_fields( $fields );
 		}
+
 		$html .= $this->__get( 'wrapper_end' );
 
 		// Cater for child sections.
+
 		if ( isset( $args['children'] ) && is_array( $args['children'] ) && 0 < count( $args['children'] ) ) {
 			foreach ( $args['children'] as $k => $v ) {
 				$html .= $this->render_single_section( $k, $v, 3 );
 			}
 		}
+
 		$html .= '</div><!--/#' . esc_attr( $key ) . ' .settings-section-->' . "\n";
+
 		return $html;
 	} // End render_single_section()
 
@@ -1109,21 +1118,6 @@ class PP_PB_WF_Fields {
 		$this->enqueue_styles();
 		$this->enqueue_scripts();
 	} // End maybe_enqueue_field_assets()
-
-	/**
-	 * Retrieve the fields for a specified section.
-	 * @access  protected
-	 * @since   6.0.0
-	 * @param   string $section The section to search for fields in.
-	 * @return  array		   An array of the detected fields.
-	 */
-	protected function _get_fields_by_section ( $section ) {
-		$fields = array();
-		foreach ( $this->_fields as $k => $v ) {
-			if ( $section == $v['section'] ) $fields[$k] = $v;
-		}
-		return $fields;
-	} // End _get_fields_by_section()
 
 	/**
 	 * Detect the various sections of the provided data.

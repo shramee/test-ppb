@@ -30,7 +30,6 @@ function pp_pb_check_for_conflict( ) {
 	}
 }
 
-
 include plugin_dir_path( __FILE__ ) . 'widgets/basic.php';
 
 include plugin_dir_path( __FILE__ ) . 'inc/options.php';
@@ -43,7 +42,6 @@ include plugin_dir_path( __FILE__ ) . 'inc/vantage-extra.php';
 include plugin_dir_path( __FILE__ ) . 'inc/class-pootlepress-updater.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/class-pootlepage-font-utility.php';
 require_once plugin_dir_path( __FILE__ ) . 'inc/class-pootlepage-customizer.php';
-
 if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) include plugin_dir_path( __FILE__ ).'inc/debug.php';
 
 /**
@@ -2079,7 +2077,6 @@ function pp_pb_widget_area_init( ) {
 		wp_register_style( 'woo-shortcode-generator', esc_url( $woo_shortcode_generator->framework_url( ) . 'css/shortcode-generator.css' ) );
 		wp_enqueue_style( 'woo-shortcode-generator' );
 
-//		add_action( 'admin_head', 'pp_pb_widget_area_head' );
 	}
 } // End init( )
 
@@ -2132,14 +2129,6 @@ function pp_pb_widget_styling_fields( ) {
    );
 }
 
-// No need to fix, since same as normal post edit screen
-//function pp_pb_widget_area_head( ) {
-//	echo "<style>\n" .
-//		"#TB_ajaxContent { width: auto !important; height: auto !important; }\n" .
-//	"</style>\n";
-//}
-
-//$pootlepageCustomizer = new PootlePage_Customizer( );
 $PootlePageFile = __FILE__;
 
 add_action( 'after_setup_theme', 'pp_pb_wf_settings' );

@@ -109,7 +109,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 			$value		 = $this->value( 'border_color' );
 			$default_color = $this->default['border_color'];
 			// Output the color control
-			pootlepage_color_control( 'Border Color', $value, $default_color, $this->link( 'border_color' ) );
+			pootlepage_color_control( 'Border Color', $value, $default_color, $this->get_link( 'border_color' ) );
 
 		}
 

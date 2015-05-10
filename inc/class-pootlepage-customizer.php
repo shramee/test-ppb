@@ -142,65 +142,6 @@ class PootlePage_Customizer {
 				'choices' => $choices,
 				'priority' => 16
 			),
-
-			// tab widget is only for canvas, so remove these options
-//			array(
-//				'id' => 'pp_widget_tab_bg_color',
-//				'type' => 'color',
-//				'label' => __( 'Tabs Widget Background color', 'scratch' ),
-//				'section' => 'pootlepage_section',
-//				'default' => '',
-//				'priority' => 17
-//			),
-//
-//			array(
-//				'id' => 'pp_widget_tab_inside_bg_color',
-//				'type' => 'color',
-//				'label' => __( 'Tabs Widget Inside Background Color', 'scratch' ),
-//				'section' => 'pootlepage_section',
-//				'default' => '',
-//				'priority' => 18
-//			),
-//
-//			array(
-//				'id' => 'widget_tab_title',
-//				'type' => 'font',
-//				'label' => __( 'Tabs Widget Title', 'scratch' ),
-//				'section' => 'pootlepage_section',
-//				'settings' => array(
-//					'font_id' => 'pp_widget_tab_title_font_id',
-//					'font_size' => 'pp_widget_tab_title_font_size',
-//					'font_color' => 'pp_widget_tab_title_font_color',
-//					'font_weight_style' => 'pp_widget_tab_title_font_weight_style'
-//				),
-//				'defaults' => array(
-//					'font_id' => "Helvetica",
-//					'font_size' => 12,
-//					'font_color' => '#555555',
-//					'font_weight_style' => '700'
-//				),
-//				'priority' => 19
-//			),
-//
-//			array(
-//				'id' => 'widget_tab_meta',
-//				'type' => 'font',
-//				'label' => __( 'Tabs Widget Meta / Tabber Font', 'scratch' ),
-//				'section' => 'pootlepage_section',
-//				'settings' => array(
-//					'font_id' => 'pp_widget_tab_meta_font_id',
-//					'font_size' => 'pp_widget_tab_meta_font_size',
-//					'font_color' => 'pp_widget_tab_meta_font_color',
-//					'font_weight_style' => 'pp_widget_tab_meta_font_weight_style'
-//				),
-//				'defaults' => array(
-//					'font_id' => "Helvetica",
-//					'font_size' => 11,
-//					'font_color' => '#999999',
-//					'font_weight_style' => '400'
-//				),
-//				'priority' => 20
-//			),
 		);
 	}
 
