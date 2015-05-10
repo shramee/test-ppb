@@ -583,7 +583,7 @@ jQuery( function ( $ ) {
                 $('#content-resize-handle' ).show();
             } ).end()
             .prepend(
-            $( '<a id="content-panels" class="hide-if-no-js wp-switch-editor switch-panels">' + $( '#so-panels-panels h3.hndle span' ).html() + '</a>' )
+            $( '<a id="content-panels" class="button pootle switch-panels">Page Builder</a><a id="content-tmce-editor" class="button pootle pootle-switch-editor">Default Editor</a>' )
                 .click( function () {
 
                     // load panels or create 1 lazily
@@ -665,6 +665,10 @@ jQuery( function ( $ ) {
     // When the content panels button is clicked, trigger a window resize to set up the columns
     $('#content-panels' ).click(function(){
         $(window ).resize();
+    });
+
+    $('#content-tmce-editor' ).click(function(){
+        $( '.switch-tmce').click();
     });
 
     //if ( typeof panelsData != 'undefined' || $('#panels-home-page' ).length) {
