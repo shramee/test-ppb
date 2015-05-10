@@ -3,6 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PP_PB_WF_Fields {
+	protected $protected_get_set_allowed;
 	protected $_token;
 	protected $_settings;
 	protected $_sections;
@@ -65,6 +66,20 @@ class PP_PB_WF_Fields {
 		// Set default field wrappers.
 		$this->__set( 'wrapper_start', '<table class="form-table">' );
 		$this->__set( 'wrapper_end', '</table>' );
+
+		$this->protected_get_set_allowed = array(
+			'has_tabs',
+			'token',
+			'wrapper_start',
+			'wrapper_end',
+			'assets_url',
+			'extra_hidden_fields',
+			'fields',
+			'sections',
+			'render_submit_button',
+		);
+
+
 	} // End __construct()
 
 	/**
@@ -93,36 +108,18 @@ class PP_PB_WF_Fields {
 	 * @return  mixed
 	 */
 	public function __set ( $key, $value ) {
-		switch ( $key ) {
-			case 'has_tabs':
-				$this->_has_tabs = ( bool )$value;
-			break;
-			case 'token':
-				$this->_token = $value;
-			break;
-			case 'wrapper_start':
-				$this->_wrappers['wrapper_start'] = $value;
-			break;
-			case 'wrapper_end':
-				$this->_wrappers['wrapper_end'] = $value;
-			break;
-			case 'assets_url':
-				$this->_assets_url = esc_url( $value );
-			break;
-			case 'extra_hidden_fields':
-				$this->_extra_hidden_fields = ( array )$value;
-			break;
-			case 'fields':
-				$this->_fields = ( array )$value;
-			break;
-			case 'sections':
-				$this->_sections = ( array )$value;
-			break;
-			case 'render_submit_button':
-				$this->_render_submit_button = ( bool )$value;
-			break;
-			default:
-			break;
+
+		if ( 'assets_url' == $key ) {
+			$this->_assets_url = esc_url( $value );
+
+		} elseif ( in_array( $key, array( 'wrapper_start', 'wrapper_end' ) ) ) {
+			$this->_wrappers[ $key ] = $value;
+
+		} elseif ( in_array( $key, $this->protected_get_set_allowed ) ) {
+			$_key = '_' . $key;
+			
+			$this->$_key = $value;
+
 		}
 	} // End __set()
 
@@ -134,38 +131,17 @@ class PP_PB_WF_Fields {
 	 * @return  mixed
 	 */
 	public function __get ( $key ) {
-		switch ( $key ) {
-			case 'has_tabs':
-				$value = ( bool )$this->_has_tabs;
-			break;
-			case 'token':
-				$value = $this->_token;
-			break;
-			case 'wrapper_start':
-				$value = $this->_wrappers['wrapper_start'];
-			break;
-			case 'wrapper_end':
-				$value = $this->_wrappers['wrapper_end'];
-			break;
-			case 'assets_url':
-				$value = $this->_assets_url;
-			break;
-			case 'extra_hidden_fields':
-				$value = ( array )$this->_extra_hidden_fields;
-			break;
-			case 'fields':
-				$value = ( array )$this->_fields;
-			break;
-			case 'sections':
-				$value = ( array )$this->_sections;
-			break;
-			case 'render_submit_button':
-				$value = ( bool )$this->_render_submit_button;
-			break;
-			default:
-			break;
+
+		if ( in_array( $key, $this->protected_get_set_allowed ) ) {
+
+			$_key = '_' . $key;
+
+			if ( in_array( $key, array( 'wrapper_start', 'wrapper_end' ) ) ) {
+				return $this->_wrappers[ $_key ];
+			}
+
+			return $this->$_key;
 		}
-		return $value;
 	} // End __get()
 
 	/**
