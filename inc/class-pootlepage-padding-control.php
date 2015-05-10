@@ -41,52 +41,26 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 			parent::enqueue();
 		}
 
-		public function get_top_bottom_control() {
+		public function get_padding_control( $label, $setting_index ) {
 
 			// Variables used in view
-			$value		  = $this->value( 'top_bottom_width' );
+			$value		  = $this->value( $setting_index );
 			$step		   = 1;
 			$min_range	  = 0;
 			$max_range	  = 100;
-			$default_amount = $this->default['top_bottom_width'];
+			$default_amount = $this->default[$setting_index];
+			$class = 'pp-' . str_replace( '_', '-', $setting_index ) . '-number';
 
 			$current_amount = isset( $value ) ? $value : $default_amount;
 
 			// Get control view
 			?>
-			<label><?php _e( 'Top/Bottom', 'scratch' ); ?>
+			<label><?php _e( $label, 'scratch' ); ?>
 
-				<input class='pp-top-bottom-width-number' type="number" min="<?php echo $min_range ?>"
+				<input class='<?php echo $class; ?>' type="number" min="<?php echo $min_range ?>"
 					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
 					   default="<?php echo $default_amount ?>"
-					<?php $this->link( 'top_bottom_width' ) ?>
-					/>
-				px
-
-			</label>
-
-		<?php
-		}
-
-		public function get_left_right_control() {
-
-			// Variables used in view
-			$value		  = $this->value( 'left_right_width' );
-			$step		   = 1;
-			$min_range	  = 0;
-			$max_range	  = 100;
-			$default_amount = $this->default['left_right_width'];
-
-			$current_amount = isset( $value ) ? $value : $default_amount;
-
-			// Get control view
-			?>
-			<label><?php _e( 'Left/Right', 'scratch' ); ?>
-
-				<input class='pp-left-right-width-number' type="number" min="<?php echo $min_range ?>"
-					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
-					   default="<?php echo $default_amount ?>"
-					<?php $this->link( 'left_right_width' ) ?>
+					<?php $this->link( $setting_index ) ?>
 					/>
 				px
 
@@ -113,11 +87,11 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 				<div class="customize-control-content">
 
-					<?php $this->get_top_bottom_control(); ?>
+					<?php $this->get_padding_control( 'Top/Bottom', 'top_bottom_width' ); ?>
 
 					<div class="separator"></div>
 
-					<?php $this->get_left_right_control(); ?>
+					<?php $this->get_padding_control( 'Left/Right', 'left_right_width' ); ?>
 
 				</div>
 			</label>
