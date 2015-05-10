@@ -861,25 +861,11 @@ class PP_PB_WF_Fields {
 	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_upload ( $key, $args ) {
-		$this->_has_upload = true;
 
-		$url = $this->get_value( $key, $args['std'] );
-		$id = $this->get_value( $key . '-id', 0 );
 		$placeholder = apply_filters( 'wf_placeholder_image_url', get_template_directory_uri() . '/functions/assets/images/placeholder.png' );
-		$class = ' no-image';
-		if ( '' != $url || 0 < intval( $id ) ) $class = ' has-image';
 
-		$html = '<span class="upload-field">' . "\n";
-		$html .= '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="34" type="text" class="input-upload" value="' . esc_attr( $url ) . '" /> <a href="#" class="button" data-uploader-title="' . esc_attr( sprintf( __( 'Select %s', 'woothemes' ), $args['name'] ) ) . '" data-uploader-button-text="' . esc_attr( sprintf( __( 'Use image as %s', 'woothemes' ), $args['name'] ) ) . '">' . __( 'Upload', 'woothemes' ) . '</a>' . "\n";
-		$html .= '<input id="' . esc_attr( $key ) . '-id" name="' . esc_attr( $key ) . '-id" type="hidden" class="input-upload-id" value="' . esc_attr( $id ) . '" /> ' . "\n";
-		$html .= '</span>' . "\n";
+		return $this->render_field_upload_or_upload_min( $key, $args, $placeholder );
 
-		$html .= '<div class="image-preview' . esc_attr( $class ) . '">' . "\n";
-		$html .= '<img src="' . esc_url( $url ) . '" data-placeholder="' . esc_url( $placeholder ) . '" />' . "\n";
-		$html .= '<a href="#" class="remove">' . sprintf( __( 'Remove %s', 'woothemes' ), $args['name'] ) . '</a>' . "\n";
-		$html .= '</div><!--/.image-preview-->' . "\n";
-
-		return $html;
 	} // End render_field_upload()
 
 	/**
@@ -891,16 +877,35 @@ class PP_PB_WF_Fields {
 	 * @return  string	   HTML markup for the field.
 	 */
 	protected function render_field_upload_min ( $key, $args ) {
+
+		return $this->render_field_upload_or_upload_min( $key, $args, WF()->get_placeholder_image_url(), 'hidden' );
+
+	} // End render_field_upload_min()
+
+	/**
+	 * Render HTML markup for the "upload" or "upload_min" field type.
+	 * Created to reduce duplication
+	 *
+	 * @access  protected
+	 * @since   6.0.0
+	 *
+	 * @param   string $key The unique ID of this field.
+	 * @param   array $args Arguments used to construct this field.
+	 * @param $placeholder
+	 * @param $type
+	 *
+	 * @return string HTML markup for the field.
+	 */
+	protected function render_field_upload_or_upload_min ( $key, $args, $placeholder, $type='text' ) {
 		$this->_has_upload = true;
 
 		$url = $this->get_value( $key, $args['std'] );
 		$id = $this->get_value( $key . '-id', 0 );
-		$placeholder = WF()->get_placeholder_image_url();
 		$class = ' no-image';
 		if ( '' != $url || 0 < intval( $id ) ) $class = ' has-image';
 
 		$html = '<span class="upload-field">' . "\n";
-		$html .= '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" type="hidden" class="input-upload" value="' . esc_attr( $url ) . '" /> <a href="#" class="button" data-uploader-title="' . esc_attr( sprintf( __( 'Select %s', 'woothemes' ), $args['name'] ) ) . '" data-uploader-button-text="' . esc_attr( sprintf( __( 'Use image as %s', 'woothemes' ), $args['name'] ) ) . '">' . __( 'Upload', 'woothemes' ) . '</a>' . "\n";
+		$html .= '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="34" type="' . $type . '" class="input-upload" value="' . esc_attr( $url ) . '" /> <a href="#" class="button" data-uploader-title="' . esc_attr( sprintf( __( 'Select %s', 'woothemes' ), $args['name'] ) ) . '" data-uploader-button-text="' . esc_attr( sprintf( __( 'Use image as %s', 'woothemes' ), $args['name'] ) ) . '">' . __( 'Upload', 'woothemes' ) . '</a>' . "\n";
 		$html .= '<input id="' . esc_attr( $key ) . '-id" name="' . esc_attr( $key ) . '-id" type="hidden" class="input-upload-id" value="' . esc_attr( $id ) . '" /> ' . "\n";
 		$html .= '</span>' . "\n";
 

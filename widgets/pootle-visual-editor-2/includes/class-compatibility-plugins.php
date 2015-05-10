@@ -42,7 +42,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 * Class constructor
 		 *
 		 * @param string[] $plugins
-		 * @return void
+		 *
 		 * @since 2.0.0
 		 */
 		protected function __construct( $plugins ) {
