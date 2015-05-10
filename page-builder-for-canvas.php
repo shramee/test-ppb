@@ -30,6 +30,7 @@ function pp_pb_check_for_conflict( ) {
 	}
 }
 
+
 include plugin_dir_path( __FILE__ ) . 'widgets/basic.php';
 
 include plugin_dir_path( __FILE__ ) . 'inc/options.php';
@@ -59,11 +60,6 @@ register_activation_hook( __FILE__, 'siteorigin_panels_activate' );
 function siteorigin_panels_init( ) {
 	$display_settings = get_option( 'siteorigin_panels_display', array( ) );
 	if ( isset( $display_settings['bundled-widgets'] ) && !$display_settings['bundled-widgets'] ) return;
-
-	if ( !defined( 'SITEORIGIN_PANELS_LEGACY_WIDGETS_ACTIVE' ) && ( !is_admin( ) || basename( $_SERVER["SCRIPT_FILENAME"] ) != 'plugins.php' ) ) {
-		// Include the bundled widgets if the Legacy Widgets plugin isn't active.
-		include plugin_dir_path( __FILE__ ).'widgets/widgets.php';
-	}
 }
 add_action( 'plugins_loaded', 'siteorigin_panels_init' );
 
