@@ -153,8 +153,6 @@ class PP_PB_WF_Fields {
 	public function prepare_data_for_validation ( $data ) {
 		$fields = $this->_fields;
 
-		$prepared_data = array();
-
 		// Bring the fields in a "multi_field" up to the top of the array, for validation.
 		$fields = $this->maybe_bubble_up_multi_fields( $fields );
 
@@ -172,6 +170,18 @@ class PP_PB_WF_Fields {
 				}
 			}
 		}
+
+		return $this->prepared_data( $data, $fields, $accepted_keys );
+	} // End prepare_data_for_validation()
+
+	/**
+	 * Prepare the given data to be validated.
+	 * @access  public
+	 * @since   6.0.0
+	 * @return  array
+	 */
+	public function prepared_data ( $data, $fields, $accepted_keys ) {
+		$prepared_data = array();
 
 		if ( is_array( $data ) && 0 < count( $data ) ) {
 			foreach ( $data as $k => $v ) {
@@ -197,7 +207,7 @@ class PP_PB_WF_Fields {
 	 * Move multi_field fields in the given array, into the top index, to prepare for validation.
 	 * @access  public
 	 * @since   6.0.0
-	 * @return  void
+	 * @return  array
 	 */
 	public function maybe_bubble_up_multi_fields ( $fields ) {
 		if ( 0 < count( $fields ) ) {
