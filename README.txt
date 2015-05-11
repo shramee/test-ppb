@@ -16,6 +16,8 @@ Support
 
 Versions
 
+11.05.2015 - Version 2.2.9
+ * Fix - error on save
 
 07.05.2015 - Version 2.2.8
  * Fix - fatal error on activation
