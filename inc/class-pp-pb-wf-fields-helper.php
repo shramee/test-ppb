@@ -449,4 +449,19 @@ class PP_PB_WF_Fields_Helper {
 		return esc_attr( $timestamp );
 	} // End validate_field_timestamp()
 
+	/**
+	 * Retrieve the fields for a specified section.
+	 * @access  protected
+	 * @since   6.0.0
+	 * @param   string $section The section to search for fields in.
+	 * @return  array		   An array of the detected fields.
+	 */
+	protected function _get_fields_by_section ( $section ) {
+		$fields = array();
+		foreach ( $this->_fields as $k => $v ) {
+			if ( $section == $v['section'] ) $fields[$k] = $v;
+		}
+		return $fields;
+	} // End _get_fields_by_section()
+
 }
