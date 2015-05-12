@@ -14,7 +14,6 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 		<button class="grid-add add-button button"><?php _e( 'Add Row', 'siteorigin-panels' ) ?></button>
 
-		<button class="panels-add add-button button"><?php _e( 'Add Widget', 'siteorigin-panels' ) ?></button>
 		<?php if ( ! empty( $layouts ) ) : ?>
 			<button class="prebuilt-set add-button button"><?php _e( 'Add Layout', 'siteorigin-panels' ) ?></button>
 		<?php endif; ?>

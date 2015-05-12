@@ -669,6 +669,7 @@ jQuery( function ( $ ) {
 
     $('#content-tmce-editor' ).click(function(){
         $( '.switch-tmce').click();
+        $( '#wp-content-wrap').addClass('tmce-active');
     });
 
     //if ( typeof panelsData != 'undefined' || $('#panels-home-page' ).length) {

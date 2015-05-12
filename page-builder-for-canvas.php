@@ -245,6 +245,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		}
 
 		wp_enqueue_script( 'so-panels-admin', plugin_dir_url( __FILE__ ) . 'js/panels.admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'so-sticky-admin-panels', plugin_dir_url( __FILE__ ) . 'js/sticky.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-panels', plugin_dir_url( __FILE__ ) . 'js/panels.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-grid', plugin_dir_url( __FILE__ ) . 'js/panels.admin.grid.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-prebuilt', plugin_dir_url( __FILE__ ) . 'js/panels.admin.prebuilt.js', array( 'jquery' ), POOTLEPAGE_VERSION );

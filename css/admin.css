@@ -90,7 +90,7 @@ html {
 #panels-container .grid {
 	position: relative;
 
-	background: #edf8fe url("images/cell-selected.png") repeat;
+	background: #ef4832 url("images/cell-selected.png") repeat;
 	margin-bottom: 30px;
 }
 
@@ -107,25 +107,25 @@ html {
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w:hover {
-	background: rgba(0, 150, 211, 0.1);
+	background: #ffb0aa;
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w {
-	background: rgba(0, 150, 211, 0.25);
+	background: #ffc0b7;
 }
 
 #panels-container .grid .cell {
 	position: absolute;
 	top: 0;
 
-	background: #e4eff4;
-	border: 1px solid #bcccd2;
+	background: #f4e4e0;
+	border: 1px solid #d4a4a0;
 }
 
 #panels-container .grid .cell.cell-selected {
-	background: #d0eaf5 url("images/cell-selected.png") repeat;
-	border-color: #a5c4ce;
-	box-shadow: 0 0 4px rgba(80, 109, 118, 0.3);
+	background: #ffe0dd url("images/cell-selected.png") repeat;
+	border-color: #d4aa99;
+	box-shadow: 0 0 4px 1px rgba(180, 90, 90, 0.3);
 }
 
 #panels-container .grid .cell.first {
@@ -431,10 +431,9 @@ html {
 	background: #ef4832;
 	border-color: #b32 !important;
 	color: #fff;
-	margin-left: 5px;
-	margin-bottom: 5px;
-	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 1px 0 rgba(0,0,0,.08);
-	box-shadow: inset 0 1px 0 rgba(255,255,255,.52),0 1px 0 rgba(0,0,0,.08);
+	margin: 0 1px 5px 5px;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 1px 0 rgba(0,0,0,.25);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.52),0 1px 0 rgba(0,0,0,.25);
 }
 .button.pootle:hover {
 	background: #e04025;
@@ -454,7 +453,7 @@ html {
 
 #so-panels-panels {
 	position: relative;
-
+	padding-top:37px;
 	border: 1px solid #e5e5e5;
 	z-index: 9;
 }
@@ -463,7 +462,15 @@ html {
 	background: #F5F5F5;
 	border-bottom: 1px solid #dedede;
 	padding: 4px 9px 4px 9px;
+	z-index: 97;
+	position: absolute;
+	top: 0;
 }
+.sticky #so-panels-panels .hndle {
+	position: fixed !important;
+	top: 85px !important;
+}
+
 
 #so-panels-panels h3.hndle button:not(.add-button):not(.page-settings):not(.hide-elements) {
 	background: #f0f0f0;
@@ -1103,8 +1110,12 @@ button.wp-switch-editor {
 	margin-top: -13px;
 	cursor: pointer;
 	z-index: 100;
+	opacity:0;
 }
-
+#panels-container .cell-wrapper:hover .add-widget-button
+{
+	opacity:0.80;
+}
 #panels-container .cell-wrapper .add-widget-button:before
 {
 	font-size: 26px;
@@ -1194,4 +1205,13 @@ when editing event widget from Event Calendar Pro */
 .widget-dialog-pootle_text_widget > .bstw-links
 {
 	display: none;
+}
+.sticky #wp-content-editor-tools{
+	position: fixed !important;
+	top: 32px !important;
+}
+.sticky #so-panels-panels .hndle {
+	position: fixed !important;
+	top: 85px !important;
+	z-index: 97;
 }
