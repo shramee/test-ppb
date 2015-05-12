@@ -31,10 +31,8 @@ function siteorigin_panels_setting( $key = '' ) {
 			'home-page' => false,																								// Is the home page supported
 			'home-page-default' => false,																						// What's the default layout for the home page?
 			'home-template' => 'home-panels.php',																				// The file used to render a home page.
-			'post-types' => get_option( 'siteorigin_panels_post_types', array( 'page', 'post' ) ),									// Post types that can be edited using panels.
+			'post-types' => get_option( 'siteorigin_panels_post_types', array( 'page' ) ),									// Post types that can be edited using panels.
 
-			// bundled-widgets option is removed
-//			'bundled-widgets' => ! isset( $display_settings['bundled-widgets'] ) ? true : $display_settings['bundled-widgets'],	// Include bundled widgets.
 			'responsive' => ! isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1',					// Should we use a responsive layout
 			'mobile-width' => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],			// What is considered a mobile width?
 
@@ -60,7 +58,7 @@ function siteorigin_panels_setting( $key = '' ) {
  * Add the options page
  */
 function siteorigin_panels_options_admin_menu() {
-	$hookSuffix = add_submenu_page( 'woothemes', 'Page Builder', 'Page Builder', 'manage_options', 'page_builder', 'siteorigin_panels_options_page' );
+	$hookSuffix = add_options_page( 'Page Builder', 'Page Builder', 'manage_options', 'page_builder', 'pootle_page_options_page' );
 
 	// to be used in PP_PB_WF_Settings, to hook save handler
 	$GLOBALS['PP_PB_WF_Settings']->page_hook = $hookSuffix;
@@ -71,7 +69,7 @@ add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu', 100 );
 /**
  * Display the admin page.
  */
-function siteorigin_panels_options_page() {
+function pootle_page_options_page() {
 	include plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/tpl/options.php';
 }
 
@@ -79,7 +77,6 @@ function siteorigin_panels_options_page() {
  * Register all the settings fields.
  */
 function siteorigin_panels_options_init() {
-	register_setting( 'pootlepage-general', 'siteorigin_panels_post_types', 'siteorigin_panels_options_sanitize_post_types' );
 	register_setting( 'pootlepage-general', 'siteorigin_panels_general', 'siteorigin_panels_options_sanitize_general' );
 	register_setting( 'pootlepage-display', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
 	register_setting( 'pootlepage-widgets', 'pootlepage-widgets' );
@@ -89,13 +86,11 @@ function siteorigin_panels_options_init() {
 	add_settings_section( 'styling', __( 'Widget Styling', 'siteorigin-panels' ), 'pp_pb_options_page_styling', 'pootlepage-styling' );
 	add_settings_section( 'display', __( 'Display', 'siteorigin-panels' ), '__return_false', 'pootlepage-display' );
 
-	add_settings_field( 'post-types', __( 'Post Types', 'siteorigin-panels' ), 'siteorigin_panels_options_field_post_types', 'pootlepage-general', 'general' );
 	add_settings_field( 'copy-content', __( 'Copy Content to Post Content', 'siteorigin-panels' ), 'siteorigin_panels_options_field_general', 'pootlepage-general', 'general', array( 'type' => 'copy-content' ) );
 	add_settings_field( 'animations', __( 'Animations', 'siteorigin-panels' ), 'siteorigin_panels_options_field_general', 'pootlepage-general', 'general', array(
 		'type' => 'animations',
 		'description' => __( 'Disable animations to improve Page Builder interface performance', 'siteorigin-panels' ),
 	 ) );
-//	add_settings_field( 'bundled-widgets', __( 'Bundled Widgets', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-general', 'general', array( 'type' => 'bundled-widgets' ) );
 
 	// widgets
 	add_settings_field( 'reorder-widgets', __( '', 'siteorigin-panels' ), 'pootlepage_reorder_widgets', 'pootlepage-widgets', 'widgets' );
@@ -121,7 +116,6 @@ add_action( 'init', 'pp_pb_check_for_setting_page' );
 
 function pp_pb_check_for_setting_page() {
 	if ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'page_builder' ) {
-		add_action( 'admin_init', 'wf_setup_screen_header_footer' );
 		add_action( 'admin_notices', 'pp_pb_admin_notices' );
 	}
 }
@@ -351,37 +345,6 @@ function pootlepage_unused_widgets() {
 	?>
 	<input type="hidden" id="pootlepage_widgets_unused" name="pootlepage-widgets[unused-widgets]" value="<?php esc_attr_e( $json ) ?>" />
 	<?php
-}
-
-/**
- * Display the field for selecting the post types
- *
- * @param $args
- */
-function siteorigin_panels_options_field_post_types( $args ) {
-	$panels_post_types = siteorigin_panels_setting( 'post-types' );
-
-	$all_post_types = get_post_types( array( '_builtin' => false ) );
-	$all_post_types = array_merge( array( 'page' => 'page', 'post' => 'post' ), $all_post_types );
-	unset( $all_post_types['ml-slider'] );
-
-	foreach( $all_post_types as $type ) {
-		$info = get_post_type_object( $type );
-		if ( empty( $info->labels->name ) ) continue;
-		$checked = in_array(
-			$type,
-			$panels_post_types
-		 );
-		
-		?>
-		<label>
-			<input type="checkbox" name="siteorigin_panels_post_types[<?php echo esc_attr( $type ) ?>]" value="<?php echo esc_attr( $type ) ?>" <?php checked( $checked ) ?> />
-			<?php echo esc_html( $info->labels->name ) ?>
-		</label><br/>
-		<?php
-	}
-	
-	?><p class="description"><?php _e( 'Post types that will have the page builder available', 'siteorigin-panels' ) ?></p><?php
 }
 
 function siteorigin_panels_options_field_generic( $args, $groupName ) {

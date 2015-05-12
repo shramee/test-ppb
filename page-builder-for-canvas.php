@@ -3,7 +3,7 @@
 Plugin Name: Pootle Page Builder
 Plugin URI: http://pootlepress.com/
 Description: A page builder for WooThemes Canvas.
-Version: 2.2.8
+Version: 2.9.9-beta
 Author: PootlePress
 Author URI: http://pootlepress.com/
 License: GPL version 3
@@ -2046,39 +2046,6 @@ function pp_pb_generate_font_css( $option, $em = '1' ) {
    else
 		return 'font:'.$option['style'].' '.$option['size'].$option['unit'].'/'.$em.'em '.stripslashes( $option['face'] ).' !important; color:'.$option['color'].' !important;';
 } // End pp_pb_generate_font_css( )
-
-add_action( 'admin_init', 'pp_pb_widget_area_init' );
-function pp_pb_widget_area_init( ) {
-
-	global $woo_shortcode_generator;
-	global $pagenow;
-
-	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) == 'true' && ( in_array( $pagenow, array( 'widgets.php' ) ) ) )  {
-
-		// Output the markup in the footer.
-		add_action( 'admin_footer', array( $woo_shortcode_generator, 'output_dialog_markup' ) );
-
-		// Add the tinyMCE buttons and plugins.
-		add_filter( 'mce_buttons', array( $woo_shortcode_generator, 'filter_mce_buttons' ) );
-		add_filter( 'mce_external_plugins', array( $woo_shortcode_generator, 'filter_mce_external_plugins' ) );
-
-		// Register the colourpicker JavaScript.
-		wp_register_script( 'woo-colourpicker', esc_url( $woo_shortcode_generator->framework_url( ) . 'js/colorpicker.js' ), array( 'jquery' ), '3.6', true ); // Loaded into the footer.
-		wp_enqueue_script( 'woo-colourpicker' );
-
-		// Register the colourpicker CSS.
-		wp_register_style( 'woo-colourpicker', esc_url( $woo_shortcode_generator->framework_url( ) . 'css/colorpicker.css' ) );
-		wp_enqueue_style( 'woo-colourpicker' );
-
-		wp_register_style( 'woo-shortcode-icon', esc_url( $woo_shortcode_generator->framework_url( ) . 'css/shortcode-icon.css' ) );
-		wp_enqueue_style( 'woo-shortcode-icon' );
-
-		// Register the custom CSS styles.
-		wp_register_style( 'woo-shortcode-generator', esc_url( $woo_shortcode_generator->framework_url( ) . 'css/shortcode-generator.css' ) );
-		wp_enqueue_style( 'woo-shortcode-generator' );
-
-	}
-} // End init( )
 
 function pp_pb_widget_styling_fields( ) {
 	return array(

@@ -1,6 +1,4 @@
 <?php
-do_action( 'wf_screen_get_header', 'woothemes', 'themes' );
-
 
 $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general';
 if ( empty( $tab ) ) {
@@ -8,13 +6,16 @@ if ( empty( $tab ) ) {
 }
 ?>
 
+<div class="wrap">
+	<h2>Pootle Page Builder</h2>
+	<?php settings_errors(); ?>
 
-	<ul id="page-builder-sections" class="subsubsub">
-		<li><a href="?page=page_builder&tab=general" class="tab <?php echo $tab == 'general' ? 'current' : '' ?> ">General</a> | </li>
-		<li><a href="?page=page_builder&tab=display" class="tab <?php echo $tab == 'display' ? 'current' : '' ?> ">Display</a> | </li>
-		<li><a href="?page=page_builder&tab=widgets" class="tab <?php echo $tab == 'widgets' ? 'current' : '' ?> ">Widget Selection</a> | </li>
-		<li><a href="?page=page_builder&tab=styling" class="tab <?php echo $tab == 'styling' ? 'current' : '' ?> ">Widget Styling</a></li>
-	</ul>
+	<h2 class="nav-tab-wrapper">
+		<a href="?page=page_builder&tab=general" class="nav-tab <?php echo $tab == 'general' ? 'nav-tab-active' : '' ?> ">General</a>
+		<a href="?page=page_builder&tab=display" class="nav-tab <?php echo $tab == 'display' ? 'nav-tab-active' : '' ?> ">Display</a>
+		<a href="?page=page_builder&tab=widgets" class="nav-tab <?php echo $tab == 'widgets' ? 'nav-tab-active' : '' ?> ">Widget Selection</a>
+		<a href="?page=page_builder&tab=styling" class="nav-tab <?php echo $tab == 'styling' ? 'nav-tab-active' : '' ?> ">Widget Styling</a>
+	</h2>
 
 	<div class="clear"></div>
 
@@ -32,9 +33,5 @@ if ( empty( $tab ) ) {
 		global $PP_PB_WF_Settings;
 		$PP_PB_WF_Settings->settings_screen();
 	}
-	?>
-
-
-<?php
-do_action( 'wf_screen_get_footer', 'woothemes', 'themes' );
 ?>
+</div>
