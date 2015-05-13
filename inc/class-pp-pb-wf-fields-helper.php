@@ -138,25 +138,15 @@ class PP_PB_WF_Fields_Helper {
 
 		$html = '';
 
-		$font_faces = wf_get_system_fonts();
-		$google_fonts = wf_get_google_fonts();
-		if ( 0 < count( $google_fonts ) ) {
-			$font_faces[''] = __( '-- Google WebFonts --', 'woothemes' );
-			$google_fonts_array = array();
-			foreach ( $google_fonts as $k => $v ) {
-				$google_fonts_array[$v['name']] = $v['name'];
-			}
-			asort( $google_fonts_array );
-			$font_faces = array_merge( $font_faces, $google_fonts_array );
-		}
+		global $pootle_page_font;
 
-		if ( 0 < count( $font_faces ) ) {
-			$test_cases = wf_get_system_fonts_test_cases();
+		if ( 0 < count( $pootle_page_font ) ) {
+			$test_cases = array();
 
 			$html .= '<select class="woo-typography woo-typography-font-face woo-typography-face" name="'. esc_attr( $key . '[face]' ) . '" id="'. esc_attr( $key . '_face' ) . '">' . "\n";
 
 			//Font Options for select
-			$html .= output_font_select_options( $font_faces, $test_cases, $value['face'] );
+			$html .= pootle_page_output_font_select_options( $pootle_page_font, $test_cases, $value['face'] );
 
 			$html .= '</select>' . "\n";
 		}
@@ -460,7 +450,6 @@ class PP_PB_WF_Fields_Helper {
 
 		$hour = $v['hour'];
 		$minute = $v['minute'];
-		// $second = $output[$option_array['id']]['second'];
 		$second = '00';
 
 		$day = substr( $date, 3, 2 );

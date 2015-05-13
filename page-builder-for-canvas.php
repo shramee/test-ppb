@@ -13,25 +13,49 @@ License: GPL version 3
 define( 'POOTLEPAGE_VERSION', '2.2.8' );
 define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 
-add_action( 'admin_init', 'pp_pb_check_for_conflict' );
+//Solving old version post types
+add_action( 'admin_init', 'pp_pb_version_check' );
+/**
+ * Checks if older version of Page Builder was being used on site
+ * Then runs compatibility functions accordingly
+ * @since 3.0.0
+ */
+function pp_pb_version_check( ) {
+
+	if ( ! POOTLEPAGE_VERSION == get_option( 'siteorigin_panels_version' ) ) {
+		update_option( 'siteorigin_panels_version', POOTLEPAGE_VERSION );
+		//No initial version means no need for compatibility updates
+		$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
+		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {
+			require 'inc/class-pootle-page-compatibility.php';
+
+			new Pootle_Page_Compatibility();
+
+		}
+	}
+
+}
+
+add_action( 'admin_init', 'pp_pb_version_check' );
 
 function pp_pb_check_for_conflict( ) {
 	if ( is_plugin_active( 'wx-pootle-text-widget/pootlepress-text-widget.php' ) ||
-		is_plugin_active( 'pootle-text-widget-master/pootlepress-text-widget.php' ) ) {
+	     is_plugin_active( 'pootle-text-widget-master/pootlepress-text-widget.php' ) ) {
 
 		$pluginFile =  __FILE__;
 		$plugin = plugin_basename( $pluginFile );
 		if ( is_plugin_active( $plugin ) ) {
 			deactivate_plugins( $plugin );
 			wp_die( "ERROR: <strong>Page Builder</strong> cannot be activated if Pootle Text Widget is also activated. " .
-				"Page Builder is unable to continue and has been deactivated. " .
-				"<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
+			        "Page Builder is unable to continue and has been deactivated. " .
+			        "<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
 		}
 	}
 }
 
 include plugin_dir_path( __FILE__ ) . 'widgets/basic.php';
 
+include plugin_dir_path( __FILE__ ) . 'inc/vars.php';
 include plugin_dir_path( __FILE__ ) . 'inc/options.php';
 include plugin_dir_path( __FILE__ ) . 'inc/revisions.php';
 include plugin_dir_path( __FILE__ ) . 'inc/copy.php';
@@ -315,13 +339,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		// Set up the row styles
 		wp_localize_script( 'so-panels-admin', 'panelsStyleFields', siteorigin_panels_style_get_fields( ) );
 
-		// we definitely need to use color picker
-		//if ( siteorigin_panels_style_is_using_color( ) ) {
-
-			wp_dequeue_script( "iris" );
-
-			wp_enqueue_script( "pp-pb-iris", plugin_dir_url( __FILE__ ) . '/js/iris.js', array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ) );
-			wp_enqueue_script( 'pp-pb-color-picker', plugin_dir_url( __FILE__ ) . '/js/color-picker-custom.js', array( 'pp-pb-iris' ) );
+			pootle_page_enqueue_color_picker();
 
 			wp_localize_script( 'pp-pb-color-picker', 'wpColorPickerL10n', array(
 				'clear' => __( 'Clear' ),
@@ -331,7 +349,6 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		   ) );
 
 			wp_enqueue_style( 'wp-color-picker' );
-		//}
 
 		// Render all the widget forms. A lot of widgets use this as a chance to enqueue their scripts
 		$original_post = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null; // Make sure widgets don't change the global post.
@@ -357,6 +374,26 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 add_action( 'admin_print_scripts-post-new.php', 'siteorigin_panels_admin_enqueue_scripts' );
 add_action( 'admin_print_scripts-post.php', 'siteorigin_panels_admin_enqueue_scripts' );
 add_action( 'admin_print_scripts-appearance_page_so_panels_home_page', 'siteorigin_panels_admin_enqueue_scripts' );
+
+function pootle_page_admin_enqueue_scripts(){
+	$screen = get_current_screen( );
+
+	if( 'settings_page_page_builder' != $screen->base ) { return; }
+
+	pootle_page_enqueue_color_picker();
+	wp_enqueue_script( 'ppb-settings-script', plugin_dir_url( __FILE__ ) . 'js/settings.js', array(  ) );
+	wp_enqueue_style( 'ppb-settings-styles', plugin_dir_url( __FILE__ ) . 'css/settings.css', array(  ) );
+
+}
+add_action( 'admin_enqueue_scripts', 'pootle_page_admin_enqueue_scripts' );
+
+function pootle_page_enqueue_color_picker(){
+
+	wp_dequeue_script( "iris" );
+	wp_enqueue_script( "pp-pb-iris", plugin_dir_url( __FILE__ ) . '/js/iris.js', array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ) );
+	wp_enqueue_script( 'pp-pb-color-picker', plugin_dir_url( __FILE__ ) . '/js/color-picker-custom.js', array( 'pp-pb-iris' ) );
+
+}
 
 /**
  * Enqueue the admin panel styles
@@ -536,22 +573,6 @@ function pp_get_default_widget_style( ) {
 	}
 	return $result;
 
-//	$result = array(
-//		'backgroundColor' => '',
-//		'borderWidth' => 0,
-//		'borderColor' => '',
-//		'paddingTop' => 0,
-//		'paddingBottom' => 0,
-//		'paddingLeft' => 0,
-//		'paddingRight' => 0,
-//		'marginTop' => 0,
-//		'marginBottom' => 0,
-//		'marginLeft' => 0,
-//		'marginRight' => 0,
-//		'borderRadius' => 0
-//   );
-//
-//	return $result;
 }
 
 /**
@@ -563,7 +584,7 @@ function siteorigin_panels_css( ) {
 	if ( !isset( $_GET['post'] ) || !isset( $_GET['ver'] ) ) return;
 
 	if ( $_GET['post'] == 'home' ) $panels_data = siteorigin_panels_get_home_page_data( );
-	else$panels_data = get_post_meta( $_GET['post'], 'panels_data', true );
+	else $panels_data = get_post_meta( $_GET['post'], 'panels_data', true );
 	$post_id = $_GET['post'];
 
 	header( "Content-type: text/css" );
@@ -611,12 +632,6 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 		if ( $gi != count( $panels_data['grids'] )-1 ) {
 			$css[1920]['margin-bottom: '.$panels_margin_bottom.'px'][] = '#pg-' . $post_id . '-' . $gi;
 		}
-
-		// do not set float, use inline-block instead
-//		if ( $cell_count > 1 ) {
-//			if ( empty( $css[1920]['float:left'] ) ) $css[1920]['float:left'] = array( );
-//			$css[1920]['float:left'][] = '#pg-' . $post_id . '-' . $gi . ' .panel-grid-cell';
-//		}
 
 		if ( $settings['responsive'] ) {
 			// Mobile Responsive
@@ -696,28 +711,6 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 
 	return $css_text;
 }
-
-/**
- * Prepare the panels data early so widgets can enqueue their scripts and styles for the header.
- */
-function siteorigin_panels_prepare_home_content( ) {
-	if ( siteorigin_panels_is_home( ) ) {
-		global $siteorigin_panels_cache;
-		if ( empty( $siteorigin_panels_cache ) ) $siteorigin_panels_cache = array( );
-		$siteorigin_panels_cache['home'] = siteorigin_panels_render( 'home' );
-	}
-}
-//add_action( 'wp_enqueue_scripts', 'siteorigin_panels_prepare_home_content', 11 );
-
-function siteorigin_panels_prepare_single_post_content( ) {
-	if ( is_singular( ) ) {
-		global $siteorigin_panels_cache;
-		if ( empty( $siteorigin_panels_cache[ get_the_ID( ) ] ) ) {
-			$siteorigin_panels_cache[ get_the_ID( ) ] = siteorigin_panels_render( get_the_ID( ) );
-		}
-	}
-}
-//add_action( 'wp_enqueue_scripts', 'siteorigin_panels_prepare_single_post_content' );
 
 /**
  * Filter the content of the panel, adding all the widgets.
@@ -869,7 +862,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		else{
 			// This is the CSS for the page layout.
 			wp_enqueue_style(
-				'siteorigin-panels-post-css-'.$post_id,
+				'siteorigin-panels-post-css-' . $post_id,
 				add_query_arg(
 					array(
 						'action' => 'siteorigin_panels_post_css',
@@ -1604,7 +1597,7 @@ add_filter( 'body_class', 'siteorigin_panels_body_class' );
  * Enqueue the required styles
  */
 function siteorigin_panels_enqueue_styles( ) {
-	wp_register_style( 'siteorigin-panels-front', plugin_dir_url( __FILE__ ) . 'css/front.css', array( ), POOTLEPAGE_VERSION );
+	wp_enqueue_style( 'siteorigin-panels-front', plugin_dir_url( __FILE__ ) . 'css/front.css', array( ), POOTLEPAGE_VERSION );
 }
 add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_styles', 1 );
 
@@ -1814,11 +1807,6 @@ function pp_pb_load_slider_js( $doLoad ) {
 add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js' );
 
 require_once( 'page-builder-for-canvas-functions.php' );
-// Remove "Canvas Extensions" section from Canvas theme setting page
-//add_action( 'init', 'check_main_heading', 0 );
-
-// no longer add the options using old method
-//add_filter( 'option_woo_template', 'pp_pb_add_theme_options' );
 
 function pp_pb_add_theme_options ( $options ) {
 

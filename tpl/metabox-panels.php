@@ -18,13 +18,10 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 			<button class="prebuilt-set add-button button"><?php _e( 'Add Layout', 'siteorigin-panels' ) ?></button>
 		<?php endif; ?>
 
-<!--		<button class="page-settings button">Page Settings</button>-->
-<!--		<button class="hide-elements button">Hide Elements</button>-->
 		<div class="clear"></div>
 	</div>
 	
 	<?php // The add new widget dialog ?>
-	
 	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget','siteorigin-panels' ) ?>" class="panels-admin-dialog">
 		<div id="panels-dialog-inner">
 			<div class="panels-text-filter">
@@ -141,10 +138,10 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	</div>
 
 	<?php // The add row dialog ?>
-	
+
 	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row','siteorigin-panels' ) ?>" class="panels-admin-dialog">
 		<p><label><strong><?php _e( 'Columns', 'siteorigin-panels' ) ?></strong></label></p>
-		<p><input type="text" id="grid-add-dialog-input" name="column_count" class="small-text" value="3" /></p>
+		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3" /></p>
 	</div>
 
 	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
@@ -198,6 +195,13 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<div id="widget-styles-dialog" data-title="Style Widget" class="panels-admin-dialog">
 		<?php pp_pb_widget_styles_dialog_form() ?>
+	</div>
+
+
+	<div id="content-loss-dialog" data-title="<?php esc_attr_e( 'Woah there tiger!','siteorigin-panels' ) ?>" data-button-i-know="<?php esc_attr_e( "I know what I'm doing",'siteorigin-panels' ) ?>" data-button-stop="<?php esc_attr_e( "No way, José",'siteorigin-panels' ) ?>" class="panels-admin-dialog">
+		<p>
+			<?php _e( 'Do you realise that changing to Page Builder for this page will make all your page content disappear forever? Why not create a new page instead?', 'siteorigin-panels' ) ?>
+		</p>
 	</div>
 
 	<?php

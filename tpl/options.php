@@ -16,8 +16,8 @@ if ( empty( $tab ) ) {
 		<a href="?page=page_builder&tab=widgets" class="nav-tab <?php echo $tab == 'widgets' ? 'nav-tab-active' : '' ?> ">Widget Selection</a>
 		<a href="?page=page_builder&tab=styling" class="nav-tab <?php echo $tab == 'styling' ? 'nav-tab-active' : '' ?> ">Widget Styling</a>
 	</h2>
-
 	<div class="clear"></div>
+	<div class="pootle-settings-page">
 
 	<?php
 	if ( $tab != 'styling' ) {
@@ -34,4 +34,5 @@ if ( empty( $tab ) ) {
 		$PP_PB_WF_Settings->settings_screen();
 	}
 ?>
+	</div>
 </div>

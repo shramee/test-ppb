@@ -351,28 +351,6 @@
 
             $('#widget-styles-dialog').dialog('open');
 
-            // This is so we can access the dialog (and its forms) later.
-            // this line cannot be used or will mess up panelsGetPanelData
-//                    panel.data('dialog', activeDialog);
-
-
-
-//            activeDialog.find('.widget-bg-color').val(styleData.backgroundColor);
-//            activeDialog.find('.widget-border-width').val(styleData.borderWidth);
-//            activeDialog.find('.widget-border-color').val(styleData.borderColor);
-////            activeDialog.find('.widget-padding-top').val(styleData.paddingTop);
-////            activeDialog.find('.widget-padding-bottom').val(styleData.paddingBottom);
-////            activeDialog.find('.widget-padding-left').val(styleData.paddingLeft);
-////            activeDialog.find('.widget-padding-right').val(styleData.paddingRight);
-//            activeDialog.find('.widget-padding-top-bottom').val(styleData.paddingTopBottom);
-//            activeDialog.find('.widget-padding-left-right').val(styleData.paddingLeftRight);
-////            activeDialog.find('.widget-margin-top').val(styleData.marginTop);
-////            activeDialog.find('.widget-margin-bottom').val(styleData.marginBottom);
-////            activeDialog.find('.widget-margin-left').val(styleData.marginLeft);
-////            activeDialog.find('.widget-margin-right').val(styleData.marginRight);
-//            activeDialog.find('.widget-rounded-corners').val(styleData.borderRadius);
-
-
             return false;
         });
 

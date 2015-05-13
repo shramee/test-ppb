@@ -63,14 +63,9 @@ class PP_PB_WF_Fields {
 
 		$this->_wrappers = array();
 
-		// Set default field wrappers.
-		$this->__set( 'wrapper_start', '<table class="form-table">' );
-		$this->__set( 'wrapper_end', '</table>' );
-
 		$this->protected_get_set_allowed = array(
 			'has_tabs',
 			'token',
-			'wrapper_start',
 			'wrapper_end',
 			'assets_url',
 			'extra_hidden_fields',
@@ -110,12 +105,11 @@ class PP_PB_WF_Fields {
 	public function __set ( $key, $value ) {
 
 		if ( 'assets_url' == $key ) {
+
 			$this->_assets_url = esc_url( $value );
 
-		} elseif ( in_array( $key, array( 'wrapper_start', 'wrapper_end' ) ) ) {
-			$this->_wrappers[ $key ] = $value;
-
 		} elseif ( in_array( $key, $this->protected_get_set_allowed ) ) {
+
 			$_key = '_' . $key;
 			
 			$this->$_key = $value;
@@ -135,10 +129,6 @@ class PP_PB_WF_Fields {
 		if ( in_array( $key, $this->protected_get_set_allowed ) ) {
 
 			$_key = '_' . $key;
-
-			if ( in_array( $key, array( 'wrapper_start', 'wrapper_end' ) ) ) {
-				return $this->_wrappers[ $_key ];
-			}
 
 			return $this->$_key;
 		}
@@ -271,14 +261,13 @@ class PP_PB_WF_Fields {
 		$html = '';
 		$current_section = '';
 
-			// Grab the key for the first section, using a short loop.
-			if ( 0 < count( $this->_sections ) ) {
-				foreach ( $this->_sections as $k => $v ) {
-					$current_section = $k;
-					break;
-				}
+		// Grab the key for the first section, using a short loop.
+		if ( 0 < count( $this->_sections ) ) {
+			foreach ( $this->_sections as $k => $v ) {
+				$current_section = $k;
+				break;
 			}
-//		}
+		}
 
 		if ( isset( $this->_sections[$current_section] ) ) {
 			$html .= $this->render_single_section( $current_section, $this->_sections[$current_section] );
@@ -303,32 +292,34 @@ class PP_PB_WF_Fields {
 		$fields = $this->helper->_get_fields_by_section( $key );
 
 		$html = '';
-		$html .= '<div id="' . esc_attr( $key ) . '" class="settings-section">' . "\n";
-
 		if ( isset( $args['name'] ) ) {
 			// PP PB Modified
 			if ( $heading_level == 2 ) {
-				$html .= '<h' . intval( $heading_level ) . ' class="section-title">' . $args['name'] . '</h' . intval( $heading_level ) . '>' . "\n";
+				$html .= '<div id="' . esc_attr( $key ) . '" class="settings-section">' . "\n";
+				$html .= '<h3>' . $args['name'] . '</h3>' . "\n";
 			}
 		}
 
-		$html .= $this->__get( 'wrapper_start' );
-
 		if ( 0 < count( $fields ) ) {
+			$html .= '<table class="form-table">';
 			$html .= $this->render_fields( $fields );
+			$html .= "</table>\n";
 		}
-
-		$html .= $this->__get( 'wrapper_end' );
 
 		// Cater for child sections.
 
 		if ( isset( $args['children'] ) && is_array( $args['children'] ) && 0 < count( $args['children'] ) ) {
 			foreach ( $args['children'] as $k => $v ) {
-				$html .= $this->render_single_section( $k, $v, 3 );
+				$html .= $this->render_single_section( $k, $v, 3 ) . "\n";
 			}
 		}
 
-		$html .= '</div><!--/#' . esc_attr( $key ) . ' .settings-section-->' . "\n";
+		if ( isset( $args['name'] ) ) {
+			// PP PB Modified
+			if ( $heading_level == 2 ) {
+				$html .= "</div>\n";
+			}
+		}
 
 		return $html;
 	} // End render_single_section()
@@ -406,6 +397,19 @@ class PP_PB_WF_Fields {
 	 */
 	protected function render_field_text ( $key, $args ) {
 		$html = '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="40" type="text" value="' . esc_attr( $this->get_value( $key, $args['std'] ) ) . '" />' . "\n";
+		return $html;
+	} // End render_field_text()
+
+	/**
+	 * Render HTML markup for the "text" field type.
+	 * @access  protected
+	 * @since   6.0.0
+	 * @param   string $key  The unique ID of this field.
+	 * @param   array $args  Arguments used to construct this field.
+	 * @return  string	   HTML markup for the field.
+	 */
+	protected function render_field_number ( $key, $args ) {
+		$html = '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="40" type="number" value="' . esc_attr( $this->get_value( $key, $args['std'] ) ) . '" />' . "\n";
 		return $html;
 	} // End render_field_text()
 

@@ -521,7 +521,7 @@ function pootlepage_test_typeface_against_test_case ( $face, $test_case ) {
  *
  * @return string
  */
-function output_font_select_options( $font_faces, $test_cases, $value ){
+function pootle_page_output_font_select_options( $font_faces, $test_cases, $value ){
 
 	$html = '';
 	foreach ( $font_faces as $k => $v ) {
