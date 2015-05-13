@@ -78,6 +78,13 @@ class Pootle_Page_Compatibility {
 				'post_content' => $panel_style . $panel_content,
 			);
 			wp_update_post( $updated_post );
+
+			$notices = array();
+
+			$notices['settings-updated'] = array( 'type' => 'update-nag', 'message' => __( "Now we only support page post types, however for your convenience we have put all your existing page builder using posts layout in the content.", 'woothemes' ) );
+
+			update_option( 'pootle_page_admin_notices', $notices );
+
 		}
 
 	}

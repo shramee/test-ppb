@@ -112,24 +112,13 @@ function siteorigin_panels_options_init() {
 }
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
 
-add_action( 'init', 'pp_pb_check_for_setting_page' );
+add_action( 'admin_notices', 'pp_pb_admin_notices' );
 
-function pp_pb_check_for_setting_page() {
-	if ( isset( $_REQUEST['page'] ) && $_REQUEST['page'] == 'page_builder' ) {
-		add_action( 'admin_notices', 'pp_pb_admin_notices' );
-	}
-}
+function pp_pb_admin_notices() {
 
-function pp_pb_admin_notices()
-{
-	$notices = array();
+	$notices = get_option( 'pootle_page_admin_notices', array() );
 
-	if ( isset( $_GET['page'] ) && 'page_builder' == $_GET['page'] &&
-		( ( isset( $_GET['updated'] ) && 'true' == $_GET['updated'] ) ||
-		( isset( $_GET['settings-updated'] ) && 'true' == $_GET['settings-updated'] ) )
-	) {
-		$notices['settings-updated'] = array( 'type' => 'updated', 'message' => __( 'Settings saved.', 'woothemes' ) );
-	}
+	delete_option( 'pootle_page_admin_notices' );
 
 	if ( 0 < count( $notices ) ) {
 		$html = '';
@@ -138,6 +127,7 @@ function pp_pb_admin_notices()
 		}
 		echo $html;
 	}
+
 }
 
 
