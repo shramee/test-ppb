@@ -12,10 +12,10 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	
 	<div id="add-to-panels">
 
-		<button class="grid-add add-button button"><?php _e( 'Add Row', 'siteorigin-panels' ) ?></button>
+		<button class="grid-add add-button ed_button button button-small"><?php _e( 'Add Row', 'siteorigin-panels' ) ?></button>
 
 		<?php if ( ! empty( $layouts ) ) : ?>
-			<button class="prebuilt-set add-button button"><?php _e( 'Add Layout', 'siteorigin-panels' ) ?></button>
+			<button class="prebuilt-set add-button ed_button button button-small"><?php _e( 'Use Existing Page Layout', 'siteorigin-panels' ) ?></button>
 		<?php endif; ?>
 
 		<div class="clear"></div>
@@ -203,6 +203,12 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 			<?php _e( 'Slow down tiger! Do you realise that changing to Page Builder for this page will make all your page content disappear forever?', 'siteorigin-panels' ) ?>
 			<br><br>
 			<?php _e( 'Why not create a new page instead?', 'siteorigin-panels' ) ?>
+		</p>
+	</div>
+
+	<div id="layout-loss-dialog" data-title="<?php esc_attr_e( 'Changing to the default editor','siteorigin-panels' ) ?>" data-button-i-know="<?php esc_attr_e( "I know what I'm doing",'siteorigin-panels' ) ?>" data-button-stop="<?php esc_attr_e( "I love Page Builder, keep me here",'siteorigin-panels' ) ?>" class="panels-admin-dialog">
+		<p>
+			<?php _e( "Ummm... if you go back to the default editor you'll loose all your content. Are you sure you want to loose all that hard work you've done?", 'siteorigin-panels' ) ?>
 		</p>
 	</div>
 

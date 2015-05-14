@@ -164,18 +164,19 @@
         panel.panelsSetPanelTitle( data );
 
         // Add the action buttons
-        panel.find('.title .actions')
+        panel
+            .find('.title .actions')
             .append(
-                $('<a>' + panels.i10n.buttons.edit + '<a>' ).addClass('edit' )
+                $('<a>' + panels.i10n.buttons.delete + '<a>' ).addClass('delete')
             )
             .append(
                 $('<a>' + panels.i10n.buttons.duplicate + '<a>' ).addClass('duplicate' )
             )
+            //.append(
+            //    $('<a>' + panels.i10n.buttons.style + '<a>' ).addClass('style' )
+            //)
             .append(
-                $('<a>' + panels.i10n.buttons.style + '<a>' ).addClass('style' )
-            )
-            .append(
-                $('<a>' + panels.i10n.buttons.delete + '<a>' ).addClass('delete')
+                $('<a>' + panels.i10n.buttons.edit + '<a>' ).addClass('edit' )
             );
 
         panels.setupPanelButtons(panel);
@@ -213,7 +214,9 @@
 
                 // Change the title of the panel
                 activeDialog.dialog( 'close' );
-            }
+            };
+
+            window.$currentPanel = $(this).parents( '.panel' );
 
             // Create a dialog for this form
             activeDialog = $( '<div class="panel-dialog dialog-form"></div>' )
@@ -222,7 +225,7 @@
                 .addClass( 'widget-dialog-' + type.toLowerCase() )
                 .dialog( {
                     dialogClass: 'panels-admin-dialog',
-                    autoOpen:    true,
+                    autoOpen:    false,
                     modal:       false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
                     draggable:   false,
                     resizable:   false,
@@ -238,12 +241,16 @@
 
                         var overlay = $('<div class="siteorigin-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                         $(this).data( 'overlay', overlay ).closest( '.ui-dialog' ).before( overlay );
+
                     },
                     close: function(){
 
                         if(!doneClicked) {
                             $( this ).trigger( 'panelsdone', $currentPanel, activeDialog );
                         }
+
+                        //Set the widget styles
+                        panels.pootlePageSetWidgetStyles( $('#pootle-style-tab') );
 
                         // Destroy the dialog and remove it
                         $(this).data('overlay').remove();
@@ -298,7 +305,28 @@
                         result = '';
                     }
 
-                    activeDialog.html(result).dialog("option", "position", "center");
+                    activeDialog
+                        .html(result)
+                        .dialog("option", "position", { my: "center", at: "center", of: window })
+                        .dialog("open");
+
+                    $('#pootle-content-module-tabs')
+                        .tabs({
+                            enable: function (event, ui) {
+                                $(window).resize();
+                            }
+                        })
+                        .find('input').each( function () {
+                            $t = $(this);
+                            if ( $t.attr( 'data-style-field-type' ) == 'color' ) {
+                                $t.wpColorPicker();
+                            }
+                        });
+
+                    //Get style data in fields
+                    panels.pootlePageGetWidgetStyles( $('#pootle-style-tab') );
+
+                    $(window).resize();
 
                     // This is to refresh the dialog positions
                     $( window ).resize();
@@ -312,7 +340,7 @@
             );
 
             return false;
-        })
+        });
 
         $panel.find('> .panel-wrapper > .title > .actions > .duplicate').click(function(){
 
@@ -446,6 +474,9 @@
      * @param bool animate Should we animate the panel
      */
     panels.addPanel = function(panel, container, position, animate){
+
+        console.log(panel);
+
         if(container == null) container = $( '#panels-container .cell.cell-selected .panels-container' ).eq(0);
         if(container.length == 0) container = $( '#panels-container .cell .panels-container' ).eq(0);
         if(container.length == 0) {
@@ -469,7 +500,9 @@
             if(panels.animations)
                 $( '#panels-container .panel.new-panel' )
                     .hide()
-                    .slideDown( 450 , function(){ panel.find('a.edit').click() } )
+                    .slideDown( 450 , function(){
+                        panel.find('a.edit').click();
+                    } )
                     .removeClass( 'new-panel' );
             else {
                 $( '#panels-container .panel.new-panel').show().removeClass( 'new-panel' );
@@ -562,6 +595,62 @@
         $( '#panels-container .grid-container' ).each( function () {
             $( this ).panelsResizeCells();
         } );
+    }
+
+    panels.pootlePageGetWidgetStyles = function ( $styleForm ) {
+        var $styleDataField = window.$currentPanel.find('input[name$="[style]"]');
+        var json = $styleDataField.val();
+        var styleData = JSON.parse(json);
+
+        // by default, set checkbox to unchecked,
+        // so when a widget has no saved checkbox setting, and widget styling dialog is display,
+        // it will be set to unchecked,
+        // this is to set hide widget title checkbox
+        $styleForm.find('input[type=checkbox]').prop('checked', false);
+
+        // from style data in hidden field, set the widget style dialog fields with data
+        for (var key in styleData) {
+            if (styleData.hasOwnProperty(key)) {
+
+                var $field = $styleForm.find('input[dialog-field="' + key + '"]');
+
+                if ($field.attr('data-style-field-type') == "color") {
+                    $field.wpColorPicker('color', styleData[key]);
+                } else if ($field.attr('data-style-field-type') == "checkbox") {
+                    if (styleData[key] == $field.val()) {
+                        $field.prop('checked', true);
+                    } else {
+                        $field.prop('checked', false);
+                    }
+                } else {
+                    $field.val(styleData[key]);
+                }
+
+            }
+        }
+
+    }
+
+    panels.pootlePageSetWidgetStyles = function ( $styleForm ) {
+        var $currentPanel = window.$currentPanel;
+
+        // from values in dialog fields, set style data into hidden fields
+        var styleData = {};
+        $styleForm.find('input[dialog-field]').each(function () {
+            if ($(this).attr('type') == 'checkbox') {
+                // if the field is checkbox, only store value if it is checked
+                if ($(this).prop('checked')) {
+                    var key = $(this).attr('dialog-field');
+                    styleData[key] = $(this).val();
+                }
+            } else {
+                var key = $(this).attr('dialog-field');
+                styleData[key] = $(this).val();
+            }
+
+        });
+
+        $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
     }
 
 } )( jQuery );

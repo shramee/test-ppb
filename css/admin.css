@@ -1069,11 +1069,15 @@ button.wp-switch-editor {
     margin-bottom: 0;
 }
 
-.grid-add.button, .panels-add.button, .prebuilt-set.button
+#add-to-panels .button.button-small.add-button
 {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin-top: 1px !important;
+    font-size: 12px;
+    line-height: 24px;
+    height: 26px;
+    font-weight: normal;
 }
 
 #panels-container .controls .row-button
@@ -1121,6 +1125,7 @@ button.wp-switch-editor {
     font-size: 26px;
 }
 
+/* Main module dialog styles */
 #so-panels-panels
 {
     margin-top: 0;
@@ -1131,6 +1136,24 @@ button.wp-switch-editor {
 {
     text-align: right;
     padding: 0 12px 10px;
+}
+
+div#pootle-content-module-tabs li a {
+    margin: 0;
+    display: block;
+    border: 1px solid #aaa;
+}
+
+div#pootle-content-module-tabs li.ui-tabs-active a{
+    border-bottom: 1px solid #fff;
+    background:#fff;
+}
+
+div#pootle-content-module-tabs li.ui-tabs-active a:focus{
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: 0;
+    color: #23282d;
 }
 
 #so-panels-panels .add-row-button
@@ -1149,12 +1172,14 @@ button.wp-switch-editor {
     font-size: 16px;
 }
 
-#widget-styles-dialog .field
+#so-panels-panels .field,
+#pootle-style-tab .field
 {
     margin-bottom: 15px;
 }
 
-#widget-styles-dialog .field > label
+#so-panels-panels .field > label,
+#pootle-style-tab .field > label
 {
     width: 200px;
     display: inline-block;
@@ -1162,20 +1187,42 @@ button.wp-switch-editor {
     font-weight: bold;
 }
 
-#widget-styles-dialog .field > span > .wp-picker-container
+#so-panels-panels .field > span > .wp-picker-container,
+#pootle-style-tab .field > span > .wp-picker-container
 {
     margin: 0;
     vertical-align: middle;
 }
 
-#widget-styles-dialog .field > span > .wp-picker-container > .wp-color-result
+#so-panels-panels .field > span > .wp-picker-container > .wp-color-result,
+#pootle-style-tab .field > span > .wp-picker-container > .wp-color-result
 {
     margin: 0;
 }
 
-#widget-styles-dialog .field > span > input
+#so-panels-panels .field > span > input,
+#pootle-style-tab .field > span > input
 {
     vertical-align: middle;
+}
+
+a.wp-switch-editor {
+    text-decoration: none;
+    float: none;
+}
+
+#pootle-content-module-tabs ul {
+    display: block;
+}
+#pootle-content-module-tabs li {
+    display: inline-block;
+    margin: 0;
+}
+
+
+.pootle-content-module {
+    border: 1px solid #aaa;
+    padding: 16px;
 }
 
 .widget-dialog-siteorigin_panels_widgets_postloop > p > label[for]

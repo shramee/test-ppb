@@ -159,8 +159,7 @@
         // setup add widget icons click handler
         container.find('.cell-wrapper .add-widget-button').each(function () {
            $(this).click(function () {
-               $('#panels-text-filter-input' ).val('').keyup();
-               $( '#panels-dialog' ).dialog( 'open' );
+               panels.addContentModule();
            });
         });
 
@@ -256,8 +255,7 @@
             // setup add widget icons click handler
             $newGridContainer.find('.cell-wrapper .add-widget-button').each(function () {
                 $(this).click(function () {
-                    $('#panels-text-filter-input' ).val('').keyup();
-                    $( '#panels-dialog' ).dialog( 'open' );
+                    panels.addContentModule();
                 });
             });
 
@@ -565,6 +563,16 @@
      */
     panels.clearGrids = function(){
         $('#panels-container .grid-container' ).remove();
+    }
+
+    /**
+     * Add the content module in the cell
+     */
+    panels.addContentModule = function () {
+
+        var panel = $('#panels-dialog').panelsCreatePanel( 'Pootle_Text_Widget' );
+        panels.addPanel(panel, null, null, true);
+
     }
     
 })(jQuery);

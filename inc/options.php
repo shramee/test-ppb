@@ -28,20 +28,20 @@ function siteorigin_panels_setting( $key = '' ) {
 
 
 		$settings = wp_parse_args( $settings, array(
-			'home-page' => false,																								// Is the home page supported
-			'home-page-default' => false,																						// What's the default layout for the home page?
-			'home-template' => 'home-panels.php',																				// The file used to render a home page.
-			'post-types' => get_option( 'pootle_page_builder_post_types', array( 'page' ) ),									// Post types that can be edited using panels.
+			'home-page' => false,																					    // Is the home page supported
+			'home-page-default' => false,																			    // What's the default layout for the home page?
+			'home-template' => 'home-panels.php',																	    // The file used to render a home page.
+			'post-types' => get_option( 'pootle_page_builder_post_types', array( 'page' ) ),						    // Post types that can be edited using panels.
 
-			'responsive' => ! isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1',					// Should we use a responsive layout
-			'mobile-width' => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],			// What is considered a mobile width?
+			'responsive' => ! isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1', // Should we use a responsive layout
+			'mobile-width' => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],   // What is considered a mobile width?
 
-			'margin-bottom' => ! isset( $display_settings['margin-bottom'] ) ? 30 : $display_settings['margin-bottom'],			// Bottom margin of a cell
-			'margin-sides' => ! isset( $display_settings['margin-sides'] ) ? 30 : $display_settings['margin-sides'],				// Spacing between 2 cells
-			'affiliate-id' => false,																							// Set your affiliate ID
-			'copy-content' => ! isset( $generalSettings['copy-content'] ) ? true : $generalSettings['copy-content'] == '1',			// Should we copy across content
-			'animations' => ! isset( $generalSettings['animations'] ) ? true : $generalSettings['animations'] == '1',					// Do we need animations
-			'inline-css' => ! isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'] == '1',					// How to display CSS
+			'margin-bottom' => ! isset( $display_settings['margin-bottom'] ) ? 30 : $display_settings['margin-bottom'], // Bottom margin of a cell
+			'margin-sides' => ! isset( $display_settings['margin-sides'] ) ? 30 : $display_settings['margin-sides'],    // Spacing between 2 cells
+			'affiliate-id' => false,																				    // Set your affiliate ID
+			'copy-content' => $generalSettings['copy-content'] == '1',			                                        // Should we copy across content
+			'animations' => ! isset( $generalSettings['animations'] ) ? true : $generalSettings['animations'] == '1',   // Do we need animations
+			'inline-css' => ! isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'] == '1', // How to display CSS
 			'remove-list-padding' => ! isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'] == '1',	// Remove left padding on list
 		 ) );
 

@@ -270,7 +270,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 
 		wp_enqueue_script( 'so-panels-admin', plugin_dir_url( __FILE__ ) . 'js/panels.admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-sticky-admin-panels', plugin_dir_url( __FILE__ ) . 'js/sticky.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
-		wp_enqueue_script( 'so-panels-admin-panels', plugin_dir_url( __FILE__ ) . 'js/panels.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'so-panels-admin-panels', plugin_dir_url( __FILE__ ) . 'js/panels.admin.panels.js', array( 'jquery', 'jquery-ui-tabs' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-grid', plugin_dir_url( __FILE__ ) . 'js/panels.admin.grid.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-prebuilt', plugin_dir_url( __FILE__ ) . 'js/panels.admin.prebuilt.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-tooltip', plugin_dir_url( __FILE__ ) . 'js/panels.admin.tooltip.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
@@ -1746,10 +1746,30 @@ add_action( 'wp_ajax_so_panels_prebuilt', 'siteorigin_panels_ajax_action_prebuil
  */
 function siteorigin_panels_ajax_widget_form( ) {
 	$request = array_map( 'stripslashes_deep', $_REQUEST );
-	if ( empty( $request['widget'] ) ) exit( );
 
-	echo siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
-	exit( );
+	if ( empty( $request['widget'] ) ) exit();
+
+	?>
+	<div id="pootle-content-module-tabs">
+		<ul>
+			<li><a class="wp-switch-editor" href="#pootle-content-tab">Editor</a></li>
+			<li><a class="wp-switch-editor" href="#pootle-style-tab">Style</a></li>
+		</ul>
+		<div id="pootle-content-tab" class="pootle-content-module tab-contents">
+			<?php
+			echo siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
+			?>
+		</div>
+		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
+			<?php
+			pp_pb_widget_styles_dialog_form();
+			?>
+		</div>
+	</div>
+	<?php
+
+
+	exit();
 }
 add_action( 'wp_ajax_so_panels_widget_form', 'siteorigin_panels_ajax_widget_form' );
 

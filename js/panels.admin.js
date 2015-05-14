@@ -241,15 +241,14 @@ jQuery( function ( $ ) {
                 }
             },
             close: function(){
+                $(this).data('overlay').remove();
+
                 var $currentPanel = window.$currentPanel;
                 if(!doneClicked) {
                     $( this ).trigger( 'panelsdone', $currentPanel,  $('#widget-styles-dialog') );
                 }
 
-                //
                 // from values in dialog fields, set style data into hidden fields
-                //
-
                 var styleData = {};
                 $(this).find('input[dialog-field]').each(function () {
                     if ($(this).attr('type') == 'checkbox') {
@@ -282,7 +281,6 @@ jQuery( function ( $ ) {
                 $currentPanel.find('input[name$="[data]"]').val(JSON.stringify(allData));
 
                 // Destroy the dialog and remove it
-                $(this).data('overlay').remove();
                 activeDialog = undefined;
             },
             buttons: dialogButtons
@@ -406,17 +404,16 @@ jQuery( function ( $ ) {
         });
     ;
 
-    // Create the dialog for content loss warning
-    $contentLossDialog = $( '#content-loss-dialog' );
+    // Dialog for content loss warning
+    $contentSwitchDialog = $( '#content-loss-dialog' );
 
-    $contentLossDialog
-        .show()
+    $contentSwitchDialog
         .dialog( {
             dialogClass: 'panels-admin-dialog',
             autoOpen: false,
             width: 500,
             modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
-            title: $contentLossDialog.attr( 'data-title' ),
+            title: $contentSwitchDialog.attr( 'data-title' ),
             open: function () {
                 $( this ).find( 'input' ).val( 2 ).select();
                 var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
@@ -427,7 +424,7 @@ jQuery( function ( $ ) {
             },
             buttons: [
                 {
-                    text : $contentLossDialog.attr('data-button-i-know'),
+                    text : $contentSwitchDialog.attr('data-button-i-know'),
                     class : 'button i-know',
                     click : function(){
                         activate_panels();
@@ -435,25 +432,54 @@ jQuery( function ( $ ) {
                     }
                 },
                 {
-                    text : $contentLossDialog.attr('data-button-stop'),
+                    text : $contentSwitchDialog.attr('data-button-stop'),
                     class : 'button pootle stop',
                     click : function(){
                         $( this ).dialog( "close" );
                     }
                 }
             ]
-        })
-        .on('keydown', function(e) {
-            if (e.keyCode == $.ui.keyCode.ENTER) {
-                // This is the same as clicking the add button
-                gridAddDialogButtons[panels.i10n.buttons.add]();
-                setTimeout(function(){$( '#grid-add-dialog' ).dialog( 'close' );}, 1)
-            }
-            else if (e.keyCode === $.ui.keyCode.ESCAPE) {
-                $( '#grid-add-dialog' ).dialog( 'close' );
-            }
         });
-    ;
+
+    // Dialog for page builder layout loss warning
+    $contentSwitchDialog = $( '#layout-loss-dialog' );
+
+    $contentSwitchDialog
+        .dialog( {
+            dialogClass: 'panels-admin-dialog',
+            autoOpen: false,
+            width: 500,
+            modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
+            title: $contentSwitchDialog.attr( 'data-title' ),
+            open: function () {
+                $( this ).find( 'input' ).val( 2 ).select();
+                var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
+            },
+            close : function(){
+                $(this).data('overlay').remove();
+            },
+            buttons: [
+                {
+                    text : $contentSwitchDialog.attr('data-button-i-know'),
+                    class : 'button i-know',
+                    click : function(){
+
+                        $( '.switch-tmce').click();
+                        $( '#wp-content-wrap').addClass('tmce-active');
+
+                        $( this ).dialog( "close" );
+                    }
+                },
+                {
+                    text : $contentSwitchDialog.attr('data-button-stop'),
+                    class : 'button pootle stop',
+                    click : function(){
+                        $( this ).dialog( "close" );
+                    }
+                }
+            ]
+        });
 
     // Create the main add widgets dialog
     $( '#panels-dialog' ).show()
@@ -555,6 +581,7 @@ jQuery( function ( $ ) {
     // Handle adding a new panel
     $( '#panels-dialog .panel-type' ).click( function () {
         var panel = $('#panels-dialog').panelsCreatePanel( $( this ).attr('data-class') );
+
         panels.addPanel(panel, null, null, true);
 
         // Close the add panel dialog
@@ -672,8 +699,7 @@ jQuery( function ( $ ) {
     });
 
     $('#content-tmce-editor' ).click(function(){
-        $( '.switch-tmce').click();
-        $( '#wp-content-wrap').addClass('tmce-active');
+        $('#layout-loss-dialog').dialog('open');
     });
 
     // Click again after the panels have been set up
