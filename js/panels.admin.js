@@ -585,12 +585,7 @@ jQuery( function ( $ ) {
         $( '<a id="content-panels" class="button pootle switch-panels">Page Builder</a>' )
             .click( function () {
 
-                console.log(panelsData);
-
                 if ( ( $('.wp-editor-area').val().replace(/(<([^>]+)>)/ig,"") || $('#tinymce').html() ) && ( typeof panelsData == 'undefined' || panelsData.grids.length == 0 ) ) {
-
-                    console.log( $('.wp-editor-area').val().replace(/(<([^>]+)>)/ig,"") );
-                    console.log( $('#tinymce').html() )
 
                     //Warning for content loss
                     $('#content-loss-dialog').dialog('open');
