@@ -585,7 +585,9 @@ jQuery( function ( $ ) {
         $( '<a id="content-panels" class="button pootle switch-panels">Page Builder</a>' )
             .click( function () {
 
-                if ( $('.wp-editor-area').val().replace(/(<([^>]+)>)/ig,"") || $('#tinymce').html() ) {
+                console.log(panelsData);
+
+                if ( ( $('.wp-editor-area').val().replace(/(<([^>]+)>)/ig,"") || $('#tinymce').html() ) && ( typeof panelsData == 'undefined' || panelsData.grids.length == 0 ) ) {
 
                     console.log( $('.wp-editor-area').val().replace(/(<([^>]+)>)/ig,"") );
                     console.log( $('#tinymce').html() )

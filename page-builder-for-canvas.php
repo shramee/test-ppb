@@ -3,14 +3,14 @@
 Plugin Name: Pootle Page Builder
 Plugin URI: http://pootlepress.com/
 Description: A page builder for WooThemes Canvas.
-Version: 2.9.9-beta
+Version: 2.9.9
 Author: PootlePress
 Author URI: http://pootlepress.com/
 License: GPL version 3
 */
 
 
-define( 'POOTLEPAGE_VERSION', '2.2.8' );
+define( 'POOTLEPAGE_VERSION', '2.9.9' );
 define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 
 //Solving old version post types
@@ -22,8 +22,8 @@ add_action( 'admin_init', 'pp_pb_version_check' );
  */
 function pp_pb_version_check( ) {
 
-	if ( ! POOTLEPAGE_VERSION == get_option( 'siteorigin_panels_version' ) ) {
-		update_option( 'siteorigin_panels_version', POOTLEPAGE_VERSION );
+	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' ) ) {
+		update_option( 'pootle_page_builder_version', POOTLEPAGE_VERSION );
 		//No initial version means no need for compatibility updates
 		$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
 		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {

@@ -31,7 +31,7 @@ function siteorigin_panels_setting( $key = '' ) {
 			'home-page' => false,																								// Is the home page supported
 			'home-page-default' => false,																						// What's the default layout for the home page?
 			'home-template' => 'home-panels.php',																				// The file used to render a home page.
-			'post-types' => get_option( 'siteorigin_panels_post_types', array( 'page' ) ),									// Post types that can be edited using panels.
+			'post-types' => get_option( 'pootle_page_builder_post_types', array( 'page' ) ),									// Post types that can be edited using panels.
 
 			'responsive' => ! isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1',					// Should we use a responsive layout
 			'mobile-width' => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],			// What is considered a mobile width?
