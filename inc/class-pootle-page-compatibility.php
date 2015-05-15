@@ -5,13 +5,13 @@
  * Date: 13/5/15
  * Time: 6:10 PM
  */
-
 /**
  * Takes care of old versions of PootlePage
  *
  * Does following
  * *1 Puts the page builder contents of all non-Page post types in their contents
  * *2 Gives user message that 1 is done
+ * *3 Supports top_border_height, top_border, bottom_border_height and bottom_border row styles
  *
  * Class Pootle_Page_Compatibility
  */
@@ -19,26 +19,32 @@ class Pootle_Page_Compatibility {
 
 	public $old_page_builder_posts = array();
 
+	public $unsupported_page_builder_posts = array();
+
 	/**
 	 * Magic __construct
+	 * @since 3.0.0
 	 */
 	public function __construct( ){
 
 		$this->get_old_page_builder_posts();
 
-		$this->put_page_builder_stuff_in_content();
+		//$this->put_page_builder_stuff_in_content();
+		$this->unsupported_row_style_fields_in_style();
 
 	}
 
 	/**
-	 * Gets non page posts with page builder contents
+	 * Gets old posts with page builder contents
+	 * Gets unsupported post types using earlier page builders
+	 * @since 3.0.0
 	 */
 	private function get_old_page_builder_posts() {
 
 		$post_types = get_post_types();
 
 		foreach ( array( 'revision', 'page', 'nav_menu_item', ) as $post_type ) {
-			unset( $post_types[ $post_type ] );
+			//unset( $post_types[ $post_type ] );
 		}
 
 		$args = array(
@@ -54,7 +60,10 @@ class Pootle_Page_Compatibility {
 
 		foreach ( $query->posts as $post ) {
 
-			$this->old_page_builder_posts[] =  $post->ID;
+			$this->old_page_builder_posts[ $post->post_type ][] =  $post->ID;
+
+			if( ! in_array( $post->post_type, array( 'revision', 'page', 'nav_menu_item', ) ) )
+			$this->unsupported_page_builder_posts[] =  $post->ID;
 
 		}
 
@@ -62,12 +71,15 @@ class Pootle_Page_Compatibility {
 
 	/**
 	 * Puts page builder stuff in post content for unsupported post types
+	 * @since 3.0.0
 	 */
 	private function put_page_builder_stuff_in_content() {
 
+		return;
+
 		global $siteorigin_panels_inline_css;
 
-		foreach ( $this->old_page_builder_posts as $id ) {
+		foreach ( $this->unsupported_page_builder_posts as $id ) {
 
 			$panel_content = siteorigin_panels_render( $id );
 
@@ -86,6 +98,77 @@ class Pootle_Page_Compatibility {
 			update_option( 'pootle_page_admin_notices', $notices );
 
 		}
+
+	}
+
+	/**
+	 * Sets unsupported styles in style field
+	 * @since 3.0.0
+	 */
+	private function unsupported_row_style_fields_in_style() {
+
+		//Get old pages ( we don't support other post types since v3.0.0 )
+		$old_pages = $this->old_page_builder_posts['page'];
+
+		foreach ( $old_pages as $id ) {
+
+			//Get panels data
+			$panels_data = get_post_meta( $id, 'panels_data', true );
+
+			//Loop through the rows
+			foreach ( $panels_data['grids'] as $i => $row ) {
+
+				//Get new style format for rows
+				$panels_data['grids'][ $i ]['style'] = $this->new_row_style_format( $row );
+
+			}
+
+			//Finally update the post meta with new modified panels data
+			update_post_meta( $id, 'panels_data', $panels_data );
+
+		}
+
+	}
+
+	/**
+	 * Returns the new style format from old
+	 *
+	 * @param $row
+	 * @param $i
+	 * @since 3.0.0
+	 * @return array New styles format
+	 */
+	private function new_row_style_format( $row ) {
+
+		/** @var array $panels_row_styles */
+		$panels_row_styles = $row['style'];
+
+		/** @var array $unsupported_styles */
+		$unsupported_styles = array(
+			'top_border_height',
+			'top_border',
+			'bottom_border_height',
+			'bottom_border',
+		);
+
+		/** @var string $styles to put in new Inline Styles field */
+		$styles = '';
+
+		/** @var array $styles_array init new styles array */
+		$styles_array = array();
+
+		foreach ( $panels_row_styles as $k => $v ) {
+			if ( in_array( $k, $unsupported_styles ) ) {
+				$styles .= $k . ' : ' . $v . ";\n ";
+			} else {
+				$styles_array[ $k ] = $v;
+			}
+		}
+
+		//Put unsupported styles in new Inline Styles field
+		$styles_array['style'] = $styles;
+
+		return $styles_array;
 
 	}
 

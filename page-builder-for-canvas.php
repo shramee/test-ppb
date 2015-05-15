@@ -27,8 +27,8 @@ function pp_pb_version_check( ) {
 		//No initial version means no need for compatibility updates
 		$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
 		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {
-			require 'inc/class-pootle-page-compatibility.php';
 
+			require_once 'inc/class-pootle-page-compatibility.php';
 			new Pootle_Page_Compatibility();
 
 		}
@@ -833,7 +833,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 	// Create the skeleton of the grids
 	$grids = array( );
-	if ( !empty( $panels_data['grids'] ) && !empty( $panels_data['grids'] ) ) {
+	if ( !empty( $panels_data['grids'] ) ) {
 		foreach ( $panels_data['grids'] as $gi => $grid ) {
 			$gi = intval( $gi );
 			$grids[$gi] = array( );
@@ -896,6 +896,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		echo '>';
 
 		$style_attributes = array( );
+
 		if ( !empty( $panels_data['grids'][$gi]['style']['class'] ) ) {
 			$style_attributes['class'] = array( 'panel-row-style-'.$panels_data['grids'][$gi]['style']['class'] );
 		}
@@ -906,7 +907,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		if ( !empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
+			$style_attributes['class'][] = $panels_data['grids'][$gi]['style']['full_width'] ? 'full-width-row': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
+
+			$style_attributes['style'] .= $panels_data['grids'][$gi]['style']['style'];
 
 			echo '<div ';
 			foreach ( $style_attributes as $name => $value ) {
@@ -1615,6 +1619,7 @@ function siteorigin_panels_enqueue_scripts( ) {
 	   ) ) );
 	}
 	wp_register_script( 'general', plugin_dir_url( __FILE__ ) . '/js/canvas-general.js', array( 'jquery', 'third-party' ) );
+	wp_enqueue_script( 'pootle-page-builder-frontend', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery', 'third-party' ) );
 
 }
 add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100 );

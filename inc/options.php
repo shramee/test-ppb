@@ -39,7 +39,7 @@ function siteorigin_panels_setting( $key = '' ) {
 			'margin-bottom' => ! isset( $display_settings['margin-bottom'] ) ? 30 : $display_settings['margin-bottom'], // Bottom margin of a cell
 			'margin-sides' => ! isset( $display_settings['margin-sides'] ) ? 30 : $display_settings['margin-sides'],    // Spacing between 2 cells
 			'affiliate-id' => false,																				    // Set your affiliate ID
-			'copy-content' => $generalSettings['copy-content'] == '1',			                                        // Should we copy across content
+			'copy-content' => !empty( $generalSettings['copy-content']) ? '1' : '',			                                // Should we copy across content
 			'animations' => ! isset( $generalSettings['animations'] ) ? true : $generalSettings['animations'] == '1',   // Do we need animations
 			'inline-css' => ! isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'] == '1', // How to display CSS
 			'remove-list-padding' => ! isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'] == '1',	// Remove left padding on list

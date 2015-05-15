@@ -159,7 +159,7 @@
         // setup add widget icons click handler
         container.find('.cell-wrapper .add-widget-button').each(function () {
            $(this).click(function () {
-               panels.addContentModule();
+               panels.addContentModule( this );
            });
         });
 
@@ -255,7 +255,7 @@
             // setup add widget icons click handler
             $newGridContainer.find('.cell-wrapper .add-widget-button').each(function () {
                 $(this).click(function () {
-                    panels.addContentModule();
+                    panels.addContentModule( this );
                 });
             });
 
@@ -568,7 +568,13 @@
     /**
      * Add the content module in the cell
      */
-    panels.addContentModule = function () {
+    panels.addContentModule = function ( tis ) {
+
+        $t = $(tis);
+
+        $('.cell').removeClass('cell-selected')
+
+        $t.parents('.cell').eq(0).addClass('cell-selected')
 
         var panel = $('#panels-dialog').panelsCreatePanel( 'Pootle_Text_Widget' );
         panels.addPanel(panel, null, null, true);

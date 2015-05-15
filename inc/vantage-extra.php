@@ -13,6 +13,12 @@ add_filter( 'siteorigin_panels_row_styles', 'pp_vantage_panels_row_styles' );
 
 function pp_vantage_panels_row_style_fields( $fields ) {
 
+	$fields['full_width'] = array(
+		'name' => 'Make row go full width',
+		'type' => 'checkbox',
+		'help-text' => ''
+	);
+
 	$fields['background'] = array(
 		'name' => __( 'Background Color', 'vantage' ),
 		'type' => 'color',
@@ -59,28 +65,10 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		'default' => true
 	);
 
-	$fields['top_border_height'] = array(
-		'name' => __( 'Top Border Height', 'pp-pb' ),
-		'type' => 'number',
-		'min' => '0',
-		'default' => '0'
-	);
-
-	$fields['top_border'] = array(
-		'name' => __( 'Top Border Color', 'vantage' ),
-		'type' => 'color',
-	);
-
-	$fields['bottom_border_height'] = array(
-		'name' => __( 'Bottom Border Height', 'pp-pb' ),
-		'type' => 'number',
-		'min' => '0',
-		'default' => '0'
-	);
-
-	$fields['bottom_border'] = array(
-		'name' => __( 'Bottom Border Color', 'vantage' ),
-		'type' => 'color',
+	$fields['style'] = array(
+		'name' => __( 'Inline Styles', 'siteorigin-panels' ),
+		'type' => 'textarea',
+		'default' => '',
 	);
 
 	$fields['class'] = array(

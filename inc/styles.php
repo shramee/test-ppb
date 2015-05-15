@@ -13,20 +13,11 @@ function siteorigin_panels_style_get_fields() {
 
 	if ( $fields === false ) {
 		$fields = array();
-//		$styles = apply_filters( 'siteorigin_panels_row_styles', array() );
-//		if ( ! empty( $styles ) ) {
-//			$fields['class'] = array(
-//				'name' => __( 'Class', 'siteorigin-panels' ),
-//				'type' => 'text',
-//				'default' => '',
-//				//'options' => wp_parse_args( $styles, array( '' => __( 'Default', 'siteorigin-panels' ) ) ),
-//			 );
-//		}
 
 		$fields = apply_filters( 'siteorigin_panels_row_style_fields', $fields );
 	}
 
-	return ( array ) $fields;
+	return $fields;
 }
 
 function pootlepage_page_settings_fields() {
@@ -211,9 +202,12 @@ function siteorigin_panels_style_dialog_form() {
 		switch( $attr['type'] ) {
 			case 'select':
 				?>
-				<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>">
-					<?php foreach( $attr['options'] as $ov => $on ) : ?>
-						<option value="<?php echo esc_attr( $ov ) ?>" <?php if ( isset( $attr['default'] ) ) selected( $ov, $attr['default'] ) ?>  ><?php echo esc_html( $on ) ?></option>
+				<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				        data-style-field="<?php echo esc_attr( $name ) ?>"
+				        data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>">
+					<?php foreach ( $attr['options'] as $ov => $on ) : ?>
+						<option
+							value="<?php echo esc_attr( $ov ) ?>" <?php if ( isset( $attr['default'] ) ) selected( $ov, $attr['default'] ) ?>  ><?php echo esc_html( $on ) ?></option>
 					<?php endforeach ?>
 				</select>
 				<?php
@@ -223,7 +217,9 @@ function siteorigin_panels_style_dialog_form() {
 				$checked = ( isset( $attr['default'] ) ? checked( $attr['default'], true, false ) : '' );
 				?>
 				<label class="siteorigin-panels-checkbox-label">
-					<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+					<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+					       data-style-field="<?php echo esc_attr( $name ) ?>"
+					       data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"/>
 					Enabled
 				</label>
 				<?php
@@ -234,7 +230,10 @@ function siteorigin_panels_style_dialog_form() {
 				break;
 
 			case 'number' :
-				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>"
+				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
 				<?php
 				if ( isset( $attr['help-text'] ) ) {
 					// don't use div for this or else div will appear outside of <p>
@@ -243,10 +242,23 @@ function siteorigin_panels_style_dialog_form() {
 				break;
 
 			case 'upload':
-				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /><button class="button upload-button thickbox">Upload</button><?php
+				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>"
+				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				<button class="button upload-button thickbox">Upload</button><?php
 				break;
+
+			case 'textarea':
+				?><textarea type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				            data-style-field="<?php echo esc_attr( $name ) ?>"
+				            data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" ></textarea> <?php
+				break;
+
 			default :
-				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
 				break;
 		}
 

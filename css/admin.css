@@ -938,6 +938,14 @@ html {
     font-weight: bold;
 }
 
+#grid-styles-dialog p > *,
+#page-setting-dialog p > *,
+#hide-element-dialog p > *
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 #grid-styles-dialog label.siteorigin-panels-checkbox-label,
 #page-setting-dialog label.siteorigin-panels-checkbox-label,
 #hide-element-dialog label.siteorigin-panels-checkbox-label

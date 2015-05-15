@@ -13,8 +13,9 @@ jQuery( function($){
     };
 
 
-    $( '#grid-styles-dialog').data('html', $( '#grid-styles-dialog').html() );
-    $( '#grid-styles-dialog' )
+    $gridStylesDialog = $( '#grid-styles-dialog');
+    $gridStylesDialog.data('html', $( '#grid-styles-dialog').html() );
+    $gridStylesDialog
         .show()
         .dialog( {
             dialogClass: 'panels-admin-dialog',
@@ -26,10 +27,13 @@ jQuery( function($){
             maxHeight:   Math.round($(window).height() * 0.8),
             width: 500,
             open:    function () {
+                $t = $(this);
                 var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
-                $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
+                $t.data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                 window.setRowOptionUploadButton();
+                panels.rowVisualFields( $t );
+
             },
             close : function(){
                 $(this).data('overlay').remove();
@@ -84,4 +88,10 @@ jQuery( function($){
                 $( '#grid-styles-dialog').dialog("option", "position", "center");
             });
     }
+
+    panels.rowVisualFields = function( $t ){
+        //alert( $t.find('[data-style-field=background_image]').val() );
+    }
+
+    panels.rowVisualStylesInit
 } );
