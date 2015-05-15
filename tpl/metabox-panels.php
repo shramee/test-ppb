@@ -173,7 +173,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php // The layouts dialog ?>
 
 	<?php if ( ! empty( $layouts ) ) : ?>
-		<div id="grid-prebuilt-dialog" data-title="<?php esc_attr_e( 'Insert Prebuilt Page Layout','siteorigin-panels' ) ?>" class="panels-admin-dialog">
+		<div id="grid-prebuilt-dialog" data-title="<?php esc_attr_e( 'Use Existing Page Layout','siteorigin-panels' ) ?>" class="panels-admin-dialog">
 			<p><label><strong><?php _e( 'Page Layout', 'siteorigin-panels' ) ?></strong></label></p>
 			<p>
 				<select type="text" id="grid-prebuilt-input" name="prebuilt_layout" style="width:580px;" placeholder="<?php esc_attr_e( 'Select Layout', 'siteorigin-panels' ) ?>" >

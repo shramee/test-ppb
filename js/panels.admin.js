@@ -699,6 +699,16 @@ jQuery( function ( $ ) {
     });
 
     $('#content-tmce-editor' ).click(function(){
+
+        //If no panels data no dialog
+        if ( 0 == $('.grid-container .grid').length ) {
+
+            $( '.switch-tmce').click();
+            $( '#wp-content-wrap').addClass('tmce-active');
+
+            return;
+
+        }
         $('#layout-loss-dialog').dialog('open');
     });
 
