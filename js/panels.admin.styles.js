@@ -32,11 +32,16 @@ jQuery( function($){
                 $t.data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                 window.setRowOptionUploadButton();
-                panels.rowVisualFields( $t );
+                panels.rowVisualFields();
+                var $bgImageFld = $t.find('[data-style-field=background_image]');
+                $bgImageFld.on( 'change', panels.rowVisualFields );
 
             },
             close : function(){
                 $(this).data('overlay').remove();
+
+                var $bgImageFld = $t.find('[data-style-field=background_image]');
+                $bgImageFld.off( 'change', panels.rowVisualFields );
 
                 // Copy the dialog values back to the container style value fields
                 var container = $( '#grid-styles-dialog').data('container');
@@ -89,9 +94,20 @@ jQuery( function($){
             });
     }
 
-    panels.rowVisualFields = function( $t ){
-        //alert( $t.find('[data-style-field=background_image]').val() );
-    }
+    panels.rowVisualFields = function(){
+
+        $t = $( '#grid-styles-dialog');
+
+        var $bgImageFld = $t.find('[data-style-field=background_image]'),
+            $bgImageOptions = $t.find('.field_background_image_repeat, .field_background_image_size');
+        console.log($.trim($bgImageFld.val()));
+
+        if ( '' == $.trim( $bgImageFld.val() ) ) {
+            $bgImageOptions.hide();
+        } else {
+            $bgImageOptions.show();
+        }
+    };
 
     panels.rowVisualStylesInit
 } );

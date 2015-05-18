@@ -125,14 +125,16 @@ function pootlepage_dialog_form_echo( $fields ) {
 
 	foreach( $fields as $name => $attr ) {
 
-		echo '<p>';
+		echo '<p class="field_' . esc_attr( $name ) . '">';
 		echo '<label>' . $attr['name'] . '</label>';
 
 		switch( $attr['type'] ) {
 			case 'select':
 				?>
-				<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>">
-					<?php foreach( $attr['options'] as $ov => $on ) : ?>
+				<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				        data-style-field="<?php echo esc_attr( $name ) ?>"
+				        data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>">
+					<?php foreach ( $attr['options'] as $ov => $on ) : ?>
 						<option value="<?php echo esc_attr( $ov ) ?>"><?php echo esc_html( $on ) ?></option>
 					<?php endforeach ?>
 				</select>
@@ -142,21 +144,32 @@ function pootlepage_dialog_form_echo( $fields ) {
 			case 'checkbox' :
 				?>
 				<label class="siteorigin-panels-checkbox-label">
-					<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+					<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+					       data-style-field="<?php echo esc_attr( $name ) ?>"
+					       data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"/>
 					Enabled
 				</label>
 				<?php
 				break;
 
 			case 'number' :
-				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				?><input type="number" min="<?php echo $attr['min'] ?>" value="<?php echo $attr['default'] ?>"
+				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
 				break;
 
 			case 'upload':
-				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /><button class="button upload-button thickbox">Upload</button><?php
+				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>"
+				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				<button class="button upload-button">Select Image</button><?php
 				break;
 			default :
-				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
 				break;
 		}
 
@@ -196,7 +209,7 @@ function siteorigin_panels_style_dialog_form() {
 
 	foreach( $fields as $name => $attr ) {
 
-		echo '<p>';
+		echo '<p class="field_' . esc_attr( $name ) . '">';
 		echo '<label>' . $attr['name'] . '</label>';
 
 		switch( $attr['type'] ) {
@@ -246,7 +259,7 @@ function siteorigin_panels_style_dialog_form() {
 				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 				         data-style-field="<?php echo esc_attr( $name ) ?>"
 				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-				<button class="button upload-button thickbox">Upload</button><?php
+				<button class="button upload-button">Select Image</button><?php
 				break;
 
 			case 'textarea':

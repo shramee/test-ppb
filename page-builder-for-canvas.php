@@ -53,18 +53,18 @@ function pp_pb_check_for_conflict( ) {
 	}
 }
 
-include plugin_dir_path( __FILE__ ) . 'widgets/basic.php';
+require_once 'widgets/basic.php';
 
-include plugin_dir_path( __FILE__ ) . 'inc/vars.php';
-include plugin_dir_path( __FILE__ ) . 'inc/options.php';
-include plugin_dir_path( __FILE__ ) . 'inc/revisions.php';
-include plugin_dir_path( __FILE__ ) . 'inc/copy.php';
-include plugin_dir_path( __FILE__ ) . 'inc/styles.php';
-include plugin_dir_path( __FILE__ ) . 'inc/legacy.php';
-include plugin_dir_path( __FILE__ ) . 'inc/notice.php';
-include plugin_dir_path( __FILE__ ) . 'inc/vantage-extra.php';
-include plugin_dir_path( __FILE__ ) . 'inc/class-pootlepress-updater.php';
-require_once plugin_dir_path( __FILE__ ) . 'inc/class-pootlepage-font-utility.php';
+require_once 'inc/vars.php';
+require_once 'inc/options.php';
+require_once 'inc/revisions.php';
+require_once 'inc/copy.php';
+require_once 'inc/styles.php';
+require_once 'inc/legacy.php';
+require_once 'inc/notice.php';
+require_once 'inc/vantage-extra.php';
+require_once 'inc/class-pootlepress-updater.php';
+require_once 'inc/class-pootlepage-font-utility.php';
 if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) include plugin_dir_path( __FILE__ ).'inc/debug.php';
 
 /**

@@ -2,56 +2,41 @@
 
     window.setRowOptionUploadButton = function () {
 
-        $('#grid-styles-dialog .upload-button').click(function () {
+        // Uploading Fields aka media selection
+        var file_frame;
+        $('#grid-styles-dialog .upload-button').live('click', function( event ){
+            event.preventDefault();
 
-            var $textField = $(this).parent().find('input');
-            var field = $textField.attr('data-style-field');
+            $textField = $(this).siblings('input');
 
-            var $field = $('#grid-styles-dialog input[data-style-field="' + field + '"]');
+            // If the media frame already exists, reopen it.
+            if ( file_frame ) {
+                file_frame.open();
+                return;
+            }
 
-            window.$formField = $field;
+            // Create the media frame.
+            file_frame = wp.media.frames.file_frame = wp.media({
+                title: $( this ).data( 'uploader_title' ),
+                button: {
+                    text: $( this ).data( 'uploader_button_text' ),
+                },
+                multiple: false  // Set to true to allow multiple files to be selected
+            });
 
-            window.send_to_editor = function (html) {
+            // When an image is selected, run a callback.
+            file_frame.on( 'select', function() {
+                // We set multiple to false so only get one image from the uploader
+                attachment = file_frame.state().get('selection').first().toJSON();
 
-                if ($formField) {
+                // Do something with attachment.id and/or attachment.url here
+                $textField.val(attachment.url)
+                $textField.change();
 
-                    // itemurl = $(html).attr( 'href' ); // Use the URL to the main image.
+            });
 
-                    if ( $(html).html(html).find( 'img').length > 0 ) {
-
-                        itemurl = $(html).html(html).find( 'img').attr( 'src' ); // Use the URL to the size selected.
-
-                    } else {
-
-                        // It's not an image. Get the URL to the file instead.
-
-                        var htmlBits = html.split( "'" ); // jQuery seems to strip out XHTML when assigning the string to an object. Use alternate method.
-
-                        itemurl = htmlBits[1]; // Use the URL to the file.
-
-                        var itemtitle = htmlBits[2];
-
-                        itemtitle = itemtitle.replace( '>', '' );
-                        itemtitle = itemtitle.replace( '</a>', '' );
-
-                    } // End IF Statement
-
-                    var image = /(^.*\.jpg|jpeg|png|gif|ico*)/gi;
-
-                    $formField.val(itemurl);
-
-                    tb_remove();
-
-                } else {
-                    window.original_send_to_editor(html);
-                }
-
-                // Clear the formfield value so the other media library popups can work as they are meant to. - 2010-11-11.
-                $formField = null;
-
-            };
-            tb_show('', 'media-upload.php?post_id=0&amp;type=image&amp;TB_iframe=true');
-            return false;
+            // Finally, open the modal
+            file_frame.open();
         });
     };
 
