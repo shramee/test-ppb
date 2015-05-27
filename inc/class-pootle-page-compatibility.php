@@ -151,13 +151,20 @@ class Pootle_Page_Compatibility {
 			'top_border',
 			'bottom_border_height',
 			'bottom_border',
+			'height',
 		);
 
 		/** @var string $styles to put in new Inline Styles field */
 		$styles = '';
-		$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
-		$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
-		$styles .= "height: {$panels_row_styles['bottom_border_height']}px; ";
+		if ( ! empty( $panels_row_styles['top_border_height'] ) and ! empty( $panels_row_styles['top_border'] ) ) {
+			$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
+		}
+		if ( ! empty( $panels_row_styles['bottom_border_height'] ) and ! empty( $panels_row_styles['bottom_border'] ) ) {
+			$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
+		}
+		if ( ! empty( $panels_row_styles['height'] ) ) {
+			$styles .= "height: {$panels_row_styles['height']}px; ";
+		}
 
 		/** @var array $styles_array init new styles array */
 		$styles_array = array();

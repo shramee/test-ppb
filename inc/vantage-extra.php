@@ -61,14 +61,6 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		'type' => 'text',
 	);
 
-	$fields['height'] = array(
-		'name' => __( 'Fixed Height', 'pp-pb' ),
-		'type' => 'number',
-		'min' => '0',
-		'default' => '',
-		'help-text' => 'Fixed height is great to use when there is no content ( e.g. text ) in your row. We suggest you do NOT set a fixed height if you have content in your row as on smaller screens ( e.g. smart-phones ) the fixed height may cut off the content'
-	);
-
 	$fields['no_margin'] = array(
 		'name' => __( 'No Bottom Margin', 'vantage' ),
 		'type' => 'checkbox',
@@ -123,12 +115,6 @@ if ( ! empty( $style['background_image_repeat'] ) ) {
 
 	if ( ! empty( $style['background_image_size'] ) ) {
 		$attr['style'] .= 'background-size: ' . $style['background_image_size'] . '; ';
-	}
-
-	if ( ! empty( $style['height'] ) ) {
-		$attr['style'] .= 'height: ' . $style['height'] . 'px;';
-	} else {
-		$attr['style'] .= 'height: auto;';
 	}
 
 	if ( empty( $attr['style'] ) )
