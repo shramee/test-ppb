@@ -166,10 +166,19 @@ function pootlepage_dialog_form_echo( $fields ) {
 				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
 				<button class="button upload-button">Select Image</button><?php
 				break;
-			default :
-				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+
+			case 'upload-video':
+				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>"
+				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 				         data-style-field="<?php echo esc_attr( $name ) ?>"
-				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				<button class="button upload-button">Select Image</button><?php
+				break;
+			default :
+				?><input type="file" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+						 data-style-field="<?php echo esc_attr( $name ) ?>"
+						 data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				<?php
 				break;
 		}
 

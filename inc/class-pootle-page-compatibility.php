@@ -29,9 +29,8 @@ class Pootle_Page_Compatibility {
 
 		$this->get_old_page_builder_posts();
 
-		//$this->put_page_builder_stuff_in_content();
+		$this->put_page_builder_stuff_in_content();
 		$this->unsupported_row_style_fields_in_style();
-
 	}
 
 	/**
@@ -43,16 +42,13 @@ class Pootle_Page_Compatibility {
 
 		$post_types = get_post_types();
 
-		foreach ( array( 'revision', 'page', 'nav_menu_item', ) as $post_type ) {
-			//unset( $post_types[ $post_type ] );
-		}
-
+		//Get all posts using page builder
 		$args = array(
 			'post_type' => $post_types,
 			'meta_query' => array(
 				array(
 					'key' => 'panels_data',
-					'compare' => 'EXISTS' // this should work...
+					'compare' => 'EXISTS',
 				),
 			)
 		);
@@ -96,7 +92,7 @@ class Pootle_Page_Compatibility {
 			$notices['settings-updated'] = array( 'type' => 'update-nag', 'message' => __( "Now we only support page post types, however for your convenience we have put all your existing page builder using posts layout in the content.", 'woothemes' ) );
 
 			update_option( 'pootle_page_admin_notices', $notices );
-
+			die( 'Page Builder Stuff Done :) ' );
 		}
 
 	}
@@ -106,6 +102,10 @@ class Pootle_Page_Compatibility {
 	 * @since 3.0.0
 	 */
 	private function unsupported_row_style_fields_in_style() {
+
+		if ( empty( $this->old_page_builder_posts['page'] ) or ! is_array( $this->old_page_builder_posts['page'] ) ) {
+			return;
+		}
 
 		//Get old pages ( we don't support other post types since v3.0.0 )
 		$old_pages = $this->old_page_builder_posts['page'];
@@ -119,7 +119,7 @@ class Pootle_Page_Compatibility {
 			foreach ( $panels_data['grids'] as $i => $row ) {
 
 				//Get new style format for rows
-				$panels_data['grids'][ $i ]['style'] = $this->new_row_style_format( $row );
+				$panels_data['grids'][ $i ]['style'] = $this->new_row_style_format( $row['style'] );
 
 			}
 
@@ -138,29 +138,31 @@ class Pootle_Page_Compatibility {
 	 * @since 3.0.0
 	 * @return array New styles format
 	 */
-	private function new_row_style_format( $row ) {
+	private function new_row_style_format( $panels_row_styles ) {
 
-		/** @var array $panels_row_styles */
-		$panels_row_styles = $row['style'];
+
+		if ( ! empty( $panels_row_styles['style'] ) ) {
+			return $panels_row_styles;
+		}
 
 		/** @var array $unsupported_styles */
 		$unsupported_styles = array(
-			'top_border_height',
-			'top_border',
-			'bottom_border_height',
-			'bottom_border',
+			'border-top-width: {%s}px;' => 'top_border_height',
+			'border-top-color' => 'top_border',
+			'border-bottom-width' => 'bottom_border_height',
+			'border-bottom-color' => 'bottom_border',
 		);
 
 		/** @var string $styles to put in new Inline Styles field */
 		$styles = '';
+		$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
+		$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
 
 		/** @var array $styles_array init new styles array */
 		$styles_array = array();
 
 		foreach ( $panels_row_styles as $k => $v ) {
-			if ( in_array( $k, $unsupported_styles ) ) {
-				$styles .= $k . ' : ' . $v . ";\n ";
-			} else {
+			if ( ! in_array( $k, $unsupported_styles ) ) {
 				$styles_array[ $k ] = $v;
 			}
 		}

@@ -33,10 +33,7 @@ function pp_pb_version_check( ) {
 
 		}
 	}
-
 }
-
-add_action( 'admin_init', 'pp_pb_version_check' );
 
 function pp_pb_check_for_conflict( ) {
 	if ( is_plugin_active( 'wx-pootle-text-widget/pootlepress-text-widget.php' ) ||
@@ -907,10 +904,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		if ( !empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
-			$style_attributes['class'][] = $panels_data['grids'][$gi]['style']['full_width'] ? 'full-width-row': '';
+			$style_attributes['class'][] = ! empty( $panels_data['grids'][$gi]['style']['full_width'] ) ? 'full-width-row': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
 
-			$style_attributes['style'] .= $panels_data['grids'][$gi]['style']['style'];
+			$style_attributes['style'] .= ! empty( $panels_data['grids'][$gi]['style']['style'] ) ? $panels_data['grids'][$gi]['style']['style']: '';
 
 			echo '<div ';
 			foreach ( $style_attributes as $name => $value ) {

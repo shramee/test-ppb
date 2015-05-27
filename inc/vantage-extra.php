@@ -51,6 +51,11 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		'default' => 'cover'
 	);
 
+	$fields['background_video'] = array(
+		'name' => __( 'Background Video', 'vantage' ),
+		'type' => 'text',
+	);
+
 	$fields['height'] = array(
 		'name' => __( 'Fixed Height', 'pp-pb' ),
 		'type' => 'number',
