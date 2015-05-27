@@ -147,16 +147,17 @@ class Pootle_Page_Compatibility {
 
 		/** @var array $unsupported_styles */
 		$unsupported_styles = array(
-			'border-top-width: {%s}px;' => 'top_border_height',
-			'border-top-color' => 'top_border',
-			'border-bottom-width' => 'bottom_border_height',
-			'border-bottom-color' => 'bottom_border',
+			'top_border_height',
+			'top_border',
+			'bottom_border_height',
+			'bottom_border',
 		);
 
 		/** @var string $styles to put in new Inline Styles field */
 		$styles = '';
 		$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
 		$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
+		$styles .= "height: {$panels_row_styles['bottom_border_height']}px; ";
 
 		/** @var array $styles_array init new styles array */
 		$styles_array = array();

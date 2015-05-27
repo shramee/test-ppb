@@ -114,7 +114,7 @@
 
         // Hide the undo message
         $('#panels-undo-message' ).fadeOut(function(){ $(this ).remove() });
-        var panel = $( '<div class="panel new-panel"><div class="panel-wrapper"><div class="title"><h4></h4><span class="actions"></span></div><small class="description"></small></div></div>' );
+        var panel = $( '<div class="panel new-panel"><div class="panel-wrapper"><div class="title"><h4></h4><span class="actions"></span></div></div></div>' );
 
         var description = $$.find( '.description' ).html();
         var widgetName =  $$.find( 'h3' ).html();
@@ -157,8 +157,7 @@
                 'title': $$.attr( 'data-title' ),
                 'raw' : false
             } )
-            .find( '.description' ).html( widgetName )
-            .end().find( '.title h4' ).html( 'Blank title' );
+            .end().find( '.title h4' ).html( 'Visual Editor' );
 
         // Set the title
         panel.panelsSetPanelTitle( data );
@@ -167,16 +166,13 @@
         panel
             .find('.title .actions')
             .append(
-                $('<a>' + panels.i10n.buttons.delete + '<a>' ).addClass('delete')
+                $('<a data-tooltip="' + panels.i10n.buttons.delete + '"></a>' ).addClass('dashicons-before dashicons-dismiss delete')
             )
             .append(
-                $('<a>' + panels.i10n.buttons.duplicate + '<a>' ).addClass('duplicate' )
+                $('<a data-tooltip="' + panels.i10n.buttons.duplicate + '"></a>' ).addClass('dashicons-before dashicons-admin-page duplicate' )
             )
-            //.append(
-            //    $('<a>' + panels.i10n.buttons.style + '<a>' ).addClass('style' )
-            //)
             .append(
-                $('<a>' + panels.i10n.buttons.edit + '<a>' ).addClass('edit' )
+                $('<a data-tooltip="' + panels.i10n.buttons.edit + '"></a>' ).addClass('dashicons-before dashicons-edit edit' )
             );
 
         panels.setupPanelButtons(panel);
@@ -541,6 +537,10 @@
             if (titleValue == '' || titleValue == null || titleValue == false || titleValue == '0') {
                 titleValue = 'Blank title';
             }
+
+            //Keep title value 'Visual Editor' always
+            titleValue = 'Visual Editor';
+
             $(this ).find( 'h4' ).html( titleValue );
         });
     }

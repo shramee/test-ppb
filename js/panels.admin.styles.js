@@ -99,8 +99,7 @@ jQuery( function($){
         $t = $( '#grid-styles-dialog');
 
         var $bgImageFld = $t.find('[data-style-field=background_image]'),
-            $bgImageOptions = $t.find('.field_background_image_repeat, .field_background_image_size');
-        console.log($.trim($bgImageFld.val()));
+            $bgImageOptions = $t.find('.field_background_image_repeat, .field_background_image_size, .field_background_parallax');
 
         if ( '' == $.trim( $bgImageFld.val() ) ) {
             $bgImageOptions.hide();

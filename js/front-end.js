@@ -4,11 +4,13 @@
     // This will handle stretching the cells.
 jQuery(function($){
 
-    // This will handle stretching the cells.
-        $t = $('.panel-row-style.full-width-row');
-        var fullContainer = $(window);
+    $(document).ready(function(){
+        // This will handle stretching the cells.
+        MakeFullWidth = function(){
+            $t = $('.panel-row-style.ppb-full-width-row');
 
-        var onResize = function(){
+            if ( $t.length < 1 ) { return }
+            var fullContainer = $(window);
             $t.css({
                 'margin-left' : 0,
                 'margin-right' : 0,
@@ -23,16 +25,18 @@ jQuery(function($){
                 'margin-left' : -leftSpace,
                 'margin-right' : -rightSpace,
                 'padding-left' : leftSpace,
-                'padding-right' : rightSpace
+                'padding-right' : rightSpace,
+                'border-left' : 0,
+                'border-right' : 0
             });
         };
+        $(window).resize( MakeFullWidth );
+        MakeFullWidth();
 
-        $(window).resize( onResize );
-        onResize();
-
-        $t.css({
-            'border-left' : 0,
-            'border-right' : 0
+        $(window).scroll(function() {
+            var scrolledY = $(window).scrollTop();
+            $('.ppb-parallax').css('background-position', 'left ' + ((scrolledY)) + 'px');
         });
 
+    })
 });

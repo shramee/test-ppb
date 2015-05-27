@@ -6,9 +6,27 @@
  */
 
 jQuery( function ( $ ) {
+
+    function add_block_button_hide_text_for_small_cells() {
+        $('#panels-container .cell-wrapper').each( function(){
+
+            $t = $(this);
+            $add_content = $t.find('.add-widget-button');
+
+            $add_content.find( 'span').css('display', 'inline');
+
+            if ( $t.width() < 120 ) {
+                $add_content.find( 'span').css('display', 'none');
+            }
+        } );
+    }
+
     panels.animations = $('#panels').data('animations');
 
     $( window ).bind( 'resize', function ( event ) {
+
+        add_block_button_hide_text_for_small_cells()
+
         // ui-resizable elements trigger resize
         if ( $( event.target ).hasClass( 'ui-resizable' ) ) return;
         
@@ -682,16 +700,6 @@ jQuery( function ( $ ) {
         .find( '.hndle' ).html('' ).append(
             $('#add-to-panels')
         );
-
-    // append add row button
-    var $addRowButton = $('<div class="add-row-button button dashicons-before dashicons-plus" data-tooltip="Add Row"></div>');
-    var $addRowContainer = $('<div class="add-row-container"></div>');
-    $addRowContainer.append($addRowButton);
-    $('#so-panels-panels').append($addRowContainer);
-
-    $('#so-panels-panels .add-row-container .add-row-button').click(function () {
-        $( '#grid-add-dialog' ).dialog( 'open' );
-    });
 
     // When the content panels button is clicked, trigger a window resize to set up the columns
     $('#content-panels' ).click(function(){

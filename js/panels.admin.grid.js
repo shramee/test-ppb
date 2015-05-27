@@ -45,7 +45,7 @@
             } );
 
             // Resize all the grids and cell wrappers
-            $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', Math.max( maxHeight, 68 ) );
+            $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', Math.max( maxHeight, 7 ) );
         });
 
     }
@@ -101,21 +101,21 @@
                 $( '<div class="controls" />' )
                     // Add the move/reorder button
                     .append(
-                        $( '<div class="row-button sort-button button dashicons-before dashicons-sort grid-handle"></div>' )
+                        $( '<div class="row-button sort-button dashicons-before dashicons-sort grid-handle"></div>' )
                     )
                     // Add the duplicate button
                     .append(
-                        $('<div class="row-button duplicate-button button dashicons-before dashicons-admin-page"></div>')
+                        $('<div class="row-button duplicate-button dashicons-before dashicons-admin-page"></div>')
                             .attr('data-tooltip', 'Duplicate')
                     )
                     // Add the button for selecting the row style
                     .append (
-                    $( '<div class="row-button style-button button dashicons-before dashicons-admin-appearance panels-visual-style"></div>' )
-                        .attr( 'data-tooltip', 'Visual Style' )
+                        $( '<div class="row-button style-button dashicons-before dashicons-admin-generic panels-visual-style"></div>' )
+                            .attr( 'data-tooltip', 'Row display settings' )
                     )
                     // Add the remove button
                     .append(
-                        $( '<div class="row-button delete-button button dashicons-before dashicons-no"></div>' )
+                        $( '<div class="row-button delete-button dashicons-before dashicons-dismiss"></div>' )
                             .attr( 'data-tooltip', panels.i10n.buttons['delete'] )
                     )
             );
@@ -133,7 +133,7 @@
             var cell = $(
                 '<div class="cell" data-percent="' + (weights[i] / weightSum) + '">' +
                     '<div class="cell-wrapper panels-container">' +
-                        '<div class="add-widget-button dashicons-before dashicons-plus-alt"></div>' +
+                        '<div class="add-widget-button dashicons-before dashicons-plus"> <span>Add Content</span></div>' +
                     '</div>' +
                     '<div class="cell-width"><div class="cell-width-left"></div><div class="cell-width-right"></div><div class="cell-width-line"></div><div class="cell-width-value"><span></span></div></div>' +
                     '</div>'

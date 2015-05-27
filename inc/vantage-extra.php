@@ -40,6 +40,11 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		'type' => 'checkbox',
 	);
 
+	$fields['background_parallax'] = array(
+		'name' => __( 'Parallax Background Image', 'vantage' ),
+		'type' => 'checkbox',
+	);
+
 	$fields['background_image_size'] = array(
 		'name' => __( 'Background Image Size', 'vantage' ),
 		'type' => 'select',

@@ -904,7 +904,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		if ( !empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
-			$style_attributes['class'][] = ! empty( $panels_data['grids'][$gi]['style']['full_width'] ) ? 'full-width-row': '';
+			$style_attributes['class'][] = ! empty( $panels_data['grids'][$gi]['style']['full_width'] ) ? 'ppb-full-width-row': '';
+			$style_attributes['class'][] = ! empty( $panels_data['grids'][$gi]['style']['background_image_size'] ) ? 'ppb-parallax': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
 
 			$style_attributes['style'] .= ! empty( $panels_data['grids'][$gi]['style']['style'] ) ? $panels_data['grids'][$gi]['style']['style']: '';

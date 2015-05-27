@@ -1,6 +1,5 @@
 #panels {
     position: relative;
-
 }
 
 html {
@@ -118,13 +117,14 @@ html {
     position: absolute;
     top: 0;
 
-    background: #f4e4e0;
+    background: #ffe0dd;
     border: 1px solid #d4a4a0;
+    padding-bottom: 20px;
 }
 
 #panels-container .grid .cell.cell-selected {
-    background: #ffe0dd url("images/cell-selected.png") repeat;
-    border-color: #d4aa99;
+    background: #ffd0cc url("images/cell-selected.png") repeat;
+    border-color: #ef4832;
     box-shadow: 0 0 4px 1px rgba(180, 90, 90, 0.3);
 }
 
@@ -141,7 +141,7 @@ html {
     -moz-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
     -webkit-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
     box-sizing: border-box;
-    padding: 10px 10px 4px 10px; /* 6px bottom to remove bottom margin from panels */
+    padding: 10px 10px 0 10px; /* 6px bottom to remove bottom margin from panels */
 }
 
 #panels-container .grid .cell .cell-width {
@@ -197,18 +197,32 @@ html {
 #panels-container .grid-container {
     position: relative;
 
+    padding: 1px;
 }
 
 #panels-container .grid-container .controls {
     line-height: 1;
-    margin-bottom: 3px;
+    margin: 7px 0 0 0;
     text-align: right;
 }
 
-#panels-container .grid-container .controls .ui-button,
 #panels-container .grid-container .controls .row-button
 {
+    opacity:0;
+    color: #b4b9be;
+    display:inline-block;
+    border-width: 0;
     margin-left: 5px;
+    cursor:pointer;
+}
+
+#panels-container .grid-container:hover .controls .row-button
+{
+    opacity:1;
+}
+#panels-container .grid-container .controls .row-button:hover
+{
+    color: #ef4832;
 }
 
 #panels-container .grid-container .controls .row-button.delete-button
@@ -217,7 +231,7 @@ html {
     margin-left: 0;
 }
 
-#panels-container .grid-container .controls .grid-handle {
+#panels-container .grid-container .controls .row-button.grid-handle {
     cursor: move;
 }
 
@@ -245,12 +259,7 @@ html {
 }
 
 #so-panels-panels .panels-container .panel {
-    background: #f8f8f8;
-    background-image: -webkit-gradient(linear, left bottom, left top, from(#e9ebeb), to(#f8f8f8));
-    background-image: -webkit-linear-gradient(bottom, #e9ebeb, #f8f8f8);
-    background-image: -moz-linear-gradient(bottom, #e9ebeb, #f8f8f8);
-    background-image: -o-linear-gradient(bottom, #e9ebeb, #f8f8f8);
-    background-image: linear-gradient(to top, #e9ebeb, #f8f8f8);
+    background: #f1f1f1;
     border: 1px solid;
     border-color: #c9c9c9 #c2c2c3 #babbbf #c1c2c3;
     -webkit-border-radius: 3px;
@@ -267,18 +276,19 @@ html {
     position: relative;
 
     overflow: hidden;
-    padding: 7px 9px;
+    padding: 15px;
 }
 
 #so-panels-panels .panels-container .panel h4 {
+    position: absolute;
+    top: 15px;
     height: 1em;
 
     color: #474747;
     cursor: pointer;
-    display: inline-block;
     font-weight: 600;
     line-height: 1em;
-    margin: 0 0 3px 0;
+    margin: 0;
     margin-right: 15px;
     overflow: hidden;
     text-shadow: 0 1px 0 #FFF;
@@ -301,10 +311,9 @@ html {
 }
 
 #so-panels-panels .panels-container .panel .title .actions {
-    position: absolute;
-    top: 5px;
-    right: 7px;
-
+    position: relative;
+    float: right;
+    margin: -5px -16px -5px 0;
     background: #f3f3f3;
     background-image: -webkit-gradient(linear, left bottom, left top, from(#f1f2f2), to(#f5f6f6));
     background-image: -webkit-linear-gradient(bottom, #f1f2f2, #f5f6f6);
@@ -313,26 +322,23 @@ html {
     background-image: linear-gradient(to top, #f1f2f2, #f5f6f6);
     cursor: pointer;
     font-size: 12px;
-    padding: 2px 2px 2px 15px;
+    padding: 2px 7px 2px 7px;
     z-index: 10;
+    color: #b4b9be;
 }
 
-#so-panels-panels .panels-container .panel .title .actions:hover a {
+#so-panels-panels .panels-container .panel .title .actions a {
+    display: inline-block;
+    color: #b4b9be;
+    opacity: 0;
+}
+
+#so-panels-panels .panels-container .panel:hover .title .actions a {
     opacity: 1;
 }
 
-#so-panels-panels .panels-container .panel .title .actions a.delete {
-    color: #FF0000;
-}
-
-#so-panels-panels .panels-container .panel .title .actions a.delete:hover {
-    background: #FF0000;
-    color: white;
-}
-
-#so-panels-panels .panels-container .panel:hover .title a {
-    display: inline-block;
-    opacity: 0.5;
+#so-panels-panels .panels-container .panel .title .actions a:hover {
+    color: #ef4832;
 }
 
 #so-panels-panels .panels-container .panel.panel-being-dragged .title .actions {
@@ -514,7 +520,8 @@ html {
 }
 
 #so-panels-panels .inside {
-    padding: 5px 12px 5px 10px;
+    padding: 0 12px 5px 10px;
+    margin: 0;
 }
 
 
@@ -1116,21 +1123,29 @@ button.wp-switch-editor {
 #panels-container .cell-wrapper .add-widget-button
 {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -13px;
-    margin-top: -13px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    bottom: -18px;
+    margin: 0;
     cursor: pointer;
     z-index: 100;
     opacity:0;
 }
-#panels-container .cell-wrapper:hover .add-widget-button
+#panels-container .cell:hover .add-widget-button
 {
     opacity:0.80;
 }
+#panels-container .cell:hover .add-widget-button span
+{
+    vertical-align: middle;
+    line-height: 25px;
+}
 #panels-container .cell-wrapper .add-widget-button:before
 {
-    font-size: 26px;
+    font-size: 18px;
+    vertical-align: middle;
+    line-height: 25px;
 }
 
 /* Main module dialog styles */
