@@ -56,9 +56,14 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		'default' => 'cover'
 	);
 
-	$fields['background_video'] = array(
-		'name' => __( 'Background Video', 'vantage' ),
-		'type' => 'text',
+	$fields['bg_video_mp4'] = array(
+		'name' => __( 'Background Video MP4', 'vantage' ),
+		'type' => 'mp4Vid',
+	);
+
+	$fields['bg_video_webm'] = array(
+		'name' => __( 'Background Video Webm', 'vantage' ),
+		'type' => 'webmVid',
 	);
 
 	$fields['no_margin'] = array(

@@ -167,13 +167,6 @@ function pootlepage_dialog_form_echo( $fields ) {
 				<button class="button upload-button">Select Image</button><?php
 				break;
 
-			case 'upload-video':
-				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>"
-				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
-				         data-style-field="<?php echo esc_attr( $name ) ?>"
-				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-				<button class="button upload-button">Select Image</button><?php
-				break;
 			default :
 				?><input type="file" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 						 data-style-field="<?php echo esc_attr( $name ) ?>"
@@ -269,6 +262,15 @@ function siteorigin_panels_style_dialog_form() {
 				         data-style-field="<?php echo esc_attr( $name ) ?>"
 				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
 				<button class="button upload-button">Select Image</button><?php
+				break;
+
+			case 'mp4Vid':
+			case 'webmVid':
+				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>"
+				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+			<button class="button <?php echo esc_attr( $attr['type'] ) ?>-upload-button">Select Video</button><?php
 				break;
 
 			case 'textarea':
@@ -401,28 +403,3 @@ function siteorigin_panels_style_sanitize_data( $panels_data ) {
 	return $panels_data;
 }
 add_filter( 'siteorigin_panels_panels_data_from_post', 'siteorigin_panels_style_sanitize_data' );
-
-/*
- * Sets missing styles
- * 
- */
-function pootle_page_display_setting_implement() {
-	//Changes made in the pre-existing functions
-	/*
-	$display_styles = siteorigin_panels_setting();
-	//Side and Bottom Margins
-	$bot_margin = $display_styles['margin-bottom'];
-	$margin_sides = $display_styles['margin-sides'] / 2; //halved to be applied to css directly
-	
-	?>
-<style type="text/css" id='cx-bc-stylesheet'>
-	.panel-grid-cell{
-		padding-bottom: <?php echo $bot_margin; ?>px;
-		padding-right: <?php echo $margin_sides; ?>px;
-		padding-left: <?php echo $margin_sides; ?>px;
-	}
-</style>
-<?php
-*/
-}
-add_action( 'wp_head', 'pootle_page_display_setting_implement' );

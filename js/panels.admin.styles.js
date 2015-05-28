@@ -32,16 +32,23 @@ jQuery( function($){
                 $t.data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                 window.setRowOptionUploadButton();
-                panels.rowVisualFields();
-                var $bgImageFld = $t.find('[data-style-field=background_image]');
-                $bgImageFld.on( 'change', panels.rowVisualFields );
-
+                panels.rowBGImageFields();
+                var $bgImageFld = $t.find('[data-style-field=background_image]'),
+                    $bgMP4VidFlds = $t.find('[data-style-field=bg_video_mp4]'),
+                    $bgWEBMVidFlds = $t.find('[data-style-field=bg_video_webm]');
+                $bgImageFld.on( 'change', panels.rowBGImageFields );
+                $bgMP4VidFlds.on('change', panels.BGVidMP4);
+                $bgWEBMVidFlds.on('change', panels.BGVidWEBM);
             },
             close : function(){
                 $(this).data('overlay').remove();
 
-                var $bgImageFld = $t.find('[data-style-field=background_image]');
-                $bgImageFld.off( 'change', panels.rowVisualFields );
+                var $bgImageFld = $t.find('[data-style-field=background_image]'),
+                    $bgMP4VidFlds = $t.find('[data-style-field=bg_video_mp4]'),
+                    $bgWEBMVidFlds = $t.find('[data-style-field=bg_video_webm]');
+                $bgImageFld.off('change', panels.rowBGImageFields);
+                $bgMP4VidFlds.off('change', panels.BGVidMP4);
+                $bgWEBMVidFlds.off('change', panels.BGVidWEBM);
 
                 // Copy the dialog values back to the container style value fields
                 var container = $( '#grid-styles-dialog').data('container');
@@ -94,7 +101,7 @@ jQuery( function($){
             });
     }
 
-    panels.rowVisualFields = function(){
+    panels.rowBGImageFields = function(){
 
         $t = $( '#grid-styles-dialog');
 
@@ -106,6 +113,50 @@ jQuery( function($){
         } else {
             $bgImageOptions.show();
         }
+    };
+
+    panels.BGVidMP4 = function(){
+
+        var $t = $(this);
+
+        if ( '' == $.trim( $t.val() ) ) {
+            return;
+        }
+
+        format = $t.val().substr($t.val().lastIndexOf('.')+1);
+
+        if ( 'mp4' != format ) {
+            panels.BGVidFormatWrong( $t, 'mp4' );
+        }
+    };
+
+    panels.BGVidWEBM = function(){
+
+        var $t = $(this);
+
+        if ( '' == $.trim( $t.val() ) ) {
+            return;
+        }
+
+        format = $t.val().substr($t.val().lastIndexOf('.')+1);
+
+        if ( 'webm' != format ) {
+            panels.BGVidFormatWrong( $t, 'webm' );
+        }
+    };
+
+    panels.BGVidFormatWrong = function( $t, format ){
+
+        $('<div title="Please Use a .' + format + ' video">This field supports .' + format + ' formats only.</div>').dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+        $t.val('');
+        $t.css( 'background', '#ffbbb9')
     };
 
     panels.rowVisualStylesInit

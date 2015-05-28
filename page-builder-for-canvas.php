@@ -920,6 +920,21 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				}
 			}
 			echo '>';
+			if ( ! empty( $styleArray['bg_video_mp4'] ) or ! empty( $styleArray['bg_video_webm'] ) ) {
+				?>
+				<video class="ppb-bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+				<?php
+				if ( ! empty( $styleArray['bg_video_mp4'] ) ) {
+					echo "<source src='{$styleArray['bg_video_mp4']}' type='video/mp4'>";
+				}
+				if ( ! empty( $styleArray['bg_video_webm'] ) ) {
+					echo "<source src='{$styleArray['bg_video_webm']}' type='video/webm'>";
+				}
+				?>
+					Sorry, your browser does not support HTML5 video.
+				</video>
+				<?php
+			}
 		}
 
 		if ( isset( $styleArray['background'] ) && isset( $styleArray['background_color_over_image'] ) && $styleArray['background_color_over_image'] == true ) {

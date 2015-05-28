@@ -3,40 +3,116 @@
     window.setRowOptionUploadButton = function () {
 
         // Uploading Fields aka media selection
-        var file_frame;
+        var ppbFileFrame,
+            ppbMP4VideoFrame,
+            ppbWebmVidFrame;
         $('#grid-styles-dialog .upload-button').live('click', function( event ){
             event.preventDefault();
 
             $textField = $(this).siblings('input');
 
             // If the media frame already exists, reopen it.
-            if ( file_frame ) {
-                file_frame.open();
+            if ( ppbFileFrame ) {
+                ppbFileFrame.open();
                 return;
             }
 
             // Create the media frame.
-            file_frame = wp.media.frames.file_frame = wp.media({
-                title: $( this ).data( 'uploader_title' ),
-                button: {
-                    text: $( this ).data( 'uploader_button_text' ),
-                },
+            ppbFileFrame = wp.media.frames.ppbFileFrame = wp.media({
+                title: 'Choose Background Image',
+                button: { text: 'Set As Background Image' },
                 multiple: false  // Set to true to allow multiple files to be selected
             });
 
             // When an image is selected, run a callback.
-            file_frame.on( 'select', function() {
+            ppbFileFrame.on( 'select', function() {
                 // We set multiple to false so only get one image from the uploader
-                attachment = file_frame.state().get('selection').first().toJSON();
+                attachment = ppbFileFrame.state().get('selection').first().toJSON();
 
                 // Do something with attachment.id and/or attachment.url here
-                $textField.val(attachment.url)
+                $textField.val(attachment.url);
                 $textField.change();
 
             });
 
             // Finally, open the modal
-            file_frame.open();
+            ppbFileFrame.open();
+        });
+
+        $('#grid-styles-dialog .mp4Vid-upload-button').live('click', function( event ){
+            event.preventDefault();
+
+            $textField = $(this).siblings('input');
+
+            // If the media frame already exists, reopen it.
+            if ( ppbMP4VideoFrame ) {
+                ppbMP4VideoFrame.open();
+                return;
+            }
+
+            // Create the media frame.
+            ppbMP4VideoFrame = wp.media.frames.ppbMP4VideoFrame = wp.media({
+                title: 'Choose MP4 Background Video File',
+                library: {
+                    type: 'video'
+                },
+                button: {
+                    text: 'Set As Background Video'
+                },
+                multiple: false
+            });
+
+            // When an image is selected, run a callback.
+            ppbMP4VideoFrame.on( 'select', function() {
+                // We set multiple to false so only get one image from the uploader
+                attachment = ppbMP4VideoFrame.state().get('selection').first().toJSON();
+
+                // Do something with attachment.id and/or attachment.url here
+                $textField.val(attachment.url);
+                $textField.change();
+
+            });
+
+            // Finally, open the modal
+            ppbMP4VideoFrame.open();
+        });
+
+        $('#grid-styles-dialog .webmVid-upload-button').live('click', function( event ){
+            event.preventDefault();
+
+            $textField = $(this).siblings('input');
+
+            // If the media frame already exists, reopen it.
+            if ( ppbWebmVidFrame ) {
+                ppbWebmVidFrame.open();
+                return;
+            }
+
+            // Create the media frame.
+            ppbWebmVidFrame = wp.media.frames.ppbWebmVidFrame = wp.media({
+                title: 'Choose WEBM Background Video File',
+                library: {
+                    type: 'video'
+                },
+                button: {
+                    text: 'Set As Background Video'
+                },
+                multiple: false
+            });
+
+            // When an image is selected, run a callback.
+            ppbWebmVidFrame.on( 'select', function() {
+                // We set multiple to false so only get one image from the uploader
+                attachment = ppbWebmVidFrame.state().get('selection').first().toJSON();
+
+                // Do something with attachment.id and/or attachment.url here
+                $textField.val(attachment.url);
+                $textField.change();
+
+            });
+
+            // Finally, open the modal
+            ppbWebmVidFrame.open();
         });
     };
 

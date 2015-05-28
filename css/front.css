@@ -1,7 +1,10 @@
 .panel-grid {
 	zoom: 1;
 }
-
+.panel-grid .panel-row-style{
+	position:relative;
+	overflow: hidden;
+}
 .panel-grid:before {
 	content: '';
 	display: block;
@@ -12,27 +15,6 @@
 	content: '';
 	display: table;
 }
-
-/* make this sit under .panel-row-style:before, so background color will be on top on background image */
-/*.panel-row-style {*/
-    /*position: relative;*/
-    /*z-index: 10;*/
-/*}*/
-
-/*.panel-row-style:before {*/
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*content: "";*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*z-index: 20;*/
-/*}*/
-
-/*.panel-grid-cell-container {*/
-    /*position: relative;*/
-    /*z-index: 30; *//* row content needs to be on top of row background color */
-/*}*/
 
 .panel-grid-cell {
 	-ms-box-sizing: border-box;
@@ -159,6 +141,7 @@
 .panel-grid-cell-container
 {
     font-size: 0;
+    position: relative;
 }
 
 /* WooSlider slideshow in PB has margin in <p>, padding in <a>, and extra <br>  */
@@ -182,4 +165,22 @@
 }
 ul.wooTabs {
   margin-bottom:0 !important;
+}
+
+video.ppb-bg-video { 
+     position: absolute;
+     top: 0px;
+     left: 0px;
+     min-width: 100%;
+     min-height: 100%;
+     width: auto;
+     height: auto;
+     z-index: 0;
+     overflow: hidden;
+}
+
+@media only screen and (max-width:768px){
+	video.ppb-bg-video { 
+		 display:none;
+	}
 }
