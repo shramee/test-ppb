@@ -39,7 +39,7 @@ html {
 
     color: #333333;
     font-size: 14px;
-    margin: 0 0 7px 0;
+    margin: 7px 0 16px 0;
 }
 
 .panel-type-list .panel-type small {
@@ -151,6 +151,10 @@ html {
     height: 1em;
 
     font-size: 9px;
+    opacity: 0;
+}
+#panels-container .grid-container:hover .grid .cell .cell-width {
+    opacity: 1;
 }
 
 #panels-container .grid .cell .cell-width-left {
@@ -197,7 +201,7 @@ html {
 #panels-container .grid-container {
     position: relative;
 
-    padding: 1px 0 7px 0;
+    padding: 7px 0 7px 0;
 }
 
 #panels-container .grid-container .controls {
@@ -1097,23 +1101,19 @@ button.wp-switch-editor {
 
 #panels-container .controls .row-button
 {
-    height: 18px;
-    width: 18px;
+    height: 25px;
+    width: 25px;
     padding: 0;
 }
 
 #panels-container .controls .row-button:before
 {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
+    font-size: 20px;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
 }
 
-#panels-container .controls .style-button:before
-{
-    font-size: 13px;
-}
 
 #panels-container .cell-wrapper
 {

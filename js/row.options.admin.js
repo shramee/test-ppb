@@ -39,7 +39,7 @@
             ppbFileFrame.open();
         });
 
-        $('#grid-styles-dialog .mp4Vid-upload-button').live('click', function( event ){
+        $('#grid-styles-dialog .video-upload-button').live('click', function( event ){
             event.preventDefault();
 
             $textField = $(this).siblings('input');
@@ -52,7 +52,7 @@
 
             // Create the media frame.
             ppbMP4VideoFrame = wp.media.frames.ppbMP4VideoFrame = wp.media({
-                title: 'Choose MP4 Background Video File',
+                title: 'Choose MP4/WEBM Background Video File',
                 library: {
                     type: 'video'
                 },
@@ -77,43 +77,6 @@
             ppbMP4VideoFrame.open();
         });
 
-        $('#grid-styles-dialog .webmVid-upload-button').live('click', function( event ){
-            event.preventDefault();
-
-            $textField = $(this).siblings('input');
-
-            // If the media frame already exists, reopen it.
-            if ( ppbWebmVidFrame ) {
-                ppbWebmVidFrame.open();
-                return;
-            }
-
-            // Create the media frame.
-            ppbWebmVidFrame = wp.media.frames.ppbWebmVidFrame = wp.media({
-                title: 'Choose WEBM Background Video File',
-                library: {
-                    type: 'video'
-                },
-                button: {
-                    text: 'Set As Background Video'
-                },
-                multiple: false
-            });
-
-            // When an image is selected, run a callback.
-            ppbWebmVidFrame.on( 'select', function() {
-                // We set multiple to false so only get one image from the uploader
-                attachment = ppbWebmVidFrame.state().get('selection').first().toJSON();
-
-                // Do something with attachment.id and/or attachment.url here
-                $textField.val(attachment.url);
-                $textField.change();
-
-            });
-
-            // Finally, open the modal
-            ppbWebmVidFrame.open();
-        });
     };
 
 })(jQuery);

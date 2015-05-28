@@ -264,13 +264,12 @@ function siteorigin_panels_style_dialog_form() {
 				<button class="button upload-button">Select Image</button><?php
 				break;
 
-			case 'mp4Vid':
-			case 'webmVid':
+			case 'uploadVid':
 				?><input type="text" id="pp-pb-<?php esc_attr_e( $name ) ?>"
 				         name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 				         data-style-field="<?php echo esc_attr( $name ) ?>"
 				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-			<button class="button <?php echo esc_attr( $attr['type'] ) ?>-upload-button">Select Video</button><?php
+			<button class="button video-upload-button">Select Video</button><?php
 				break;
 
 			case 'textarea':

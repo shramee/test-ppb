@@ -47,8 +47,6 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 		public function widget( $args, $instance ) {
 			$before_widget = $args['before_widget'];
 			$after_widget = $args['after_widget'];
-			$before_title = $args['before_title'];
-			$after_title = $args['after_title'];
 			$before_text = apply_filters( 'black_studio_tinymce_before_text', '<div class="textwidget">', $instance );
 			$after_text = apply_filters( 'black_studio_tinymce_after_text', '</div>', $instance );
 			$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
@@ -56,9 +54,6 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 			$hide_empty = apply_filters( 'black_studio_tinymce_hide_empty', false, $instance );
 			if ( ! ( $hide_empty && empty( $text ) ) ) {
 				$output = $before_widget;
-				if ( ! empty( $title ) ) {
-					$output .= $before_title . $title . $after_title;
-				}
 				$output .= $before_text . $text . $after_text;
 				$output .= $after_widget;
 				echo $output; // xss ok
@@ -79,7 +74,6 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 		 */
 		public function update( $new_instance, $old_instance ) {
 			$instance = $old_instance;
-			$instance['title'] = strip_tags( $new_instance['title'] );
 			if ( current_user_can( 'unfiltered_html' ) ) {
 				$instance['text'] = $new_instance['text'];
 			}
@@ -119,8 +113,6 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 			do_action( 'black_studio_tinymce_before_editor' );
 			?>
 			<input id="<?php echo $this->get_field_id( 'type' ); ?>" name="<?php echo $this->get_field_name( 'type' ); ?>" type="hidden" value="<?php echo esc_attr( $instance['type'] ); ?>" />
-			<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p>
 			<?php
 			do_action( 'black_studio_tinymce_editor', $instance['text'], $this->get_field_id( 'text' ), $this->get_field_name( 'text' ), $instance['type'] );
 			do_action( 'black_studio_tinymce_after_editor' );

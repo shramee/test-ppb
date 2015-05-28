@@ -33,9 +33,16 @@ jQuery(function($){
         $(window).resize( MakeFullWidth );
         MakeFullWidth();
 
+        $('.ppb-parallax').each( function () {
+            $t = $(this);
+            $t.css({
+                backgroundPosition: 'center -340px',
+                backgroundSize: 'auto ' + ($t.height() + 340) + 'px'
+            });
+        });
         $(window).scroll(function() {
             var scrolledY = $(window).scrollTop();
-            $('.ppb-parallax').css('background-position', 'left ' + ((scrolledY)) + 'px');
+            $('.ppb-parallax').css('background-position', 'center ' + ((scrolledY/2) - 340) + 'px');
         });
 
     })
