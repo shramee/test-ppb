@@ -318,14 +318,6 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 
 				// bring over the hide title check box from old Pootle Visual Editor
 				if ( $widget['info']['class'] == 'Pootle_Text_Widget' ) {
-					if ( isset( $widget['hide-title'] ) && $widget['hide-title'] == '1' ) {
-
-						$widgetStyle = isset( $widget['info']['style'] ) ? json_decode( $widget['info']['style'], true ) : pp_get_default_widget_style( );
-
-						$widgetStyle['hide-title'] = 'none';
-
-						$panels_data['widgets'][$i]['info']['style'] = json_encode( $widgetStyle );
-					}
 				}
 			}
 
@@ -991,10 +983,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				// don't do shortcode or it will mess up shortcodes when WP do shortcode at the end
 				if ( $widget_info['info']['class'] == 'Pootle_Text_Widget' ) {
 					remove_filter( 'widget_text', 'do_shortcode' );
-
-					if ( isset( $widget_info['hide-title'] ) && $widget_info['hide-title'] == '1' ) {
-						$widgetStyle['hide-title'] = 'none';
-					}
 				}
 
 				siteorigin_panels_the_widget( $widget_info['info']['class'], $data, $widgetStyle, $gi, $ci, $pi, $pi == 0, $pi == count( $widgets ) - 1, $post_id );
@@ -2073,13 +2061,6 @@ function pp_pb_generate_font_css( $option, $em = '1' ) {
 
 function pp_pb_widget_styling_fields( ) {
 	return array(
-		'hide-title' => array(
-			'name' => 'Hide widget title on site',
-			'type' => 'checkbox',
-			'value' => 'none',
-			'selector' => '.widget-title',
-			'css' => 'display'
-		 ),
 		'background-color' => array(
 			'name' => 'Widget background color',
 			'type' => 'color',
