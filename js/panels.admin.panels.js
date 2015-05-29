@@ -196,21 +196,7 @@
             if( typeof activeDialog != 'undefined' ) return false;
 
             // The done button
-            var dialogButtons = {};
             var doneClicked = false;
-            dialogButtons[ panels.i10n.buttons['done'] ] = function () {
-                doneClicked = true;
-                $( this ).trigger( 'panelsdone', $currentPanel, activeDialog );
-
-                var panelData = $currentPanel.panelsGetPanelData();
-
-                $currentPanel.find('input[name$="[data]"]').val( JSON.stringify( panelData ) );
-                $currentPanel.panelsSetPanelTitle( panelData );
-                $currentPanel.find('input[name$="[info][raw]"]').val(1);
-
-                // Change the title of the panel
-                activeDialog.dialog( 'close' );
-            };
 
             window.$currentPanel = $(this).parents( '.panel' );
 
@@ -220,14 +206,14 @@
                 .addClass( 'ui-dialog-content-loading' )
                 .addClass( 'widget-dialog-' + type.toLowerCase() )
                 .dialog( {
-                    dialogClass: 'panels-admin-dialog',
+                    dialogClass: 'panels-admin-dialog ppb-add-content-panel',
                     autoOpen:    false,
                     modal:       false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
                     draggable:   false,
                     resizable:   false,
-                    title:       panels.i10n.messages.editWidget.replace( '%s', $currentPanel.data( 'title' ) ),
-                    minWidth:    760,
-                    maxHeight:   Math.min( Math.round($(window).height() * 0.875), 800),
+                    title:       "Visual Editor",
+                    height:   $(window).height() - 50,
+                    width:    $(window).width() - 50,
                     create:      function(event, ui){
                         $(this ).closest('.ui-dialog' ).find('.show-in-panels' ).show();
                     },
@@ -253,7 +239,25 @@
                         $(this).dialog('destroy').remove();
                         activeDialog = undefined;
                     },
-                    buttons: dialogButtons
+                    buttons: [
+                        {
+                            text : panels.i10n.buttons['done'],
+                            class : 'button pootle stop',
+                            click : function () {
+                                doneClicked = true;
+                                $( this ).trigger( 'panelsdone', $currentPanel, activeDialog );
+
+                                var panelData = $currentPanel.panelsGetPanelData();
+
+                                $currentPanel.find('input[name$="[data]"]').val( JSON.stringify( panelData ) );
+                                $currentPanel.panelsSetPanelTitle( panelData );
+                                $currentPanel.find('input[name$="[info][raw]"]').val(1);
+
+                                // Change the title of the panel
+                                activeDialog.dialog( 'close' );
+                            }
+                        }
+                    ]
                 } )
                 .keypress(function(e) {
                     if (e.keyCode == $.ui.keyCode.ENTER) {
@@ -306,18 +310,28 @@
                         .dialog("option", "position", { my: "center", at: "center", of: window })
                         .dialog("open");
 
-                    $('#pootle-content-module-tabs')
+                    $('.ppb-add-content-panel-wrap')
                         .tabs({
+                            activate: function(event ,ui){
+                                var $t = $(this),
+                                    title = $t.find('.ui-tabs-active a').html();
+
+                                $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
+
+                            },
                             enable: function (event, ui) {
                                 $(window).resize();
-                            }
+                            },
+                            active: 0
                         })
+                        .addClass( "ui-tabs-vertical ui-helper-clearfix" )
                         .find('input').each( function () {
                             $t = $(this);
                             if ( $t.attr( 'data-style-field-type' ) == 'color' ) {
                                 $t.wpColorPicker();
                             }
                         });
+                    $( ".ppb-add-content-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 
                     //Get style data in fields
                     panels.pootlePageGetWidgetStyles( $('#pootle-style-tab') );

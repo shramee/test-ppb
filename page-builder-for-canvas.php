@@ -1754,21 +1754,26 @@ function siteorigin_panels_ajax_widget_form( ) {
 	if ( empty( $request['widget'] ) ) exit();
 
 	?>
-	<div id="pootle-content-module-tabs">
-		<ul>
-			<li><a class="wp-switch-editor" href="#pootle-content-tab">Editor</a></li>
-			<li><a class="wp-switch-editor" href="#pootle-style-tab">Style</a></li>
-		</ul>
-		<div id="pootle-content-tab" class="pootle-content-module tab-contents">
-			<?php
-			echo siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
-			?>
-		</div>
-		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
-			<?php
-			pp_pb_widget_styles_dialog_form();
-			?>
-		</div>
+	<div class="ppb-add-content-panel-wrap">
+			<ul class="ppb-acp-sidebar">
+				<li><a class="ppb-tabs-anchors" href="#pootle-content-tab">Visual Editor</a></li>
+				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
+				<li class="ppb-seperator"></li>
+				<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
+			</ul>
+			<div id="pootle-content-tab" class="pootle-content-module tab-contents">
+				<?php
+				echo siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
+				?>
+			</div>
+			<div id="pootle-style-tab" class="pootle-content-module tab-contents">
+				<?php
+				pp_pb_widget_styles_dialog_form();
+				?>
+			</div>
+			<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
+				Kindly install Pootle Page Builder Extension - Woocommerce to do cool WooCommerce stuff.
+			</div>
 	</div>
 	<?php
 

@@ -11,7 +11,6 @@ html {
 }
 
 /* The Panel Type List */
-
 .panel-type-list {
     margin: 0 -5px 10px -5px;
     min-height: 10px;
@@ -1233,21 +1232,6 @@ a.wp-switch-editor {
     text-decoration: none;
     float: none;
 }
-
-#pootle-content-module-tabs ul {
-    display: block;
-}
-#pootle-content-module-tabs li {
-    display: inline-block;
-    margin: 0;
-}
-
-
-.pootle-content-module {
-    border: 1px solid #aaa;
-    padding: 16px;
-}
-
 .widget-dialog-siteorigin_panels_widgets_postloop > p > label[for]
 {
     display: inline-block;
@@ -1271,11 +1255,6 @@ when editing event widget from Event Calendar Pro */
     z-index: 90000 !important;
 }
 
-/* Hide Black Studio links */
-.widget-dialog-pootle_text_widget > .bstw-links
-{
-    display: none;
-}
 .sticky #wp-content-editor-tools{
     position: fixed !important;
     top: 32px !important;
@@ -1284,4 +1263,72 @@ when editing event widget from Event Calendar Pro */
     position: fixed !important;
     top: 85px !important;
     z-index: 97;
+}
+
+/*ADD CONTENT PANEL STYLES*/
+.ppb-add-content-panel {
+    overflow: hidden;
+}
+.ppb-add-content-panel .ui-dialog-titlebar, .ppb-add-content-panel .ui-dialog-buttonpane {
+    margin-left: 200px;
+}
+.ppb-add-content-panel .ui-dialog-content {
+    padding: 0;
+    overflow: visible;
+}
+
+.ppb-add-content-panel .ppb-add-content-panel-wrap {
+    position: relative;
+    padding: 0;
+    height: 100%;
+    overflow: visible;
+}
+
+ul.ppb-acp-sidebar {
+    width: 160px;
+    display: block;
+    position: absolute;
+    top: -41px;
+    left:0;
+    bottom: -70px;
+    padding:20px;
+    background: #f3f3f3;
+    border-right: 1px solid #ccc;
+}
+
+.pootle-content-module {
+    padding: 16px;
+    margin: 0 0 0 200px;'
+;
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+.ppb-add-content-panel .ui-state-default a {
+    display: block;
+    position: relative;
+    padding: 8px 0;
+    margin: 0;
+    line-height: 18px;
+    font-size: 14px;
+    color: #0073aa;
+    text-decoration: none;
+    outline:none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.ppb-add-content-panel .ui-tabs-active a {
+    color: #23282d;
+    font-weight: 700;
+    cursor: default;
+}
+
+.ppb-add-content-panel-wrap li.ppb-seperator {
+  height: 0;
+  margin: 12px 0px;
+  padding: 0;
+  border-top: 1px solid #ddd;
+}
+.ppb-add-content-panel-wrap {
 }
