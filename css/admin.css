@@ -1,10 +1,10 @@
 #panels {
 	position: relative;
-	
+
 }
 
 html {
-	overflow-y: scroll; /* This fixes the tooltips */ 
+	overflow-y: scroll; /* This fixes the tooltips */
 }
 
 #panels-dialog-tabs {
@@ -20,7 +20,7 @@ html {
 
 .panel-type-list .panel-type {
 	width: 25%;
-	
+
 	-ms-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -37,7 +37,7 @@ html {
 
 .panel-type-list .panel-type h3 {
 	height: 1.2em;
-	
+
 	color: #333333;
 	font-size: 14px;
 	margin: 0 0 7px 0;
@@ -45,7 +45,7 @@ html {
 
 .panel-type-list .panel-type small {
 	height: 2.5em;
-	
+
 	display: block;
 	font-size: 11px;
 	line-height: 1.25em;
@@ -89,7 +89,7 @@ html {
 
 #panels-container .grid {
 	position: relative;
-	
+
 	background: #edf8fe url("images/cell-selected.png") repeat;
 	margin-bottom: 30px;
 }
@@ -97,7 +97,7 @@ html {
 #panels-container .grid .ui-resizable-handle.ui-resizable-w {
 	left: -11px;
 	width: 10px;
-	
+
 	background: rgba(0, 150, 211, 0);
 	cursor: col-resize;
 	-webkit-transition: background 0.25s ease-in-out;
@@ -117,7 +117,7 @@ html {
 #panels-container .grid .cell {
 	position: absolute;
 	top: 0;
-	
+
 	background: #e4eff4;
 	border: 1px solid #bcccd2;
 }
@@ -137,11 +137,11 @@ html {
 }
 
 #panels-container .grid .cell .cell-wrapper {
-	-ms-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */ 
-	-moz-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */ 
-	-webkit-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */ 
+	-ms-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
+	-moz-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
+	-webkit-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
 	box-sizing: border-box;
-	padding: 10px 10px 4px 10px; /* 6px bottom to remove bottom margin from panels */ 
+	padding: 10px 10px 4px 10px; /* 6px bottom to remove bottom margin from panels */
 }
 
 #panels-container .grid .cell .cell-width {
@@ -149,14 +149,14 @@ html {
 	bottom: -13px;
 	width: 100%;
 	height: 1em;
-	
+
 	font-size: 9px;
 }
 
 #panels-container .grid .cell .cell-width-left {
 	width: 5px;
 	height: 11px;
-	
+
 	background: url(images/cell-width.png) no-repeat left top;
 	float: left;
 }
@@ -164,14 +164,14 @@ html {
 #panels-container .grid .cell .cell-width-right {
 	width: 5px;
 	height: 11px;
-	
+
 	background: url(images/cell-width.png) no-repeat left bottom;
 	float: right;
 }
 
 #panels-container .grid .cell .cell-width-line {
 	height: 11px;
-	
+
 	background: url(images/cell-width.png) repeat-x left -11px;
 	margin: 0 5px;
 }
@@ -181,7 +181,7 @@ html {
 	top: -2px;
 	left: 0;
 	width: 100%;
-	
+
 	text-align: center;
 }
 
@@ -196,7 +196,7 @@ html {
 
 #panels-container .grid-container {
 	position: relative;
-	
+
 }
 
 #panels-container .grid-container .controls {
@@ -213,8 +213,8 @@ html {
 
 #panels-container .grid-container .controls .row-button.delete-button
 {
-    float: left;
-    margin-left: 0;
+	float: left;
+	margin-left: 0;
 }
 
 #panels-container .grid-container .controls .grid-handle {
@@ -228,7 +228,7 @@ html {
 
 #so-panels-panels .ui-resizable-helper {
 	position: absolute;
-	
+
 	border: 1px solid #ecd800;
 	-ms-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -260,19 +260,19 @@ html {
 	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), inset 0 0 2px #ffffff;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), inset 0 0 2px #ffffff;
 	cursor: move;
-	margin-bottom: 5px; /* End of .panel */ 
+	margin-bottom: 5px; /* End of .panel */
 }
 
 #so-panels-panels .panels-container .panel .panel-wrapper {
 	position: relative;
-	
+
 	overflow: hidden;
 	padding: 7px 9px;
 }
 
 #so-panels-panels .panels-container .panel h4 {
 	height: 1em;
-	
+
 	color: #474747;
 	cursor: pointer;
 	display: inline-block;
@@ -304,7 +304,7 @@ html {
 	position: absolute;
 	top: 5px;
 	right: 7px;
-	
+
 	background: #f3f3f3;
 	background-image: -webkit-gradient(linear, left bottom, left top, from(#f1f2f2), to(#f5f6f6));
 	background-image: -webkit-linear-gradient(bottom, #f1f2f2, #f5f6f6);
@@ -341,7 +341,7 @@ html {
 
 #so-panels-panels .panels-container .panel small {
 	height: 16px;
-	
+
 	display: block;
 	overflow: hidden;
 }
@@ -357,7 +357,7 @@ html {
 #so-panels-panels .panels-container .ui-state-highlight {
 	position: relative;
 	height: 49px;
-	
+
 	background: #ddebef;
 	border: 1px solid;
 	border-color: #bcccd2;
@@ -378,7 +378,11 @@ html {
 }
 
 /* The Dialogs */
-
+.ui-dialog-content{
+	width: 100% !important;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
 #panels-dialog,
 #grid-setting-dialog,
 #grid-add-dialog,
@@ -400,14 +404,14 @@ html {
 
 .panels-tooltip {
 	position: absolute;
-	
+
 	background: #1c1c1c;
 	background: rgba(0, 0, 0, 0.8);
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
 	color: white;
-	font-size: 11px; /* Higher than the admin bar */ 
+	font-size: 11px; /* Higher than the admin bar */
 	padding: 4px 8px;
 	z-index: 999999;
 }
@@ -418,7 +422,7 @@ html {
 	left: 50%;
 	width: 8px;
 	height: 4px;
-	
+
 	background-image: url(images/tooltip-pointer.png);
 	margin-left: -4px;
 }
@@ -431,7 +435,7 @@ html {
 
 #so-panels-panels {
 	position: relative;
-	
+
 	border: 1px solid #e5e5e5;
 	z-index: 9;
 }
@@ -464,9 +468,9 @@ html {
 #so-panels-panels h3.hndle button.page-settings,
 #so-panels-panels h3.hndle button.hide-elements
 {
-    float: right;
-    margin-top: 0;
-    margin-left: 3px;
+	float: right;
+	margin-top: 0;
+	margin-left: 3px;
 }
 
 #so-panels-panels h3.hndle button:not(.add-button):not(.page-settings):hover {
@@ -499,7 +503,7 @@ html {
 	top: 23px;
 	left: 50%;
 	width: 250px;
-	
+
 	-moz-background-clip: padding-box;
 	-webkit-background-clip: padding-box;
 	background-clip: padding-box;
@@ -552,23 +556,23 @@ html {
 	position: relative;
 	width: 75px;
 	height: 28px;
-	
+
 	background: #67afd8;
-	-webkit-border-radius: 15px; /* Now for the off state */ 
-	-moz-border-radius: 15px; /* Now for the off state */ 
+	-webkit-border-radius: 15px; /* Now for the off state */
+	-moz-border-radius: 15px; /* Now for the off state */
 	border-radius: 15px;
-	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3); /* Now for the off state */ 
-	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3); /* Now for the off state */ 
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3); /* Now for the off state */
+	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.3); /* Now for the off state */
 	box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
 	cursor: pointer;
 	display: inline-block;
 	margin-bottom: -6px;
 	margin-left: 35px;
-	overflow: hidden; /* Now for the off state */ 
-	-ms-user-select: none; /* Now for the off state */ 
-	-moz-user-select: -moz-none; /* Now for the off state */ 
-	-khtml-user-select: none; /* Now for the off state */ 
-	-webkit-user-select: none; /* Now for the off state */ 
+	overflow: hidden; /* Now for the off state */
+	-ms-user-select: none; /* Now for the off state */
+	-moz-user-select: -moz-none; /* Now for the off state */
+	-khtml-user-select: none; /* Now for the off state */
+	-webkit-user-select: none; /* Now for the off state */
 	user-select: none;
 }
 
@@ -578,14 +582,14 @@ html {
 	left: 35px;
 	width: 35px;
 	height: 23px;
-	
+
 }
 
 #panels-toggle-switch .on-text,
 #panels-toggle-switch .off-text {
 	position: absolute;
 	top: 50%;
-	
+
 	font-size: 11px;
 	font-weight: bold;
 	line-height: 1;
@@ -594,7 +598,7 @@ html {
 
 #panels-toggle-switch .on-text {
 	left: 10px;
-	
+
 	color: #004f72;
 	opacity: 1;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -602,7 +606,7 @@ html {
 
 #panels-toggle-switch .off-text {
 	right: -23px;
-	
+
 	color: #919191;
 	opacity: 0;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -614,18 +618,18 @@ html {
 
 #panels-toggle-switch.state-off .handle {
 	left: 4px;
-	
+
 }
 
 #panels-toggle-switch.state-off .on-text {
 	left: -21px;
-	
+
 	opacity: 0;
 }
 
 #panels-toggle-switch.state-off .off-text {
 	right: 8px;
-	
+
 	opacity: 1;
 }
 
@@ -647,12 +651,12 @@ html {
 
 #panels-toggle-switch.state-off.subtle-move:hover .handle {
 	left: 7px;
-	
+
 }
 
 #panels-toggle-switch.state-off.subtle-move:hover .off-text {
 	right: 5px;
-	
+
 	opacity: 0.8;
 }
 
@@ -660,14 +664,14 @@ html {
 
 #panels-home-page #post-body-content {
 	position: relative;
-	
+
 }
 
 #panels-home-page #post-preview {
 	position: absolute;
 	top: 0;
 	right: 0;
-	
+
 	z-index: 10;
 }
 
@@ -677,7 +681,7 @@ html {
 
 #grid-prebuilt-dialog .chzn-results {
 	height: 150px !important;
-	
+
 	overflow-y: auto;
 }
 
@@ -689,7 +693,7 @@ html {
 
 #siteorigin-widgets-link {
 	position: relative;
-	
+
 	background: #9ccc54;
 	background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #9ccc54), color-stop(1, #cbe385));
 	background: -ms-linear-gradient(bottom, #9ccc54, #cbe385);
@@ -821,7 +825,7 @@ html {
 
 #panels-row-style-select {
 	position: absolute;
-	
+
 	background: #3f3f3f;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -884,7 +888,7 @@ html {
 	right: 32px;
 	width: 8px;
 	height: 4px;
-	
+
 	background: url(./images/pointer.png);
 	content: '';
 	display: block;
@@ -909,7 +913,7 @@ html {
 #hide-element-dialog label
 {
 	width: 160px;
-	
+
 	display: inline-block;
 	font-weight: bold;
 }
@@ -919,7 +923,7 @@ html {
 #hide-element-dialog label.siteorigin-panels-checkbox-label
 {
 	width: auto;
-	
+
 	display: inline;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
@@ -931,26 +935,26 @@ html {
 
 #grid-styles-dialog .small-help-text
 {
-    display: block;
-    margin-left: 160px;
-    font-size: 11px;
-    margin-top: 5px;
+	display: block;
+	margin-left: 160px;
+	font-size: 11px;
+	margin-top: 5px;
 }
 
 #grid-prebuilt-dialog .chosen-container
 {
-    width: 500px !important;
+	width: 500px !important;
 }
 
 #add-to-panels {
-    font-size: 10px;
+	font-size: 10px;
 }
 
 #panels .ui-button,
 #add-to-panels .ui-button {
 	position: relative;
 	height: auto;
-	
+
 	cursor: pointer;
 	display: inline-block;
 	margin: 0;
@@ -972,7 +976,7 @@ html {
 #add-to-panels .ui-button .ui-icon {
 	width: 8px;
 	height: 8px;
-	
+
 	display: block;
 }
 
@@ -1010,18 +1014,18 @@ html {
 #add-to-panels .ui-button .ui-icon.ui-icon-gear
 {
 	/*background: url(images/icons/gear-18x18.png) !important;*/
-    /*background-size: 24px 24px !important;*/
-    /*background-repeat: no-repeat !important;*/
-    /*background-position: center center !important;*/
-    width: 20px !important;
-    height: 20px !important;
-    box-sizing: content-box;
-    padding: 4px !important;
+	/*background-size: 24px 24px !important;*/
+	/*background-repeat: no-repeat !important;*/
+	/*background-position: center center !important;*/
+	width: 20px !important;
+	height: 20px !important;
+	box-sizing: content-box;
+	padding: 4px !important;
 }
 
 #panels .ui-button .ui-icon.ui-icon-times,
 #add-to-panels .ui-button .ui-icon.ui-icon-times {
-    background: url(images/icons/times.png);
+	background: url(images/icons/times.png);
 }
 
 .ui-dialog.panels-admin-dialog {
@@ -1046,130 +1050,130 @@ html {
 
 .grid-add.button, .panels-add.button, .prebuilt-set.button
 {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    margin-top: 1px !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	margin-top: 1px !important;
 }
 
 #panels-container .controls .row-button
 {
-    height: 18px;
-    width: 18px;
-    padding: 0;
+	height: 18px;
+	width: 18px;
+	padding: 0;
 }
 
 #panels-container .controls .row-button:before
 {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
 }
 
 #panels-container .controls .style-button:before
 {
-    font-size: 13px;
+	font-size: 13px;
 }
 
 #panels-container .cell-wrapper
 {
-    position: relative;
+	position: relative;
 }
 
 #panels-container .cell-wrapper .add-widget-button
 {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -13px;
-    margin-top: -13px;
-    cursor: pointer;
-    z-index: 100;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -13px;
+	margin-top: -13px;
+	cursor: pointer;
+	z-index: 100;
 }
 
 #panels-container .cell-wrapper .add-widget-button:before
 {
-    font-size: 26px;
+	font-size: 26px;
 }
 
 #so-panels-panels
 {
-    margin-top: 0;
-    border-top-style: none;
+	margin-top: 0;
+	border-top-style: none;
 }
 
 #so-panels-panels .add-row-container
 {
-    text-align: right;
-    padding: 0 12px 10px;
+	text-align: right;
+	padding: 0 12px 10px;
 }
 
 #so-panels-panels .add-row-button
 {
-    padding: 0;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
+	padding: 0;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
 }
 
 #so-panels-panels .add-row-button:before
 {
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	font-size: 16px;
 }
 
 #widget-styles-dialog .field
 {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 #widget-styles-dialog .field > label
 {
-    width: 200px;
-    display: inline-block;
-    vertical-align: middle;
-    font-weight: bold;
+	width: 200px;
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: bold;
 }
 
 #widget-styles-dialog .field > span > .wp-picker-container
 {
-    margin: 0;
-    vertical-align: middle;
+	margin: 0;
+	vertical-align: middle;
 }
 
 #widget-styles-dialog .field > span > .wp-picker-container > .wp-color-result
 {
-    margin: 0;
+	margin: 0;
 }
 
 #widget-styles-dialog .field > span > input
 {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 .widget-dialog-siteorigin_panels_widgets_postloop > p > label[for]
 {
-    display: inline-block;
-    width: 200px;
+	display: inline-block;
+	width: 200px;
 }
 
 .widget-dialog-siteorigin_panels_widgets_postloop > p > input[type=checkbox]
 {
-    margin-left: 1px;
+	margin-left: 1px;
 }
 
 #panels-dialog .panel-type.unused
 {
-    display: none !important;
+	display: none !important;
 }
 
 /* Fix select2 drop down displayed below dialog overlay in edit page screen,
 when editing event widget from Event Calendar Pro */
 .select2-drop
 {
-    z-index: 90000 !important;
+	z-index: 90000 !important;
 }
 
 /* Hide Black Studio links */
