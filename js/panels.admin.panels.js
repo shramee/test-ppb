@@ -595,6 +595,8 @@
                             .append( panel )
                     }
                 }
+                panels.ppbGridEvents(grid);
+
             }
         }
 

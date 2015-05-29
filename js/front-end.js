@@ -36,13 +36,13 @@ jQuery(function($){
         $('.ppb-parallax').each( function () {
             $t = $(this);
             $t.css({
-                backgroundPosition: 'center -340px',
-                backgroundSize: 'auto ' + ($t.height() + 340) + 'px'
+                backgroundPosition: 'center -500px',
+                backgroundSize: 'auto ' + ($t.height() + 500) + 'px'
             });
         });
         $(window).scroll(function() {
             var scrolledY = $(window).scrollTop();
-            $('.ppb-parallax').css('background-position', 'center ' + ((scrolledY/2) - 340) + 'px');
+            $('.ppb-parallax').css('background-position', 'center ' + ((scrolledY/2) - 500) + 'px');
         });
 
     })

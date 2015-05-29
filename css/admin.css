@@ -89,7 +89,7 @@ html {
     position: relative;
 
     background: #fff url("images/cell-selected.png") repeat;
-    margin-bottom: 30px;
+    margin-bottom: 61px;
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w {
@@ -105,26 +105,26 @@ html {
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w:hover {
-    background: #ffb0aa;
+    background: #ccc;
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w {
-    background: #ffc0b7;
+    background: #e0e0e0;
 }
 
 #panels-container .grid .cell {
     position: absolute;
     top: 0;
 
-    background: #ffe0dd;
-    border: 1px solid #d4a4a0;
-    padding-bottom: 20px;
+    background: #f1f1f1;
+    border: 1px solid #ccc;
+    padding-bottom: 61px;
 }
 
 #panels-container .grid .cell.cell-selected {
-    background: #ffd0cc url("images/cell-selected.png") repeat;
-    border-color: #ef4832;
-    box-shadow: 0 0 4px 1px rgba(180, 90, 90, 0.3);
+    background: #f1f1f1;
+    border-color: #aaa;
+    box-shadow: 0 0 4px 1px rgba(180, 180, 180, 0.3);
 }
 
 #panels-container .grid .cell.first {
@@ -136,11 +136,11 @@ html {
 }
 
 #panels-container .grid .cell .cell-wrapper {
-    -ms-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
-    -moz-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
-    -webkit-box-sizing: border-box; /* 6px bottom to remove bottom margin from panels */
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 10px 10px 0 10px; /* 6px bottom to remove bottom margin from panels */
+    padding: 10px 10px 1px 10px;
 }
 
 #panels-container .grid .cell .cell-width {
@@ -196,11 +196,15 @@ html {
     line-height: 1;
     padding: 0 5px;
 }
+div#panels-container{
 
+    padding: 7px 0;
+    
+}
 #panels-container .grid-container {
     position: relative;
 
-    padding: 7px 0 7px 0;
+    padding: 7px 0;
 }
 
 #panels-container .grid-container .controls {
@@ -262,17 +266,17 @@ html {
 }
 
 #so-panels-panels .panels-container .panel {
-    background: #f1f1f1;
+    background: #fafafa;
     border: 1px solid;
-    border-color: #c9c9c9 #c2c2c3 #babbbf #c1c2c3;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), inset 0 0 2px #ffffff;
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), inset 0 0 2px #ffffff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08), inset 0 0 2px #ffffff;
+    border-color: #dadada;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
     cursor: move;
-    margin-bottom: 5px; /* End of .panel */
+    margin-bottom: 5px;
+}
+
+#so-panels-panels .panels-container .panel:hover {
+    border-color: #999;
 }
 
 #so-panels-panels .panels-container .panel .panel-wrapper {
@@ -317,12 +321,7 @@ html {
     position: relative;
     float: right;
     margin: -5px -16px -5px 0;
-    background: #f3f3f3;
-    background-image: -webkit-gradient(linear, left bottom, left top, from(#f1f2f2), to(#f5f6f6));
-    background-image: -webkit-linear-gradient(bottom, #f1f2f2, #f5f6f6);
-    background-image: -moz-linear-gradient(bottom, #f1f2f2, #f5f6f6);
-    background-image: -o-linear-gradient(bottom, #f1f2f2, #f5f6f6);
-    background-image: linear-gradient(to top, #f1f2f2, #f5f6f6);
+    background: #fafafa;
     cursor: pointer;
     font-size: 12px;
     padding: 2px 7px 2px 7px;
@@ -458,6 +457,8 @@ html {
 
 #wp-content-wrap.panels-active .pootle-switch-editor {
     display: block;
+    float: right;
+    margin: 0 1px 5px 5px;
 }
 
 #so-panels-panels {
@@ -1100,17 +1101,17 @@ button.wp-switch-editor {
 
 #panels-container .controls .row-button
 {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
     padding: 0;
 }
 
 #panels-container .controls .row-button:before
 {
-    font-size: 20px;
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
+    font-size: 16px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
 }
 
 
@@ -1119,22 +1120,43 @@ button.wp-switch-editor {
     position: relative;
 }
 
-#panels-container .cell-wrapper .add-widget-button
-{
+#panels-container .cell-wrapper .add-widget-button {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: 10px;
+    right: 10px;
     text-align: center;
-    bottom: -18px;
-    margin: 0;
+    top: 10px;
+    bottom: -50px;
+    margin: 0 0 0;
     cursor: pointer;
     z-index: 100;
-    opacity:0;
+    opacity: 0.25;
+    border: 4px dashed #d5d2d0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
-#panels-container .cell:hover .add-widget-button
-{
-    opacity:0.80;
+#panels-container .grid .cell .cell-wrapper > .add-widget-button:not(:nth-last-child(1)) {
+    opacity: 0;
+    height: 50px;
+    top: 100%;
+    bottom: initial;
 }
+
+#panels-container .grid .cell:hover .cell-wrapper > .add-widget-button {
+    opacity: 1;
+}
+
+#panels-container .grid .cell .cell-wrapper > .add-widget-button:hover {
+    background-color: #ef4832;
+    border-color: #ef4832;
+}
+#panels-container .grid .cell .cell-wrapper > .add-widget-button:hover:before {
+    background-color: #fff;
+    color: #ef4832;
+    border-color: #ef4832;
+}
+
 #panels-container .cell:hover .add-widget-button span
 {
     vertical-align: middle;
@@ -1142,10 +1164,27 @@ button.wp-switch-editor {
 }
 #panels-container .cell-wrapper .add-widget-button:before
 {
-    font-size: 18px;
-    vertical-align: middle;
-    line-height: 25px;
-}
+  background: #e5e5e5;
+  background: rgba(153,153,153,.1);
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  display: inline-block;
+  content: '\f132';
+  -webkit-font-smoothing: antialiased;
+  font: 400 25px/34px dashicons;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  text-align: center;
+  color: #999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -15px 0 0 -15px;
+  text-indent: 1px;
+  padding: 0;
+  text-shadow: none;
+  z-index: 4;}
 
 /* Main module dialog styles */
 #so-panels-panels

@@ -45,7 +45,7 @@
             } );
 
             // Resize all the grids and cell wrappers
-            $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', Math.max( maxHeight, 7 ) );
+            $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', Math.max( maxHeight, 1 ) );
         });
 
     }
@@ -133,7 +133,7 @@
             var cell = $(
                 '<div class="cell" data-percent="' + (weights[i] / weightSum) + '">' +
                     '<div class="cell-wrapper panels-container">' +
-                        '<div class="add-widget-button dashicons-before dashicons-plus"> <span>Add Content</span></div>' +
+                        '<div class="add-widget-button dashicons-before dashicons-plus"> </div>' +
                     '</div>' +
                     '<div class="cell-width"><div class="cell-width-left"></div><div class="cell-width-right"></div><div class="cell-width-line"></div><div class="cell-width-value"><span></span></div></div>' +
                     '</div>'

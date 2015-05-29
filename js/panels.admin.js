@@ -63,6 +63,8 @@ jQuery( function ( $ ) {
         num = Math.min( 10, Math.max( 1, Math.round( num ) ) );
         var gridContainer = window.panels.createGrid( num );
 
+        panels.ppbGridEvents(gridContainer);
+
         if(panels.animations) gridContainer.hide().slideDown();
         else gridContainer.show();
 
@@ -547,10 +549,6 @@ jQuery( function ( $ ) {
 
     // The button for adding a grid
     $( '#panels .grid-add' )
-//        .button( {
-////            icons: { primary: 'ui-icon-columns' },
-//            text:  'Add Row'
-//        } )
         .click( function () {
             $( '#grid-add-dialog' ).dialog( 'open' );
             return false;
@@ -625,7 +623,7 @@ jQuery( function ( $ ) {
 
             $('#content-resize-handle' ).show();
         } ).end()
-        .prepend('<a id="content-tmce-editor" class="button pootle pootle-switch-editor">Default Editor</a>')
+        .prepend('<a id="content-tmce-editor" class="button pootle-switch-editor">Default Editor</a>')
         .prepend(
         $( '<a id="content-panels" class="button pootle switch-panels">Page Builder</a>' )
             .click( function () {
@@ -769,4 +767,22 @@ jQuery( function ( $ ) {
 
     // Add a hidden field to show that the JS is complete. If this doesn't run we assume that JS is broken and the interface hasn't loaded properly
     $('#panels').append('<input name="panels_js_complete" type="hidden" value="1" />');
+
+    panels.ppbGridEvents = function (container) {
+        //console.log($(container).find('.panel-wrapper').length);
+        if( container.find('.panel-wrapper').length > 0 ) {
+            //@TODO Shramee
+            //container.css('background', 'red');
+        }
+
+
+        container.hover(function(){
+            var $t = $(this);
+            panels.ppbGridExpandHandler($t);
+        });
+    };
+    panels.ppbGridExpandHandler = function ($t) {
+        //@TODO Shramee
+        console.log($t.find('.panel-wrapper').length);
+    }
 } );

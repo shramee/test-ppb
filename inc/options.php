@@ -41,7 +41,7 @@ function siteorigin_panels_setting( $key = '' ) {
 			'affiliate-id' => false,																				    // Set your affiliate ID
 			'copy-content' => '',                                                                                       // Should we copy across content
 			'animations' => true,                                                                                       // We want animations always enabled
-			'inline-css' => ! isset( $display_settings['inline-css'] ) ? true : $display_settings['inline-css'] == '1', // How to display CSS
+			'inline-css' => true,                                                                                       // How to display CSS
 			'remove-list-padding' => ! isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'] == '1',	// Remove left padding on list
 		 ) );
 
@@ -85,10 +85,6 @@ function siteorigin_panels_options_init() {
 	add_settings_field( 'mobile-width', __( 'Mobile Width', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
 	add_settings_field( 'margin-sides', __( 'Margin Sides', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-sides' ) );
 	add_settings_field( 'margin-bottom', __( 'Margin Bottom', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-bottom' ) );
-	add_settings_field( 'inline-css', __( 'Inline CSS', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array(
-		'type' => 'inline-css',
-		'description' => __( 'Disabling this will generate CSS using a separate query.', 'siteorigin-panels' ),
-	 ) );
 	add_settings_field( 'remove-list-padding', __( 'Remove list padding', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array(
 		'type' => 'remove-list-padding',
 		'description' => __( 'Remove left padding for list widgets used in page content container.', 'siteorigin-panels' ),
@@ -129,8 +125,6 @@ function siteorigin_panels_options_field_generic( $args, $groupName ) {
 	$settings = siteorigin_panels_setting();
 	switch( $args['type'] ) {
 		case 'responsive' :
-		case 'animations' :
-		case 'inline-css' :
 		case 'bundled-widgets' :
 		case 'remove-list-padding' :
 			?><label><input type="checkbox" name="<?php echo $groupName ?>[<?php echo esc_attr( $args['type'] ) ?>]" <?php checked( $settings[$args['type']] ) ?> value="1" /> <?php _e( 'Enabled', 'siteorigin-panels' ) ?></label><?php
@@ -201,11 +195,8 @@ function siteorigin_panels_options_sanitize_general( $vals ) {
 function siteorigin_panels_options_sanitize_display( $vals ) {
 	foreach( $vals as $f => $v ) {
 		switch( $f ) {
-			case 'inline-css' :
 			case 'remove-list-padding' :
 			case 'responsive' :
-			case 'copy-content' :
-			case 'animations' :
 			case 'bundled-widgets' :
 				$vals[$f] = ! empty( $vals[$f] );
 				break;
@@ -216,10 +207,10 @@ function siteorigin_panels_options_sanitize_display( $vals ) {
 				break;
 		}
 	}
+	$vals['copy-content'] = false;
+	$vals['animations'] = true;
+	$vals['inline-css'] = true;
 	$vals['responsive'] = ! empty( $vals['responsive'] );
-	$vals['copy-content'] = ! empty( $vals['copy-content'] );
-	$vals['animations'] = ! empty( $vals['animations'] );
-	$vals['inline-css'] = ! empty( $vals['inline-css'] );
 	$vals['remove-list-padding'] = ! empty( $vals['remove-list-padding'] );
 	$vals['bundled-widgets'] = ! empty( $vals['bundled-widgets'] );
 	return $vals;

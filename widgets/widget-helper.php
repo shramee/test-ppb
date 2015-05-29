@@ -121,18 +121,10 @@ class SiteOrigin_Panels_Widget_Helper {
 
 		if ( ! empty( $instance['origin_style'] ) ) {
 			$filename = $class->origin_id.'-'.$style.'-'.$preset;
-			if ( siteorigin_panels_setting( 'inline-css' ) ) {
-				static $inlined_css = array();
-				if ( empty( $inlined_css[$filename] ) ) {
-					$inlined_css[$filename] = true;
-					?><style type = "text/css" media = "all"><?php echo origin_widgets_generate_css( get_class( $class ), $style, $preset ) ?></style><?php
-				}
-			} else {
-				wp_enqueue_style( 'origin-widget-'.$filename, add_query_arg( array(
-					'class' => get_class( $class ),
-					'style' => $style,
-					'preset' => $preset,
-				), site_url( '?action = origin_widgets_css' ) ), array(), POOTLEPAGE_VERSION );
+			static $inlined_css = array();
+			if ( empty( $inlined_css[$filename] ) ) {
+				$inlined_css[$filename] = true;
+				?><style type = "text/css" media = "all"><?php echo origin_widgets_generate_css( get_class( $class ), $style, $preset ) ?></style><?php
 			}
 		}
 	}

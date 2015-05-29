@@ -50,6 +50,9 @@ function pp_pb_check_for_conflict( ) {
 	}
 }
 
+
+require_once( 'page-builder-for-canvas-functions.php' );
+
 require_once 'widgets/basic.php';
 
 require_once 'inc/vars.php';
@@ -62,6 +65,9 @@ require_once 'inc/notice.php';
 require_once 'inc/vantage-extra.php';
 require_once 'inc/class-pootlepress-updater.php';
 require_once 'inc/class-pootlepage-font-utility.php';
+require_once 'inc/class-pootlepage-output.php';
+require_once 'inc/class-pootlepage-customizer.php';
+new PootlePage_Customizer();
 if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) include plugin_dir_path( __FILE__ ).'inc/debug.php';
 
 /**
@@ -844,27 +850,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 	if ( empty( $siteorigin_panels_inline_css ) ) $siteorigin_panels_inline_css = '';
 
 	if ( $enqueue_css ) {
-		if ( siteorigin_panels_setting( 'inline-css' ) ) {
-			wp_enqueue_style( 'siteorigin-panels-front' );
-			$siteorigin_panels_inline_css .= siteorigin_panels_generate_css( $post_id, $panels_data );
-		}
-		else{
-			// This is the CSS for the page layout.
-			wp_enqueue_style(
-				'siteorigin-panels-post-css-' . $post_id,
-				add_query_arg(
-					array(
-						'action' => 'siteorigin_panels_post_css',
-						'post' => $post_id,
-						// Include this to ensure changes don't get cached by the browser
-						'layout' => substr( md5( serialize( $panels_data ) ), 0, 8 )
-					 ),
-					admin_url( 'admin-ajax.php' )
-				 ),
-				array( 'siteorigin-panels-front' ),
-				POOTLEPAGE_VERSION
-			 );
-		}
+		wp_enqueue_style( 'siteorigin-panels-front' );
+		$siteorigin_panels_inline_css .= siteorigin_panels_generate_css( $post_id, $panels_data );
 	}
 
 	foreach ( $grids as $gi => $cells ) {
@@ -1745,6 +1732,12 @@ function siteorigin_panels_ajax_action_prebuilt( ) {
 }
 add_action( 'wp_ajax_so_panels_prebuilt', 'siteorigin_panels_ajax_action_prebuilt' );
 
+add_action( 'ppb_add_content_woocommerce_tab', 'ppb_woocommerce_tab' );
+function ppb_woocommerce_tab(){
+?>
+	Kindly install Pootle Page Builder Extension - Woocommerce to do cool WooCommerce stuff.
+<?php
+}
 /**
  * Display a widget form with the provided data
  */
@@ -1757,7 +1750,9 @@ function siteorigin_panels_ajax_widget_form( ) {
 	<div class="ppb-add-content-panel-wrap">
 			<ul class="ppb-acp-sidebar">
 				<li><a class="ppb-tabs-anchors" href="#pootle-content-tab">Visual Editor</a></li>
-				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
+				<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+					<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
+				<?php } ?>
 				<li class="ppb-seperator"></li>
 				<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
 			</ul>
@@ -1771,9 +1766,11 @@ function siteorigin_panels_ajax_widget_form( ) {
 				pp_pb_widget_styles_dialog_form();
 				?>
 			</div>
-			<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
-				Kindly install Pootle Page Builder Extension - Woocommerce to do cool WooCommerce stuff.
-			</div>
+			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+				<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
+					<?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
+				</div>
+			<?php } ?>
 	</div>
 	<?php
 
@@ -1834,8 +1831,6 @@ function pp_pb_load_slider_js( $doLoad ) {
 }
 
 add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js' );
-
-require_once( 'page-builder-for-canvas-functions.php' );
 
 function pp_pb_add_theme_options ( $options ) {
 
