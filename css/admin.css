@@ -232,6 +232,29 @@ div#panels-container{
     color: #ef4832;
 }
 
+.row-bg-preview-screen {
+    display: block;
+    height: 90px;
+    width: 140px;
+    top: -25px;
+    right: 100px;
+    position: absolute;
+    z-index: 97;
+    background-size: cover;
+}
+
+video.ppb-bg-video {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    overflow: hidden;
+}
+
 #panels-container .grid-container .controls .row-button.delete-button
 {
     float: left;
@@ -1006,7 +1029,7 @@ div#panels-container{
 }
 
 button.wp-switch-editor {
-    margin: -1px 0 -1px 5px;
+    margin: -1px 0 0px 5px;
     height: 25px;
 }
 

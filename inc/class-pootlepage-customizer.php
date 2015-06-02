@@ -27,8 +27,8 @@ class PootlePage_Customizer {
 		}
 
 		$this->options = array(
-			'pp_widget_bottom_margin' => array(
-				'id' => 'pp_widget_bottom_margin',
+			'siteorigin_panels_display[margin-bottom]' => array(
+				'id' => 'siteorigin_panels_display[margin-bottom]',
 				'type' => 'number',
 				'label' => __( 'Row bottom margin', 'scratch' ),
 				'section' => 'pootlepage_section',

@@ -884,10 +884,14 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
 			$style_attributes['class'][] = ! empty( $styleArray['full_width'] ) ? 'ppb-full-width-row': '';
-			$style_attributes['class'][] = ! empty( $styleArray['background_parallax'] ) ? 'ppb-parallax': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
-
 			$style_attributes['style'] .= ! empty( $panels_data['grids'][$gi]['style']['style'] ) ? $panels_data['grids'][$gi]['style']['style']: '';
+
+			if ( ! empty( $styleArray['background_parallax'] ) ) {
+				$style_attributes['data-top-bottom'][] = 'background-position:center 0px';
+				$style_attributes['data-bottom-top'][] = 'background-position:center -500px';
+				$style_attributes['class'][] = 'ppb-parallax';
+			}
 
 			echo '<div ';
 			foreach ( $style_attributes as $name => $value ) {
@@ -903,12 +907,9 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				?>
 				<video class="ppb-bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
 				<?php
-				if ( ! empty( $styleArray['bg_video'] ) ) {
-					echo "<source src='{$styleArray['bg_video']}' type='video/mp4'>";
-					echo "<source src='{$styleArray['bg_video']}' type='video/webm'>";
-				}
-				?>
-					Sorry, your browser does not support HTML5 video.
+				echo "<source src='{$styleArray['bg_video']}' type='video/mp4'>";
+				echo "<source src='{$styleArray['bg_video']}' type='video/webm'>";
+				?>Sorry, your browser does not support HTML5 video.
 				</video>
 				<?php
 			}
@@ -1388,7 +1389,7 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 
 	$the_widget = new $widget;
 
-	$classes = array( 'panel', 'widget' );
+	$classes = array( 'panel' );
 	if ( !empty( $the_widget->id_base ) ) $classes[] = 'widget_' . $the_widget->id_base . ' ' . $the_widget->id_base;
 	if ( $is_first ) $classes[] = 'panel-first-child';
 	if ( $is_last ) $classes[] = 'panel-last-child';
@@ -1605,7 +1606,8 @@ function siteorigin_panels_enqueue_scripts( ) {
 	   ) ) );
 	}
 	wp_register_script( 'general', plugin_dir_url( __FILE__ ) . '/js/canvas-general.js', array( 'jquery', 'third-party' ) );
-	wp_enqueue_script( 'pootle-page-builder-frontend', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery', 'third-party' ) );
+	wp_enqueue_script( 'ppb-skrollr', '//cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.29/skrollr.min.js' );
+	wp_enqueue_script( 'pootle-page-builder-frontend', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery', 'third-party', 'ppb-skrollr' ) );
 
 }
 add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100 );
@@ -2031,11 +2033,6 @@ function pp_pb_option_css( )
 //		$output .= $siteorigin_panels_inline_css;
 //	}
 
-	$removeListSetting = siteorigin_panels_setting( 'remove-list-padding' );
-	if ( $removeListSetting == true ) {
-		$output .= ".entry .panel-grid .widget ul, .entry .panel-grid .widget ol { padding-left: 0; }\n";
-	}
-
 	echo "<style>\n" . $output . "\n" . "</style>\n";
 }
 
@@ -2159,3 +2156,13 @@ function pp_pb_in_plugin_update_message( $args, $r ) {
 		echo $upgrade_notice;
 	}
 }
+
+//No admin notices on our settings page
+function ppb_no_admin_notices() {
+	global $pagenow;
+
+	if ( 'options-general.php' == $pagenow && 'page_builder' == filter_input( INPUT_GET, 'page' ) ) {
+		remove_all_actions( 'admin_notices' );
+	}
+}
+add_action( 'admin_notices', 'ppb_no_admin_notices', 0 );

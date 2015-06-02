@@ -101,6 +101,12 @@
                 $( '<div class="controls" />' )
                     // Add the move/reorder button
                     .append(
+                        $( '<div class="row-bg-preview-screen"></div>')
+                    )
+                    .append(
+                        $( '<div class="row-button row-bg-preview sort-button dashicons-before dashicons-visibility"></div>' )
+                    )
+                    .append(
                         $( '<div class="row-button sort-button dashicons-before dashicons-sort grid-handle"></div>' )
                     )
                     // Add the duplicate button
@@ -174,6 +180,35 @@
     };
 
     panels.setupGridButtons = function ($gridContainer) {
+
+        $gridContainer.find('> .controls > .row-bg-preview').hover(function () {
+            var $t = $(this),
+                $container = $t.parents('.grid-container'),
+                $screen = $t.siblings('.row-bg-preview-screen');
+            $screen
+                .fadeIn(250)
+                .css({
+                    backgroundColor: $container.find("[data-style-field$='background']").val(),
+                    backgroundImage: 'url(' + $container.find("[data-style-field$='background_image']").val() + ')'
+                });
+                if ( $container.find("[data-style-field$='bg_video']").val() ) {
+
+                    $screen.html('<video class="ppb-bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">' +
+                    '<source src="' +
+                    $container.find("[data-style-field$='bg_video']").val() +
+                    '" type="video/mp4"><source src="' +
+                    $container.find("[data-style-field$='bg_video']").val() +
+                    '" type="video/webm">Sorry, your browser does not support HTML5 video.' +
+                    '</video>');
+
+                }
+
+        }, function () {
+
+            $(this).siblings('.row-bg-preview-screen').fadeOut(250).html('');
+
+        });
+
         $gridContainer.find('> .controls > .duplicate-button').click(function () {
 
             var rowCount = $('#panels-container .grid-container').length;

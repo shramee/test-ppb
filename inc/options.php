@@ -42,7 +42,6 @@ function siteorigin_panels_setting( $key = '' ) {
 			'copy-content' => '',                                                                                       // Should we copy across content
 			'animations' => true,                                                                                       // We want animations always enabled
 			'inline-css' => true,                                                                                       // How to display CSS
-			'remove-list-padding' => ! isset( $display_settings['remove-list-padding'] ) ? true : $display_settings['remove-list-padding'] == '1',	// Remove left padding on list
 		 ) );
 
 		// Filter these settings
@@ -85,10 +84,6 @@ function siteorigin_panels_options_init() {
 	add_settings_field( 'mobile-width', __( 'Mobile Width', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
 	add_settings_field( 'margin-sides', __( 'Margin Sides', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-sides' ) );
 	add_settings_field( 'margin-bottom', __( 'Margin Bottom', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-bottom' ) );
-	add_settings_field( 'remove-list-padding', __( 'Remove list padding', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array(
-		'type' => 'remove-list-padding',
-		'description' => __( 'Remove left padding for list widgets used in page content container.', 'siteorigin-panels' ),
-	) );
 }
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
 
@@ -126,7 +121,6 @@ function siteorigin_panels_options_field_generic( $args, $groupName ) {
 	switch( $args['type'] ) {
 		case 'responsive' :
 		case 'bundled-widgets' :
-		case 'remove-list-padding' :
 			?><label><input type="checkbox" name="<?php echo $groupName ?>[<?php echo esc_attr( $args['type'] ) ?>]" <?php checked( $settings[$args['type']] ) ?> value="1" /> <?php _e( 'Enabled', 'siteorigin-panels' ) ?></label><?php
 			break;
 		case 'margin-bottom' :
@@ -195,7 +189,6 @@ function siteorigin_panels_options_sanitize_general( $vals ) {
 function siteorigin_panels_options_sanitize_display( $vals ) {
 	foreach( $vals as $f => $v ) {
 		switch( $f ) {
-			case 'remove-list-padding' :
 			case 'responsive' :
 			case 'bundled-widgets' :
 				$vals[$f] = ! empty( $vals[$f] );
@@ -211,7 +204,6 @@ function siteorigin_panels_options_sanitize_display( $vals ) {
 	$vals['animations'] = true;
 	$vals['inline-css'] = true;
 	$vals['responsive'] = ! empty( $vals['responsive'] );
-	$vals['remove-list-padding'] = ! empty( $vals['remove-list-padding'] );
 	$vals['bundled-widgets'] = ! empty( $vals['bundled-widgets'] );
 	return $vals;
 }
