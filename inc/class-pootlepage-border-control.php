@@ -63,7 +63,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 
 			// Get control view
 			?>
-			<label><?php _e( 'Border Width', 'scratch' ); ?>
+			<label><span><?php _e( 'Border Width', 'scratch' ); ?></span>
 
 				<input class='pp-border-width-number' type="number" min="<?php echo $min_range ?>"
 					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
@@ -74,33 +74,6 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 
 			</label>
 
-		<?php
-		}
-
-		public function get_border_style_control() {
-
-			// Get defaults and current value
-			$this_value	  = $this->value( 'border_style' );
-			$default_value   = $this->default['border_style'];
-			$current_value   = empty( $this_value ) ? $default_value : $this_value;
-
-			$default_styles = array(
-				'solid' => 'Solid',
-				'dashed' => 'Dashed',
-				'dotted' => 'Dotted'
-			);
-
-			// Get control view
-			?>
-			<label><?php _e( 'Border Style', 'scratch' ); ?>
-				<select class='pp-border-style-list' <?php $this->link( 'border_style' ) ?> data-default-value="<?php echo $default_value ?>" autocomplete="off">
-
-
-					<?php foreach ( $default_styles as $id => $text ) : ?>
-						<option value="<?php echo $id; ?>" data-font-type="default" <?php selected( $current_value, $id ); ?>><?php esc_html_e( $text ) ?></option>
-					<?php endforeach; ?>
-				</select>
-			</label>
 		<?php
 		}
 
@@ -128,15 +101,11 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 		 */
 		public function render_content() {
 			?>
-			<label>
+			<label class="pootlepage-control">
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 				<div class="customize-control-content">
 
 					<?php $this->get_border_width_control(); ?>
-
-					<div class="separator"></div>
-
-					<?php $this->get_border_style_control(); ?>
 
 					<div class="separator"></div>
 

@@ -105,49 +105,17 @@ class PootlePage_Output {
 	public function output_css() {
 		?>
 		<style>
-			/* Widget Title CSS */
-			.panel-grid-cell .widget > h3.widget-title {
-			<?php echo $this->widget_title_css() ?>
+			/* Row CSS */
+			.panel-grid-cell .widget {
+			<?php echo $this->widget_css(); ?>
 			}
 
 			/* Widget CSS */
 			.panel-grid-cell .widget {
-				<?php echo $this->widget_css(); ?>
+			<?php echo $this->widget_css(); ?>
 			}
 		</style>
 		<?php
-	}
-
-	/**
-	 * Returns the styles for the widget title
-	 *
-	 * @return string $widget_title_css
-	 */
-	public function widget_title_css(){
-
-		$widget_title_font = $this->get_font_css_value( 'pp_widget_title' );
-
-		$widget_title_css = '';
-		$widget_title_css .= 'font-family: ' . $widget_title_font['font-family'] .
-		                     '; font-size: ' . $widget_title_font['font-size'] .
-		                     '; font-style: ' . $widget_title_font['font-style'] .
-		                     '; font-weight: ' . $widget_title_font['font-weight'] .
-		                     '; color: ' . $widget_title_font['color'] . '; ';
-
-
-		$widget_title_border_width = get_option( 'pp_widget_title_bottom_border_width', 1 );
-		$widget_title_border_style = get_option( 'pp_widget_title_bottom_border_style', 'solid' );
-		$widget_title_border_color = get_option( 'pp_widget_title_bottom_border_color', '#e6e6e6' );
-
-		if ( $widget_title_border_width > 0 ) {
-			$widget_title_css .= 'border-bottom:' . $widget_title_border_width . 'px ' . $widget_title_border_style . ' ' . $widget_title_border_color . ';';
-		}
-		if ( isset( $widget_title_border_width ) AND $widget_title_border_width == 0 ) {
-			$widget_title_css .= 'margin-bottom:0;';
-		}
-
-		return $widget_title_css;
-
 	}
 
 	/**
@@ -159,35 +127,23 @@ class PootlePage_Output {
 
 		$widget_css = '';
 
-		//Widget background styles
-		$widget_css .= $this->widget_bg_css();
+		$widget_css .= 'background-color:' . get_option( 'pp_widget_bg_color', 'transparent' ) . ';';
 
-		//Widget border styles
-		$widget_css .= $this->widget_border_css();
+		$widget_css .= 'border:' . get_option( 'pp_widget_border_width', 0 ) . 'px solid ' . get_option( 'pp_widget_border_color', '#dbdbdb' ) . ';';
+
+		//CSS3 border radius property
+		$widget_border_radius = get_option( 'pp_widget_border_radius', 0 );
+		$widget_css .= 'border-radius:' . $widget_border_radius . 'px; ' .
+		        '-moz-border-radius:' . $widget_border_radius . 'px; ' .
+		        '-webkit-border-radius:' . $widget_border_radius . 'px;';
 
 		//Widget padding styles
-		$widget_css .= $this->widget_padding_css();
+//		$widget_css .= $this->widget_padding_css();
 
 		//Widget typography styles
-		$widget_css .= $this->widget_typography_css();
+//		$widget_css .= $this->widget_typography_css();
 
 		return $widget_css;
-	}
-
-
-	/**
-	 * Returns the styles for widget background
-	 *
-	 * @return string $css
-	 */
-	public function widget_bg_css(){
-		$css = '';
-
-		//CSS background-color property
-		$widget_bg = get_option( 'pp_widget_bg_color', 'transparent' );
-		$css .= 'background-color:'.$widget_bg.';';
-
-		return $css;
 	}
 
 	/**
@@ -199,16 +155,6 @@ class PootlePage_Output {
 
 		$css = '';
 
-		//CSS border property
-		$widget_border_width = get_option( 'pp_widget_border_width', 0 );
-		$widget_border_style = get_option( 'pp_widget_border_style', 'solid' );
-		$widget_border_color = get_option( 'pp_widget_border_color', '#dbdbdb' );
-
-		$css .= 'border:'.$widget_border_width.'px '.$widget_border_style . ' ' . $widget_border_color . ';';
-
-		//CSS3 border radius property
-		$widget_border_radius = get_option( 'pp_widget_border_radius', 0 );
-		$css .= 'border-radius:' . $widget_border_radius . 'px; -moz-border-radius:' . $widget_border_radius . 'px; -webkit-border-radius:' . $widget_border_radius . 'px;';
 
 		return $css;
 	}

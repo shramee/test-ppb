@@ -20,7 +20,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 		<div class="clear"></div>
 	</div>
-	
+
 	<?php // The add new widget dialog ?>
 	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget','siteorigin-panels' ) ?>" class="panels-admin-dialog">
 		<div id="panels-dialog-inner">
@@ -134,7 +134,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 			<div class='help-text'>To include more widgets for selection please go to Canvas > Page Builder > Widget Selection and drag widgets into the selection area</div>
 			<?php do_action( 'siteorigin_panels_after_widgets' ); ?>
 		</div>
-		
+
 	</div>
 
 	<?php // The add row dialog ?>
@@ -148,7 +148,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<p>Are you sure?</p>
 	</div>
 
-	<div id="remove-widget-dialog" data-title="<?php esc_attr_e( "Remove Widget", 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
+	<div id="remove-widget-dialog" data-title="<?php esc_attr_e( "Delete Content", 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
 		<p>Are you sure?</p>
 	</div>
 

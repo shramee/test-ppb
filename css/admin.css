@@ -89,7 +89,7 @@ html {
     position: relative;
 
     background: #fff url("images/cell-selected.png") repeat;
-    margin-bottom: 61px;
+    margin: 0 0 61px;
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w {
@@ -140,7 +140,7 @@ html {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    padding: 10px 10px 1px 10px;
+    padding: 10px 10px 7px;
 }
 
 #panels-container .grid .cell .cell-width {
@@ -198,13 +198,13 @@ html {
 }
 div#panels-container{
 
-    padding: 7px 0;
+    padding: 0;
     
 }
 #panels-container .grid-container {
     position: relative;
 
-    padding: 7px 0;
+    padding: 10px 0 20px;
 }
 
 #panels-container .grid-container .controls {
@@ -524,8 +524,7 @@ div#panels-container{
 }
 
 #so-panels-panels .inside {
-    padding: 0 12px 5px 10px;
-    margin: 0;
+    padding: 0 10px 10px;
 }
 
 
@@ -1130,24 +1129,20 @@ button.wp-switch-editor {
     margin: 0 0 0;
     cursor: pointer;
     z-index: 100;
-    opacity: 0.25;
     border: 4px dashed #d5d2d0;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 #panels-container .grid .cell .cell-wrapper > .add-widget-button:not(:nth-last-child(1)) {
-    opacity: 0;
+    opacity: 1;
     height: 50px;
     top: 100%;
     bottom: initial;
 }
 
-#panels-container .grid .cell:hover .cell-wrapper > .add-widget-button {
-    opacity: 1;
-}
-
 #panels-container .grid .cell .cell-wrapper > .add-widget-button:hover {
+    opacity: 1;
     background-color: #ef4832;
     border-color: #ef4832;
 }
@@ -1181,7 +1176,7 @@ button.wp-switch-editor {
   top: 50%;
   left: 50%;
   margin: -15px 0 0 -15px;
-  text-indent: 1px;
+  text-indent: -1px;
   padding: 0;
   text-shadow: none;
   z-index: 4;}

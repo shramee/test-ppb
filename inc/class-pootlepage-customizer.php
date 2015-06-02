@@ -10,7 +10,6 @@ class PootlePage_Customizer {
 	public function __construct() {
 
 		$this->init_options();
-		$this->init_options_defaults();
 		$this->output = new PootlePage_Output( $this->options );
 
 		add_action( 'customize_register', array( $this, 'register' ) );
@@ -28,360 +27,52 @@ class PootlePage_Customizer {
 		}
 
 		$this->options = array(
+			'pp_widget_bottom_margin' => array(
+				'id' => 'pp_widget_bottom_margin',
+				'type' => 'number',
+				'label' => __( 'Row bottom margin', 'scratch' ),
+				'section' => 'pootlepage_section',
+				'default' => '0',
+				'priority' => 10
+			),
+
 			'pp_widget_bg_color' => array(
 				'id' => 'pp_widget_bg_color',
 				'type' => 'color',
-				'label' => __( 'Widget Background Color', 'scratch' ),
+				'label' => __( 'Content Block Background Color', 'scratch' ),
 				'section' => 'pootlepage_section',
 				'default' => '',
 				'priority' => 10
 			),
 
-			'pp_widget_border' => array(
-				'id' => 'pp_widget_border',
-				'type' => 'border',
-				'label' => __( 'Widget Border', 'scratch' ),
+			'pp_widget_border_width' => array(
+				'id' => 'pp_widget_border_width',
+				'type' => 'number',
+				'label' => __( 'Content block border width', 'scratch' ),
 				'section' => 'pootlepage_section',
-				'settings' => array(
-					'border_width' => 'pp_widget_border_width',
-					'border_style' => 'pp_widget_border_style',
-					'border_color' => 'pp_widget_border_color',
-				),
-				'defaults' => array(
-					'border_width' => 0,
-					'border_style' => 'solid',
-					'border_color' => '#dbdbdb',
-				),
-				'priority' => 11
+				'default' => '0',
+				'priority' => 10
 			),
 
-			'pp_widget_padding' => array(
-				'id' => 'pp_widget_padding',
-				'type' => 'padding',
-				'label' => 'Widget Padding',
+			'pp_widget_border_color' => array(
+				'id' => 'pp_widget_border_color',
+				'type' => 'color',
+				'label' => __( 'Content block border color', 'scratch' ),
 				'section' => 'pootlepage_section',
-				'settings' => array(
-					'top_bottom_width' => 'pp_widget_padding_top_bottom',
-					'left_right_width' => 'pp_widget_padding_left_right',
-				),
-				'defaults' => array(
-					'top_bottom_width' => 0,
-					'left_right_width' => 0,
-				),
-				'priority' => 12
-			),
-
-			'pp_widget_title' => array(
-				'id' => 'pp_widget_title',
-				'type' => 'font',
-				'label' => __( 'Widget Title', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'settings' => array(
-					'font_id' => 'pp_widget_title_font_id',
-					'font_size' => 'pp_widget_title_font_size',
-					'font_size_unit' => 'pp_widget_title_font_size_unit',
-					'font_color' => 'pp_widget_title_font_color',
-					'font_weight_style' => 'pp_widget_title_font_weight_style'
-				),
-				'defaults' => array(
-					'font_id' => "Helvetica",
-					'font_size' => 14,
-					'font_size_unit' => 'px',
-					'font_color' => '#555555',
-					'font_weight_style' => '700'
-				),
-				'priority' => 13
-			),
-
-			'pp_widget_title_bottom_border' => array(
-				'id' => 'pp_widget_title_bottom_border',
-				'type' => 'border',
-				'label' => __( 'Widget Title Bottom Border', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'settings' => array(
-					'border_width' => 'pp_widget_title_bottom_border_width',
-					'border_style' => 'pp_widget_title_bottom_border_style',
-					'border_color' => 'pp_widget_title_bottom_border_color',
-				),
-				'defaults' => array(
-					'border_width' => 1,
-					'border_style' => 'solid',
-					'border_color' => '#e6e6e6',
-				),
-				'priority' => 14
-			),
-
-			'pp_widget_text' => array(
-				'id' => 'pp_widget_text',
-				'type' => 'font',
-				'label' => __( 'Widget Text', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'settings' => array(
-					'font_id' => 'pp_widget_text_font_id',
-					'font_size' => 'pp_widget_text_font_size',
-					'font_size_unit' => 'pp_widget_text_font_size_unit',
-					'font_color' => 'pp_widget_text_font_color',
-					'font_weight_style' => 'pp_widget_text_font_weight_style'
-				),
-				'defaults' => array(
-					'font_id' => "Helvetica",
-					'font_size' => 13,
-					'font_size_unit' => 'px',
-					'font_color' => '#555555',
-					'font_weight_style' => '400'
-				),
-				'priority' => 15
+				'default' => '',
+				'priority' => 10
 			),
 
 			'pp_widget_border_radius' => array(
 				'id' => 'pp_widget_border_radius',
 				'type' => 'select',
-				'label' => __( 'Widget Rounded Corners', 'scratch' ),
+				'label' => __( 'Content Block Rounded Corners', 'scratch' ),
 				'section' => 'pootlepage_section',
 				'default' => '0',
 				'choices' => $choices,
 				'priority' => 16
 			),
 		);
-	}
-
-	public function init_options_defaults() {
-
-		$parentTheme = get_template();
-		if ( $parentTheme == 'canvas' ) {
-			$widgetBgColor = get_option( 'woo_widget_bg', '' );
-			$widgetBorder = get_option( 'woo_widget_border', array( 'width' => 0, 'style' => 'solid', 'color' => '#dbdbdb' ) );
-			$widgetPaddingTopBottom = get_option( 'woo_widget_padding_tb', 0 );
-			$widgetPaddingLeftRight = get_option( 'woo_widget_padding_lr', 0 );
-
-			$widgetTitleFont = get_option( 'woo_widget_font_title', array( 'size' => '14','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'bold','color' => '#555555' ) );
-			$widgetTitleFontFamily = $widgetTitleFont['face'];
-			$widgetTitleFontSize = $widgetTitleFont['size'];
-			$widgetTitleFontSizeUnit = $widgetTitleFont['unit'];
-			$widgetTitleFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTitleFont['style'] );
-			$widgetTitleFontColor = $widgetTitleFont['color'];
-
-			$widgetTitleBottomBorder = get_option( 'woo_widget_title_border', array( 'width' => '1','style' => 'solid','color' => '#e6e6e6' ) );
-			$widgetTitleBottomBorderWidth = $widgetTitleBottomBorder['width'];
-			$widgetTitleBottomBorderStyle = $widgetTitleBottomBorder['style'];
-			$widgetTitleBottomBorderColor = $widgetTitleBottomBorder['color'];
-
-			$widgetTextFont = get_option( 'woo_widget_font_text', array( 'size' => '13','unit' => 'px', 'face' => 'Helvetica, Arial, sans-serif','style' => 'thin','color' => '#555555' ) );
-			$widgetTextFontFamily = $widgetTextFont['face'];
-			$widgetTextFontSize = $widgetTextFont['size'];
-			$widgetTextFontSizeUnit = $widgetTextFont['unit'];
-			$widgetTextFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTextFont['style'] );
-			$widgetTextFontColor = $widgetTextFont['color'];
-
-			$widgetBorderRadius = get_option( 'woo_widget_border_radius', '0' );
-
-			$this->options['pp_widget_bg_color']['default'] = $widgetBgColor;
-			$this->options['pp_widget_border']['defaults'] = array(
-				'border_width' => $widgetBorder['width'],
-				'border_style' => $widgetBorder['style'],
-				'border_color' => $widgetBorder['color']
-			);
-			$this->options['pp_widget_padding']['defaults'] = array(
-				'top_bottom_width' => $widgetPaddingTopBottom,
-				'left_right_width' => $widgetPaddingLeftRight
-			);
-			$this->options['pp_widget_title']['defaults'] = array(
-				'font_id' => $widgetTitleFontFamily,
-				'font_size' => $widgetTitleFontSize,
-				'font_size_unit' => $widgetTitleFontSizeUnit,
-				'font_color' => $widgetTitleFontColor,
-				'font_weight_style' => $widgetTitleFontStyle
-			);
-			$this->options['pp_widget_title_bottom_border']['defaults'] = array(
-				'border_width' => $widgetTitleBottomBorderWidth,
-				'border_style' => $widgetTitleBottomBorderStyle,
-				'border_color' => $widgetTitleBottomBorderColor
-			);
-			$this->options['pp_widget_text']['defaults'] = array(
-				'font_id' => $widgetTextFontFamily,
-				'font_size' => $widgetTextFontSize,
-				'font_size_unit' => $widgetTextFontSizeUnit,
-				'font_color' => $widgetTextFontColor,
-				'font_weight_style' => $widgetTextFontStyle
-			);
-			$this->options['pp_widget_border_radius']['default'] = $widgetBorderRadius;
-
-		} else if ( $parentTheme == 'twentythirteen' ) {
-
-			$widgetBgColor = '#F7F5E7';
-			$widgetBorder = array( 'width' => 0, 'style' => 'solid', 'color' => '#dbdbdb' );
-			$widgetPaddingTopBottom = 20;
-			$widgetPaddingLeftRight = 20;
-
-			$widgetTitleFont = array( 'size' => '20','unit' => 'px', 'face' => '"Source Sans Pro", Helvetica, sans-serif','style' => '300 italic','color' => '#141412' );
-			$widgetTitleFontFamily = $widgetTitleFont['face'];
-			$widgetTitleFontSize = $widgetTitleFont['size'];
-			$widgetTitleFontSizeUnit = $widgetTitleFont['unit'];
-			$widgetTitleFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTitleFont['style'] );
-			$widgetTitleFontColor = $widgetTitleFont['color'];
-
-			$widgetTitleBottomBorder = array( 'width' => '0','style' => 'solid','color' => '#e6e6e6' );
-			$widgetTitleBottomBorderWidth = $widgetTitleBottomBorder['width'];
-			$widgetTitleBottomBorderStyle = $widgetTitleBottomBorder['style'];
-			$widgetTitleBottomBorderColor = $widgetTitleBottomBorder['color'];
-
-			$widgetTextFont = array( 'size' => '14','unit' => 'px', 'face' => '"Source Sans Pro", Helvetica, sans-serif','style' => 'normal','color' => '#141412' );
-			$widgetTextFontFamily = $widgetTextFont['face'];
-			$widgetTextFontSize = $widgetTextFont['size'];
-			$widgetTextFontSizeUnit = $widgetTextFont['unit'];
-			$widgetTextFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTextFont['style'] );
-			$widgetTextFontColor = $widgetTextFont['color'];
-
-			$widgetBorderRadius = 0;
-
-			$this->options['pp_widget_bg_color']['default'] = $widgetBgColor;
-			$this->options['pp_widget_border']['defaults'] = array(
-				'border_width' => $widgetBorder['width'],
-				'border_style' => $widgetBorder['style'],
-				'border_color' => $widgetBorder['color']
-			);
-			$this->options['pp_widget_padding']['defaults'] = array(
-				'top_bottom_width' => $widgetPaddingTopBottom,
-				'left_right_width' => $widgetPaddingLeftRight
-			);
-			$this->options['pp_widget_title']['defaults'] = array(
-				'font_id' => $widgetTitleFontFamily,
-				'font_size' => $widgetTitleFontSize,
-				'font_size_unit' => $widgetTitleFontSizeUnit,
-				'font_color' => $widgetTitleFontColor,
-				'font_weight_style' => $widgetTitleFontStyle
-			);
-			$this->options['pp_widget_title_bottom_border']['defaults'] = array(
-				'border_width' => $widgetTitleBottomBorderWidth,
-				'border_style' => $widgetTitleBottomBorderStyle,
-				'border_color' => $widgetTitleBottomBorderColor
-			);
-			$this->options['pp_widget_text']['defaults'] = array(
-				'font_id' => $widgetTextFontFamily,
-				'font_size' => $widgetTextFontSize,
-				'font_size_unit' => $widgetTextFontSizeUnit,
-				'font_color' => $widgetTextFontColor,
-				'font_weight_style' => $widgetTextFontStyle
-			);
-			$this->options['pp_widget_border_radius']['default'] = $widgetBorderRadius;
-		} else if ( $parentTheme == 'make' ) {
-
-			$widgetBgColor = '';
-			$widgetBorder = array( 'width' => 0, 'style' => 'solid', 'color' => '#dbdbdb' );
-			$widgetPaddingTopBottom = 0;
-			$widgetPaddingLeftRight = 0;
-
-			$widgetTitleFont = array( 'size' => '13','unit' => 'px', 'face' => '"Helvetica Neue", Helvetica, Arial, sans-serif','style' => 'bold','color' => '#171717' );
-			$widgetTitleFontFamily = $widgetTitleFont['face'];
-			$widgetTitleFontSize = $widgetTitleFont['size'];
-			$widgetTitleFontSizeUnit = $widgetTitleFont['unit'];
-			$widgetTitleFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTitleFont['style'] );
-			$widgetTitleFontColor = $widgetTitleFont['color'];
-
-			$widgetTitleBottomBorder = array( 'width' => '0','style' => 'solid','color' => '#e6e6e6' );
-			$widgetTitleBottomBorderWidth = $widgetTitleBottomBorder['width'];
-			$widgetTitleBottomBorderStyle = $widgetTitleBottomBorder['style'];
-			$widgetTitleBottomBorderColor = $widgetTitleBottomBorder['color'];
-
-			$widgetTextFont = array( 'size' => '13','unit' => 'px', 'face' => '"Open Sans", Helvetica, Arial, sans-serif','style' => 'normal','color' => '#171717' );
-			$widgetTextFontFamily = $widgetTextFont['face'];
-			$widgetTextFontSize = $widgetTextFont['size'];
-			$widgetTextFontSizeUnit = $widgetTextFont['unit'];
-			$widgetTextFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTextFont['style'] );
-			$widgetTextFontColor = $widgetTextFont['color'];
-
-			$widgetBorderRadius = '0';
-
-			$this->options['pp_widget_bg_color']['default'] = $widgetBgColor;
-			$this->options['pp_widget_border']['defaults'] = array(
-				'border_width' => $widgetBorder['width'],
-				'border_style' => $widgetBorder['style'],
-				'border_color' => $widgetBorder['color']
-			);
-			$this->options['pp_widget_padding']['defaults'] = array(
-				'top_bottom_width' => $widgetPaddingTopBottom,
-				'left_right_width' => $widgetPaddingLeftRight
-			);
-			$this->options['pp_widget_title']['defaults'] = array(
-				'font_id' => $widgetTitleFontFamily,
-				'font_size' => $widgetTitleFontSize,
-				'font_size_unit' => $widgetTitleFontSizeUnit,
-				'font_color' => $widgetTitleFontColor,
-				'font_weight_style' => $widgetTitleFontStyle
-			);
-			$this->options['pp_widget_title_bottom_border']['defaults'] = array(
-				'border_width' => $widgetTitleBottomBorderWidth,
-				'border_style' => $widgetTitleBottomBorderStyle,
-				'border_color' => $widgetTitleBottomBorderColor
-			);
-			$this->options['pp_widget_text']['defaults'] = array(
-				'font_id' => $widgetTextFontFamily,
-				'font_size' => $widgetTextFontSize,
-				'font_size_unit' => $widgetTextFontSizeUnit,
-				'font_color' => $widgetTextFontColor,
-				'font_weight_style' => $widgetTextFontStyle
-			);
-			$this->options['pp_widget_border_radius']['default'] = $widgetBorderRadius;
-
-		} else if ( $parentTheme == 'genesis' ) {
-
-			$widgetBgColor = '#ffffff';
-			$widgetBorder = array( 'width' => 0, 'style' => 'solid', 'color' => '#dbdbdb' );
-			$widgetPaddingTopBottom = 40;
-			$widgetPaddingLeftRight = 40;
-
-			$widgetTitleFont = array( 'size' => '16','unit' => 'px', 'face' => 'Lato, sans-serif','style' => 'bold','color' => '#333333' );
-			$widgetTitleFontFamily = $widgetTitleFont['face'];
-			$widgetTitleFontSize = $widgetTitleFont['size'];
-			$widgetTitleFontSizeUnit = $widgetTitleFont['unit'];
-			$widgetTitleFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTitleFont['style'] );
-			$widgetTitleFontColor = $widgetTitleFont['color'];
-
-			$widgetTitleBottomBorder = array( 'width' => '0','style' => 'solid','color' => '#e6e6e6' );
-			$widgetTitleBottomBorderWidth = $widgetTitleBottomBorder['width'];
-			$widgetTitleBottomBorderStyle = $widgetTitleBottomBorder['style'];
-			$widgetTitleBottomBorderColor = $widgetTitleBottomBorder['color'];
-
-			$widgetTextFont = array( 'size' => '16','unit' => 'px', 'face' => '"Helvetica Neue", Helvetica, Arial, sans-serif','style' => '300','color' => '#999999' );
-			$widgetTextFontFamily = $widgetTextFont['face'];
-			$widgetTextFontSize = $widgetTextFont['size'];
-			$widgetTextFontSizeUnit = $widgetTextFont['unit'];
-			$widgetTextFontStyle = $this->convert_canvas_font_style_to_pp( $widgetTextFont['style'] );
-			$widgetTextFontColor = $widgetTextFont['color'];
-
-			$widgetBorderRadius = '0';
-
-			$this->options['pp_widget_bg_color']['default'] = $widgetBgColor;
-			$this->options['pp_widget_border']['defaults'] = array(
-				'border_width' => $widgetBorder['width'],
-				'border_style' => $widgetBorder['style'],
-				'border_color' => $widgetBorder['color']
-			);
-			$this->options['pp_widget_padding']['defaults'] = array(
-				'top_bottom_width' => $widgetPaddingTopBottom,
-				'left_right_width' => $widgetPaddingLeftRight
-			);
-			$this->options['pp_widget_title']['defaults'] = array(
-				'font_id' => $widgetTitleFontFamily,
-				'font_size' => $widgetTitleFontSize,
-				'font_size_unit' => $widgetTitleFontSizeUnit,
-				'font_color' => $widgetTitleFontColor,
-				'font_weight_style' => $widgetTitleFontStyle
-			);
-			$this->options['pp_widget_title_bottom_border']['defaults'] = array(
-				'border_width' => $widgetTitleBottomBorderWidth,
-				'border_style' => $widgetTitleBottomBorderStyle,
-				'border_color' => $widgetTitleBottomBorderColor
-			);
-			$this->options['pp_widget_text']['defaults'] = array(
-				'font_id' => $widgetTextFontFamily,
-				'font_size' => $widgetTextFontSize,
-				'font_size_unit' => $widgetTextFontSizeUnit,
-				'font_color' => $widgetTextFontColor,
-				'font_weight_style' => $widgetTextFontStyle
-			);
-			$this->options['pp_widget_border_radius']['default'] = $widgetBorderRadius;
-		}
 	}
 
 	public function convert_canvas_font_style_to_pp( $style ) {
@@ -429,7 +120,7 @@ class PootlePage_Customizer {
 
 		// sections
 		$customizeManager->add_section( 'pootlepage_section', array(
-			'title' => 'Folio Widgets',
+			'title' => 'Page Builder',
 			'priority' => 10
 		) );
 
@@ -485,6 +176,14 @@ class PootlePage_Customizer {
 				$customizeManager->add_control( new PootlePage_Font_Control( $customizeManager, $option['id'], $option ) );
 
 			} else if ( $option['type'] == 'select' ) {
+
+				$customizeManager->add_setting( $option['id'], array(
+					'default' => $option['default'],
+					'type' => 'option'
+				) );
+
+				$customizeManager->add_control( new WP_Customize_Control( $customizeManager, $option['id'], $option ) );
+			} else {
 
 				$customizeManager->add_setting( $option['id'], array(
 					'default' => $option['default'],

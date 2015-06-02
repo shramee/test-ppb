@@ -769,20 +769,74 @@ jQuery( function ( $ ) {
     $('#panels').append('<input name="panels_js_complete" type="hidden" value="1" />');
 
     panels.ppbGridEvents = function (container) {
-        //console.log($(container).find('.panel-wrapper').length);
-        if( container.find('.panel-wrapper').length > 0 ) {
-            //@TODO Shramee
-            //container.css('background', 'red');
+
+        var numPanels = container.find('.panel-wrapper').length;
+
+        if( numPanels > 0 ) {
+            container
+                .find('.grid').css({marginBottom: '3px'})
+                .find('.cell').css('padding-bottom', '3px')
+                .find('.add-widget-button').hide();
         }
 
-
-        container.hover(function(){
-            var $t = $(this);
-            panels.ppbGridExpandHandler($t);
-        });
+        container.hover(
+            //MOUSE IN
+            function() {
+                var $t = $(this);
+                $t
+                    .find('.grid').animate(
+                        {
+                            marginBottom: '61px'
+                        }, 160, 'linear', function(){
+                            $(this).find('.add-widget-button')
+                                .show();
+                        }
+                    )
+                    .find('.cell').animate(
+                    {
+                        paddingBottom: '61px'
+                    }, 160, 'linear', function(){
+                        $(this).find('.add-widget-button').show();
+                    }
+                    );
+            },
+            //MOUSE OUT
+            function() {
+                var $t = $(this);
+                var numPanels = $t.find('.panel-wrapper').length;
+                if( numPanels > 0 ) {
+                    var $grids = $t.find('.grid'),
+                        $cells = $t.find('.cell');
+                    $grids
+                        .stop()
+                        .animate(
+                        {
+                            marginBottom: '3'
+                        }, 160, 'linear'
+                    );
+                    $cells
+                        .stop()
+                        .animate(
+                        {
+                            paddingBottom: '3'
+                        }, {
+                            duration: 160,
+                            easing: 'linear',
+                            progress: function(){
+                                $(this).find('.add-widget-button').hide();
+                            }
+                        }
+                    );
+                }
+            }
+        );
     };
     panels.ppbGridExpandHandler = function ($t) {
         //@TODO Shramee
-        console.log($t.find('.panel-wrapper').length);
+        var numPanels = $t.find('.panel-wrapper').length;
+        if( numPanels > 0 ) {
+            //$t.find('.cell').css('padding-bottom', '61px');
+            $t.find('.cell').css('padding-bottom', '61px');
+        }
     }
 } );

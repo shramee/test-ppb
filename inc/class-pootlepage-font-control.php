@@ -87,7 +87,7 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 					}
 
 					//Font Options for select
-					echo output_font_select_options( $all_fonts, $test_cases, $current_value );
+					echo pootle_page_output_font_select_options( $all_fonts, $test_cases, $current_value );
 
 					?>
 				</select>

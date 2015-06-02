@@ -482,7 +482,7 @@ function pootlepage_color_control( $label, $value, $default_color, $link ) {
 	$current_color = isset( $value ) ? $value : $default_color;
 
 	?>
-	<label><?php _e( $label, 'scratch' ); ?>
+	<label><span><?php _e( $label, 'scratch' ); ?></span>
 		<input class="color-picker-hex sc-font-color-text-box" type="text" maxlength="7"
 		       placeholder="<?php esc_attr_e( 'Hex Value' ); ?>"
 		       value="<?php echo $current_color; ?>" data-default-color="<?php echo $default_color ?>"

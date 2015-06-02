@@ -265,6 +265,9 @@
                     panels.setupPanelButtons($panel);
                 });
             });
+
+            panels.ppbGridEvents($newGridContainer);
+
         });
 
         $gridContainer.find('> .controls > .style-button').click(function () {
@@ -500,6 +503,7 @@
             .sortable( {
                 placeholder:"ui-state-highlight",
                 connectWith:".panels-container",
+                items:    '> .panel',
                 tolerance:  'pointer',
                 change: function (ui) {
                     var thisContainer = $('#panels-container .ui-state-highlight' ).closest('.cell' ).get(0);
