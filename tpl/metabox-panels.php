@@ -197,7 +197,6 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<?php pp_pb_widget_styles_dialog_form() ?>
 	</div>
 
-
 	<div id="content-loss-dialog" data-title="<?php esc_attr_e( 'Changing to Page Builder','siteorigin-panels' ) ?>" data-button-i-know="<?php esc_attr_e( "I know what I'm doing",'siteorigin-panels' ) ?>" data-button-stop="<?php esc_attr_e( "Yep, I'll stop and create a new page",'siteorigin-panels' ) ?>" class="panels-admin-dialog">
 		<p>
 			<?php _e( 'Slow down tiger! Do you realise that changing to Page Builder for this page will make all your page content disappear forever?', 'siteorigin-panels' ) ?>

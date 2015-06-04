@@ -157,7 +157,7 @@
                 'title': $$.attr( 'data-title' ),
                 'raw' : false
             } )
-            .end().find( '.title h4' ).html( 'Visual Editor' );
+            .end().find( '.title h4' ).html( 'Editor' );
 
         // Set the title
         panel.panelsSetPanelTitle( data );
@@ -211,7 +211,7 @@
                     modal:       false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
                     draggable:   false,
                     resizable:   false,
-                    title:       "Visual Editor",
+                    title:       "Editor",
                     height:   $(window).height() - 50,
                     width:    $(window).width() - 50,
                     create:      function(event, ui){
@@ -312,17 +312,18 @@
 
                     $('.ppb-add-content-panel-wrap')
                         .tabs({
-                            activate: function(event ,ui){
+                            activate: function(e ,ui){
                                 var $t = $(this),
-                                    title = $t.find('.ui-tabs-active a').html();
-
+                                    title = $t.find('.ui-tabs-active a').html(),
+                                    $target = $( e.toElement );
                                 $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
 
+                                panels.ppbContentModule( e, ui, $t, $currentPanel );
                             },
                             enable: function (event, ui) {
                                 $(window).resize();
                             },
-                            active: 0
+                            active: null
                         })
                         .addClass( "ui-tabs-vertical ui-helper-clearfix" )
                         .find('input').each( function () {
@@ -331,6 +332,9 @@
                                 $t.wpColorPicker();
                             }
                         });
+
+                    $('.ppb-add-content-panel-wrap a[selected]').click();
+
                     $( ".ppb-add-content-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 
                     //Get style data in fields
@@ -551,7 +555,7 @@
             }
 
             //Keep title value 'Visual Editor' always
-            titleValue = 'Visual Editor';
+            titleValue = 'Editor';
 
             $(this ).find( 'h4' ).html( titleValue );
         });
@@ -665,6 +669,47 @@
         });
 
         $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
+    }
+    panels.ppbContentModule = function( e, ui, $t, $currentPanel ){
+        var $newT = ui.newTab.children('a'),
+            $newP = ui.newPanel,
+            oldWidgetClass = $('.ppb-add-content-panel-wrap').data('widgetClass'),
+            instance = $('.ppb-add-content-panel-wrap').data('instance');
+
+        if ( $newT.hasClass('ppb-block-anchor') ) {
+            $('.content-block').html('');
+
+            var widgetClass = $newT.attr('data-widgetClass');
+
+            var data = {
+                'action': 'so_panels_content_block_form',
+                'widget': widgetClass,
+                'instance': instance,
+                'raw': $currentPanel.find('input[name$="[info][raw]"]').val()
+            };
+
+            $.post(
+                ajaxurl,
+                data,
+                function (result) {
+                    // the newPanelId is defined at the top of this function.
+                    try {
+                        var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
+
+                        result = result.replace( /\{\$id\}/g, newPanelId );
+                    }
+                    catch (err) {
+                        result = '';
+                    }
+                    $newP.html(result);
+                    $currentPanel.attr('data-type', widgetClass);
+
+                    $currentPanel.find('input[name*="[info][class]"]').val(widgetClass);
+
+                },
+                'html'
+            );
+        }
     }
 
 } )( jQuery );

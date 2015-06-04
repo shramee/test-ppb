@@ -315,7 +315,10 @@ function pp_pb_widget_styles_dialog_form() {
 			case 'checkbox':
 				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="checkbox" value="<?php esc_attr_e( $field['value'] ) ?>" data-style-field-type="checkbox" />
 				<?php
-			default :
+				break;
+			case 'textarea':
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text" data-style-field-type="text"/>
+				<?php
 				break;
 		}
 

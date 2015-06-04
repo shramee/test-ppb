@@ -20,7 +20,6 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 		 * Widget Class constructor
 		 *
 		 * @uses WP_Widget::__construct()
-		 * @return void
 		 * @since 0.5
 		 */
 		public function __construct() {
@@ -47,6 +46,8 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 		public function widget( $args, $instance ) {
 			$before_widget = $args['before_widget'];
 			$after_widget = $args['after_widget'];
+			$before_title = $args['before_title'];
+			$after_title = $args['after_title'];
 			$before_text = apply_filters( 'black_studio_tinymce_before_text', '<div class="textwidget">', $instance );
 			$after_text = apply_filters( 'black_studio_tinymce_after_text', '</div>', $instance );
 			$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
@@ -54,6 +55,9 @@ if ( ! class_exists( 'Pootle_Text_Widget' ) ) {
 			$hide_empty = apply_filters( 'black_studio_tinymce_hide_empty', false, $instance );
 			if ( ! ( $hide_empty && empty( $text ) ) ) {
 				$output = $before_widget;
+				if ( ! empty( $title ) ) {
+					$output .= $before_title . $title . $after_title;
+				}
 				$output .= $before_text . $text . $after_text;
 				$output .= $after_widget;
 				echo $output; // xss ok

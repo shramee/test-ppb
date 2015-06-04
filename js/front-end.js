@@ -33,7 +33,7 @@ jQuery(function($){
         $(window).resize( MakeFullWidth );
         MakeFullWidth();
 
-        var ppbSkrollr = skrollr.init();
+        var ppbSkrollr = skrollr.init({ smoothScrolling: false });
 
         $('.ppb-parallax').each( function () {
             $t = $(this);

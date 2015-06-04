@@ -10,7 +10,7 @@ License: GPL version 3
 */
 
 
-define( 'POOTLEPAGE_VERSION', '2.9.9' );
+define( 'POOTLEPAGE_VERSION', '2.3.9' );
 define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 
 //Solving old version post types
@@ -23,15 +23,21 @@ add_action( 'admin_init', 'pp_pb_version_check' );
 function pp_pb_version_check( ) {
 
 	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' ) ) {
-		update_option( 'pootle_page_builder_version', POOTLEPAGE_VERSION );
+
 		//No initial version means no need for compatibility updates
 		$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
+
+		//If initial version < Current version
 		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {
 
+			//Sort compatibility issues
 			require_once 'inc/class-pootle-page-compatibility.php';
 			new Pootle_Page_Compatibility();
-
 		}
+
+		//Update current version
+		update_option( 'pootle_page_builder_version', POOTLEPAGE_VERSION );
+
 	}
 }
 
@@ -964,6 +970,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 			foreach ( $widgets as $pi => $widget_info ) {
 				$data = $widget_info;
+
 				$widgetStyle = isset( $data['info']['style'] ) ? json_decode( $data['info']['style'], true ) : pp_get_default_widget_style( );
 
 				unset( $data['info'] );
@@ -1403,7 +1410,6 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 	$styleWithSelector = '';
 
 	foreach ( $widgetStyleFields as $key => $field ) {
-
 		if ( $field['type'] == 'border' ) {
 			// a border field has 2 settings
 			$key1 = $key . '-width';
@@ -1455,16 +1461,25 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 					} else{
 						$styleWithSelector .= '#' . $id . ' > ' . $field['selector'] . ' { ' .$cssProperty . ': ' . $styleArray[$key] . $unit . '; }';
 					}
-
 				}
 			}
 		}
 	}
 
+	if ( ! empty( $styleArray['inline-css'] ) ) {
+		$inlineStyle .= str_replace( 'hide-title:none;', '', $styleArray['inline-css'] );
+	}
+
+	$titleInlineStyle = '';
+
+	if ( false !== strpos( $styleArray['inline-css'], 'hide-title:none;' ) ) {
+		$titleInlineStyle .= 'display:none;';
+	}
+
 	$the_widget->widget( array(
 		'before_widget' => '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >',
 		'after_widget' => '</div>',
-		'before_title' => '<h3 class="widget-title">',
+		'before_title' => '<h3 class="widget-title" style="' . $titleInlineStyle . '">',
 		'after_title' => '</h3>',
 		'widget_id' => 'widget-' . $grid . '-' . $cell . '-' . $panel
 	 ), $instance );
@@ -1607,7 +1622,7 @@ function siteorigin_panels_enqueue_scripts( ) {
 	}
 	wp_register_script( 'general', plugin_dir_url( __FILE__ ) . '/js/canvas-general.js', array( 'jquery', 'third-party' ) );
 	wp_enqueue_script( 'ppb-skrollr', '//cdnjs.cloudflare.com/ajax/libs/skrollr/0.6.29/skrollr.min.js' );
-	wp_enqueue_script( 'pootle-page-builder-frontend', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery', 'third-party', 'ppb-skrollr' ) );
+	wp_enqueue_script( 'pootle-page-builder-frontend', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery', 'ppb-skrollr' ) );
 
 }
 add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100 );
@@ -1747,39 +1762,79 @@ function siteorigin_panels_ajax_widget_form( ) {
 	$request = array_map( 'stripslashes_deep', $_REQUEST );
 
 	if ( empty( $request['widget'] ) ) exit();
-
+	$widget_form = siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
 	?>
 	<div class="ppb-add-content-panel-wrap">
-			<ul class="ppb-acp-sidebar">
-				<li><a class="ppb-tabs-anchors" href="#pootle-content-tab">Visual Editor</a></li>
-				<?php if ( class_exists( 'WooCommerce' ) ) { ?>
-					<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
-				<?php } ?>
-				<li class="ppb-seperator"></li>
-				<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
-			</ul>
-			<div id="pootle-content-tab" class="pootle-content-module tab-contents">
-				<?php
-				echo siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
-				?>
-			</div>
-			<div id="pootle-style-tab" class="pootle-content-module tab-contents">
-				<?php
-				pp_pb_widget_styles_dialog_form();
-				?>
-			</div>
+		<ul class="ppb-acp-sidebar">
+
+			<li><a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( 'Pootle_Text_Widget', $request['widget'] ) ?> href="#pootle-editor-tab">Editor</a></li>
+
+			<li><a class="ppb-tabs-anchors ppb-block-anchor ppb-blog" data-widgetClass="SiteOrigin_Panels_Widgets_PostLoop" <?php selected( 'SiteOrigin_Panels_Widgets_PostLoop', $request['widget'] ) ?> href="#pootle-blog-tab">Blog</a></li>
 			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
-				<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
-					<?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
-				</div>
+				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
 			<?php } ?>
+
+			<li class="ppb-seperator"></li>
+
+			<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
+		</ul>
+
+		<?php  ?>
+		<div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
+			<?php
+			if ( 'Pootle_Text_Widget' == $request['widget'] ) {
+				echo $widget_form;
+			}
+			?>
+		</div>
+
+		<div id="pootle-blog-tab" class="pootle-content-module tab-contents content-block">
+			<?php
+			if ( 'SiteOrigin_Panels_Widgets_PostLoop' == $request['widget'] ) {
+				echo $widget_form;
+			}
+			?>
+		</div>
+
+		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
+			<?php
+			pp_pb_widget_styles_dialog_form();
+			?>
+		</div>
+
+		<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+			<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
+				<?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
+			</div>
+		<?php } ?>
+
 	</div>
+	<script>
+		jQuery(function($){
+			$('.ppb-add-content-panel-wrap').data('widgetClass', '<?php echo $request['widget']; ?>')
+			$('.ppb-add-content-panel-wrap').data('instance', '<?php echo $request['instance']; ?>')
+		});
+	</script>
 	<?php
 
 
 	exit();
 }
 add_action( 'wp_ajax_so_panels_widget_form', 'siteorigin_panels_ajax_widget_form' );
+
+/**
+ * Display a widget form with the provided data
+ */
+function siteorigin_panels_ajax_content_block_form( ) {
+	$request = array_map( 'stripslashes_deep', $_REQUEST );
+
+	if ( empty( $request['widget'] ) ) exit();
+
+	echo siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
+
+	exit();
+}
+add_action( 'wp_ajax_so_panels_content_block_form', 'siteorigin_panels_ajax_content_block_form' );
 
 /**
  * Render a form with all the Page Builder specific fields
@@ -2094,7 +2149,12 @@ function pp_pb_widget_styling_fields( ) {
 			'step' => '1',
 			'unit' => 'px',
 			'css' => 'border-radius'
-	   ),
+		),
+		'inline-css' => array(
+			'name' => 'Inline Styles',
+			'type' => 'textarea',
+			'css' => 'inline-css'
+		),
    );
 }
 

@@ -30,7 +30,8 @@ class Pootle_Page_Compatibility {
 		$this->get_old_page_builder_posts();
 
 		$this->put_page_builder_stuff_in_content();
-		$this->unsupported_row_style_fields_in_style();
+
+		$this->unsupported_style_fields_in_style();
 	}
 
 	/**
@@ -101,7 +102,7 @@ class Pootle_Page_Compatibility {
 	 * Sets unsupported styles in style field
 	 * @since 3.0.0
 	 */
-	private function unsupported_row_style_fields_in_style() {
+	private function unsupported_style_fields_in_style() {
 
 		if ( empty( $this->old_page_builder_posts['page'] ) or ! is_array( $this->old_page_builder_posts['page'] ) ) {
 			return;
@@ -123,6 +124,13 @@ class Pootle_Page_Compatibility {
 
 			}
 
+			//Loop through the widgets
+			foreach ( $panels_data['widgets'] as $i => $wid ) {
+
+				$panels_data['widgets'][ $i ]['info']['style'] = $this->new_widget_style_format( $wid['info']['style'] );
+
+			}
+
 			//Finally update the post meta with new modified panels data
 			update_post_meta( $id, 'panels_data', $panels_data );
 
@@ -131,12 +139,12 @@ class Pootle_Page_Compatibility {
 	}
 
 	/**
-	 * Returns the new style format from old
+	 * Returns the new row style format from old
 	 *
-	 * @param $row
-	 * @param $i
-	 * @since 3.0.0
+	 * @param $panels_row_styles
+	 *
 	 * @return array New styles format
+	 * @since 3.0.0
 	 */
 	private function new_row_style_format( $panels_row_styles ) {
 
@@ -182,4 +190,22 @@ class Pootle_Page_Compatibility {
 
 	}
 
+	/**
+	 * Returns the new widget style format from old
+	 *
+	 * @param $styles Widget styles
+	 *
+	 * @return array New styles format
+	 * @since 3.0.0
+	 */
+	private function new_widget_style_format( $styles ) {
+
+		if ( strpos( $styles, 'hide-title":"none' ) ) {
+
+			$styles = str_replace( array( '"hide-title":"none",', '"}' ), array( '', '"' ), $styles ) . ',"inline-css":"hide-title:none;"}';
+
+		}
+
+		return $styles;
+	}
 }
