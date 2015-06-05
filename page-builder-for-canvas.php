@@ -10,13 +10,13 @@ License: GPL version 3
 */
 
 
-define( 'POOTLEPAGE_VERSION', '2.3.9' );
+define( 'POOTLEPAGE_VERSION', '2.9.9' );
 define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 
 /**
  * Tracking presence of version older than 3.0.0
  */
-if ( -1 == version_compare( get_option( 'siteorigin_panels_initial_version' ), '3' ) ) {
+if ( -1 == version_compare( get_option( 'siteorigin_panels_initial_version' ), '2.5' ) ) {
 	define( 'POOTLEPAGE_OLD_V', get_option( 'siteorigin_panels_initial_version' ) );
 }
 
