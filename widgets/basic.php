@@ -221,35 +221,6 @@ class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
 
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ) ?>"><?php _e( 'Title', 'siteorigin-panels' ) ?></label>
-			<input type="text" class="widefat" name="<?php echo $this->get_field_name( 'title' ) ?>" id="<?php echo $this->get_field_id( 'title' ) ?>" value="<?php echo esc_attr( $instance['title'] ) ?>">
-		</p>
-		<!-- TEMPLATE and POST TYPE are fixed now
-		<p>
-			<label for="<?php echo $this->get_field_id( 'template' ) ?>"><?php _e( 'Template', 'siteorigin-panels' ) ?></label>
-			<select id="<?php echo $this->get_field_id( 'template' ) ?>" name="<?php echo $this->get_field_name( 'template' ) ?>">
-				<?php foreach( $templates as $template ) : ?>
-					<option value="<?php echo esc_attr( $template ) ?>" <?php selected( $instance['template'], $template ) ?>>
-						<?php
-						$headers = get_file_data( locate_template( $template ), array(
-							'loop_name' => 'Loop Name',
-						 ) );
-						echo esc_html( ! empty( $headers['loop_name'] ) ? $headers['loop_name'] : $template );
-						?>
-					</option>
-				<?php endforeach; ?>
-			</select>
-		</p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'post_type' ) ?>"><?php _e( 'Post Type', 'siteorigin-panels' ) ?></label>
-			<select id="<?php echo $this->get_field_id( 'post_type' ) ?>" name="<?php echo $this->get_field_name( 'post_type' ) ?>" value="<?php echo esc_attr( $instance['post_type'] ) ?>">
-				<?php foreach( $post_types as $type ) : ?>
-					<option value="<?php echo esc_attr( $type ) ?>" <?php selected( $instance['post_type'], $type ) ?>><?php echo esc_html( $type ) ?></option>
-				<?php endforeach; ?>
-			</select>
-		</p>
-		-->
-		<p>
 			<label for="<?php echo $this->get_field_id( 'posts_per_page' ) ?>"><?php _e( 'Posts Per Page', 'siteorigin-panels' ) ?></label>
 			<input type="text" class="small-text" id="<?php echo $this->get_field_id( 'posts_per_page' ) ?>" name="<?php echo $this->get_field_name( 'posts_per_page' ) ?>" value="<?php echo esc_attr( $instance['posts_per_page'] ) ?>" />
 		</p>

@@ -14,6 +14,7 @@
  * *3 Supports top_border_height, top_border, bottom_border_height and bottom_border row styles
  *
  * Class Pootle_Page_Compatibility
+ * @since 3.0.0
  */
 class Pootle_Page_Compatibility {
 
@@ -31,12 +32,13 @@ class Pootle_Page_Compatibility {
 
 		$this->put_page_builder_stuff_in_content();
 
-		$this->unsupported_style_fields_in_style();
+		$this->reorganise_old_panels_data();
 	}
 
 	/**
 	 * Gets old posts with page builder contents
 	 * Gets unsupported post types using earlier page builders
+	 *
 	 * @since 3.0.0
 	 */
 	private function get_old_page_builder_posts() {
@@ -68,6 +70,7 @@ class Pootle_Page_Compatibility {
 
 	/**
 	 * Puts page builder stuff in post content for unsupported post types
+	 *
 	 * @since 3.0.0
 	 */
 	private function put_page_builder_stuff_in_content() {
@@ -99,10 +102,11 @@ class Pootle_Page_Compatibility {
 	}
 
 	/**
-	 * Sets unsupported styles in style field
+	 * Refactors old panels data for compatibility with v3
+	 *
 	 * @since 3.0.0
 	 */
-	private function unsupported_style_fields_in_style() {
+	private function reorganise_old_panels_data() {
 
 		if ( empty( $this->old_page_builder_posts['page'] ) or ! is_array( $this->old_page_builder_posts['page'] ) ) {
 			return;
@@ -160,6 +164,7 @@ class Pootle_Page_Compatibility {
 			'bottom_border_height',
 			'bottom_border',
 			'height',
+			'no_margin',
 		);
 
 		/** @var string $styles to put in new Inline Styles field */
@@ -167,11 +172,17 @@ class Pootle_Page_Compatibility {
 		if ( ! empty( $panels_row_styles['top_border_height'] ) and ! empty( $panels_row_styles['top_border'] ) ) {
 			$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
 		}
+
 		if ( ! empty( $panels_row_styles['bottom_border_height'] ) and ! empty( $panels_row_styles['bottom_border'] ) ) {
 			$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
 		}
+
 		if ( ! empty( $panels_row_styles['height'] ) ) {
 			$styles .= "height: {$panels_row_styles['height']}px; ";
+		}
+
+		if ( ! empty( $panels_row_styles['no_margin'] ) && '1' == $panels_row_styles['no_margin'] ) {
+			$styles .= "margin-bottom: 0; ";
 		}
 
 		/** @var array $styles_array init new styles array */

@@ -318,7 +318,7 @@
                                     $target = $( e.toElement );
                                 $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
 
-                                panels.ppbContentModule( e, ui, $t, $currentPanel );
+                                //panels.ppbContentModule( e, ui, $t, $currentPanel );
                             },
                             enable: function (event, ui) {
                                 $(window).resize();

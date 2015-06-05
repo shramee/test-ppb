@@ -13,8 +13,15 @@ License: GPL version 3
 define( 'POOTLEPAGE_VERSION', '2.3.9' );
 define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 
+/**
+ * Tracking presence of version older than 3.0.0
+ */
+if ( -1 == version_compare( get_option( 'siteorigin_panels_initial_version' ), '3' ) ) {
+	define( 'POOTLEPAGE_OLD_V', get_option( 'siteorigin_panels_initial_version' ) );
+}
+
 //Solving old version post types
-add_action( 'admin_init', 'pp_pb_version_check' );
+add_action( 'init', 'pp_pb_version_check' );
 /**
  * Checks if older version of Page Builder was being used on site
  * Then runs compatibility functions accordingly
@@ -22,13 +29,13 @@ add_action( 'admin_init', 'pp_pb_version_check' );
  */
 function pp_pb_version_check( ) {
 
-	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' ) ) {
+	//Get initial version
+	$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
 
-		//No initial version means no need for compatibility updates
-		$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
+	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' )||true ) {
 
 		//If initial version < Current version
-		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {
+		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION )||true ) {
 
 			//Sort compatibility issues
 			require_once 'inc/class-pootle-page-compatibility.php';
@@ -388,6 +395,14 @@ function pootle_page_admin_enqueue_scripts(){
 }
 add_action( 'admin_enqueue_scripts', 'pootle_page_admin_enqueue_scripts' );
 
+/**
+ * Enqueue script for custom customize control.
+ */
+function pootlepage_customize_enqueue() {
+	wp_enqueue_style( 'pootlepage-customize-styles', plugin_dir_url( __FILE__ ) . '/css/customize-controls.css' );
+}
+add_action( 'customize_controls_enqueue_scripts', 'pootlepage_customize_enqueue' );
+
 function pootle_page_enqueue_color_picker(){
 
 	wp_dequeue_script( "iris" );
@@ -681,10 +696,18 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 	$magin_half = $settings['margin-sides']/2;
 	$side_margins = "margin: 0 -{$magin_half}px 0 -{$magin_half}px";
 	$side_paddings = "padding: 0 {$magin_half}px 0";
+
 	if ( empty( $css[ 1920 ][ $side_margins ] ) ) $css[ 1920 ][ $side_margins ] = array( );
 	if ( empty( $css[ 1920 ][ $side_paddings ] ) ) $css[ 1920 ][ $side_paddings ] = array( );
-	$css[ 1920 ][ $side_margins ][] = '.panel-grid';
-	$css[ 1920 ][ $side_paddings ][] = '.panel-grid-cell';
+
+	if ( defined( 'POOTLEPAGE_OLD_V' ) ) {
+
+		$css[ 1920 ][ $side_margins ][] = '.panel-grid';
+		$css[ 1920 ][ $side_paddings ][] = '.panel-grid-cell';
+
+	} else {
+		$css[ 1920 ]['padding: 5px'][] = '.panel';
+	}
 
 	/**
 	 * Filter the unprocessed CSS array
@@ -1752,7 +1775,7 @@ add_action( 'wp_ajax_so_panels_prebuilt', 'siteorigin_panels_ajax_action_prebuil
 add_action( 'ppb_add_content_woocommerce_tab', 'ppb_woocommerce_tab' );
 function ppb_woocommerce_tab(){
 ?>
-	Kindly install Pootle Page Builder Extension - Woocommerce to do cool WooCommerce stuff.
+	Using WooCommerce? You can now build a stunning shop with Page Builder. Just get our WooCommerce extension and start building!
 <?php
 }
 /**
@@ -1769,7 +1792,6 @@ function siteorigin_panels_ajax_widget_form( ) {
 
 			<li><a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( 'Pootle_Text_Widget', $request['widget'] ) ?> href="#pootle-editor-tab">Editor</a></li>
 
-			<li><a class="ppb-tabs-anchors ppb-block-anchor ppb-blog" data-widgetClass="SiteOrigin_Panels_Widgets_PostLoop" <?php selected( 'SiteOrigin_Panels_Widgets_PostLoop', $request['widget'] ) ?> href="#pootle-blog-tab">Blog</a></li>
 			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
 				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
 			<?php } ?>
@@ -1784,13 +1806,10 @@ function siteorigin_panels_ajax_widget_form( ) {
 			<?php
 			if ( 'Pootle_Text_Widget' == $request['widget'] ) {
 				echo $widget_form;
-			}
-			?>
-		</div>
-
-		<div id="pootle-blog-tab" class="pootle-content-module tab-contents content-block">
-			<?php
-			if ( 'SiteOrigin_Panels_Widgets_PostLoop' == $request['widget'] ) {
+			} else {
+				?>
+				<p>This is a widget from the previous version of Page Builder. You can edit it here, but you can't use widgets with Page Builder any more. However, you can use shortcodes in the editor.</p>
+				<?php
 				echo $widget_form;
 			}
 			?>
