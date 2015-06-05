@@ -206,7 +206,7 @@
                 .addClass( 'ui-dialog-content-loading' )
                 .addClass( 'widget-dialog-' + type.toLowerCase() )
                 .dialog( {
-                    dialogClass: 'panels-admin-dialog ppb-add-content-panel',
+                    dialogClass: 'panels-admin-dialog ppb-add-content-panel ppb-cool-panel-container',
                     autoOpen:    false,
                     modal:       false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
                     draggable:   false,
@@ -310,7 +310,7 @@
                         .dialog("option", "position", { my: "center", at: "center", of: window })
                         .dialog("open");
 
-                    $('.ppb-add-content-panel-wrap')
+                    $('.ppb-cool-panel-wrap')
                         .tabs({
                             activate: function(e ,ui){
                                 var $t = $(this),
@@ -333,9 +333,9 @@
                             }
                         });
 
-                    $('.ppb-add-content-panel-wrap a[selected]').click();
+                    $('.ppb-cool-panel-wrap a[selected]').click();
 
-                    $( ".ppb-add-content-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+                    $( ".ppb-cool-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 
                     //Get style data in fields
                     panels.pootlePageGetWidgetStyles( $('#pootle-style-tab') );
@@ -673,8 +673,8 @@
     panels.ppbContentModule = function( e, ui, $t, $currentPanel ){
         var $newT = ui.newTab.children('a'),
             $newP = ui.newPanel,
-            oldWidgetClass = $('.ppb-add-content-panel-wrap').data('widgetClass'),
-            instance = $('.ppb-add-content-panel-wrap').data('instance');
+            oldWidgetClass = $('.ppb-cool-panel-wrap').data('widgetClass'),
+            instance = $('.ppb-cool-panel-wrap').data('instance');
 
         if ( $newT.hasClass('ppb-block-anchor') ) {
             $('.content-block').html('');

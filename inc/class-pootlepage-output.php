@@ -105,13 +105,8 @@ class PootlePage_Output {
 	public function output_css() {
 		?>
 		<style>
-			/* Row CSS */
-			.panel-grid-cell .widget {
-			<?php echo $this->widget_css(); ?>
-			}
-
 			/* Widget CSS */
-			.panel-grid-cell .widget {
+			.panel-grid-cell .panel {
 			<?php echo $this->widget_css(); ?>
 			}
 		</style>

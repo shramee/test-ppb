@@ -1409,23 +1409,23 @@ when editing event widget from Event Calendar Pro */
 }
 
 /*ADD CONTENT PANEL STYLES*/
-.ppb-add-content-panel
+.ppb-cool-panel-container
 {
 	overflow: hidden;
 }
 
-.ppb-add-content-panel .ui-dialog-titlebar, .ppb-add-content-panel .ui-dialog-buttonpane
+.ppb-cool-panel-container .ui-dialog-titlebar, .ppb-cool-panel-container .ui-dialog-buttonpane
 {
 	margin-left: 200px;
 }
 
-.ppb-add-content-panel .ui-dialog-content
+.ppb-cool-panel-container .ui-dialog-content
 {
 	padding: 0;
 	overflow: visible;
 }
 
-.ppb-add-content-panel .ppb-add-content-panel-wrap
+.ppb-cool-panel-container .ppb-cool-panel-wrap
 {
 	position: relative;
 	padding: 0;
@@ -1433,7 +1433,7 @@ when editing event widget from Event Calendar Pro */
 	overflow: visible;
 }
 
-ul.ppb-acp-sidebar
+.ppb-cool-panel-wrap > ul
 {
 	width: 160px;
 	display: block;
@@ -1446,7 +1446,7 @@ ul.ppb-acp-sidebar
 	border-right: 1px solid #ccc;
 }
 
-.pootle-content-module
+.ppb-cool-panel-wrap > div
 {
 	padding: 16px;
 	margin: 0 0 0 200px;'
@@ -1456,7 +1456,7 @@ ul.ppb-acp-sidebar
 	box-sizing: border-box;
 }
 
-.ppb-add-content-panel .ui-state-default a
+.ppb-cool-panel-wrap > ul > li > a
 {
 	display: block;
 	position: relative;
@@ -1471,14 +1471,14 @@ ul.ppb-acp-sidebar
 	box-shadow: none;
 }
 
-.ppb-add-content-panel .ui-tabs-active a
+.ppb-cool-panel-container .ui-tabs-active a
 {
 	color: #23282d;
 	font-weight: 700;
 	cursor: default;
 }
 
-.ppb-add-content-panel-wrap li.ppb-seperator
+.ppb-cool-panel-wrap li.ppb-seperator
 {
 	height: 0;
 	margin: 12px 0px;
@@ -1486,5 +1486,5 @@ ul.ppb-acp-sidebar
 	border-top: 1px solid #ddd;
 }
 
-.ppb-add-content-panel-wrap
+.ppb-cool-panel-wrap
 {}

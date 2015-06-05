@@ -1787,7 +1787,7 @@ function siteorigin_panels_ajax_widget_form( ) {
 	if ( empty( $request['widget'] ) ) exit();
 	$widget_form = siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
 	?>
-	<div class="ppb-add-content-panel-wrap">
+	<div class="ppb-cool-panel-wrap">
 		<ul class="ppb-acp-sidebar">
 
 			<li><a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( 'Pootle_Text_Widget', $request['widget'] ) ?> href="#pootle-editor-tab">Editor</a></li>
@@ -1830,8 +1830,8 @@ function siteorigin_panels_ajax_widget_form( ) {
 	</div>
 	<script>
 		jQuery(function($){
-			$('.ppb-add-content-panel-wrap').data('widgetClass', '<?php echo $request['widget']; ?>')
-			$('.ppb-add-content-panel-wrap').data('instance', '<?php echo $request['instance']; ?>')
+			$('.ppb-cool-panel-wrap').data('widgetClass', '<?php echo $request['widget']; ?>')
+			$('.ppb-cool-panel-wrap').data('instance', '<?php echo $request['instance']; ?>')
 		});
 	</script>
 	<?php

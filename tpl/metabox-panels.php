@@ -190,7 +190,11 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<?php // The styles dialog ?>
 	<div id="grid-styles-dialog" data-title="<?php esc_attr_e( 'Row Visual Style','siteorigin-panels' ) ?>" class="panels-admin-dialog">
-		<?php siteorigin_panels_style_dialog_form() ?>
+		<div class="ppb-cool-panel-wrap">
+
+			<?php siteorigin_panels_style_dialog_form() ?>
+
+		</div>
 	</div>
 
 	<div id="widget-styles-dialog" data-title="Style Widget" class="panels-admin-dialog">

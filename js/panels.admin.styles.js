@@ -18,16 +18,23 @@ jQuery( function($){
     $gridStylesDialog
         .show()
         .dialog( {
-            dialogClass: 'panels-admin-dialog',
+            dialogClass: 'panels-admin-dialog ppb-cool-panel-container',
             autoOpen: false,
             modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
             draggable:   false,
             resizable:   false,
             title:   $( '#grid-styles-dialog' ).attr( 'data-title' ),
+            height:   500,
+            width:    700,
             maxHeight:   Math.round($(window).height() * 0.8),
-            width: 500,
+            maxWidth:   Math.round($(window).height() * 0.8),
             open:    function () {
                 $t = $(this);
+
+                $t.find('.ppb-cool-panel-wrap').tabs({
+                    active: 0
+                });
+
                 var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $t.data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
@@ -51,6 +58,12 @@ jQuery( function($){
                 $( '#grid-styles-dialog [data-style-field]').each(function() {
                     var $$ = $(this);
                     var cf = container.find( '[data-style-field="' + $$.data('style-field') + '"]' );
+
+                    console.log(container);
+                    console.log(cf.val());
+                    console.log($$.val());
+                    console.log('-------------------------------------------------');
+                    console.log('');
 
                     switch($$.data('style-field-type')) {
                         case 'checkbox':
