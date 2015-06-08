@@ -2290,3 +2290,20 @@ function ppb_no_admin_notices() {
 	}
 }
 add_action( 'admin_notices', 'ppb_no_admin_notices', 0 );
+
+function ppb_wp_seo_filter( $content, $post ) {
+
+	$id = $post->ID;
+	$panels_data = get_post_meta( $id, 'panels_data', true );
+	if ( ! empty( $panels_data['widgets'] ) ) {
+		foreach ( $panels_data['widgets'] as $widget ) {
+			if ( ! empty( $widget['text'] ) ) {
+				$content .= $widget['text'] . "\n\n";
+			}
+		}
+	}
+
+	return $content;
+
+}
+add_filter( 'wpseo_pre_analysis_post_content', 'ppb_wp_seo_filter', 10, 2 );
