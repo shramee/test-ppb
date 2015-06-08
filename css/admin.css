@@ -1222,7 +1222,7 @@ button.wp-switch-editor
 	bottom: -50px;
 	margin: 0 0 0;
 	cursor: pointer;
-	z-index: 100;
+	z-index: 1;
 	border: 4px dashed #d5d2d0;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -1255,6 +1255,11 @@ button.wp-switch-editor
 {
 	vertical-align: middle;
 	line-height: 25px;
+}
+
+.ppb-add-content-panel .old-widget
+{
+    color: #c00;
 }
 
 #panels-container .cell-wrapper .add-widget-button:before
@@ -1388,6 +1393,14 @@ a.wp-switch-editor
 	display: none !important;
 }
 
+#pootle-editor-tab .old-widget {
+    margin: -16px -16px 0;
+    padding: 7px 16px;
+    color: #fff;
+    background: #c00;
+    font-weight: bold;
+}
+
 /* Fix select2 drop down displayed below dialog overlay in edit page screen,
 when editing event widget from Event Calendar Pro */
 .select2-drop
@@ -1488,3 +1501,8 @@ when editing event widget from Event Calendar Pro */
 
 .ppb-cool-panel-wrap
 {}
+.pp-red
+{
+    background: #ef4832;
+    color: #fff;
+}

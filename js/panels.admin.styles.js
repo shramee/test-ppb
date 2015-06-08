@@ -26,8 +26,8 @@ jQuery( function($){
             title:   $( '#grid-styles-dialog' ).attr( 'data-title' ),
             height:   500,
             width:    700,
-            maxHeight:   Math.round($(window).height() * 0.8),
-            maxWidth:   Math.round($(window).height() * 0.8),
+            maxHeight:   Math.round($(window).height() - 25 ),
+            maxWidth:    Math.round($(window).width() - 25 ),
             open:    function () {
                 $t = $(this);
 
@@ -35,22 +35,27 @@ jQuery( function($){
                     active: 0
                 });
 
+                if ( 0 < $( '#grid-styles-dialog').data('container').find( '.panel').length ) {
+                    $t.find('.field_row_height').hide();
+                }
+
                 var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $t.data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                 window.setRowOptionUploadButton();
-                panels.rowBGImageFields();
-                var $bgImageFld = $t.find('[data-style-field=background_image]'),
+
+                var $bgToggle = $t.find('[data-style-field=background_toggle]'),
                     $bgVidFlds = $t.find('[data-style-field=bg_video]');
-                $bgImageFld.on( 'change', panels.rowBGImageFields );
+                panels.rowBgToggle();
+                $bgToggle.on( 'change', panels.rowBgToggle );
                 $bgVidFlds.on('change', panels.BGVidFld);
             },
             close : function(){
                 $(this).data('overlay').remove();
 
-                var $bgImageFld = $t.find('[data-style-field=background_image]'),
+                var $bgToggle = $t.find('[data-style-field=background_toggle]'),
                     $bgVidFlds = $t.find('[data-style-field=bg_video]');
-                $bgImageFld.off('change', panels.rowBGImageFields);
+                $bgToggle.off('change', panels.rowBgToggle);
                 $bgVidFlds.off('change', panels.BGVidMP4);
 
                 // Copy the dialog values back to the container style value fields
@@ -58,12 +63,6 @@ jQuery( function($){
                 $( '#grid-styles-dialog [data-style-field]').each(function() {
                     var $$ = $(this);
                     var cf = container.find( '[data-style-field="' + $$.data('style-field') + '"]' );
-
-                    console.log(container);
-                    console.log(cf.val());
-                    console.log($$.val());
-                    console.log('-------------------------------------------------');
-                    console.log('');
 
                     switch($$.data('style-field-type')) {
                         case 'checkbox':
@@ -110,18 +109,13 @@ jQuery( function($){
             });
     }
 
-    panels.rowBGImageFields = function(){
+    panels.rowBgToggle = function(){
 
-        $t = $( '#grid-styles-dialog');
+        var $dialog = $('#grid-styles-dialog'),
+            $t = $dialog.find('[data-style-field=background_toggle]');
 
-        var $bgImageFld = $t.find('[data-style-field=background_image]'),
-            $bgImageOptions = $t.find('.field_background_image_repeat, .field_background_image_size, .field_background_parallax');
-
-        if ( '' == $.trim( $bgImageFld.val() ) ) {
-            $bgImageOptions.hide();
-        } else {
-            $bgImageOptions.show();
-        }
+        $('.bg_section').hide();
+        $($t.val()).show();
     };
 
     panels.BGVidFld = function(){

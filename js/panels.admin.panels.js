@@ -310,7 +310,7 @@
                         .dialog("option", "position", { my: "center", at: "center", of: window })
                         .dialog("open");
 
-                    $('.ppb-cool-panel-wrap')
+                    $('.ppb-add-content-panel')
                         .tabs({
                             activate: function(e ,ui){
                                 var $t = $(this),
@@ -320,10 +320,7 @@
 
                                 //panels.ppbContentModule( e, ui, $t, $currentPanel );
                             },
-                            enable: function (event, ui) {
-                                $(window).resize();
-                            },
-                            active: null
+                            active: 0
                         })
                         .addClass( "ui-tabs-vertical ui-helper-clearfix" )
                         .find('input').each( function () {
@@ -333,7 +330,11 @@
                             }
                         });
 
-                    $('.ppb-cool-panel-wrap a[selected]').click();
+                    var $t = $('.ppb-cool-panel-wrap'),
+                        title = $t.find('.ui-tabs-active a').html();
+                    $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
+
+                    //$('.ppb-cool-panel-wrap [selected]').click();
 
                     $( ".ppb-cool-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
 

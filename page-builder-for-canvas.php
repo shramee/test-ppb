@@ -909,17 +909,43 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		// Themes can add their own attributes to the style wrapper
 		$styleArray = !empty( $panels_data['grids'][$gi]['style'] ) ? $panels_data['grids'][$gi]['style'] : array( );
 		$style_attributes = apply_filters( 'siteorigin_panels_row_style_attributes', $style_attributes, $styleArray );
+
+		$bgVideo = ! empty( $styleArray['background_toggle'] ) ? '.bg_video' == $styleArray['background_toggle'] : false;
+
 		if ( !empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
 			$style_attributes['class'][] = ! empty( $styleArray['full_width'] ) ? 'ppb-full-width-row': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
-			$style_attributes['style'] .= ! empty( $panels_data['grids'][$gi]['style']['style'] ) ? $panels_data['grids'][$gi]['style']['style']: '';
+
+			$style_attributes['style'] .= ! empty( $styleArray['style'] ) ? $styleArray['style']: '';
+
+			if ( $bgVideo ) {
+				if ( ! empty( $style['background_image'] ) ) {
+					$style_attributes['style'] .= 'background-image: url( '.esc_url( $style['bg_mobile_image'] ).' ); ';
+				}
+				$style_attributes['style'] .= ! empty( $styleArray['style'] ) ? $styleArray['style']: '';
+			}
+
+			//Apply height if row doesn't contain widgets
+			$contains_widgets = false;
+			foreach ( $cells as $cell ) {
+				if ( ! empty( $cell ) ) {
+					$contains_widgets = true;
+				}
+			}
+
+			if ( ! $contains_widgets ) {
+				$style_attributes['style'] .= ! empty( $styleArray['row_height'] ) ? 'height:' . $styleArray['row_height'] . 'px' : '';
+			}
 
 			if ( ! empty( $styleArray['background_parallax'] ) ) {
 				$style_attributes['data-top-bottom'][] = 'background-position:center 0px';
 				$style_attributes['data-bottom-top'][] = 'background-position:center -500px';
 				$style_attributes['class'][] = 'ppb-parallax';
+			}
+			if ( ! empty( $styleArray['bg_mobile_image'] ) && $bgVideo ) {
+
 			}
 
 			echo '<div ';
@@ -932,15 +958,23 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				}
 			}
 			echo '>';
-			if ( ! empty( $styleArray['bg_video'] ) ) {
+
+			$videoClasses = 'ppb-bg-video';
+
+			if ( ! empty( $styleArray['bg_mobile_image'] ) ) {
+				$videoClasses .= ' hide-on-mobile';
+			}
+
+			if ( ! empty( $styleArray['bg_video'] ) && $bgVideo ) {
 				?>
-				<video class="ppb-bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
-				<?php
-				echo "<source src='{$styleArray['bg_video']}' type='video/mp4'>";
-				echo "<source src='{$styleArray['bg_video']}' type='video/webm'>";
-				?>Sorry, your browser does not support HTML5 video.
+				<video class="<?php echo $videoClasses; ?>" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+					<?php
+					echo "<source src='{$styleArray['bg_video']}' type='video/mp4'>";
+					echo "<source src='{$styleArray['bg_video']}' type='video/webm'>";
+					?>
+					Sorry, your browser does not support HTML5 video.
 				</video>
-				<?php
+			<?php
 			}
 		}
 
@@ -1489,14 +1523,13 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 		}
 	}
 
-	if ( ! empty( $styleArray['inline-css'] ) ) {
-		$inlineStyle .= str_replace( 'hide-title:none;', '', $styleArray['inline-css'] );
-	}
-
 	$titleInlineStyle = '';
 
-	if ( false !== strpos( $styleArray['inline-css'], 'hide-title:none;' ) ) {
-		$titleInlineStyle .= 'display:none;';
+	if ( ! empty( $styleArray['inline-css'] ) ) {
+		$inlineStyle .= str_replace( 'hide-title:none;', '', $styleArray['inline-css'] );
+		if ( false !== strpos( $styleArray['inline-css'], 'hide-title:none;' ) ) {
+			$titleInlineStyle .= 'display:none;';
+		}
 	}
 
 	$the_widget->widget( array(
@@ -1790,7 +1823,19 @@ function siteorigin_panels_ajax_widget_form( ) {
 	<div class="ppb-cool-panel-wrap">
 		<ul class="ppb-acp-sidebar">
 
-			<li><a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( 'Pootle_Text_Widget', $request['widget'] ) ?> href="#pootle-editor-tab">Editor</a></li>
+			<li>
+				<a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( true ) ?> href="#pootle-editor-tab">
+					<?php
+					if ( 'Pootle_Text_Widget' == $request['widget'] ) {
+						echo 'Editor';
+					} else {
+						$widget_class = $request['widget'];
+						$widget = new $widget_class();
+						echo '<span class="old-widget">' . $widget->name . '</span>';
+					}
+					?>
+				</a>
+			</li>
 
 			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
 				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
@@ -1808,7 +1853,7 @@ function siteorigin_panels_ajax_widget_form( ) {
 				echo $widget_form;
 			} else {
 				?>
-				<p>This is a widget from the previous version of Page Builder. You can edit it here, but you can't use widgets with Page Builder any more. However, you can use shortcodes in the editor.</p>
+				<p class="old-widget">This is a widget from the previous version of Page Builder. You can edit it here, but you can't use widgets with Page Builder any more. However, you can use shortcodes in the editor.</p>
 				<?php
 				echo $widget_form;
 			}

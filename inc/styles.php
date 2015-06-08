@@ -203,15 +203,22 @@ function pootlepage_hide_elements_dialog_echo( $fields ) {
 
 function siteorigin_panels_style_dialog_form() {
 	$fields = siteorigin_panels_style_get_fields();
-	
-	$sections['General'][] = 'full_width';
+
 	$sections['Background'][] = 'background';
+	$sections['Background'][] = 'background_toggle';
+	$sections['Background'][] = array( '<div class="bg_section bg_image">' );
 	$sections['Background'][] = 'background_color_over_image';
 	$sections['Background'][] = 'background_image';
 	$sections['Background'][] = 'background_image_repeat';
 	$sections['Background'][] = 'background_parallax';
 	$sections['Background'][] = 'background_image_size';
+	$sections['Background'][] = array( '</div>' );
+	$sections['Background'][] = array( '<div class="bg_section bg_video">' );
 	$sections['Background'][] = 'bg_video';
+	$sections['Background'][] = 'bg_mobile_image';
+	$sections['Background'][] = array( '</div>' );
+	$sections['Layout'][] = 'full_width';
+	$sections['Layout'][] = 'row_height';
 	$sections['Advanced'][] = 'style';
 	$sections['Advanced'][] = 'class';
 	$sections['Advanced'][] = 'id';
@@ -236,6 +243,11 @@ function siteorigin_panels_style_dialog_form() {
 		echo "<div id='ppb-style-section-{$sec}' class='ppb-style-section'>";
 
 		foreach ( $secFields as $name ) {
+
+			if ( is_array( $name ) ) {
+				echo $name[0];
+				continue;
+			}
 
 			$attr = $fields[ $name ];
 

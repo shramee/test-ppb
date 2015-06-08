@@ -168,19 +168,23 @@ ul.wooTabs {
 }
 
 video.ppb-bg-video { 
-     position: absolute;
-     top: 0px;
-     left: 0px;
-     min-width: 100%;
-     min-height: 100%;
-     width: auto;
-     height: auto;
-     z-index: 0;
-     overflow: hidden;
+  position: absolute;
+  top: -999px; 
+  bottom: -999px; 
+  left: -999px; 
+  right: -999px;
+  min-width: 100%; 
+  min-height: 100%; 
+  width: auto; 
+  height: auto;
+  z-index: 1; 
+  overflow: hidden;
+  margin: auto;
+  object-fit: cover;
 }
 
 @media only screen and (max-width:768px){
-	video.ppb-bg-video { 
+	.hide-on-mobile {
 		 display:none;
 	}
 }
