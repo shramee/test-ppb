@@ -37,9 +37,36 @@ jQuery(function($){
 
         $('.ppb-parallax').each( function () {
             $t = $(this);
-            $t.css({
-                backgroundSize: 'auto ' + ($t.height() + 500) + 'px'
-            });
+
+            var image_url = $t.css('background-image'),
+                image;
+
+            // Remove url() or in case of Chrome url("")
+            image_url = image_url.match(/^url\("?(.+?)"?\)$/);
+
+            if (image_url[1]) {
+                image_url = image_url[1];
+                image = new Image();
+
+                // just in case it is not already loaded
+                $(image).load(function () {
+                    var ratio = image.width / image.height,
+                        minHi = $t.height() + 500;
+
+                    if ( ( minHi * ratio ) > $t.outerWidth() ) {
+                        $t.css({
+                            backgroundSize: 'auto ' + (minHi) + 'px'
+                        });
+                    } else {
+                        $t.css({
+                            backgroundSize: '100% auto'
+                        });
+                    }
+
+                });
+
+                image.src = image_url;
+            }
         });
     })
 });
