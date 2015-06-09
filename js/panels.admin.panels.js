@@ -285,74 +285,138 @@
                 return;
             }
 
+            instance = $currentPanel.panelsGetPanelData();
 
-            $.post(
-                ajaxurl,
-                {
-                    'action' : 'so_panels_widget_form',
-                    'widget' : widgetClass,
-                    'instance' : JSON.stringify( $currentPanel.panelsGetPanelData() ),
-                    'raw' : $currentPanel.find('input[name$="[info][raw]"]').val()
-                },
-                function(result){
-                    // the newPanelId is defined at the top of this function.
-                    try {
-                        var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
+            var data = {
+                'action' : 'so_panels_widget_form',
+                'widget' : widgetClass,
+                'instance' : JSON.stringify( instance ),
+                'raw' : $currentPanel.find('input[name$="[info][raw]"]').val()
+            };
 
-                        result = result.replace( /\{\$id\}/g, newPanelId );
-                    }
-                    catch (err) {
-                        result = '';
-                    }
+            if( "Pootle_Text_Widget" == widgetClass ) {
 
-                    activeDialog
-                        .html(result)
-                        .dialog("option", "position", { my: "center", at: "center", of: window })
-                        .dialog("open");
+                var text = '';
 
-                    $('.ppb-add-content-panel')
-                        .tabs({
-                            activate: function(e ,ui){
-                                var $t = $(this),
-                                    title = $t.find('.ui-tabs-active a').html(),
-                                    $target = $( e.toElement );
-                                $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
+                if ( typeof instance.text != 'undefined' ) {
+                    text = instance.text;
+                }
 
-                                //panels.ppbContentModule( e, ui, $t, $currentPanel );
-                            },
-                            active: 0
-                        })
-                        .addClass( "ui-tabs-vertical ui-helper-clearfix" )
-                        .find('input').each( function () {
-                            $t = $(this);
-                            if ( $t.attr( 'data-style-field-type' ) == 'color' ) {
-                                $t.wpColorPicker();
-                            }
-                        });
+                var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
 
-                    var $t = $('.ppb-cool-panel-wrap'),
-                        title = $t.find('.ui-tabs-active a').html();
-                    $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
+                result = panels.editor_form_cache.replace(/\{\$id\}/g, newPanelId);
+                result = result.replace(/\[PPBEditorTextHere\]/g, text );
 
-                    //$('.ppb-cool-panel-wrap [selected]').click();
+                activeDialog
+                    .html(result)
+                    .dialog("option", "position", { my: "center", at: "center", of: window })
+                    .dialog("open");
 
-                    $( ".ppb-cool-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+                $('.ppb-add-content-panel')
+                    .tabs({
+                        activate: function(e ,ui){
+                            var $t = $(this),
+                                title = $t.find('.ui-tabs-active a').html(),
+                                $target = $( e.toElement );
+                            $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
 
-                    //Get style data in fields
-                    panels.pootlePageGetWidgetStyles( $('#pootle-style-tab') );
+                            //panels.ppbContentModule( e, ui, $t, $currentPanel );
+                        },
+                        active: 0
+                    })
+                    .addClass( "ui-tabs-vertical ui-helper-clearfix" )
+                    .find('input').each( function () {
+                        $t = $(this);
+                        if ( $t.attr( 'data-style-field-type' ) == 'color' ) {
+                            $t.wpColorPicker();
+                        }
+                    });
 
-                    $(window).resize();
+                var $t = $('.ppb-cool-panel-wrap'),
+                    title = $t.find('.ui-tabs-active a').html();
+                $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
 
-                    // This is to refresh the dialog positions
-                    $( window ).resize();
-                    $( document ).trigger('panelssetup', $currentPanel, activeDialog);
-                    $( '#panels-container .panels-container' ).trigger( 'refreshcells' );
+                //$('.ppb-cool-panel-wrap [selected]').click();
 
-                    // This gives panel types a chance to influence the form
-                    activeDialog.removeClass('ui-dialog-content-loading').trigger( 'panelsopen', $currentPanel, activeDialog );
-                },
-                'html'
-            );
+                $( ".ppb-cool-panel-wrap li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+
+                //Get style data in fields
+                panels.pootlePageGetWidgetStyles( $('#pootle-style-tab') );
+
+                $(window).resize();
+
+                // This is to refresh the dialog positions
+                $( window ).resize();
+                $( document ).trigger('panelssetup', $currentPanel, activeDialog);
+                $( '#panels-container .panels-container' ).trigger( 'refreshcells' );
+
+                // This gives panel types a chance to influence the form
+                activeDialog.removeClass('ui-dialog-content-loading').trigger( 'panelsopen', $currentPanel, activeDialog );
+            } else {
+
+                $.post(
+                    ajaxurl,
+                    data,
+                    function (result) {
+                        // the newPanelId is defined at the top of this function.
+                        try {
+                            var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
+
+                            result = result.replace(/\{\$id\}/g, newPanelId);
+                        }
+                        catch (err) {
+                            result = '';
+                        }
+
+                        activeDialog
+                            .html(result)
+                            .dialog("option", "position", {my: "center", at: "center", of: window})
+                            .dialog("open");
+
+                        $('.ppb-add-content-panel')
+                            .tabs({
+                                activate: function (e, ui) {
+                                    var $t = $(this),
+                                        title = $t.find('.ui-tabs-active a').html(),
+                                        $target = $(e.toElement);
+                                    $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
+
+                                    //panels.ppbContentModule( e, ui, $t, $currentPanel );
+                                },
+                                active: 0
+                            })
+                            .addClass("ui-tabs-vertical ui-helper-clearfix")
+                            .find('input').each(function () {
+                                $t = $(this);
+                                if ($t.attr('data-style-field-type') == 'color') {
+                                    $t.wpColorPicker();
+                                }
+                            });
+
+                        var $t = $('.ppb-cool-panel-wrap'),
+                            title = $t.find('.ui-tabs-active a').html();
+                        $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
+
+                        //$('.ppb-cool-panel-wrap [selected]').click();
+
+                        $(".ppb-cool-panel-wrap li").removeClass("ui-corner-top").addClass("ui-corner-left");
+
+                        //Get style data in fields
+                        panels.pootlePageGetWidgetStyles($('#pootle-style-tab'));
+
+                        $(window).resize();
+
+                        // This is to refresh the dialog positions
+                        $(window).resize();
+                        $(document).trigger('panelssetup', $currentPanel, activeDialog);
+                        $('#panels-container .panels-container').trigger('refreshcells');
+
+                        // This gives panel types a chance to influence the form
+                        activeDialog.removeClass('ui-dialog-content-loading').trigger('panelsopen', $currentPanel, activeDialog);
+                    },
+                    'html'
+                );
+            }
 
             return false;
         });
@@ -528,38 +592,27 @@
      * Set the title of the panel
      */
     $.fn.panelsSetPanelTitle = function ( data ) {
-        return $(this ).each(function(){
 
-            var titleValue = '';
+        var $t = $(this);
 
-            if( typeof data != 'undefined' ) {
-                if( typeof data.title != 'undefined' && data.title != '' ) titleValue = data.title;
-                else {
-                    for ( var i in data ) {
-                        if(typeof data[i] == 'string' && data[i] != '') {
-                            titleValue = data[i];
-                            break;
-                        }
-                    }
-                }
-            }
+        if( typeof data != 'undefined' && typeof data.info != 'undefined' ) {
+            widClass = data.info.class;
+        } else {
+            widClass = 'Pootle_Text_Widget';
+        }
 
-            try {
-                titleValue = titleValue.substring(0, 80).replace(/(<([^>]+)>)/ig,"")
-            }
-            catch(err) {
-                titleValue = '';
-            }
+        if ( 'Pootle_Text_Widget' != widClass ) {
 
-            if (titleValue == '' || titleValue == null || titleValue == false || titleValue == '0') {
-                titleValue = 'Blank title';
-            }
-
-            //Keep title value 'Visual Editor' always
-            titleValue = 'Editor';
-
-            $(this ).find( 'h4' ).html( titleValue );
-        });
+            $.get( ajaxurl , {
+                'action': 'ppb_widget_name',
+                'widget': widClass
+            } )
+                .done(function( data ) {
+                    $t.find( 'h4' ).html( data );
+                });
+        } else {
+            $t.find( 'h4' ).html( 'Editor' );
+        }
     }
 
     /**
@@ -670,47 +723,26 @@
         });
 
         $currentPanel.find('input[name$="[style]"]').val(JSON.stringify(styleData));
-    }
-    panels.ppbContentModule = function( e, ui, $t, $currentPanel ){
-        var $newT = ui.newTab.children('a'),
-            $newP = ui.newPanel,
-            oldWidgetClass = $('.ppb-cool-panel-wrap').data('widgetClass'),
-            instance = $('.ppb-cool-panel-wrap').data('instance');
+    };
 
-        if ( $newT.hasClass('ppb-block-anchor') ) {
-            $('.content-block').html('');
+    $(document).ready(function(){
+        panels.editor_form_cache = null;
+        var data = {
+            action: "so_panels_widget_form",
+            widget: "Pootle_Text_Widget",
+            instance: JSON.stringify( {text: "[PPBEditorTextHere]"} ),
+            raw: "0"
+        };
 
-            var widgetClass = $newT.attr('data-widgetClass');
+        $.post(
+            ajaxurl,
+            data,
+            function (result) {
+                panels.editor_form_cache = result;
+            },
+            'html'
+        );
 
-            var data = {
-                'action': 'so_panels_content_block_form',
-                'widget': widgetClass,
-                'instance': instance,
-                'raw': $currentPanel.find('input[name$="[info][raw]"]').val()
-            };
-
-            $.post(
-                ajaxurl,
-                data,
-                function (result) {
-                    // the newPanelId is defined at the top of this function.
-                    try {
-                        var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
-
-                        result = result.replace( /\{\$id\}/g, newPanelId );
-                    }
-                    catch (err) {
-                        result = '';
-                    }
-                    $newP.html(result);
-                    $currentPanel.attr('data-type', widgetClass);
-
-                    $currentPanel.find('input[name*="[info][class]"]').val(widgetClass);
-
-                },
-                'html'
-            );
-        }
-    }
+    });
 
 } )( jQuery );

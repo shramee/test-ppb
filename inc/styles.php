@@ -291,13 +291,8 @@ function pootlepage_render_single_field( $name, $attr ) {
 				<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 				       data-style-field="<?php echo esc_attr( $name ) ?>"
 				       data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"/>
-				Enabled
 			</label>
 			<?php
-			if ( isset( $attr['help-text'] ) ) {
-				// don't use div for this or else div will appear outside of <p>
-				echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
-			}
 			break;
 
 		case 'number' :
@@ -341,6 +336,10 @@ function pootlepage_render_single_field( $name, $attr ) {
 			break;
 	}
 
+    if ( isset( $attr['help-text'] ) ) {
+        // don't use div for this or else div will appear outside of <p>
+        echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
+    }
 }
 
 function pp_pb_widget_styles_dialog_form() {

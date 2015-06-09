@@ -915,6 +915,9 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		if ( !empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
+            if ( $bgVideo ) {
+                $style_attributes['class'][] = 'video-bg';
+            }
 			$style_attributes['class'][] = ! empty( $styleArray['full_width'] ) ? 'ppb-full-width-row': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
 
@@ -1811,78 +1814,95 @@ function ppb_woocommerce_tab(){
 	Using WooCommerce? You can now build a stunning shop with Page Builder. Just get our WooCommerce extension and start building!
 <?php
 }
+
+/**
+ * Display a widget form with the provided data
+ */
+function ppb_ajax_widget_name( ) {
+    $request = array_map( 'stripslashes_deep', $_REQUEST );
+
+    if ( empty( $request['widget'] ) ) exit();
+
+    $widget_class = $request['widget'];
+    $widget = new $widget_class();
+    echo $widget->name;
+
+    exit();
+}
+add_action( 'wp_ajax_ppb_widget_name', 'ppb_ajax_widget_name' );
+
 /**
  * Display a widget form with the provided data
  */
 function siteorigin_panels_ajax_widget_form( ) {
-	$request = array_map( 'stripslashes_deep', $_REQUEST );
+    $request = array_map( 'stripslashes_deep', $_REQUEST );
 
-	if ( empty( $request['widget'] ) ) exit();
-	$widget_form = siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
-	?>
-	<div class="ppb-cool-panel-wrap">
-		<ul class="ppb-acp-sidebar">
+    if ( empty( $request['widget'] ) ) exit();
+    $widget_form = siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
+    ?>
+    <div class="ppb-cool-panel-wrap">
+        <ul class="ppb-acp-sidebar">
 
-			<li>
-				<a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( true ) ?> href="#pootle-editor-tab">
-					<?php
-					if ( 'Pootle_Text_Widget' == $request['widget'] ) {
-						echo 'Editor';
-					} else {
-						$widget_class = $request['widget'];
-						$widget = new $widget_class();
-						echo '<span class="old-widget">' . $widget->name . '</span>';
-					}
-					?>
-				</a>
-			</li>
+            <li>
+                <a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( true ) ?> href="#pootle-editor-tab">
+                    <?php
+                    if ( 'Pootle_Text_Widget' == $request['widget'] ) {
+                        echo 'Editor';
+                    } else {
+                        $widget_class = $request['widget'];
+                        $widget = new $widget_class();
+                        echo '<span class="old-widget">' . $widget->name . '</span>';
+                    }
+                    ?>
+                </a>
+            </li>
 
-			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
-				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
-			<?php } ?>
+            <?php if ( class_exists( 'WooCommerce' ) ) { ?>
+                <li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
+            <?php } ?>
 
-			<li class="ppb-seperator"></li>
+            <li class="ppb-seperator"></li>
 
-			<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
-		</ul>
+            <li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
+        </ul>
 
-		<?php  ?>
-		<div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
-			<?php
-			if ( 'Pootle_Text_Widget' == $request['widget'] ) {
-				echo $widget_form;
-			} else {
-				?>
-				<p class="old-widget">This is a widget from the previous version of Page Builder. You can edit it here, but you can't use widgets with Page Builder any more. However, you can use shortcodes in the editor.</p>
-				<?php
-				echo $widget_form;
-			}
-			?>
-		</div>
+        <?php  ?>
+        <div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
+            <?php
+            if ( 'Pootle_Text_Widget' == $request['widget'] ) {
+                echo $widget_form;
+            } else {
+                ?>
+                <p class="old-widget">This is a widget used with the previous version of Page Builder. You can still edit it here for now, but you can't add new widgets with Page Builder any more. Really sorry! It is now better to shortcodes in the text tab of the editor.</p>
+                <?php
+                echo $widget_form;
+            }
+            ?>
+        </div>
 
-		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
-			<?php
-			pp_pb_widget_styles_dialog_form();
-			?>
-		</div>
+        <div id="pootle-style-tab" class="pootle-content-module tab-contents">
+            <?php
+            pp_pb_widget_styles_dialog_form();
+            ?>
+        </div>
 
-		<?php if ( class_exists( 'WooCommerce' ) ) { ?>
-			<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
-				<?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
-			</div>
-		<?php } ?>
+        <?php if ( class_exists( 'WooCommerce' ) ) { ?>
+            <div id="pootle-wc-tab" class="pootle-content-module tab-contents">
+                <?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
+            </div>
+        <?php } ?>
 
-	</div>
-	<script>
-		jQuery(function($){
-			$('.ppb-cool-panel-wrap').data('widgetClass', '<?php echo $request['widget']; ?>')
-			$('.ppb-cool-panel-wrap').data('instance', '<?php echo $request['instance']; ?>')
-		});
-	</script>
-	<?php
+    </div>
+    <script>
+        jQuery(function($){
+            $('.ppb-cool-panel-wrap').data('widgetClass', '<?php echo $request['widget']; ?>')
+            $('.ppb-cool-panel-wrap').data('instance', '<?php echo $request['instance']; ?>')
+        });
+    </script>
+    <?php
 
 
-	exit();
+    exit();
 }
 add_action( 'wp_ajax_so_panels_widget_form', 'siteorigin_panels_ajax_widget_form' );
 

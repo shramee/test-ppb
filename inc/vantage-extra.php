@@ -18,6 +18,7 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 			'name' => __( 'Row Height', 'siteorigin-panels' ),
 			'type' => 'text',
 			'default' => '',
+            'help-text' => 'Row height can only be set when there is no content in a row.',
 		),
 		'background_toggle' => array(
 			'name' => __( 'Set Background', 'vantage' ),
@@ -31,7 +32,6 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		'full_width' => array(
 			'name' => 'Make row go full width',
 			'type' => 'checkbox',
-			'help-text' => '',
 		),
 		'background' => array(
 			'name' => __( 'Background Color', 'vantage' ),
@@ -69,8 +69,9 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 			'type' => 'uploadVid',
 		),
 		'bg_mobile_image' => array(
-			'name' => __( 'Mobile BG Image', 'vantage' ),
+			'name' => __( 'Responsive Image', 'vantage' ),
 			'type' => 'upload',
+            'help-text' => "If you add an image here it will replace the video on mobile site. <br> If you don't it won't!",
 		),
 		'style' => array(
 			'name' => __( 'Inline Styles', 'siteorigin-panels' ),
