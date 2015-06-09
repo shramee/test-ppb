@@ -16,6 +16,9 @@ Support
 
 Versions
 
+09.06.2015 - Version 2.2.10
+ * Fix - general bug fixes
+
 11.05.2015 - Version 2.2.9
  * Fix - error on save
 
