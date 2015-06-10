@@ -69,9 +69,46 @@ jQuery(function($){
             });
         };
 
+        ppbKenBurns = function () {
+            $('.ppb-ken-burns').each(function () {
+                var $t = $(this);
+
+                var image_url = $t.css('background-image'),
+                    image;
+
+                // Remove url() or in case of Chrome url("")
+                image_url = image_url.match(/^url\("?(.+?)"?\)$/);
+
+                if (image_url[1]) {
+                    image_url = image_url[1];
+                    image = new Image();
+
+                    // just in case it is not already loaded
+                    $(image).load(function () {
+                        var ratio = image.width / image.height,
+                            minWid = $t.width() + 100;
+
+                        if (( minWid / ratio ) > $t.outerHeight()) {
+                            $t.css({
+                                backgroundSize: (minWid) + 'px auto'
+                            });
+                        } else {
+                            $t.css({
+                                backgroundSize: '100% auto'
+                            });
+                        }
+
+                    });
+
+                    image.src = image_url;
+                }
+            });
+        };
+
         ppbCorrectOnResize = function () {
             ppbFullWidth();
             ppbParallax();
+            ppbKenBurns();
         }
 
         $(window).resize( ppbCorrectOnResize );

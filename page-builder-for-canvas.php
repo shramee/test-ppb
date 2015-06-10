@@ -947,8 +947,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				$style_attributes['data-bottom-top'][] = 'background-position:center -500px';
 				$style_attributes['class'][] = 'ppb-parallax';
 			}
-			if ( ! empty( $styleArray['bg_mobile_image'] ) && $bgVideo ) {
-
+			if ( ! empty( $styleArray['ken_burns'] ) ) {
+				$style_attributes['class'][] = 'ppb-ken-burns';
 			}
 
 			echo '<div ';

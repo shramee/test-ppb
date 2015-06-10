@@ -181,6 +181,35 @@ video.ppb-bg-video {
   margin: auto;
   object-fit: cover;
 }
+@-ms-keyframes ppb-ken-burns {
+    from {background-position: -100px center;}
+    to {background-position: 0 center;}
+}
+@-o-keyframes ppb-ken-burns {
+    from {background-position: -100px center;}
+    to {background-position: 0 center;}
+}
+@-moz-keyframes ppb-ken-burns {
+    from {background-position: -100px center;}
+    to {background-position: 0 center;}
+}
+@-webkit-keyframes ppb-ken-burns {
+    from {background-position: -100px center;}
+    to {background-position: 0 center;}
+}
+@keyframes ppb-ken-burns {
+    from {background-position: -100px center;}
+    to {background-position: 0 center;}
+}
+
+.ppb-ken-burns {
+    -ms-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
+    -o-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
+    -moz-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
+    -webkit-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
+    animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
+}
+
 @media only screen and (min-width:769px){
     .panel-row-style.video-bg {
         background: initial !important;

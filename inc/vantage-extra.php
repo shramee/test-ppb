@@ -54,6 +54,10 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 			'name' => __( 'Parallax Background Image', 'vantage' ),
 			'type' => 'checkbox',
 		),
+		'ken_burns' => array(
+			'name' => __( 'Ken Burns effect', 'vantage' ),
+			'type' => 'checkbox',
+		),
 		'background_image_size' => array(
 			'name' => __( 'Background Image Size', 'vantage' ),
 			'type' => 'select',
