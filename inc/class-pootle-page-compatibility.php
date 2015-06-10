@@ -33,6 +33,8 @@ class Pootle_Page_Compatibility {
 		$this->put_page_builder_stuff_in_content();
 
 		$this->reorganise_old_panels_data();
+
+        $this->set_old_defaults();
 	}
 
 	/**
@@ -219,4 +221,17 @@ class Pootle_Page_Compatibility {
 
 		return $styles;
 	}
+
+    /**
+     * Sets old defaults
+     *
+     * @since 3.0.0
+     */
+    private function set_old_defaults(){
+
+	    $settings = get_option( 'siteorigin_panels_display', array( 'margin-bottom' => '30' ) );
+
+	    update_option( 'siteorigin_panels_display', $settings );
+
+    }
 }

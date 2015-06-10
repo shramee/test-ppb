@@ -5,8 +5,11 @@
 jQuery(function($){
 
     $(document).ready(function(){
+
+        var ppbSkrollr = skrollr.init({ smoothScrolling: false });
+
         // This will handle stretching the cells.
-        MakeFullWidth = function(){
+        ppbFullWidth = function(){
             $t = $('.panel-row-style.ppb-full-width-row');
 
             if ( $t.length < 1 ) { return }
@@ -30,43 +33,49 @@ jQuery(function($){
                 'border-right' : 0
             });
         };
-        $(window).resize( MakeFullWidth );
-        MakeFullWidth();
+        ppbParallax = function () {
+            $('.ppb-parallax').each(function () {
+                var $t = $(this);
 
-        var ppbSkrollr = skrollr.init({ smoothScrolling: false });
+                var image_url = $t.css('background-image'),
+                    image;
 
-        $('.ppb-parallax').each( function () {
-            $t = $(this);
+                // Remove url() or in case of Chrome url("")
+                image_url = image_url.match(/^url\("?(.+?)"?\)$/);
 
-            var image_url = $t.css('background-image'),
-                image;
+                if (image_url[1]) {
+                    image_url = image_url[1];
+                    image = new Image();
 
-            // Remove url() or in case of Chrome url("")
-            image_url = image_url.match(/^url\("?(.+?)"?\)$/);
+                    // just in case it is not already loaded
+                    $(image).load(function () {
+                        var ratio = image.width / image.height,
+                            minHi = $t.height() + 500;
 
-            if (image_url[1]) {
-                image_url = image_url[1];
-                image = new Image();
+                        if (( minHi * ratio ) > $t.outerWidth()) {
+                            $t.css({
+                                backgroundSize: 'auto ' + (minHi) + 'px'
+                            });
+                        } else {
+                            $t.css({
+                                backgroundSize: '100% auto'
+                            });
+                        }
 
-                // just in case it is not already loaded
-                $(image).load(function () {
-                    var ratio = image.width / image.height,
-                        minHi = $t.height() + 500;
+                    });
 
-                    if ( ( minHi * ratio ) > $t.outerWidth() ) {
-                        $t.css({
-                            backgroundSize: 'auto ' + (minHi) + 'px'
-                        });
-                    } else {
-                        $t.css({
-                            backgroundSize: '100% auto'
-                        });
-                    }
+                    image.src = image_url;
+                }
+            });
+        };
 
-                });
+        ppbCorrectOnResize = function () {
+            ppbFullWidth();
+            ppbParallax();
+        }
 
-                image.src = image_url;
-            }
-        });
+        $(window).resize( ppbCorrectOnResize );
+        ppbCorrectOnResize();
+
     })
 });
