@@ -96,20 +96,26 @@ jQuery(function($){
 
                 if (image_url[1]) {
                     image_url = image_url[1];
-                    image = new Image();
+                    image = $('<img src="' + image_url + '" class="ppb-ken-burns">');
+
+                    $t.prepend( image );
 
                     // just in case it is not already loaded
-                    $(image).load(function () {
-                        var ratio = image.width / image.height,
+                    image.load(function () {
+                        var ratio = image.width() / image.height(),
                             minWid = $t.outerWidth() + 100;
 
+                        console.log(( minWid / ratio ) + ' ' + $t.outerHeight());
+
                         if (( minWid / ratio ) > $t.outerHeight()) {
-                            $t.css({
-                                backgroundSize: (minWid) + 'px auto'
+                            image.css({
+                                height: 'auto',
+                                width: (minWid) + 'px'
                             });
                         } else {
-                            $t.css({
-                                backgroundSize: '100% auto'
+                            image.css({
+                                height: '100%',
+                                width: 'auto'
                             });
                         }
 

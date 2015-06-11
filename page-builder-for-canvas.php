@@ -2165,12 +2165,6 @@ function pp_pb_option_css( )
 		$output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }'. "\n";
 	$output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }'. "\n";
 
-
-//	global $siteorigin_panels_inline_css;
-//	if ( !empty( $siteorigin_panels_inline_css ) ) {
-//		$output .= $siteorigin_panels_inline_css;
-//	}
-
 	echo "<style>\n" . $output . "\n" . "</style>\n";
 }
 

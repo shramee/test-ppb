@@ -167,47 +167,49 @@ ul.wooTabs {
   margin-bottom:0 !important;
 }
 
-video.ppb-bg-video { 
+video.ppb-bg-video, img.ppb-ken-burns {
   position: absolute;
-  top: -999px; 
-  bottom: -999px; 
-  left: -999px; 
+  top: -999px;
+  bottom: -999px;
+  left: -999px;
   right: -999px;
-  min-width: 100%; 
-  min-height: 100%; 
-  width: auto; 
-  height: auto; 
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
   overflow: hidden;
   margin: auto;
   object-fit: cover;
 }
+
 @-ms-keyframes ppb-ken-burns {
-    from {background-position: -100px center;}
-    to {background-position: 0 center;}
+    from {-ms-transform: translateX(-50px);}
+    to {-ms-transform: translateX(50px);}
 }
 @-o-keyframes ppb-ken-burns {
-    from {background-position: -100px center;}
-    to {background-position: 0 center;}
+    from {-o-transform: translateX(-50px);}
+    to {-o-transform: translateX(50px);}
 }
 @-moz-keyframes ppb-ken-burns {
-    from {background-position: -100px center;}
-    to {background-position: 0 center;}
+    from {-moz-transform: translateX(-50px);}
+    to {-moz-transform: translateX(50px);}
 }
 @-webkit-keyframes ppb-ken-burns {
-    from {background-position: -100px center;}
-    to {background-position: 0 center;}
+    from {-webkit-transform: translateX(-50px);}
+    to {-webkit-transform: translateX(50px);}
 }
 @keyframes ppb-ken-burns {
-    from {background-position: -100px center;}
-    to {background-position: 0 center;}
+    from {transform: translateX(-50px);}
+    to {transform: translateX(50px);}
 }
 
-.ppb-ken-burns {
+img.ppb-ken-burns {
     -ms-animation: ppb-ken-burns 16s linear 0s infinite alternate;
     -o-animation: ppb-ken-burns 16s linear 0s infinite alternate;
     -moz-animation: ppb-ken-burns 16s linear 0s infinite alternate;
     -webkit-animation: ppb-ken-burns 16s linear 0s infinite alternate;
     animation: ppb-ken-burns 16s linear 0s infinite alternate;
+    max-width: none;
 }
 
 @media only screen and (min-width:769px){
