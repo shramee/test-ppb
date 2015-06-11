@@ -203,11 +203,11 @@ video.ppb-bg-video {
 }
 
 .ppb-ken-burns {
-    -ms-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
-    -o-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
-    -moz-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
-    -webkit-animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
-    animation: ppb-ken-burns 5s ease-in-out 0s infinite alternate;
+    -ms-animation: ppb-ken-burns 16s linear 0s infinite alternate;
+    -o-animation: ppb-ken-burns 16s linear 0s infinite alternate;
+    -moz-animation: ppb-ken-burns 16s linear 0s infinite alternate;
+    -webkit-animation: ppb-ken-burns 16s linear 0s infinite alternate;
+    animation: ppb-ken-burns 16s linear 0s infinite alternate;
 }
 
 @media only screen and (min-width:769px){
