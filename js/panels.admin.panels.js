@@ -305,7 +305,10 @@
                 var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
 
                 result = panels.editor_form_cache.replace(/\{\$id\}/g, newPanelId);
-                result = result.replace(/\[PPBEditorTextHere\]/g, text );
+                result = result.replace(/\[PPBEditorTextHere\]/g, text.replace(/(?:\r\n|\r|\n)/g, '<br />') );
+
+                console.log(text);
+
 
                 activeDialog
                     .html(result)

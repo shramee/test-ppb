@@ -1892,12 +1892,6 @@ function siteorigin_panels_ajax_widget_form( ) {
         <?php } ?>
 
     </div>
-    <script>
-        jQuery(function($){
-            $('.ppb-cool-panel-wrap').data('widgetClass', '<?php echo $request['widget']; ?>')
-            $('.ppb-cool-panel-wrap').data('instance', '<?php echo $request['instance']; ?>')
-        });
-    </script>
     <?php
 
 
