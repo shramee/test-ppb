@@ -949,6 +949,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			}
 			if ( ! empty( $styleArray['ken_burns'] ) ) {
 				$style_attributes['class'][] = 'ppb-ken-burns';
+				$style_attributes['data-ken-burns-img'][] = $styleArray['background_image'];
+				$style_attributes['data-ken-burns-img2'][] = $styleArray['ken_burns_img2'];
 			}
 
 			echo '<div ';

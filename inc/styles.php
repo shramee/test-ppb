@@ -212,6 +212,7 @@ function siteorigin_panels_style_dialog_form() {
 	$sections['Background'][] = 'background_image_repeat';
 	$sections['Background'][] = 'background_parallax';
 	$sections['Background'][] = 'ken_burns';
+	$sections['Background'][] = 'ken_burns_img2';
 	$sections['Background'][] = 'background_image_size';
 	$sections['Background'][] = array( '</div>' );
 	$sections['Background'][] = array( '<div class="bg_section bg_video">' );

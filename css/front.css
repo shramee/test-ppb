@@ -183,32 +183,61 @@ video.ppb-bg-video, img.ppb-ken-burns {
 }
 
 @-ms-keyframes ppb-ken-burns {
-    from {-ms-transform: translateX(-50px);}
-    to {-ms-transform: translateX(50px);}
+    from {
+        -ms-transform: translateX(-25px);
+    }
+    to {
+        -ms-transform: translateX(25px);
+    }
 }
 @-o-keyframes ppb-ken-burns {
-    from {-o-transform: translateX(-50px);}
-    to {-o-transform: translateX(50px);}
+    from {
+        -o-transform: translateX(-25px);
+    }
+    to {
+        -o-transform: translateX(25px);
+    }
 }
 @-moz-keyframes ppb-ken-burns {
-    from {-moz-transform: translateX(-50px);}
-    to {-moz-transform: translateX(50px);}
+    from {
+        -moz-transform: translateX(-25px);
+    }
+    to {
+        -moz-transform: translateX(25px);
+    }
 }
 @-webkit-keyframes ppb-ken-burns {
-    from {-webkit-transform: translateX(-50px);}
-    to {-webkit-transform: translateX(50px);}
+    from {
+        -webkit-transform: translateX(-25px);
+    }
+    to {
+        -webkit-transform: translateX(25px);
+    }
 }
 @keyframes ppb-ken-burns {
-    from {transform: translateX(-50px);}
-    to {transform: translateX(50px);}
+    from {
+        transform: translateX(-25px);
+    }
+    to {
+        transform: translateX(25px);
+    }
 }
-
-img.ppb-ken-burns {
-    -ms-animation: ppb-ken-burns 16s linear 0s infinite alternate;
-    -o-animation: ppb-ken-burns 16s linear 0s infinite alternate;
-    -moz-animation: ppb-ken-burns 16s linear 0s infinite alternate;
-    -webkit-animation: ppb-ken-burns 16s linear 0s infinite alternate;
-    animation: ppb-ken-burns 16s linear 0s infinite alternate;
+img.ppb-ken-b
+{
+    display: none;
+}
+img.ppb-ken-burns2
+{
+    opacity:0;
+}
+img.ppb-ken-burns.ppb-ken-b
+{
+    display:block;
+    -ms-animation: ppb-ken-burns 8s linear 0s infinite alternate;
+    -o-animation: ppb-ken-burns 8s linear 0s infinite alternate;
+    -moz-animation: ppb-ken-burns 8s linear 0s infinite alternate;
+    -webkit-animation: ppb-ken-burns 8s linear 0s infinite alternate;
+    animation: ppb-ken-burns 8s linear 0s infinite alternate;
     max-width: none;
 }
 

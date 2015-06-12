@@ -58,6 +58,10 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 			'name' => __( 'Ken Burns effect', 'vantage' ),
 			'type' => 'checkbox',
 		),
+		'ken_burns_img2' => array(
+			'name' => __( 'Second BG Image', 'vantage' ),
+			'type' => 'upload',
+		),
 		'background_image_size' => array(
 			'name' => __( 'Background Image Size', 'vantage' ),
 			'type' => 'select',
