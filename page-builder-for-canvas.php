@@ -32,10 +32,10 @@ function pp_pb_version_check( ) {
 	//Get initial version
 	$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
 
-	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' )||true ) {
+	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' ) ) {
 
 		//If initial version < Current version
-		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION )||true ) {
+		if( -1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {
 
 			//Sort compatibility issues
 			require_once 'inc/class-pootle-page-compatibility.php';
