@@ -1,10 +1,12 @@
 .panel-grid {
 	zoom: 1;
 }
+
 .panel-grid .panel-row-style{
 	position:relative;
 	overflow: hidden;
 }
+
 .panel-grid:before {
 	content: '';
 	display: block;

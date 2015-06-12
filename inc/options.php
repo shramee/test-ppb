@@ -36,7 +36,7 @@ function siteorigin_panels_setting( $key = '' ) {
 			'responsive' => ! isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1', // Should we use a responsive layout
 			'mobile-width' => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],   // What is considered a mobile width?
 
-			'margin-bottom' => ! isset( $display_settings['margin-bottom'] ) ? 30 : $display_settings['margin-bottom'], // Bottom margin of a cell
+			'margin-bottom' => ! isset( $display_settings['margin-bottom'] ) ? 0 : $display_settings['margin-bottom'], // Bottom margin of a cell
 			'margin-sides' => ! isset( $display_settings['margin-sides'] ) ? 30 : $display_settings['margin-sides'],    // Spacing between 2 cells
 			'affiliate-id' => false,																				    // Set your affiliate ID
 			'copy-content' => '',                                                                                       // Should we copy across content

@@ -104,32 +104,49 @@ jQuery(function($){
 
             if (image_url) {
 
+                if ( $t.data( 'kenB' + img_i + '$img' ) ) {
+                    image = $t.data( 'kenB' + img_i + '$img' );
+
+                    ppbKenBimgHiWit(image, $t);
+                    return;
+
+                }
                 image = $('<img src="' + image_url + '" class="ppb-ken-b ppb-ken-burns' + img_i + '">');
 
                 $t.prepend( image );
 
                 // just in case it is not already loaded
                 image.load(function () {
-                    var ratio = image.width() / image.height(),
-                        minWid = $t.outerWidth() + 50;
 
-                    if (( minWid / ratio ) > $t.outerHeight()) {
-                        image.css({
-                            height: 'auto',
-                            width: (minWid) + 'px'
-                        });
-                    } else {
-                        image.css({
-                            height: '100%',
-                            width: 'auto'
-                        });
-                    }
+                    var image = $(this);
+
+                    $t.data( 'kenB' + img_i + '$img', $(this) );
+
+                    ppbKenBimgHiWit(image, $t);
 
                 });
 
                 image.src = image_url;
             }
         };
+
+        ppbKenBimgHiWit = function ( image, $t ) {
+
+            var ratio = image.width() / image.height(),
+                minWid = $t.outerWidth() + 50;
+
+            if (( minWid / ratio ) > $t.outerHeight()) {
+                image.css({
+                    height: 'auto',
+                    width: (minWid) + 'px'
+                });
+            } else {
+                image.css({
+                    height: '100%',
+                    width: 'auto'
+                });
+            }
+        }
 
         $('.panel-grid').each(function() {
 
