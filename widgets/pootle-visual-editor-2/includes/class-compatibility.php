@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+include_once 'class-compatibility-wp-plugins-helper.php';
+
 /**
  * Class that manages compatibility code
  *
