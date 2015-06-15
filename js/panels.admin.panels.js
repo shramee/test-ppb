@@ -313,9 +313,6 @@
                     result = result.replace(/checked='checked'/g, '' );
                 }
 
-                console.log(instance);
-
-
                 activeDialog
                     .html(result)
                     .dialog("option", "position", { my: "center", at: "center", of: window })
