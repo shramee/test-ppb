@@ -296,10 +296,12 @@
 
             if( "Pootle_Text_Widget" == widgetClass ) {
 
-                var text = '';
+                var text = '',
+                    filter = 1;
 
                 if ( typeof instance.text != 'undefined' ) {
                     text = instance.text;
+                    filter = instance.filter;
                 }
 
                 var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
@@ -307,7 +309,11 @@
                 result = panels.editor_form_cache.replace(/\{\$id\}/g, newPanelId);
                 result = result.replace(/\[PPBEditorTextHere\]/g, text.replace(/(?:\r\n|\r|\n)/g, '<br />') );
 
-                console.log(text);
+                if ( 1 != instance.filter ) {
+                    result = result.replace(/checked='checked'/g, '' );
+                }
+
+                console.log(instance);
 
 
                 activeDialog

@@ -121,7 +121,7 @@ if ( ! empty( $style['bottom_border'] ) || ! empty( $style['bottom_border_height
 		if ( ! empty( $style['background_image_size'] ) ) {
 			$attr['style'] .= 'background-size: ' . $style['background_image_size'] . '; ';
 		}
-	} else {
+	} elseif ( ! empty( $style['bg_mobile_image'] ) ) {
 		$attr['style'] .= 'background: url( '.esc_url( $style['bg_mobile_image'] ).' ) center; ';
 		$attr['style'] .= 'background-size: cover; ';
 	}

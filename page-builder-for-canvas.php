@@ -700,13 +700,14 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 	if ( empty( $css[ 1920 ][ $side_margins ] ) ) $css[ 1920 ][ $side_margins ] = array( );
 	if ( empty( $css[ 1920 ][ $side_paddings ] ) ) $css[ 1920 ][ $side_paddings ] = array( );
 
-	if ( defined( 'POOTLEPAGE_OLD_V' ) ) {
+	if ( false&& defined( 'POOTLEPAGE_OLD_V' ) ) {
 
 		$css[ 1920 ][ $side_margins ][] = '.panel-grid';
 		$css[ 1920 ][ $side_paddings ][] = '.panel-grid-cell';
 
 	} else {
-		$css[ 1920 ]['padding: 5px'][] = '.panel';
+		$css[ 1920 ]['padding: 10px'][] = '.panel';
+		$css[ 768 ]['padding: 5px'][] = '.panel';
 	}
 
 	/**
@@ -2316,3 +2317,12 @@ function ppb_wp_seo_filter( $content, $post ) {
 
 }
 add_filter( 'wpseo_pre_analysis_post_content', 'ppb_wp_seo_filter', 10, 2 );
+
+function ppb_remove_content_blocks_from_widgets() {
+	echo '<style>
+     .widgets-php [id*="siteorigin-panels-postloop"], .widgets-php [id*="black-studio-tinymce"]{
+     display:none;
+     }
+  </style>';
+}
+add_action('admin_head', 'ppb_remove_content_blocks_from_widgets');

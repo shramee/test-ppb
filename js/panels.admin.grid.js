@@ -183,15 +183,11 @@
 
         $gridContainer.find('> .controls > .row-bg-preview').hover(function () {
             var $t = $(this),
-                $container = $t.parents('.grid-container'),
+                $container = $t.closest('.grid-container'),
                 $screen = $t.siblings('.row-bg-preview-screen');
-            $screen
-                .fadeIn(250)
-                .css({
-                    backgroundColor: $container.find("[data-style-field$='background']").val(),
-                    backgroundImage: 'url(' + $container.find("[data-style-field$='background_image']").val() + ')'
-                });
-                if ( $container.find("[data-style-field$='bg_video']").val() ) {
+            $screen.fadeIn(250);
+            if ( '.bg_video' == $container.find("[data-style-field$='background_toggle']").val() ) {
+                if ($container.find("[data-style-field$='bg_video']").val()) {
 
                     $screen.html('<video class="ppb-bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">' +
                     '<source src="' +
@@ -200,8 +196,15 @@
                     $container.find("[data-style-field$='bg_video']").val() +
                     '" type="video/webm">Sorry, your browser does not support HTML5 video.' +
                     '</video>');
-
                 }
+            } else {
+                $screen.css({
+                    backgroundColor: $container.find("[data-style-field$='background']").val(),
+                    backgroundImage: 'url(' + $container.find("[data-style-field$='background_image']").val() + ')',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                });
+            }
 
         }, function () {
 
@@ -562,6 +565,7 @@
                 },
                 receive: function () {
                     $( this ).trigger( 'refreshcells' );
+                    alert('received');
                 }
             } )
             .bind( 'refreshcells', function () {
