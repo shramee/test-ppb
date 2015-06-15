@@ -694,7 +694,7 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 
 	// This is for the side margins
 	$magin_half = $settings['margin-sides']/2;
-	$side_margins = "margin: 0 -{$magin_half}px 0";
+	$side_margins = "margin: 0 -{$magin_half}px 0 -{$magin_half}px";
 	$side_paddings = "padding: 0 {$magin_half}px 0";
 
 	if ( empty( $css[ 1920 ][ $side_margins ] ) ) $css[ 1920 ][ $side_margins ] = array( );
@@ -702,17 +702,12 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 
 	if ( false&& defined( 'POOTLEPAGE_OLD_V' ) ) {
 
-		$css[1920][ $side_margins ][] = '.panel-grid';
-		$css[1920][ $side_paddings ][] = '.panel-grid-cell';
+		$css[ 1920 ][ $side_margins ][] = '.panel-grid';
+		$css[ 1920 ][ $side_paddings ][] = '.panel-grid-cell';
 
 	} else {
-
-		$css[1920][ $side_margins ][] = '.panel-grid';
-		$css[1920][ $side_paddings ][] = '.panel-grid-cell';
-
-		$css[1920]['padding: 10px'][] = '.panel';
-		$css[768]['padding: 5px'][] = '.panel';
-
+		$css[ 1920 ]['padding: 10px'][] = '.panel';
+		$css[ 768 ]['padding: 5px'][] = '.panel';
 	}
 
 	/**
@@ -2238,6 +2233,17 @@ function pp_pb_widget_styling_fields( ) {
 }
 
 $PootlePageFile = __FILE__;
+
+add_action( 'after_setup_theme', 'pp_pb_wf_settings' );
+
+function pp_pb_wf_settings( ) {
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-helper.php';
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields.php';
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-settings.php';
+	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-settings.php';
+	$GLOBALS['PP_PB_WF_Settings'] = new PP_PB_WF_Settings( );
+}
+
 
 add_action( 'init', 'pp_pootlepage_updater' );
 function pp_pootlepage_updater( )
