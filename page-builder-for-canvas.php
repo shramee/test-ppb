@@ -50,15 +50,15 @@ function pp_pb_version_check( ) {
 
 function pp_pb_check_for_conflict( ) {
 	if ( is_plugin_active( 'wx-pootle-text-widget/pootlepress-text-widget.php' ) ||
-	     is_plugin_active( 'pootle-text-widget-master/pootlepress-text-widget.php' ) ) {
+		 is_plugin_active( 'pootle-text-widget-master/pootlepress-text-widget.php' ) ) {
 
 		$pluginFile =  __FILE__;
 		$plugin = plugin_basename( $pluginFile );
 		if ( is_plugin_active( $plugin ) ) {
 			deactivate_plugins( $plugin );
 			wp_die( "ERROR: <strong>Page Builder</strong> cannot be activated if Pootle Text Widget is also activated. " .
-			        "Page Builder is unable to continue and has been deactivated. " .
-			        "<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
+					"Page Builder is unable to continue and has been deactivated. " .
+					"<br /><br />Back to the WordPress <a href='".get_admin_url( null, 'plugins.php' )."'>Plugins page</a>." );
 		}
 	}
 }
@@ -693,20 +693,20 @@ function siteorigin_panels_generate_css( $post_id, $panels_data ) {
 
 	// This is for the side margins
 	$magin_half = $settings['margin-sides']/2;
-	$side_margins = "margin: 0 -{$magin_half}px 0 -{$magin_half}px";
+	$side_margins = "margin: 0 -{$magin_half}px 0";
 	$side_paddings = "padding: 0 {$magin_half}px 0";
 
 	if ( empty( $css[ 1920 ][ $side_margins ] ) ) $css[ 1920 ][ $side_margins ] = array( );
 	if ( empty( $css[ 1920 ][ $side_paddings ] ) ) $css[ 1920 ][ $side_paddings ] = array( );
 
-	if ( false&& defined( 'POOTLEPAGE_OLD_V' ) ) {
+	$css[1920][ $side_margins ][] = '.panel-grid';
+	$css[1920][ $side_paddings ][] = '.panel-grid-cell';
 
-		$css[ 1920 ][ $side_margins ][] = '.panel-grid';
-		$css[ 1920 ][ $side_paddings ][] = '.panel-grid-cell';
+	if ( ! defined( 'POOTLEPAGE_OLD_V' ) ) {
 
-	} else {
-		$css[ 1920 ]['padding: 10px'][] = '.panel';
-		$css[ 768 ]['padding: 5px'][] = '.panel';
+		$css[1920]['padding: 10px'][] = '.panel';
+		$css[768]['padding: 5px'][] = '.panel';
+
 	}
 
 	/**
@@ -915,9 +915,9 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 		if ( !empty( $style_attributes ) ) {
 			if ( empty( $style_attributes['class'] ) ) $style_attributes['class'] = array( );
 			$style_attributes['class'][] = 'panel-row-style';
-            if ( $bgVideo ) {
-                $style_attributes['class'][] = 'video-bg';
-            }
+			if ( $bgVideo ) {
+				$style_attributes['class'][] = 'video-bg';
+			}
 			$style_attributes['class'][] = ! empty( $styleArray['full_width'] ) ? 'ppb-full-width-row': '';
 			$style_attributes['class'] = array_unique( $style_attributes['class'] );
 
@@ -1818,13 +1818,13 @@ function ppb_ajax_widget_name( ) {
 
 	global $wp_widget_factory;
 
-    $request = array_map( 'stripslashes_deep', $_REQUEST );
+	$request = array_map( 'stripslashes_deep', $_REQUEST );
 
 	if ( empty( $wp_widget_factory->widgets[$request['widget']] ) ) return '';
 
-    echo $wp_widget_factory->widgets[ $request['widget'] ]->name;
+	echo $wp_widget_factory->widgets[ $request['widget'] ]->name;;
 
-    exit();
+	exit();
 }
 add_action( 'wp_ajax_ppb_widget_name', 'ppb_ajax_widget_name' );
 
@@ -1835,68 +1835,67 @@ function siteorigin_panels_ajax_widget_form( ) {
 
 	global $wp_widget_factory;
 
-    $request = array_map( 'stripslashes_deep', $_REQUEST );
+	$request = array_map( 'stripslashes_deep', $_REQUEST );
 
-    if ( empty( $request['widget'] ) ) exit();
-    $widget_form = siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
-    ?>
-    <div class="ppb-cool-panel-wrap">
-        <ul class="ppb-acp-sidebar">
+	if ( empty( $request['widget'] ) ) exit();
+	$widget_form = siteorigin_panels_render_form( $request['widget'], !empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array( ), $_REQUEST['raw'] );
+	?>
+	<div class="ppb-cool-panel-wrap">
+		<ul class="ppb-acp-sidebar">
 
-            <li>
-                <a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( true ) ?> href="#pootle-editor-tab">
-                    <?php
-                    if ( 'Pootle_Text_Widget' == $request['widget'] ) {
-                        echo 'Editor';
-                    } else {
-                        $widget_class = $request['widget'];
-                        $widget = $wp_widget_factory->widgets[ $widget_class ];
-                        echo '<span class="old-widget">' . $widget->name . '</span>';
-                    }
-                    ?>
-                </a>
-            </li>
+			<li>
+				<a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" data-widgetClass="Pootle_Text_Widget" <?php selected( true ) ?> href="#pootle-editor-tab">
+					<?php
+					if ( 'Pootle_Text_Widget' == $request['widget'] ) {
+						echo 'Editor';
+					} else {
+						$widget = $wp_widget_factory->widgets[ $request['widget'] ];
+						echo '<span class="old-widget">' . $widget->name . '</span>';
+					}
+					?>
+				</a>
+			</li>
 
-            <?php if ( class_exists( 'WooCommerce' ) ) { ?>
-                <li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
-            <?php } ?>
+			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
+			<?php } ?>
 
-            <li class="ppb-seperator"></li>
+			<li class="ppb-seperator"></li>
 
-            <li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
-        </ul>
+			<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
+		</ul>
 
-        <?php  ?>
-        <div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
-            <?php
-            if ( 'Pootle_Text_Widget' == $request['widget'] ) {
-                echo $widget_form;
-            } else {
-                ?>
-                <p class="old-widget">This is a widget used with the previous version of Page Builder. You can still edit it here for now, but you can't add new widgets with Page Builder any more. Really sorry! It is now better to shortcodes in the text tab of the editor.</p>
-                <?php
-                echo $widget_form;
-            }
-            ?>
-        </div>
+		<?php  ?>
+		<div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
+			<?php
+			if ( 'Pootle_Text_Widget' == $request['widget'] ) {
+				echo $widget_form;
+			} else {
+				?>
+				<p class="old-widget">This is a widget used with the previous version of Page Builder. You can still edit it here for now, but you can't add new widgets with Page Builder any more. Really sorry! It is now better to shortcodes in the text tab of the editor.</p>
+				<?php
+				echo $widget_form;
+			}
+			?>
+		</div>
 
-        <div id="pootle-style-tab" class="pootle-content-module tab-contents">
-            <?php
-            pp_pb_widget_styles_dialog_form();
-            ?>
-        </div>
+		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
+			<?php
+			pp_pb_widget_styles_dialog_form();
+			?>
+		</div>
 
-        <?php if ( class_exists( 'WooCommerce' ) ) { ?>
-            <div id="pootle-wc-tab" class="pootle-content-module tab-contents">
-                <?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
-            </div>
-        <?php } ?>
+		<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+			<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
+				<?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
+			</div>
+		<?php } ?>
 
-    </div>
-    <?php
+	</div>
+	<?php
 
 
-    exit();
+	exit();
 }
 add_action( 'wp_ajax_so_panels_widget_form', 'siteorigin_panels_ajax_widget_form' );
 
@@ -2232,17 +2231,6 @@ function pp_pb_widget_styling_fields( ) {
 
 $PootlePageFile = __FILE__;
 
-add_action( 'after_setup_theme', 'pp_pb_wf_settings' );
-
-function pp_pb_wf_settings( ) {
-	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-helper.php';
-	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields.php';
-	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-fields-settings.php';
-	require_once plugin_dir_path( __FILE__ ) . 'inc/class-pp-pb-wf-settings.php';
-	$GLOBALS['PP_PB_WF_Settings'] = new PP_PB_WF_Settings( );
-}
-
-
 add_action( 'init', 'pp_pootlepage_updater' );
 function pp_pootlepage_updater( )
 {
@@ -2318,9 +2306,9 @@ add_filter( 'wpseo_pre_analysis_post_content', 'ppb_wp_seo_filter', 10, 2 );
 
 function ppb_remove_content_blocks_from_widgets() {
 	echo '<style>
-     .widgets-php [id*="siteorigin-panels-postloop"], .widgets-php [id*="black-studio-tinymce"]{
-     display:none;
-     }
+	 .widgets-php [id*="siteorigin-panels-postloop"], .widgets-php [id*="black-studio-tinymce"]{
+	 display:none;
+	 }
   </style>';
 }
 add_action('admin_head', 'ppb_remove_content_blocks_from_widgets');

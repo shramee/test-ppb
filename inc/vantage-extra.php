@@ -159,9 +159,9 @@ function pp_vantage_panels_panels_row_attributes( $attr, $row ) {
 			$attr['style'] = '';
 		}
 
-		$displayOption = get_option( 'siteorigin_panels_display', array() );
-		if ( is_array( $displayOption ) && isset( $displayOption['margin-bottom'] ) ) {
-			$attr['style'] .= 'margin-bottom: ' . $displayOption['margin-bottom'] . 'px;';
+		$marginBottom = siteorigin_panels_setting( 'margin-bottom' );
+		if ( isset( $displayOption ) ) {
+			$attr['style'] .= 'margin-bottom: ' . $marginBottom['margin-bottom'] . 'px;';
 		} else {
 			$attr['style'] .= 'margin-bottom: 30px;';
 		}

@@ -229,7 +229,12 @@ class Pootle_Page_Compatibility {
      */
     private function set_old_defaults(){
 
-	    $settings = get_option( 'siteorigin_panels_display', array( 'margin-bottom' => '30' ) );
+	    $settings = get_option(
+		    'siteorigin_panels_display',
+		    array(
+			    'margin-bottom' => '30',
+			    'margin-sides' => '30',
+		    ) );
 
 	    update_option( 'siteorigin_panels_display', $settings );
 

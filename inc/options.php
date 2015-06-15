@@ -17,10 +17,7 @@ function siteorigin_panels_setting( $key = '' ) {
 	}
 
 	if ( empty( $settings ) ) {
-		$display_settings = get_option( 'siteorigin_panels_settings', array() ); //This option does not exist
 		$display_settings = get_option( 'siteorigin_panels_display', array() );
-		
-		$generalSettings = get_option( 'siteorigin_panels_general', array() );
 
 		$settings = get_theme_support( 'siteorigin-panels' );
 		if ( ! empty( $settings ) ) $settings = $settings[0];
@@ -37,7 +34,7 @@ function siteorigin_panels_setting( $key = '' ) {
 			'mobile-width' => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],   // What is considered a mobile width?
 
 			'margin-bottom' => ! isset( $display_settings['margin-bottom'] ) ? 0 : $display_settings['margin-bottom'], // Bottom margin of a cell
-			'margin-sides' => ! isset( $display_settings['margin-sides'] ) ? 30 : $display_settings['margin-sides'],    // Spacing between 2 cells
+			'margin-sides' => ! isset( $display_settings['margin-sides'] ) ? 0 : $display_settings['margin-sides'],    // Spacing between 2 cells
 			'affiliate-id' => false,																				    // Set your affiliate ID
 			'copy-content' => '',                                                                                       // Should we copy across content
 			'animations' => true,                                                                                       // We want animations always enabled
@@ -76,7 +73,6 @@ function siteorigin_panels_options_init() {
 	register_setting( 'pootlepage-display', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
 	register_setting( 'pootlepage-widgets', 'pootlepage-widgets' );
 
-	add_settings_section( 'styling', __( 'Widget Styling', 'siteorigin-panels' ), 'pp_pb_options_page_styling', 'pootlepage-styling' );
 	add_settings_section( 'display', __( 'Display', 'siteorigin-panels' ), '__return_false', 'pootlepage-display' );
 
 	// The display fields
@@ -103,12 +99,6 @@ function pp_pb_admin_notices() {
 		echo $html;
 	}
 
-}
-
-
-function pp_pb_options_page_styling() {
-	global $PP_PB_WF_Settings;
-	$PP_PB_WF_Settings->settings_screen();
 }
 
 function pootlepage_options_page_styling() {
