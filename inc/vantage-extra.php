@@ -160,8 +160,8 @@ function pp_vantage_panels_panels_row_attributes( $attr, $row ) {
 		}
 
 		$marginBottom = siteorigin_panels_setting( 'margin-bottom' );
-		if ( isset( $displayOption ) ) {
-			$attr['style'] .= 'margin-bottom: ' . $marginBottom['margin-bottom'] . 'px;';
+		if ( isset( $marginBottom ) ) {
+			$attr['style'] .= "margin-bottom: {$marginBottom}px;";
 		} else {
 			$attr['style'] .= 'margin-bottom: 30px;';
 		}
