@@ -601,7 +601,6 @@ function siteorigin_panels_css( ) {
 
 	if ( $_GET['post'] == 'home' ) $panels_data = siteorigin_panels_get_home_page_data( );
 	else $panels_data = get_post_meta( $_GET['post'], 'panels_data', true );
-	$post_id = $_GET['post'];
 
 	header( "Content-type: text/css" );
 	echo siteorigin_panels_generate_css( $_GET['post'], $panels_data );
@@ -1115,7 +1114,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 	// Reset the current post
 	$siteorigin_panels_current_post = $old_current_post;
 
-	return apply_filters( 'siteorigin_panels_render', $html, $post_id, !empty( $post ) ? $post : null );
+	return apply_filters( 'siteorigin_panels_render', $html, $post_id, null );
 }
 
 /**
@@ -1456,11 +1455,6 @@ function pootlepage_body_class( $classes ) {
 function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, $cell, $panel, $is_first, $is_last, $post_id = false ) {
 	if ( !class_exists( $widget ) ) return;
 	if ( empty( $post_id ) ) $post_id = get_the_ID( );
-
-	$panelData = get_post_meta( $post_id, 'panels_data', true );
-	if ( !is_array( $panelData ) ) {
-		$panelData = array( );
-	}
 
 	$the_widget = new $widget;
 
@@ -1826,13 +1820,14 @@ function ppb_woocommerce_tab(){
  * Display a widget form with the provided data
  */
 function ppb_ajax_widget_name( ) {
+
+	global $wp_widget_factory;
+
     $request = array_map( 'stripslashes_deep', $_REQUEST );
 
-    if ( empty( $request['widget'] ) ) exit();
+	if ( empty( $wp_widget_factory->widgets[$request['widget']] ) ) return '';
 
-    $widget_class = $request['widget'];
-    $widget = new $widget_class();
-    echo $widget->name;
+    echo $wp_widget_factory->widgets[ $request['widget'] ]->name;
 
     exit();
 }
@@ -1842,6 +1837,9 @@ add_action( 'wp_ajax_ppb_widget_name', 'ppb_ajax_widget_name' );
  * Display a widget form with the provided data
  */
 function siteorigin_panels_ajax_widget_form( ) {
+
+	global $wp_widget_factory;
+
     $request = array_map( 'stripslashes_deep', $_REQUEST );
 
     if ( empty( $request['widget'] ) ) exit();
@@ -1857,7 +1855,7 @@ function siteorigin_panels_ajax_widget_form( ) {
                         echo 'Editor';
                     } else {
                         $widget_class = $request['widget'];
-                        $widget = new $widget_class();
+                        $widget = $wp_widget_factory->widgets[ $widget_class ];
                         echo '<span class="old-widget">' . $widget->name . '</span>';
                     }
                     ?>
