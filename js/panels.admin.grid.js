@@ -48,13 +48,14 @@
             $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', Math.max( maxHeight, 1 ) );
         });
 
-    }
+    };
 
     /**
      * Create a new grid
      *
      * @param cells
      * @param weights
+     * @param style
      *
      * @return {*}
      */
@@ -565,7 +566,6 @@
                 },
                 receive: function () {
                     $( this ).trigger( 'refreshcells' );
-                    alert('received');
                 }
             } )
             .bind( 'refreshcells', function () {
