@@ -1068,11 +1068,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				$style_attributes['data-bottom-top'][] = 'background-position:center -500px';
 				$style_attributes['class'][]           = 'ppb-parallax';
 			}
-			if ( ! empty( $styleArray['ken_burns'] ) ) {
-				$style_attributes['class'][]               = 'ppb-ken-burns';
-				$style_attributes['data-ken-burns-img'][]  = $styleArray['background_image'];
-				$style_attributes['data-ken-burns-img2'][] = $styleArray['ken_burns_img2'];
-			}
 
 			echo '<div ';
 			foreach ( $style_attributes as $name => $value ) {
@@ -1855,7 +1850,7 @@ function siteorigin_panels_enqueue_scripts() {
 		'jquery',
 		'third-party'
 	) );
-	wp_enqueue_script( 'pootle-page-builder-frontend', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery' ) );
+	wp_enqueue_script( 'pootle-page-builder-front-js', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery' ) );
 
 }
 

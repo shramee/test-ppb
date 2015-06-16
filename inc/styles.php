@@ -210,24 +210,36 @@ function siteorigin_panels_style_dialog_form() {
 
 	$sections['Background'][] = 'background';
 	$sections['Background'][] = 'background_toggle';
+
 	$sections['Background'][] = array( '<div class="bg_section bg_image">' );
 	$sections['Background'][] = 'background_color_over_image';
 	$sections['Background'][] = 'background_image';
 	$sections['Background'][] = 'background_image_repeat';
 	$sections['Background'][] = 'background_parallax';
-	$sections['Background'][] = 'ken_burns';
-	$sections['Background'][] = 'ken_burns_img2';
 	$sections['Background'][] = 'background_image_size';
+
+	/** @hook ppb_row_styles_section_bg_image Add field id in background image sub section */
+	$sections['Background'] = apply_filters( 'ppb_row_styles_section_bg_image', $sections['Background'] );
 	$sections['Background'][] = array( '</div>' );
+
 	$sections['Background'][] = array( '<div class="bg_section bg_video">' );
 	$sections['Background'][] = 'bg_video';
 	$sections['Background'][] = 'bg_mobile_image';
+	/** @hook ppb_row_styles_section_bg_image Add field id in background video sub section */
+	$sections['Background'] = apply_filters( 'ppb_row_styles_section_bg_video', $sections['Background'] );
+
 	$sections['Background'][] = array( '</div>' );
+
 	$sections['Layout'][]     = 'full_width';
 	$sections['Layout'][]     = 'row_height';
+	/** @hook ppb_row_styles_section_bg_image Add field id in layout section */
+	$sections['Layout'] = apply_filters( 'ppb_row_styles_section_layout', $sections['Layout'] );
+
 	$sections['Advanced'][]   = 'style';
 	$sections['Advanced'][]   = 'class';
 	$sections['Advanced'][]   = 'id';
+	/** @hook ppb_row_styles_section_bg_image Add field id in advanced section */
+	$sections['Advanced'] = apply_filters( 'ppb_row_styles_section_advanced', $sections['Advanced'] );
 
 	if ( empty( $fields ) ) {
 		_e( "Your theme doesn't provide any visual style fields. " );

@@ -663,110 +663,12 @@ jQuery(function ($) {
                 }
             });
         };
-
-        /**
-         * Adds Ken Burns functionality
-         */
-        ppbKenBurns = function () {
-            $('.ppb-ken-burns').each(function () {
-                var $t = $(this);
-
-                var image_url = $t.attr('data-ken-burns-img');
-                var image_url2 = $t.attr('data-ken-burns-img2');
-
-                ppbKenBImgReady(image_url2, $t, 2);
-                ppbKenBImgReady(image_url, $t, 1);
-
-            });
-        };
-
-        ppbKenBImgReady = function (image_url, $t, img_i) {
-
-            if (image_url) {
-
-                if ($t.data('kenB' + img_i + '$img')) {
-                    image = $t.data('kenB' + img_i + '$img');
-
-                    ppbKenBimgHiWit(image, $t);
-                    return;
-
-                }
-                image = $('<img src="' + image_url + '" class="ppb-ken-b ppb-ken-burns' + img_i + '">');
-
-                $t.prepend(image);
-
-                // just in case it is not already loaded
-                image.load(function () {
-
-                    var image = $(this);
-
-                    $t.data('kenB' + img_i + '$img', $(this));
-
-                    ppbKenBimgHiWit(image, $t);
-
-                });
-
-                image.src = image_url;
-            }
-        };
-
-        ppbKenBimgHiWit = function (image, $t) {
-
-            var ratio = image.width() / image.height(),
-                minWid = $t.outerWidth() + 50;
-
-            if (( minWid / ratio ) > $t.outerHeight()) {
-                image.css({
-                    height: 'auto',
-                    width: (minWid) + 'px'
-                });
-            } else {
-                image.css({
-                    height: '100%',
-                    width: 'auto'
-                });
-            }
-        }
-
-        $('.panel-grid').each(function () {
-
-            var $t = $(this);
-            $t.imagesLoaded().always(function (instance) {
-
-
-                $t.find('.ppb-ken-b').addClass('ppb-ken-burns');
-                ppbKenBImgtoggle();
-            });
-        });
-
-        ppbKenBImgtoggle = function () {
-
-            setTimeout(ppdKenBShowImg2, 8000)
-
-        };
-
-        ppdKenBHideImg2 = function () {
-
-            $('.ppb-ken-burns2').fadeTo(500, 0, function () {
-                setTimeout(ppdKenBShowImg2, 7500)
-            });
-
-        };
-        ppdKenBShowImg2 = function () {
-
-            $('.ppb-ken-burns2').fadeTo(500, 1, function () {
-                setTimeout(ppdKenBHideImg2, 7500)
-            });
-
-        };
-
         /**
          * Calls all functions on resize event
          */
         ppbCorrectOnResize = function () {
             ppbFullWidth();
             ppbParallax();
-            ppbKenBurns();
         };
 
         $(window).resize(ppbCorrectOnResize);
