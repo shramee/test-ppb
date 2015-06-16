@@ -31,23 +31,6 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 
 		}
 
-
-		public function enqueue() {
-
-			global $PootlePageFile;
-
-			wp_enqueue_script( 'wp-color-picker' );
-
-			// load in footer, so will appear after WP customize-base.js and customize-controls.js
-			wp_enqueue_script( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'js/customize-controls.js', array( 'jquery' ), false, true );
-
-
-			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_style( 'pootlepage-customize-controls', plugin_dir_url( $PootlePageFile ) . 'css/customize-controls.css' );
-
-			parent::enqueue();
-		}
-
 		/**
 		 * Get Font Family Control
 		 *
