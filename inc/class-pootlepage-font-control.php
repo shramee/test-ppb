@@ -56,14 +56,12 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 			// Get control view
 			?>
 			<label><?php _e( 'Font Family', 'scratch' ); ?>
-				<select class='sc-font-family-list' <?php $this->link( 'font_id' ) ?>
-				        data-default-value="<?php echo $default_value ?>" autocomplete="off">
-					<option
-						value="" <?php selected( $current_value, '' ); ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
+				<select class='sc-font-family-list' <?php $this->link( 'font_id' ) ?> data-default-value="<?php echo $default_value ?>" autocomplete="off">
+
+					<option value=""><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
 					<?php
 					//Font Options for select
 					echo pootle_page_output_font_select_options( $current_value );
-
 					?>
 				</select>
 			</label>
@@ -83,18 +81,13 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 		 *
 		 */
 		public function get_font_weight_control() {
-			// Get values
-			$this_value                = $this->value( 'font_weight_style' );
-			$default_font_weight_style = $this->default['font_weight_style'];
-			$font_weight_style         = empty( $this_value ) ? '' : $this_value;
 			// Get control view
 			?>
 
 			<label><?php _e( 'Font Weight/Style', 'scratch' ); ?>
 				<select class="sc-font-weight-style-list" <?php $this->link( 'font_weight_style' ) ?>
-				        data-default-value="<?php echo $default_font_weight_style; ?>">
-					<option
-						value="" <?php selected( $font_weight_style, '' ) ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
+				        data-default-value="<?php echo $this->default['font_weight_style']; ?>">
+					<option value=""><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
 					<option value="100">100</option>
 					<option value="100italic">100italic</option>
 					<option value="400">400</option>
