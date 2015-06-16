@@ -42,6 +42,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
+
 			return self::$_instance;
 		}
 
@@ -96,7 +97,12 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 */
 		public function enabled() {
 			global $pagenow;
-			$enabled_pages = apply_filters( 'black_studio_tinymce_enable_pages', array( 'widgets.php', 'customize.php', 'admin-ajax.php' ) );
+			$enabled_pages = apply_filters( 'black_studio_tinymce_enable_pages', array(
+				'widgets.php',
+				'customize.php',
+				'admin-ajax.php'
+			) );
+
 			return apply_filters( 'black_studio_tinymce_enable', in_array( $pagenow, $enabled_pages ) );
 		}
 
@@ -174,14 +180,14 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 * @since 2.0.0
 		 */
 		public function enqueue_style() {
-			$style = apply_filters( 'black-studio-tinymce-widget-style', 'black-studio-tinymce-widget' );
+			$style  = apply_filters( 'black-studio-tinymce-widget-style', 'black-studio-tinymce-widget' );
 			$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 			wp_enqueue_style(
 				$style,
-				plugins_url( 'css/' . $style . $suffix. '.css', dirname( __FILE__ ) ),
+				plugins_url( 'css/' . $style . $suffix . '.css', dirname( __FILE__ ) ),
 				array(),
 				bstw()->get_version()
-			 );
+			);
 		}
 
 		/**
@@ -222,7 +228,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 				array( 'jquery', 'editor', 'quicktags' ),
 				bstw()->get_version(),
 				true
-			 );
+			);
 		}
 
 		/**
@@ -235,16 +241,19 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 * @since 2.0.0
 		 */
 		public function localize_script() {
-			$container_selectors = apply_filters( 'black_studio_tinymce_container_selectors', array(  'div.widget', 'div.widget-inside' ) );
-			$activate_events = apply_filters( 'black_studio_tinymce_activate_events', array() );
-			$deactivate_events = apply_filters( 'black_studio_tinymce_deactivate_events', array() );
-			$data = array(
+			$container_selectors = apply_filters( 'black_studio_tinymce_container_selectors', array(
+				'div.widget',
+				'div.widget-inside'
+			) );
+			$activate_events     = apply_filters( 'black_studio_tinymce_activate_events', array() );
+			$deactivate_events   = apply_filters( 'black_studio_tinymce_deactivate_events', array() );
+			$data                = array(
 				'container_selectors' => implode( ', ', $container_selectors ),
-				'activate_events' => $activate_events,
-				'deactivate_events' => $deactivate_events,
+				'activate_events'     => $activate_events,
+				'deactivate_events'   => $deactivate_events,
 				/* translators: error message shown when a duplicated widget ID is detected */
-				'error_duplicate_id' => __( 'ERROR: Duplicate widget ID detected. To avoid content loss, please create a new widget with the same content and then delete this one.', 'black-studio-tinymce-widget' )
-			 );
+				'error_duplicate_id'  => __( 'ERROR: Duplicate widget ID detected. To avoid content loss, please create a new widget with the same content and then delete this one.', 'black-studio-tinymce-widget' )
+			);
 			wp_localize_script( apply_filters( 'black-studio-tinymce-widget-script', 'black-studio-tinymce-widget' ), 'bstw_data', $data );
 		}
 
@@ -267,11 +276,15 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 * @param string $editor_id
 		 * @param string $name
 		 * @param string $type
+		 *
 		 * @return void
 		 * @since 2.0.0
 		 */
 		public function editor( $text, $editor_id, $name = '', $type = 'visual' ) {
-			wp_editor( $text, $editor_id, array( 'textarea_name' => $name, 'default_editor' => $type == 'visual' ? 'tmce' : 'html' ) );
+			wp_editor( $text, $editor_id, array(
+				'textarea_name'  => $name,
+				'default_editor' => $type == 'visual' ? 'tmce' : 'html'
+			) );
 		}
 
 		/**
@@ -305,20 +318,22 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 *
 		 * @param mixed[] $settings
 		 * @param string $editor_id
+		 *
 		 * @return mixed[]
 		 * @since 2.0.0
 		 */
 		public function editor_settings( $settings, $editor_id ) {
 			if ( strstr( $editor_id, 'black-studio-tinymce' ) ) {
-				$settings['tinymce'] = array(
-					'wp_skip_init' => 'widget-black-studio-tinymce-__i__-text' == $editor_id,
+				$settings['tinymce']       = array(
+					'wp_skip_init'       => 'widget-black-studio-tinymce-__i__-text' == $editor_id,
 					'add_unload_trigger' => false,
-					'wp_autoresize_on' => false,
-				 );
+					'wp_autoresize_on'   => false,
+				);
 				$settings['editor_height'] = 350;
-				$settings['dfw'] = true;
-				$settings['editor_class'] = 'black-studio-tinymce';
+				$settings['dfw']           = true;
+				$settings['editor_class']  = 'black-studio-tinymce';
 			}
+
 			return $settings;
 		}
 
@@ -331,18 +346,18 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		public function init_links() {
 			$this->links = array(
 				/* translators: text used for plugin home link */
-				'https://wordpress.org/plugins/black-studio-tinymce-widget/' => __( 'Home', 'black-studio-tinymce-widget' ),
+				'https://wordpress.org/plugins/black-studio-tinymce-widget/'                    => __( 'Home', 'black-studio-tinymce-widget' ),
 				/* translators: text used for support faq link */
-				'https://wordpress.org/plugins/black-studio-tinymce-widget/faq/' => __( 'FAQ', 'black-studio-tinymce-widget' ),
+				'https://wordpress.org/plugins/black-studio-tinymce-widget/faq/'                => __( 'FAQ', 'black-studio-tinymce-widget' ),
 				/* translators: text used for support forum link */
-				'https://wordpress.org/support/plugin/black-studio-tinymce-widget' => __( 'Support', 'black-studio-tinymce-widget' ),
+				'https://wordpress.org/support/plugin/black-studio-tinymce-widget'              => __( 'Support', 'black-studio-tinymce-widget' ),
 				/* translators: text used for reviews link */
 				'https://wordpress.org/support/view/plugin-reviews/black-studio-tinymce-widget' => __( 'Rate', 'black-studio-tinymce-widget' ),
 				/* translators: text used for follow on twitter link */
-				'https://twitter.com/blackstudioita' => __( 'Follow', 'black-studio-tinymce-widget' ),
+				'https://twitter.com/blackstudioita'                                            => __( 'Follow', 'black-studio-tinymce-widget' ),
 				/* translators: text used for donation link */
-				'http://www.blackstudio.it/en/wordpress-plugins/black-studio-tinymce-widget/' => __( 'Donate', 'black-studio-tinymce-widget' ),
-			 );
+				'http://www.blackstudio.it/en/wordpress-plugins/black-studio-tinymce-widget/'   => __( 'Donate', 'black-studio-tinymce-widget' ),
+			);
 		}
 
 		/**
@@ -353,6 +368,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 *
 		 * @param string[] $links
 		 * @param string $file
+		 *
 		 * @return string[]
 		 * @since 2.0.0
 		 */
@@ -362,6 +378,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 					$links[ $label ] = '<a href="' . esc_url( $url ) . '" target="_blank">' . esc_html( $label ) . '</a>';
 				}
 			}
+
 			return $links;
 		}
 
@@ -369,6 +386,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 * Fix for rtl languages
 		 *
 		 * @param mixed[] $settings
+		 *
 		 * @return mixed[]
 		 * @since 2.1.0
 		 */
@@ -377,6 +395,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 			if ( is_rtl() && isset( $settings['plugins'] ) && ',directionality' == $settings['plugins'] ) {
 				unset( $settings['plugins'] );
 			}
+
 			return $settings;
 		}
 
@@ -385,18 +404,20 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 *
 		 * @param mixed[] $settings
 		 * @param string $editor_id
+		 *
 		 * @return mixed[]
 		 * @since 2.1.2
 		 */
 		public function tinymce_fullscreen( $settings, $editor_id ) {
 			if ( strstr( $editor_id, 'black-studio-tinymce' ) ) {
-				for ( $i = 1; $i <= 4; $i++ ) {
+				for ( $i = 1; $i <= 4; $i ++ ) {
 					$toolbar = 'toolbar' . $i;
 					if ( isset( $settings[ $toolbar ] ) ) {
 						$settings[ $toolbar ] = str_replace( 'wp_fullscreen', 'wp_fullscreen,fullscreen', $settings[ $toolbar ] );
 					}
 				}
 			}
+
 			return $settings;
 		}
 
@@ -405,6 +426,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 		 *
 		 * @param mixed[] $settings
 		 * @param string $editor_id
+		 *
 		 * @return mixed[]
 		 * @since 2.1.2
 		 */
@@ -412,6 +434,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin' ) ) {
 			if ( strstr( $editor_id, 'black-studio-tinymce' ) ) {
 				$settings['buttons'] = str_replace( ',fullscreen', '', $settings['buttons'] );
 			}
+
 			return $settings;
 		}
 

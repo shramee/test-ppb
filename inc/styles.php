@@ -40,29 +40,29 @@ function pootlepage_page_settings_fields() {
 	);
 
 	$fields['background_image_position'] = array(
-		'name' => __( 'Background Image Position', 'pootlepage' ),
-		'type' => 'select',
+		'name'    => __( 'Background Image Position', 'pootlepage' ),
+		'type'    => 'select',
 		'options' => array(
-			'' => 'default',
-			'top left' => 'top left',
-			'top center' => 'top center',
-			'top right' => 'top right',
-			'center left' => 'center left',
+			''              => 'default',
+			'top left'      => 'top left',
+			'top center'    => 'top center',
+			'top right'     => 'top right',
+			'center left'   => 'center left',
 			'center center' => 'center center',
-			'center right' => 'center right',
-			'bottom left' => 'bottom left',
+			'center right'  => 'center right',
+			'bottom left'   => 'bottom left',
 			'bottom center' => 'bottom center',
-			'bottom right' => 'bottom right'
+			'bottom right'  => 'bottom right'
 		)
 	);
 
 	$fields['background_image_attachment'] = array(
-		'name' => __( 'Background Attachment', 'pootlepage' ),
-		'type' => 'select',
+		'name'    => __( 'Background Attachment', 'pootlepage' ),
+		'type'    => 'select',
 		'options' => array(
-			'' => 'default',
+			''       => 'default',
 			'scroll' => 'scroll',
-			'fixed' => 'fixed'
+			'fixed'  => 'fixed'
 		)
 	);
 
@@ -123,12 +123,12 @@ function pootlepage_hide_elements_fields() {
 
 function pootlepage_dialog_form_echo( $fields ) {
 
-	foreach( $fields as $name => $attr ) {
+	foreach ( $fields as $name => $attr ) {
 
 		echo '<p class="field_' . esc_attr( $name ) . '">';
 		echo '<label>' . $attr['name'] . '</label>';
 
-		switch( $attr['type'] ) {
+		switch ( $attr['type'] ) {
 			case 'select':
 				?>
 				<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
@@ -169,8 +169,8 @@ function pootlepage_dialog_form_echo( $fields ) {
 
 			default :
 				?><input type="file" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
-						 data-style-field="<?php echo esc_attr( $name ) ?>"
-						 data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
 				<?php
 				break;
 		}
@@ -181,19 +181,23 @@ function pootlepage_dialog_form_echo( $fields ) {
 
 function pootlepage_hide_elements_dialog_echo( $fields ) {
 
-	foreach( $fields as $name => $attr ) {
+	foreach ( $fields as $name => $attr ) {
 
 		echo '<p>';
 		echo '<label>' . $attr['name'] . '</label>';
 
-		switch( $attr['type'] ) {
+		switch ( $attr['type'] ) {
 			case 'checkbox' :
 				?>
-				<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+				<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				       data-style-field="<?php echo esc_attr( $name ) ?>"
+				       data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"/>
 				<?php
 				break;
 			default :
-				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]" data-style-field="<?php echo esc_attr( $name ) ?>" data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
+				?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+				         data-style-field="<?php echo esc_attr( $name ) ?>"
+				         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
 				break;
 		}
 
@@ -219,14 +223,15 @@ function siteorigin_panels_style_dialog_form() {
 	$sections['Background'][] = 'bg_video';
 	$sections['Background'][] = 'bg_mobile_image';
 	$sections['Background'][] = array( '</div>' );
-	$sections['Layout'][] = 'full_width';
-	$sections['Layout'][] = 'row_height';
-	$sections['Advanced'][] = 'style';
-	$sections['Advanced'][] = 'class';
-	$sections['Advanced'][] = 'id';
-	
+	$sections['Layout'][]     = 'full_width';
+	$sections['Layout'][]     = 'row_height';
+	$sections['Advanced'][]   = 'style';
+	$sections['Advanced'][]   = 'class';
+	$sections['Advanced'][]   = 'id';
+
 	if ( empty( $fields ) ) {
 		_e( "Your theme doesn't provide any visual style fields. " );
+
 		return;
 	}
 
@@ -234,7 +239,7 @@ function siteorigin_panels_style_dialog_form() {
 
 	echo '<ul class="ppb-acp-sidebar">';
 
-	foreach( $sections as $Sec => $secFields ) {
+	foreach ( $sections as $Sec => $secFields ) {
 
 		$sec = strtolower( $Sec );
 
@@ -272,7 +277,7 @@ function siteorigin_panels_style_dialog_form() {
 
 function pootlepage_render_single_field( $name, $attr ) {
 
-	switch( $attr['type'] ) {
+	switch ( $attr['type'] ) {
 		case 'select':
 			?>
 			<select name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
@@ -338,41 +343,48 @@ function pootlepage_render_single_field( $name, $attr ) {
 			break;
 	}
 
-    if ( isset( $attr['help-text'] ) ) {
-        // don't use div for this or else div will appear outside of <p>
-        echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
-    }
+	if ( isset( $attr['help-text'] ) ) {
+		// don't use div for this or else div will appear outside of <p>
+		echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
+	}
 }
 
 function pp_pb_widget_styles_dialog_form() {
 	$fields = pp_pb_widget_styling_fields();
 
-	foreach( $fields as $key => $field ) {
+	foreach ( $fields as $key => $field ) {
 
 		echo "<div class='field'>";
 		echo "<label>" . esc_html( $field['name'] ) . "</label>";
 		echo "<span>";
 
-		switch( $field['type'] ) {
+		switch ( $field['type'] ) {
 			case 'color' :
-				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text" data-style-field-type="color"/>
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text"
+				         data-style-field-type="color"/>
 				<?php
 				break;
 			case 'border' :
-				?><input dialog-field="<?php echo $key ?>-width" class="widget-<?php echo $key ?>-width" type="number" min="0" max="100" step="1" value="" /> px
-				  <input dialog-field="<?php echo $key ?>-color" class="widget-<?php echo $key ?>-color" type="text" data-style-field-type="color" />
+				?><input dialog-field="<?php echo $key ?>-width" class="widget-<?php echo $key ?>-width" type="number"
+				         min="0" max="100" step="1" value="" /> px
+				<input dialog-field="<?php echo $key ?>-color" class="widget-<?php echo $key ?>-color" type="text"
+				       data-style-field-type="color"/>
 				<?php
 				break;
 			case 'number' :
-				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="number" min="<?php esc_attr_e( $field['min'] ) ?>" max="<?php esc_attr_e( $field['max'] ) ?>" step="<?php esc_attr_e( $field['step'] ) ?>" value="" /> <?php esc_html_e( $field['unit'] ) ?>
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="number"
+				         min="<?php esc_attr_e( $field['min'] ) ?>" max="<?php esc_attr_e( $field['max'] ) ?>"
+				         step="<?php esc_attr_e( $field['step'] ) ?>" value="" /> <?php esc_html_e( $field['unit'] ) ?>
 				<?php
 				break;
 			case 'checkbox':
-				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="checkbox" value="<?php esc_attr_e( $field['value'] ) ?>" data-style-field-type="checkbox" />
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="checkbox"
+				         value="<?php esc_attr_e( $field['value'] ) ?>" data-style-field-type="checkbox" />
 				<?php
 				break;
 			case 'textarea':
-				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text" data-style-field-type="text"/>
+				?><input dialog-field="<?php echo $key ?>" class="widget-<?php echo $key ?>" type="text"
+				         data-style-field-type="text"/>
 				<?php
 				break;
 		}
@@ -391,11 +403,12 @@ function pp_pb_widget_styles_dialog_form() {
 function siteorigin_panels_style_is_using_color() {
 	$fields = siteorigin_panels_style_get_fields();
 
-	foreach( $fields as $id => $attr ) {
+	foreach ( $fields as $id => $attr ) {
 		if ( isset( $attr['type'] ) && $attr['type'] == 'color' ) {
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -403,19 +416,24 @@ function siteorigin_panels_style_is_using_color() {
  * Convert the single string attribute of the grid style into an array.
  *
  * @param $panels_data
+ *
  * @return mixed
  */
 function siteorigin_panels_style_update_data( $panels_data ) {
-	if ( empty( $panels_data['grids'] ) ) return $panels_data;
+	if ( empty( $panels_data['grids'] ) ) {
+		return $panels_data;
+	}
 
-	for( $i = 0; $i < count( $panels_data['grids'] ); $i++ ) {
+	for ( $i = 0; $i < count( $panels_data['grids'] ); $i ++ ) {
 
-		if ( isset( $panels_data['grids'][$i]['style'] ) && is_string( $panels_data['grids'][$i]['style'] ) ) {
-			$panels_data['grids'][$i]['style'] = array( 'class' => $panels_data['grids'][$i]['style'] );
+		if ( isset( $panels_data['grids'][ $i ]['style'] ) && is_string( $panels_data['grids'][ $i ]['style'] ) ) {
+			$panels_data['grids'][ $i ]['style'] = array( 'class' => $panels_data['grids'][ $i ]['style'] );
 		}
 	}
+
 	return $panels_data;
 }
+
 add_filter( 'siteorigin_panels_data', 'siteorigin_panels_style_update_data' );
 add_filter( 'siteorigin_panels_prebuilt_layout', 'siteorigin_panels_style_update_data' );
 
@@ -427,30 +445,34 @@ add_filter( 'siteorigin_panels_prebuilt_layout', 'siteorigin_panels_style_update
 function siteorigin_panels_style_sanitize_data( $panels_data ) {
 	$fields = siteorigin_panels_style_get_fields();
 
-	if ( empty( $fields ) ) return $panels_data;
-	if ( empty( $panels_data['grids'] ) || ! is_array( $panels_data['grids'] ) ) return $panels_data;
+	if ( empty( $fields ) ) {
+		return $panels_data;
+	}
+	if ( empty( $panels_data['grids'] ) || ! is_array( $panels_data['grids'] ) ) {
+		return $panels_data;
+	}
 
-	for( $i = 0; $i < count( $panels_data['grids'] ); $i++ ) {
+	for ( $i = 0; $i < count( $panels_data['grids'] ); $i ++ ) {
 
-		foreach( $fields as $name => $attr ) {
-			switch( $attr['type'] ) {
+		foreach ( $fields as $name => $attr ) {
+			switch ( $attr['type'] ) {
 				case 'checkbox':
 					// Convert the checkbox value to true or false.
-					$panels_data['grids'][$i]['style'][$name] = ! empty( $panels_data['grids'][$i]['style'][$name] );
+					$panels_data['grids'][ $i ]['style'][ $name ] = ! empty( $panels_data['grids'][ $i ]['style'][ $name ] );
 					break;
 
 				case 'number':
-					$panels_data['grids'][$i]['style'][$name] = intval( $panels_data['grids'][$i]['style'][$name] );
+					$panels_data['grids'][ $i ]['style'][ $name ] = intval( $panels_data['grids'][ $i ]['style'][ $name ] );
 					break;
 
 				case 'url':
-					$panels_data['grids'][$i]['style'][$name] = esc_url_raw( $panels_data['grids'][$i]['style'][$name] );
+					$panels_data['grids'][ $i ]['style'][ $name ] = esc_url_raw( $panels_data['grids'][ $i ]['style'][ $name ] );
 					break;
 
 				case 'select' :
 					// Make sure the value is in the options
-					if ( ! in_array( $panels_data['grids'][$i]['style'][$name], array_keys( $attr['options'] ) ) ) {
-						$panels_data['grids'][$i]['style'][$name] = false;
+					if ( ! in_array( $panels_data['grids'][ $i ]['style'][ $name ], array_keys( $attr['options'] ) ) ) {
+						$panels_data['grids'][ $i ]['style'][ $name ] = false;
 					}
 					break;
 			}
@@ -459,4 +481,5 @@ function siteorigin_panels_style_sanitize_data( $panels_data ) {
 
 	return $panels_data;
 }
+
 add_filter( 'siteorigin_panels_panels_data_from_post', 'siteorigin_panels_style_sanitize_data' );

@@ -14,4 +14,5 @@ function siteorigin_panels_transfer_home_page() {
 		remove_theme_mod( 'panels_home_page_enabled' );
 	}
 }
+
 add_action( 'admin_init', 'siteorigin_panels_transfer_home_page' );

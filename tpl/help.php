@@ -7,9 +7,9 @@
 	printf(
 		__( "Read the <a href='%s' target='_blank'>full documentation</a> on SiteOrigin.", 'siteorigin-panels' ) .
 		__( "Ask a question on our <a href='%s' target='_blank'>support forum</a> if you need help and sign up to <a href='%s' target='_blank'>our newsletter</a> to stay up to date with future developments.", 'siteorigin-panels' ),
-		'http://siteorigin.com/page-builder/documentation/' ,
+		'http://siteorigin.com/page-builder/documentation/',
 		'http://siteorigin.com/threads/plugin-page-builder/',
 		'http://siteorigin.com/#newseltter'
-	 );
+	);
 	?>
 </p>

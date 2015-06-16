@@ -52,6 +52,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
+
 			return self::$_instance;
 		}
 
@@ -124,7 +125,12 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility' ) ) {
 		 * @since 2.0.0
 		 */
 		public function load_plugins() {
-			$load_compatibility_plugins = apply_filters( 'black_studio_tinymce_load_compatibility_plugins', array( 'siteorigin_panels', 'wpml', 'jetpack_after_the_deadline', 'wp_page_widget' ) );
+			$load_compatibility_plugins = apply_filters( 'black_studio_tinymce_load_compatibility_plugins', array(
+				'siteorigin_panels',
+				'wpml',
+				'jetpack_after_the_deadline',
+				'wp_page_widget'
+			) );
 			if ( ! empty( $load_compatibility_plugins ) ) {
 				include_once( plugin_dir_path( dirname( __FILE__ ) ) . '/includes/class-compatibility-plugins.php' );
 				self::$plugins = Black_Studio_TinyMCE_Compatibility_Plugins::instance( $load_compatibility_plugins );

@@ -11,6 +11,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 		public $type = 'padding';
 
 		public $default;
+
 		/**
 		 * Constructor.
 		 *
@@ -44,12 +45,12 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 		public function get_padding_control( $label, $setting_index ) {
 
 			// Variables used in view
-			$value		  = $this->value( $setting_index );
-			$step		   = 1;
-			$min_range	  = 0;
-			$max_range	  = 100;
-			$default_amount = $this->default[$setting_index];
-			$class = 'pp-' . str_replace( '_', '-', $setting_index ) . '-number';
+			$value          = $this->value( $setting_index );
+			$step           = 1;
+			$min_range      = 0;
+			$max_range      = 100;
+			$default_amount = $this->default[ $setting_index ];
+			$class          = 'pp-' . str_replace( '_', '-', $setting_index ) . '-number';
 
 			$current_amount = isset( $value ) ? $value : $default_amount;
 
@@ -58,8 +59,8 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 			<label><?php _e( $label, 'scratch' ); ?>
 
 				<input class='<?php echo $class; ?>' type="number" min="<?php echo $min_range ?>"
-					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
-					   default="<?php echo $default_amount ?>"
+				       max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
+				       default="<?php echo $default_amount ?>"
 					<?php $this->link( $setting_index ) ?>
 					/>
 				px
@@ -76,15 +77,16 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 		 * Each section of the control has been split up
 		 * in functions in order to make them easier to
 		 * manage and update.
-		 * 
+		 *
 		 * @since 1.2
 		 * @version 1.3.1
-		 * 
+		 *
 		 */
 		public function render_content() {
 			?>
 			<label>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+
 				<div class="customize-control-content">
 
 					<?php $this->get_padding_control( 'Top/Bottom', 'top_bottom_width' ); ?>
@@ -95,7 +97,7 @@ if ( ! class_exists( 'PootlePage_Padding_Control' ) ) :
 
 				</div>
 			</label>
-			<?php
+		<?php
 		}
 	}
 endif;

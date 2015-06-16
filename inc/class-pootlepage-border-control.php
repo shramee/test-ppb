@@ -11,6 +11,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 		public $type = 'border';
 
 		public $default;
+
 		/**
 		 * Constructor.
 		 *
@@ -34,10 +35,10 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 		public function get_border_width_control() {
 
 			// Variables used in view
-			$value		  = $this->value( 'border_width' );
-			$step		   = 1;
-			$min_range	  = 0;
-			$max_range	  = 20;
+			$value          = $this->value( 'border_width' );
+			$step           = 1;
+			$min_range      = 0;
+			$max_range      = 20;
 			$default_amount = $this->default['border_width'];
 			$default_unit   = 'px';//$this->defaults['font_size']['unit'];
 
@@ -49,8 +50,8 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 			<label><span><?php _e( 'Border Width', 'scratch' ); ?></span>
 
 				<input class='pp-border-width-number' type="number" min="<?php echo $min_range ?>"
-					   max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
-					   default="<?php echo $default_amount ?>"
+				       max="<?php echo $max_range ?>" step="<?php echo $step ?>" value="<?php echo $current_amount ?>"
+				       default="<?php echo $default_amount ?>"
 					<?php $this->link( 'border_width' ) ?>
 					/>
 				px
@@ -62,7 +63,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 
 		public function get_border_color_control() {
 			// Variables for color control
-			$value		 = $this->value( 'border_color' );
+			$value         = $this->value( 'border_color' );
 			$default_color = $this->default['border_color'];
 			// Output the color control
 			pootlepage_color_control( 'Border Color', $value, $default_color, $this->get_link( 'border_color' ) );
@@ -77,15 +78,16 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 		 * Each section of the control has been split up
 		 * in functions in order to make them easier to
 		 * manage and update.
-		 * 
+		 *
 		 * @since 1.2
 		 * @version 1.3.1
-		 * 
+		 *
 		 */
 		public function render_content() {
 			?>
 			<label class="pootlepage-control">
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+
 				<div class="customize-control-content">
 
 					<?php $this->get_border_width_control(); ?>
@@ -96,7 +98,7 @@ if ( ! class_exists( 'PootlePage_Border_Control' ) ) :
 
 				</div>
 			</label>
-			<?php
+		<?php
 		}
 	}
 endif;

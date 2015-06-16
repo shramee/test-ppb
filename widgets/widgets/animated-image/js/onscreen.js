@@ -4,8 +4,9 @@
 // http://benpickles.github.com/onScreen
 //
 // Released under MIT license.
-;(function($) {
-    $.expr[":"].onScreen = function(elem) {
+;
+(function ($) {
+    $.expr[":"].onScreen = function (elem) {
         // The viewport position
         var $window = $(window);
         var viewport_top = $window.scrollTop();

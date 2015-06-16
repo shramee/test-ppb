@@ -1,18 +1,17 @@
-
-(function( exports, $ ){
+(function (exports, $) {
     var api = wp.customize;
 
     api.FontControl = api.Control.extend({
-        ready: function() {
+        ready: function () {
             var control = this,
                 picker = this.container.find('.color-picker-hex');
 
-            picker.val( control.settings['font_color']()).wpColorPicker({
-                change: function() {
-                    control.settings['font_color'].set( picker.wpColorPicker('color') );
+            picker.val(control.settings['font_color']()).wpColorPicker({
+                change: function () {
+                    control.settings['font_color'].set(picker.wpColorPicker('color'));
                 },
-                clear: function() {
-                    control.settings['font_color'].set( false );
+                clear: function () {
+                    control.settings['font_color'].set(false);
                 }
             });
         }
@@ -21,16 +20,16 @@
     api.controlConstructor['font'] = api.FontControl;
 
     api.BorderControl = api.Control.extend({
-        ready: function() {
+        ready: function () {
             var control = this,
                 picker = this.container.find('.color-picker-hex');
 
-            picker.val( control.settings['border_color']()).wpColorPicker({
-                change: function() {
-                    control.settings['border_color'].set( picker.wpColorPicker('color') );
+            picker.val(control.settings['border_color']()).wpColorPicker({
+                change: function () {
+                    control.settings['border_color'].set(picker.wpColorPicker('color'));
                 },
-                clear: function() {
-                    control.settings['border_color'].set( false );
+                clear: function () {
+                    control.settings['border_color'].set(false);
                 }
             });
         }
@@ -143,7 +142,7 @@
 
         var value = {
             'font_id': fontFamily,
-            'font_size': {'amount': fontSize },
+            'font_size': {'amount': fontSize},
             'font_color': fontColor,
             'font_weight_style': fontWeightStyle
         };
@@ -152,4 +151,4 @@
         $fontControl.find('.sc-font-value').val(json);
     }
 
-})( wp, jQuery );
+})(wp, jQuery);

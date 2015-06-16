@@ -1,15 +1,17 @@
 <?php $settings = siteorigin_panels_setting(); ?>
 
 <div class="wrap" id="panels-home-page">
-	<form action="<?php echo add_query_arg( 'page', 'so_panels_home_page' ) ?>" class="hide-if-no-js" method="post" id="panels-home-page-form">
+	<form action="<?php echo add_query_arg( 'page', 'so_panels_home_page' ) ?>" class="hide-if-no-js" method="post"
+	      id="panels-home-page-form">
 		<div id="icon-index" class="icon32"><br></div>
 		<h2>
 			<?php esc_html_e( 'Custom Home Page', 'siteorigin-panels' ) ?>
 
-			<div id="panels-toggle-switch" class="<?php echo ( ! get_option( 'siteorigin_panels_home_page_enabled', $settings['home-page-default'] ) ) ? 'state-off' : 'state-on'; ?>">
+			<div id="panels-toggle-switch"
+			     class="<?php echo ( ! get_option( 'siteorigin_panels_home_page_enabled', $settings['home-page-default'] ) ) ? 'state-off' : 'state-on'; ?>">
 				<div class="on-text"><?php _e( 'ON', 'siteorigin-panels' ) ?></div>
 				<div class="off-text"><?php _e( 'OFF', 'siteorigin-panels' ) ?></div>
-				<img src="<?php echo plugin_dir_url( POOTLEPAGE_BASE_FILE ) ?>css/images/handle.png" class="handle" />
+				<img src="<?php echo plugin_dir_url( POOTLEPAGE_BASE_FILE ) ?>css/images/handle.png" class="handle"/>
 			</div>
 		</h2>
 
@@ -22,17 +24,20 @@
 		<div id="post-body-wrapper">
 			<div id="post-body" class="metabox-holder columns-2">
 				<div id="post-body-content" style="position: relative">
-					<a href="#" class="preview button" id="post-preview"><?php _e( 'Preview Changes', 'siteorigin-panels' ) ?></a>
+					<a href="#" class="preview button"
+					   id="post-preview"><?php _e( 'Preview Changes', 'siteorigin-panels' ) ?></a>
 
 					<?php wp_editor( '', 'content' ) ?>
 					<?php do_meta_boxes( 'appearance_page_so_panels_home_page', 'advanced', false ) ?>
 
-					<p><input type="submit" class="button button-primary" id="panels-save-home-page" value="<?php esc_attr_e( 'Save Home Page', 'siteorigin-panels' ) ?>" /></p>
+					<p><input type="submit" class="button button-primary" id="panels-save-home-page"
+					          value="<?php esc_attr_e( 'Save Home Page', 'siteorigin-panels' ) ?>"/></p>
 				</div>
 			</div>
 		</div>
 
-		<input type="hidden" id="panels-home-enabled" name="siteorigin_panels_home_enabled" value="<?php echo esc_attr( get_option( 'siteorigin_panels_home_page_enabled', $settings['home-page-default'] ) ? 'true' : 'false' ); ?>" />
+		<input type="hidden" id="panels-home-enabled" name="siteorigin_panels_home_enabled"
+		       value="<?php echo esc_attr( get_option( 'siteorigin_panels_home_page_enabled', $settings['home-page-default'] ) ? 'true' : 'false' ); ?>"/>
 		<?php wp_nonce_field( 'save', '_sopanels_home_nonce' ) ?>
 	</form>
 	<noscript><p><?php _e( 'This interface requires Javascript', 'siteorigin-panels' ) ?></p></noscript>

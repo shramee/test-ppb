@@ -84,6 +84,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Plugin' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
+
 			return self::$_instance;
 		}
 
@@ -169,8 +170,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Plugin' ) ) {
 				self::$admin = Black_Studio_TinyMCE_Admin::instance();
 				include_once( plugin_dir_path( __FILE__ ) . '/includes/class-admin-pointer.php' );
 				self::$admin_pointer = Black_Studio_TinyMCE_Admin_Pointer::instance();
-			}
-			// Include and instantiate text filter class on frontend pages
+			} // Include and instantiate text filter class on frontend pages
 			else {
 				include_once( plugin_dir_path( __FILE__ ) . '/includes/class-text-filters.php' );
 				self::$text_filters = Black_Studio_TinyMCE_Text_Filters::instance();
@@ -229,6 +229,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Plugin' ) ) {
 		 * Check if a widget is a Black Studio Tinyme Widget instance
 		 *
 		 * @param object $widget
+		 *
 		 * @return boolean
 		 * @since 2.0.0
 		 */
@@ -277,8 +278,9 @@ else {
 				echo '</div>';
 			}
 		}
+
 		add_action( 'admin_notices', 'bstw_multiple_notice' );
-	
+
 	} // END function_exists bstw_multiple_notice check
 
 } // END else function_exists bstw check

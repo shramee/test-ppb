@@ -37,10 +37,16 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 				add_action( 'admin_print_footer_scripts', array( $this, 'wp_pre_39_admin_print_footer_scripts' ) );
 				remove_action( 'admin_print_footer_scripts', array( bstw()->admin(), 'admin_print_footer_scripts' ) );
 				if ( ! version_compare( $wp_version, '3.2', '<' ) ) {
-					remove_action( 'admin_print_footer_scripts', array( $this, 'wp_pre_32_admin_print_footer_scripts' ) );
+					remove_action( 'admin_print_footer_scripts', array(
+						$this,
+						'wp_pre_32_admin_print_footer_scripts'
+					) );
 				}
 				if ( ! version_compare( $wp_version, '3.3', '<' ) ) {
-					remove_action( 'admin_print_footer_scripts', array( $this, 'wp_pre_33_admin_print_footer_scripts' ) );
+					remove_action( 'admin_print_footer_scripts', array(
+						$this,
+						'wp_pre_33_admin_print_footer_scripts'
+					) );
 				}
 				add_action( 'black_studio_tinymce_editor', array( $this, 'wp_pre_39_editor' ), 10, 4 );
 				remove_action( 'black_studio_tinymce_editor', array( bstw()->admin(), 'editor' ), 10, 3 );
@@ -63,6 +69,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		 * For Black_Studio_TinyMCE_Compatibility_Wordpress
 		 *
 		 * @param mixed[] $settings
+		 *
 		 * @return mixed[]
 		 * @since 2.0.0
 		 */
@@ -76,6 +83,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 				'forced_root_block' => 'p',
 				'apply_source_formatting' => true,
 			);
+
 			// Return modified settings
 			return array_merge( $settings, $custom_settings );
 		}
@@ -109,18 +117,22 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		public function wp_pre_39_editor( $text, $id, $name = '', $type = 'visual' ) {
 			$switch_class = $type == 'visual' ? 'html-active' : 'tmce-active';
 			?>
-			<div id="<?php echo esc_attr( $id ); ?>-wp-content-wrap" class="wp-core-ui wp-editor-wrap <?php echo esc_attr( $switch_class ); ?> has-dfw">
+			<div id="<?php echo esc_attr( $id ); ?>-wp-content-wrap"
+			     class="wp-core-ui wp-editor-wrap <?php echo esc_attr( $switch_class ); ?> has-dfw">
 				<div id="<?php echo esc_attr( $id ); ?>-wp-content-editor-tools" class="wp-editor-tools hide-if-no-js">
 					<div class="wp-editor-tabs">
-						<a id="<?php echo esc_attr( $id ); ?>-content-html" class="wp-switch-editor switch-html"><?php _e( 'HTML' ); ?></a>
-						<a id="<?php echo esc_attr( $id ); ?>-content-tmce" class="wp-switch-editor switch-tmce"><?php _e( 'Visual' ); ?></a>
+						<a id="<?php echo esc_attr( $id ); ?>-content-html"
+						   class="wp-switch-editor switch-html"><?php _e( 'HTML' ); ?></a>
+						<a id="<?php echo esc_attr( $id ); ?>-content-tmce"
+						   class="wp-switch-editor switch-tmce"><?php _e( 'Visual' ); ?></a>
 					</div>
 					<div id="<?php esc_attr( $id ); ?>-wp-content-media-buttons" class="wp-media-buttons">
 						<?php do_action( 'media_buttons', $id ); ?>
 					</div>
 				</div>
 				<div class="wp-editor-container">
-					<textarea class="widefat" rows="20" cols="40" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>"><?php echo esc_textarea( $text ); ?></textarea>
+					<textarea class="widefat" rows="20" cols="40" id="<?php echo esc_attr( $id ); ?>"
+					          name="<?php echo esc_attr( $name ); ?>"><?php echo esc_textarea( $text ); ?></textarea>
 				</div>
 			</div>
 		<?php
@@ -160,9 +172,18 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 			// This VE2 is bundled in Page Builder, so don't need to check for Page Builder
 			if ( is_admin() ) {
 				add_filter( 'siteorigin_panels_widget_object', array( $this, 'siteorigin_panels_widget_object' ), 10 );
-				add_filter( 'black_studio_tinymce_container_selectors', array( $this, 'siteorigin_panels_container_selectors' ) );
-				add_filter( 'black_studio_tinymce_activate_events', array( $this, 'siteorigin_panels_activate_events' ) );
-				add_filter( 'black_studio_tinymce_deactivate_events', array( $this, 'siteorigin_panels_deactivate_events' ) );
+				add_filter( 'black_studio_tinymce_container_selectors', array(
+					$this,
+					'siteorigin_panels_container_selectors'
+				) );
+				add_filter( 'black_studio_tinymce_activate_events', array(
+					$this,
+					'siteorigin_panels_activate_events'
+				) );
+				add_filter( 'black_studio_tinymce_deactivate_events', array(
+					$this,
+					'siteorigin_panels_deactivate_events'
+				) );
 				add_filter( 'black_studio_tinymce_enable_pages', array( $this, 'siteorigin_panels_enable_pages' ) );
 				remove_filter( 'widget_text', array( bstw()->text_filters(), 'wpautop' ), 8 );
 			}
@@ -173,6 +194,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		 * For Black_Studio_TinyMCE_Compatibility_Plugins
 		 *
 		 * @param object $the_widget
+		 *
 		 * @return object
 		 * @since 2.0.0
 		 */
@@ -180,6 +202,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 			if ( isset( $the_widget->id_base ) && $the_widget->id_base == 'black-studio-tinymce' ) {
 				$the_widget->number = '';
 			}
+
 			return $the_widget;
 		}
 
@@ -188,11 +211,13 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		 * For Black_Studio_TinyMCE_Compatibility_Plugins
 		 *
 		 * @param string[] $selectors
+		 *
 		 * @return string[]
 		 * @since 2.0.0
 		 */
 		public function siteorigin_panels_container_selectors( $selectors ) {
 			$selectors[] = 'div.panel-dialog';
+
 			return $selectors;
 		}
 
@@ -201,11 +226,13 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		 * For Black_Studio_TinyMCE_Compatibility_Plugins
 		 *
 		 * @param string[] $events
+		 *
 		 * @return string[]
 		 * @since 2.0.0
 		 */
 		public function siteorigin_panels_activate_events( $events ) {
 			$events[] = 'panelsopen';
+
 			return $events;
 		}
 
@@ -214,11 +241,13 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		 * For Black_Studio_TinyMCE_Compatibility_Plugins
 		 *
 		 * @param string[] $events
+		 *
 		 * @return string[]
 		 * @since 2.0.0
 		 */
 		public function siteorigin_panels_deactivate_events( $events ) {
 			$events[] = 'panelsdone';
+
 			return $events;
 		}
 
@@ -227,6 +256,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 		 * For Black_Studio_TinyMCE_Compatibility_Plugins
 		 *
 		 * @param string[] $pages
+		 *
 		 * @return string[]
 		 * @since 2.0.0
 		 */
@@ -236,6 +266,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wp_Plugins' ) ) {
 			if ( isset( $_GET['page'] ) && $_GET['page'] == 'so_panels_home_page' ) {
 				$pages[] = 'themes.php';
 			}
+
 			return $pages;
 		}
 

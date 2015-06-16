@@ -26,7 +26,7 @@ $black_studio_tinymce_widget_version = Black_Studio_TinyMCE_Plugin::$version;
  * @since 0.9.4
  * @deprecated 1.4
  */
-global $black_studio_tinymce_widget_dev_mode ; // global is necessary because this file is included in a non-global context
+global $black_studio_tinymce_widget_dev_mode; // global is necessary because this file is included in a non-global context
 $black_studio_tinymce_widget_dev_mode = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 
 /**
@@ -71,6 +71,7 @@ function black_studio_tinymce_load_tiny_mce() {
  */
 function black_studio_tinymce_init_editor( $arg ) {
 	_deprecated_function( __FUNCTION__, '2.0.0' );
+
 	return $arg;
 }
 
@@ -121,6 +122,7 @@ function black_studio_tinymce_apply_smilies_to_widget_text( $text ) {
 	if ( get_option( 'use_smilies' ) ) {
 		$text = bstw()->text_filters()->convert_smilies( $text );
 	}
+
 	return $text;
 }
 

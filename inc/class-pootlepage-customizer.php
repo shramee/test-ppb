@@ -1,8 +1,8 @@
 <?php
+
 /**
  * Created by Alan on 19/5/2014.
  */
-
 class PootlePage_Customizer {
 
 	private $options;
@@ -27,9 +27,9 @@ class PootlePage_Customizer {
 
 		//Multi field settings
 		$this->multi_fields = array(
-			'border' => 'PootlePage_Border_Control',
+			'border'  => 'PootlePage_Border_Control',
 			'padding' => 'PootlePage_Padding_Control',
-			'font' => 'PootlePage_Font_Control',
+			'font'    => 'PootlePage_Font_Control',
 		);
 
 		//Single field settings
@@ -42,54 +42,50 @@ class PootlePage_Customizer {
 	public function init_options() {
 
 		$choices = array();
-		for ( $i = 0; $i <= 20; ++$i ) {
-			$choices[$i] = $i . 'px';
+		for ( $i = 0; $i <= 20; ++ $i ) {
+			$choices[ $i ] = $i . 'px';
 		}
 
 		$this->options = array(
 			'siteorigin_panels_display[margin-bottom]' => array(
-				'id' => 'siteorigin_panels_display[margin-bottom]',
-				'type' => 'number',
-				'label' => __( 'Row bottom margin', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'default' => '0',
+				'id'       => 'siteorigin_panels_display[margin-bottom]',
+				'type'     => 'number',
+				'label'    => __( 'Row bottom margin', 'scratch' ),
+				'section'  => 'pootlepage_section',
+				'default'  => '0',
 				'priority' => 10
 			),
-
-			'pp_widget_bg_color' => array(
-				'id' => 'pp_widget_bg_color',
-				'type' => 'color',
-				'label' => __( 'Content Block Background Color', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'default' => '',
+			'pp_widget_bg_color'                       => array(
+				'id'       => 'pp_widget_bg_color',
+				'type'     => 'color',
+				'label'    => __( 'Content Block Background Color', 'scratch' ),
+				'section'  => 'pootlepage_section',
+				'default'  => '',
 				'priority' => 10
 			),
-
-			'pp_widget_border_width' => array(
-				'id' => 'pp_widget_border_width',
-				'type' => 'number',
-				'label' => __( 'Content block border width', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'default' => '0',
+			'pp_widget_border_width'                   => array(
+				'id'       => 'pp_widget_border_width',
+				'type'     => 'number',
+				'label'    => __( 'Content block border width', 'scratch' ),
+				'section'  => 'pootlepage_section',
+				'default'  => '0',
 				'priority' => 10
 			),
-
-			'pp_widget_border_color' => array(
-				'id' => 'pp_widget_border_color',
-				'type' => 'color',
-				'label' => __( 'Content block border color', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'default' => '',
+			'pp_widget_border_color'                   => array(
+				'id'       => 'pp_widget_border_color',
+				'type'     => 'color',
+				'label'    => __( 'Content block border color', 'scratch' ),
+				'section'  => 'pootlepage_section',
+				'default'  => '',
 				'priority' => 10
 			),
-
-			'pp_widget_border_radius' => array(
-				'id' => 'pp_widget_border_radius',
-				'type' => 'select',
-				'label' => __( 'Content Block Rounded Corners', 'scratch' ),
-				'section' => 'pootlepage_section',
-				'default' => '0',
-				'choices' => $choices,
+			'pp_widget_border_radius'                  => array(
+				'id'       => 'pp_widget_border_radius',
+				'type'     => 'select',
+				'label'    => __( 'Content Block Rounded Corners', 'scratch' ),
+				'section'  => 'pootlepage_section',
+				'default'  => '0',
+				'choices'  => $choices,
 				'priority' => 16
 			),
 		);
@@ -103,7 +99,7 @@ class PootlePage_Customizer {
 
 		// sections
 		$customizeManager->add_section( 'pootlepage_section', array(
-			'title' => 'Page Builder',
+			'title'    => 'Page Builder',
 			'priority' => 10
 		) );
 
@@ -131,7 +127,7 @@ class PootlePage_Customizer {
 
 		$customizeManager->add_setting( $option['id'], array(
 			'default' => $option['default'],
-			'type' => 'option',
+			'type'    => 'option',
 		) );
 
 		$option['settings'] = $option['id'];
@@ -172,8 +168,8 @@ class PootlePage_Customizer {
 			$defaultValue = '';
 
 			//Get default if set
-			if ( ! empty ( $option['defaults'][$key] ) ) {
-				$defaultValue = $option['defaults'][$key];
+			if ( ! empty ( $option['defaults'][ $key ] ) ) {
+				$defaultValue = $option['defaults'][ $key ];
 			}
 
 			//Add setting
@@ -181,20 +177,20 @@ class PootlePage_Customizer {
 				$settingID,
 				array(
 					'default' => $defaultValue,
-					'type' => 'option',
+					'type'    => 'option',
 				)
 			);
 		}
 
 		$className = $this->multi_fields[ $option['type'] ];
 
-			$customizeManager->add_control(
-				new $className(
-					$customizeManager,
-					$option['id'],
-					$option
-				)
-			);
+		$customizeManager->add_control(
+			new $className(
+				$customizeManager,
+				$option['id'],
+				$option
+			)
+		);
 	}
 
 	public function enqueue() {

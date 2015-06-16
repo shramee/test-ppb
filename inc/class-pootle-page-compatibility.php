@@ -5,6 +5,7 @@
  * Date: 13/5/15
  * Time: 6:10 PM
  */
+
 /**
  * Takes care of old versions of PootlePage
  *
@@ -26,7 +27,7 @@ class Pootle_Page_Compatibility {
 	 * Magic __construct
 	 * @since 3.0.0
 	 */
-	public function __construct( ){
+	public function __construct() {
 
 		$this->get_old_page_builder_posts();
 
@@ -34,7 +35,7 @@ class Pootle_Page_Compatibility {
 
 		$this->reorganise_old_panels_data();
 
-        $this->set_old_defaults();
+		$this->set_old_defaults();
 	}
 
 	/**
@@ -48,11 +49,11 @@ class Pootle_Page_Compatibility {
 		$post_types = get_post_types();
 
 		//Get all posts using page builder
-		$args = array(
-			'post_type' => $post_types,
+		$args  = array(
+			'post_type'  => $post_types,
 			'meta_query' => array(
 				array(
-					'key' => 'panels_data',
+					'key'     => 'panels_data',
 					'compare' => 'EXISTS',
 				),
 			)
@@ -61,10 +62,11 @@ class Pootle_Page_Compatibility {
 
 		foreach ( $query->posts as $post ) {
 
-			$this->old_page_builder_posts[ $post->post_type ][] =  $post->ID;
+			$this->old_page_builder_posts[ $post->post_type ][] = $post->ID;
 
-			if( ! in_array( $post->post_type, array( 'revision', 'page', 'nav_menu_item', ) ) )
-			$this->unsupported_page_builder_posts[] =  $post->ID;
+			if ( ! in_array( $post->post_type, array( 'revision', 'page', 'nav_menu_item', ) ) ) {
+				$this->unsupported_page_builder_posts[] = $post->ID;
+			}
 
 		}
 
@@ -95,7 +97,10 @@ class Pootle_Page_Compatibility {
 
 			$notices = array();
 
-			$notices['settings-updated'] = array( 'type' => 'update-nag', 'message' => __( "Now we only support page post types, however for your convenience we have put all your existing page builder using posts layout in the content.", 'woothemes' ) );
+			$notices['settings-updated'] = array(
+				'type'    => 'update-nag',
+				'message' => __( "Now we only support page post types, however for your convenience we have put all your existing page builder using posts layout in the content.", 'woothemes' )
+			);
 
 			update_option( 'pootle_page_admin_notices', $notices );
 			die( 'Page Builder Stuff Done :) ' );
@@ -169,24 +174,6 @@ class Pootle_Page_Compatibility {
 			'no_margin',
 		);
 
-		/** @var string $styles to put in new Inline Styles field */
-		$styles = '';
-		if ( ! empty( $panels_row_styles['top_border_height'] ) and ! empty( $panels_row_styles['top_border'] ) ) {
-			$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
-		}
-
-		if ( ! empty( $panels_row_styles['bottom_border_height'] ) and ! empty( $panels_row_styles['bottom_border'] ) ) {
-			$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
-		}
-
-		if ( ! empty( $panels_row_styles['height'] ) ) {
-			$styles .= "height: {$panels_row_styles['height']}px; ";
-		}
-
-		if ( ! empty( $panels_row_styles['no_margin'] ) && '1' == $panels_row_styles['no_margin'] ) {
-			$styles .= "margin-bottom: 0; ";
-		}
-
 		/** @var array $styles_array init new styles array */
 		$styles_array = array();
 
@@ -197,9 +184,34 @@ class Pootle_Page_Compatibility {
 		}
 
 		//Put unsupported styles in new Inline Styles field
-		$styles_array['style'] = $styles;
+		$styles_array['style'] = $this->get_unsupported_style_fields_inline_styles( $panels_row_styles );
 
 		return $styles_array;
+
+	}
+
+	private function get_unsupported_style_fields_inline_styles( $panels_row_styles ) {
+
+		/** @var string $styles to put in new Inline Styles field */
+		$styles = '';
+
+		if ( ! empty( $panels_row_styles['top_border_height'] ) ) {
+			$styles .= "border-top: {$panels_row_styles['top_border_height']}px solid {$panels_row_styles['top_border']} ; ";
+		}
+
+		if ( ! empty( $panels_row_styles['bottom_border_height'] ) ) {
+			$styles .= "border-bottom: {$panels_row_styles['bottom_border_height']}px solid {$panels_row_styles['bottom_border']} ; ";
+		}
+
+		if ( ! empty( $panels_row_styles['height'] ) ) {
+			$styles .= "height: {$panels_row_styles['height']}px; ";
+		}
+
+		if ( ! empty( $panels_row_styles['no_margin'] ) ) {
+			$styles .= "margin-bottom: 0; ";
+		}
+
+		return $styles;
 
 	}
 
@@ -215,28 +227,31 @@ class Pootle_Page_Compatibility {
 
 		if ( strpos( $styles, 'hide-title":"none' ) ) {
 
-			$styles = str_replace( array( '"hide-title":"none",', '"}' ), array( '', '"' ), $styles ) . ',"inline-css":"hide-title:none;"}';
+			$styles = str_replace( array( '"hide-title":"none",', '"}' ), array(
+					'',
+					'"'
+				), $styles ) . ',"inline-css":"hide-title:none;"}';
 
 		}
 
 		return $styles;
 	}
 
-    /**
-     * Sets old defaults
-     *
-     * @since 3.0.0
-     */
-    private function set_old_defaults(){
+	/**
+	 * Sets old defaults
+	 *
+	 * @since 3.0.0
+	 */
+	private function set_old_defaults() {
 
-	    $settings = get_option(
-		    'siteorigin_panels_display',
-		    array(
-			    'margin-bottom' => '30',
-			    'margin-sides' => '30',
-		    ) );
+		$settings = get_option(
+			'siteorigin_panels_display',
+			array(
+				'margin-bottom' => '30',
+				'margin-sides'  => '30',
+			) );
 
-	    update_option( 'siteorigin_panels_display', $settings );
+		update_option( 'siteorigin_panels_display', $settings );
 
-    }
+	}
 }

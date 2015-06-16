@@ -18,6 +18,7 @@ function siteorigin_panels_revisions_save_post( $post_id, $post ) {
 	}
 
 }
+
 add_action( 'save_post', 'siteorigin_panels_revisions_save_post', 11, 2 );
 
 /**
@@ -28,29 +29,40 @@ add_action( 'save_post', 'siteorigin_panels_revisions_save_post', 11, 2 );
  */
 function siteorigin_panels_revisions_restore( $post_id, $revision_id ) {
 	$panels_data = get_metadata( 'post', $revision_id, 'panels_data', true );
-	if ( ! empty( $panels_data ) ) update_post_meta( $post_id, 'panels_data', $panels_data );
-	else delete_post_meta( $post_id, 'panels_data' );
+	if ( ! empty( $panels_data ) ) {
+		update_post_meta( $post_id, 'panels_data', $panels_data );
+	} else {
+		delete_post_meta( $post_id, 'panels_data' );
+	}
 }
+
 add_action( 'wp_restore_post_revision', 'siteorigin_panels_revisions_restore', 10, 2 );
 
 /**
  * Add the Page Builder content revision field.
  *
  * @param $fields
+ *
  * @return mixed
  */
 function siteorigin_panels_revisions_fields( $fields ) {
 	// Prevent the autosave message.
 	// TODO figure out how to include Page Builder data into the autosave.
-	if ( ! function_exists( 'get_current_screen' ) ) return $fields;
+	if ( ! function_exists( 'get_current_screen' ) ) {
+		return $fields;
+	}
 
 	$screen = get_current_screen();
-	if ( ! empty( $screen ) && $screen->base == 'post' ) return $fields;
+	if ( ! empty( $screen ) && $screen->base == 'post' ) {
+		return $fields;
+	}
 
 	$fields['panels_data_field'] = __( 'Page Builder Content', 'siteorigin-panels' );
+
 	return $fields;
 
 }
+
 add_filter( '_wp_post_revision_fields', 'siteorigin_panels_revisions_fields' );
 
 /**
@@ -59,14 +71,19 @@ add_filter( '_wp_post_revision_fields', 'siteorigin_panels_revisions_fields' );
  * @param $value
  * @param $field
  * @param $revision
+ *
  * @return string
  */
 function siteorigin_panels_revisions_field( $value, $field, $revision ) {
-	$parent_id = wp_is_post_revision( $revision->ID );
+	$parent_id   = wp_is_post_revision( $revision->ID );
 	$panels_data = get_metadata( 'post', $revision->ID, 'panels_data', true );
 
-	if ( empty( $panels_data ) ) return '';
+	if ( empty( $panels_data ) ) {
+		return '';
+	}
+
 	return siteorigin_panels_render( $parent_id, false, $panels_data );
 }
+
 add_filter( '_wp_post_revision_field_panels_data_field', 'siteorigin_panels_revisions_field', 10, 3 );
 

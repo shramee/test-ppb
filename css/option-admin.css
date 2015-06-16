@@ -1,5 +1,4 @@
-.form-table tr > th
-{
+.form-table tr > th {
     width: 0;
 }
 
@@ -63,9 +62,9 @@
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     cursor: move;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8f8f8', endColorstr='#ececec', GradientType=0);
     padding: 8px;
@@ -80,12 +79,10 @@ span.logo img {
     display: none;
 }
 
-.wrap .useful-links
-{
+.wrap .useful-links {
     display: none;
 }
 
-.wrap > form > h3
-{
+.wrap > form > h3 {
     font-size: 23px;
 }
