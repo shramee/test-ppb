@@ -560,11 +560,21 @@ function pootlepage_test_typeface_against_test_case( $face, $test_case ) {
  *
  * @return string
  */
-function pootle_page_output_font_select_options( $font_faces, $test_cases, $value ) {
+function pootle_page_output_font_select_options( $value ) {
+
+	$font_faces = PootlePage_Font_Utility::get_all_fonts();
+
+	$test_cases = array();
+
+	if ( function_exists( 'wf_get_system_fonts_test_cases' ) ) {
+		$test_cases = wf_get_system_fonts_test_cases();
+	}
 
 	$html = '';
 	foreach ( $font_faces as $k => $v ) {
+
 		$selected = '';
+
 		// If one of the fonts requires a test case, use that value. Otherwise, use the key as the test case.
 		if ( in_array( $k, array_keys( $test_cases ) ) ) {
 			$value_to_test = $test_cases[ $k ];

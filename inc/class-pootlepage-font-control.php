@@ -53,9 +53,6 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 			$default_value = $this->default['font_id'];
 			$current_value = empty( $this_value ) ? '' : $this_value;
 
-			// Get all font families
-			$all_fonts = PootlePage_Font_Utility::get_all_fonts();
-
 			// Get control view
 			?>
 			<label><?php _e( 'Font Family', 'scratch' ); ?>
@@ -63,17 +60,9 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 				        data-default-value="<?php echo $default_value ?>" autocomplete="off">
 					<option
 						value="" <?php selected( $current_value, '' ); ?> ><?php _e( '&mdash; Default &mdash;', 'scratch' ); ?></option>
-
 					<?php
-
-					if ( function_exists( 'wf_get_system_fonts_test_cases' ) ) {
-						$test_cases = wf_get_system_fonts_test_cases();
-					} else {
-						$test_cases = array();
-					}
-
 					//Font Options for select
-					echo pootle_page_output_font_select_options( $all_fonts, $test_cases, $current_value );
+					echo pootle_page_output_font_select_options( $current_value );
 
 					?>
 				</select>
@@ -118,52 +107,6 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 		}
 
 		/**
-		 * Get Hidden Style Controls
-		 *
-		 * Outputs a set of hidden text inputs used to control
-		 * and store the following:
-		 *
-		 *     - Stylesheet URL
-		 *     - Font Weight
-		 *     - Font Style
-		 *     - Font Name
-		 *
-		 * @since 1.2
-		 * @version 1.3.1
-		 *
-		 */
-		public function get_hidden_style_controls() {
-
-			// Get defaults and current value
-			$this_value = $this->value();
-
-			// Get default values
-			$default_stylesheet_url = $this->default['stylesheet_url'];
-			$default_font_weight    = $this->default['font_weight'];
-			$default_font_style     = $this->default['font_style'];
-			$default_font_name      = $this->default['font_name'];
-
-			// Get current values
-			$current_stylesheet_url = isset( $this_value['stylesheet_url'] ) ? $this_value['stylesheet_url'] : $default_stylesheet_url;
-			$current_font_weight    = isset( $this_value['font_weight'] ) ? $this_value['font_weight'] : $default_font_weight;
-			$current_font_style     = isset( $this_value['font_style'] ) ? $this_value['font_style'] : $default_font_style;
-			$current_font_name      = isset( $this_value['font_name'] ) ? $this_value['font_name'] : $default_font_name;
-
-			// Get control view
-			?>
-			<input autocomplete="off" class="tt-font-stylesheet-url" type="hidden"
-			       data-default-value="<?php echo $default_stylesheet_url; ?>"
-			       value="<?php echo $current_stylesheet_url; ?>">
-			<input autocomplete="off" class="tt-font-weight-val" type="hidden"
-			       data-default-value="<?php echo $default_font_weight; ?>" value="<?php echo $current_font_weight; ?>">
-			<input autocomplete="off" class="tt-font-style-val" type="hidden"
-			       data-default-value="<?php echo $default_font_style; ?>" value="<?php echo $current_font_style; ?>">
-			<input autocomplete="off" class="tt-font-name-val" type="hidden"
-			       data-default-value="<?php echo $default_font_name; ?>" value="<?php echo $current_font_name; ?>">
-		<?php
-		}
-
-		/**
 		 * Get Font Color Control
 		 *
 		 * Gets the font color input control.
@@ -200,10 +143,10 @@ if ( ! class_exists( 'PootlePage_Font_Control' ) ) :
 			$default_amount = $this->default['font_size'];
 			$default_unit   = $this->default['font_size_unit'];
 
-			$current_amount = isset( $value ) ? $value : $default_amount;
+			$current_amount = $value;
 
 			$unitValue    = $this->value( 'font_size_unit' );
-			$current_unit = isset( $unitValue ) ? $unitValue : $default_unit;
+			$current_unit = $unitValue;
 
 			// Get control view
 			?>
