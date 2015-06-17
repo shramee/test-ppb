@@ -2,7 +2,7 @@
 // File Security Check.
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class PP_PB_WF_Fields {
+class PP_PB_WF_Fields extends PP_PB_WF_Fields_Helper{
 	protected $_token;
 	protected $_settings;
 	protected $_sections;
@@ -29,8 +29,6 @@ class PP_PB_WF_Fields {
 
 	protected $_wrappers;
 
-	protected $helper;
-
 	/**
 	 * Constructor function.
 	 * @access  public
@@ -41,9 +39,6 @@ class PP_PB_WF_Fields {
 		$this->_token = 'woothemes';
 		$this->_sections = array();
 		$this->_fields = array();
-
-		//Instantiating the helper
-		$this->helper = new PP_PB_WF_Fields_Helper();
 
 		$this->_has_range = false;
 		$this->_has_imageselector = false;
@@ -249,10 +244,10 @@ class PP_PB_WF_Fields {
 
 		if ( ! is_array( $data ) || 0 >= count( $data ) ) return new WP_Error( 'bad_field_data', __( 'The provided field data is invalid and cannot be validated.', 'woothemes' ) );
 
-		$sections_to_scan = $this->helper->prepare_sections( $section, $this->_sections );
+		$sections_to_scan = $this->prepare_sections( $section, $this->_sections );
 
 		/** Filters $data */
-		$this->helper->validate_fields_filter_data( $data, $sections_to_scan );
+		$this->validate_fields_filter_data( $data, $sections_to_scan );
 
 		$data = $this->prepare_data_for_validation( $data );
 
@@ -266,7 +261,7 @@ class PP_PB_WF_Fields {
 				if ( ! isset( $fields[$k] ) ) continue;
 
 				//Validating this field
-				$this->helper->validate_field( $data, $fields, $k, $v );
+				$this->validate_field( $data, $fields, $k, $v );
 
 			}
 		}
@@ -458,7 +453,7 @@ class PP_PB_WF_Fields {
 		$value = $this->get_value( $key, $defaults );
 		$value = wp_parse_args( $value, $defaults );
 
-		return $this->helper->render_field_typography( $key, $value );
+		return $this->render_field_typography_html( $key, $value );
 
 	} // End render_field_typography()
 
