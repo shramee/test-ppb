@@ -7,20 +7,20 @@ function siteorigin_panels_update_notice() {
 	$dismissed = get_option( 'siteorigin_panels_notice_dismissed' );
 
 	if ( empty( $dismissed ) || $dismissed != POOTLEPAGE_VERSION ) {
-		wp_enqueue_script( 'siteorigin-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'ppb-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
 		?>
 		<div class="updated">
 			<p>
 				<?php
 				if ( get_option( 'siteorigin_panels_initial_version' ) == POOTLEPAGE_VERSION ) {
-					printf( __( "You've successfully installed <strong>Page Builder</strong> version %s. ", 'siteorigin-panels' ), POOTLEPAGE_VERSION );
+					printf( __( "You've successfully installed <strong>Page Builder</strong> version %s. ", 'ppb-panels' ), POOTLEPAGE_VERSION );
 				} else {
-					printf( __( "You've successfully updated <strong>Page Builder</strong> to version %s. ", 'siteorigin-panels' ), POOTLEPAGE_VERSION );
+					printf( __( "You've successfully updated <strong>Page Builder</strong> to version %s. ", 'ppb-panels' ), POOTLEPAGE_VERSION );
 				}
 
 				printf(
-					__( 'Please post on our <a href="%s" target="_blank">support forums</a> if you have any issues and sign up to <a href="%s" target="_blank">our newsletter</a> to stay up to date.', 'siteorigin-panels' ),
+					__( 'Please post on our <a href="%s" target="_blank">support forums</a> if you have any issues and sign up to <a href="%s" target="_blank">our newsletter</a> to stay up to date.', 'ppb-panels' ),
 					'http://siteorigin.com/threads/plugin-page-builder/',
 					'http://siteorigin.com/page-builder/#newsletter'
 				)
@@ -29,12 +29,12 @@ function siteorigin_panels_update_notice() {
 
 			<p>
 				<a href="http://siteorigin.com/threads/plugin-page-builder/" class="button button-secondary"
-				   target="_blank"><?php _e( 'Support Forums', 'siteorigin-panels' ) ?></a>
+				   target="_blank"><?php _e( 'Support Forums', 'ppb-panels' ) ?></a>
 				<a href="http://siteorigin.com/page-builder/#newsletter" class="button button-secondary"
-				   target="_blank"><?php _e( 'Newsletter', 'siteorigin-panels' ) ?></a>
+				   target="_blank"><?php _e( 'Newsletter', 'ppb-panels' ) ?></a>
 				<?php if ( empty( $dismissed ) ) : ?>
 					<a href="<?php echo add_query_arg( 'action', 'siteorigin_panels_update_notice_dismiss', admin_url( 'admin-ajax.php' ) ) ?>"
-					   class="button button-primary siteorigin-panels-dismiss"><?php _e( 'Dismiss', 'siteorigin-panels' ) ?></a>
+					   class="button button-primary ppb-panels-dismiss"><?php _e( 'Dismiss', 'ppb-panels' ) ?></a>
 				<?php endif; ?>
 			</p>
 		</div>
@@ -72,7 +72,7 @@ function siteorigin_panels_incompatibility_notice() {
 			}
 		}
 
-		wp_enqueue_script( 'siteorigin-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'ppb-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
 		?>
 		<div class="error">
@@ -96,9 +96,9 @@ function siteorigin_panels_incompatibility_notice() {
 			</p>
 			<p>
 				<a href="http://siteorigin.com/threads/plugin-page-builder/" class="button button-secondary"
-				   target="_blank"><?php _e( 'Support Forums', 'siteorigin-panels' ) ?></a>
+				   target="_blank"><?php _e( 'Support Forums', 'ppb-panels' ) ?></a>
 				<a href="<?php echo add_query_arg( 'action', 'siteorigin_panels_incompatible_notice_dismiss', admin_url( 'admin-ajax.php' ) ) ?>"
-				   class="button button-primary siteorigin-panels-dismiss"><?php _e( 'Dismiss', 'siteorigin-panels' ) ?></a>
+				   class="button button-primary ppb-panels-dismiss"><?php _e( 'Dismiss', 'ppb-panels' ) ?></a>
 			</p>
 		</div>
 	<?php

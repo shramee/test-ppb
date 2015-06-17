@@ -638,7 +638,7 @@ jQuery(function ($) {
                 // Remove url() or in case of Chrome url("")
                 image_url = image_url.match(/^url\("?(.+?)"?\)$/);
 
-                if (image_url[1]) {
+                if ( image_url && image_url[1] ) {
                     image_url = image_url[1];
                     image = new Image();
 

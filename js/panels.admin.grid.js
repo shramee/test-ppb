@@ -177,6 +177,8 @@
             });
         });
 
+        panels.checkAddRowButtonColor();
+
         return container;
     };
 
@@ -327,7 +329,7 @@
                 modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
                 title: $('#remove-row-dialog').attr('data-title'),
                 open: function () {
-                    var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                    var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                     $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
                 },
                 close: function () {
@@ -448,6 +450,8 @@
                             $container.hide();
                             remove();
                         }
+
+                        panels.checkAddRowButtonColor( true );
 
                         $(this).dialog('close');
                     },
@@ -601,14 +605,14 @@
                     $(this).find('input[name$="[grid]"]').val($('#panels-container .grid-container').index($(this).closest('.grid-container')));
                 });
             });
-    }
+    };
 
     /**
      * Clears all the grids
      */
     panels.clearGrids = function () {
         $('#panels-container .grid-container').remove();
-    }
+    };
 
     /**
      * Add the content module in the cell
@@ -624,6 +628,28 @@
         var panel = $('#panels-dialog').panelsCreatePanel('Pootle_Text_Widget');
         panels.addPanel(panel, null, null, true);
 
-    }
+    };
+
+    panels.checkAddRowButtonColor = function ( delay ) {
+
+        if( delay ) {
+            delay = 1;
+        } else {
+            delay = 0;
+        }
+
+        if( $( '#panels-container .grid-container').length < 1 + delay ) {
+
+            $('#add-to-panels  .grid-add').addClass('pootle');
+        } else {
+
+            $('#add-to-panels  .grid-add').removeClass('pootle');
+        }
+
+    };
+
+    $(document).ready( function(){
+        panels.checkAddRowButtonColor();
+    } )
 
 })(jQuery);

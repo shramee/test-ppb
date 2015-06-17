@@ -19,7 +19,7 @@ function siteorigin_panels_setting( $key = '' ) {
 	if ( empty( $settings ) ) {
 		$display_settings = get_option( 'siteorigin_panels_display', array() );
 
-		$settings = get_theme_support( 'siteorigin-panels' );
+		$settings = get_theme_support( 'ppb-panels' );
 		if ( ! empty( $settings ) ) {
 			$settings = $settings[0];
 		} else {
@@ -94,13 +94,13 @@ function siteorigin_panels_options_init() {
 	register_setting( 'pootlepage-display', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
 	register_setting( 'pootlepage-widgets', 'pootlepage-widgets' );
 
-	add_settings_section( 'display', __( 'Display', 'siteorigin-panels' ), '__return_false', 'pootlepage-display' );
+	add_settings_section( 'display', __( 'Display', 'ppb-panels' ), '__return_false', 'pootlepage-display' );
 
 	// The display fields
-	add_settings_field( 'responsive', __( 'Responsive', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'responsive' ) );
-	add_settings_field( 'mobile-width', __( 'Mobile Width', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
-	add_settings_field( 'margin-sides', __( 'Margin Sides', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-sides' ) );
-	add_settings_field( 'margin-bottom', __( 'Margin Bottom', 'siteorigin-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-bottom' ) );
+	add_settings_field( 'responsive', __( 'Responsive', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'responsive' ) );
+	add_settings_field( 'mobile-width', __( 'Mobile Width', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
+	add_settings_field( 'margin-sides', __( 'Margin Sides', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-sides' ) );
+	add_settings_field( 'margin-bottom', __( 'Margin Bottom', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-bottom' ) );
 }
 
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
@@ -135,14 +135,14 @@ function siteorigin_panels_options_field_generic( $args, $groupName ) {
 		case 'bundled-widgets' :
 			?><label><input type="checkbox"
 			                name="<?php echo $groupName ?>[<?php echo esc_attr( $args['type'] ) ?>]" <?php checked( $settings[ $args['type'] ] ) ?>
-			                value="1"/> <?php _e( 'Enabled', 'siteorigin-panels' ) ?></label><?php
+			                value="1"/> <?php _e( 'Enabled', 'ppb-panels' ) ?></label><?php
 			break;
 		case 'margin-bottom' :
 		case 'margin-sides' :
 		case 'mobile-width' :
 			?><input type="text" name="<?php echo $groupName ?>[<?php echo esc_attr( $args['type'] ) ?>]"
 			         value="<?php echo esc_attr( $settings[ $args['type'] ] ) ?>"
-			         class="small-text" /> <?php _e( 'px', 'siteorigin-panels' ) ?><?php
+			         class="small-text" /> <?php _e( 'px', 'ppb-panels' ) ?><?php
 			break;
 	}
 

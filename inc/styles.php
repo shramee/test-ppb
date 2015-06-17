@@ -143,7 +143,7 @@ function pootlepage_dialog_form_echo( $fields ) {
 
 			case 'checkbox' :
 				?>
-				<label class="siteorigin-panels-checkbox-label">
+				<label class="ppb-panels-checkbox-label">
 					<input type="checkbox" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 					       data-style-field="<?php echo esc_attr( $name ) ?>"
 					       data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"/>
@@ -272,7 +272,12 @@ function siteorigin_panels_style_dialog_form() {
 
 			echo '<p class="field_' . esc_attr( $name ) . '">';
 
-			echo '<label>' . $attr['name'] . '</label>';
+			echo '<label>' . $attr['name'];
+			if ( isset( $attr['help-text'] ) ) {
+				// don't use div for this or else div will appear outside of <p>
+				echo '<span class="dashicons dashicons-editor-help tooltip" data-tooltip="' . htmlentities( $attr['help-text'] ) . '"></span>';
+			}
+			echo '</label>';
 			pootlepage_render_single_field( $name, $attr );
 			echo '</p>';
 		}
@@ -306,7 +311,7 @@ function pootlepage_render_single_field( $name, $attr ) {
 		case 'checkbox' :
 			$checked = ( isset( $attr['default'] ) ? checked( $attr['default'], true, false ) : '' );
 			?>
-			<label class="siteorigin-panels-checkbox-label">
+			<label class="ppb-panels-checkbox-label">
 				<input type="checkbox" <?php echo $checked ?> name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 				       data-style-field="<?php echo esc_attr( $name ) ?>"
 				       data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"/>
@@ -353,11 +358,6 @@ function pootlepage_render_single_field( $name, $attr ) {
 			         data-style-field="<?php echo esc_attr( $name ) ?>"
 			         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" /> <?php
 			break;
-	}
-
-	if ( isset( $attr['help-text'] ) ) {
-		// don't use div for this or else div will appear outside of <p>
-		echo "<span class='small-help-text'>" . $attr['help-text'] . "</span>";
 	}
 }
 

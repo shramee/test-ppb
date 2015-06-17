@@ -20,7 +20,7 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		$fields,
 		array(
 			'row_height'                  => array(
-				'name'      => __( 'Row Height', 'siteorigin-panels' ),
+				'name'      => __( 'Row Height', 'ppb-panels' ),
 				'type'      => 'text',
 				'default'   => '',
 				'help-text' => 'Row height can only be set when there is no content in a row.',
@@ -79,12 +79,12 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 				'help-text' => "If you add an image here it will replace the video on mobile site. <br> If you don't it won't!",
 			),
 			'style'                       => array(
-				'name'    => __( 'Inline Styles', 'siteorigin-panels' ),
+				'name'    => __( 'Inline Styles', 'ppb-panels' ),
 				'type'    => 'textarea',
 				'default' => '',
 			),
 			'class'                       => array(
-				'name'    => __( 'Class', 'siteorigin-panels' ),
+				'name'    => __( 'Class', 'ppb-panels' ),
 				'type'    => 'text',
 				'default' => '',
 			),

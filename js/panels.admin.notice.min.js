@@ -1,5 +1,5 @@
 jQuery(function ($) {
-    $('.siteorigin-panels-dismiss').click(function (e) {
+    $('.ppb-panels-dismiss').click(function (e) {
         e.preventDefault();
         var $$ = $(this);
         $.get($$.attr('href'));

@@ -1036,9 +1036,9 @@ video.ppb-bg-video
 	vertical-align: middle;
 }
 
-#grid-styles-dialog label.siteorigin-panels-checkbox-label,
-#page-setting-dialog label.siteorigin-panels-checkbox-label,
-#hide-element-dialog label.siteorigin-panels-checkbox-label
+#grid-styles-dialog label.ppb-panels-checkbox-label,
+#page-setting-dialog label.ppb-panels-checkbox-label,
+#hide-element-dialog label.ppb-panels-checkbox-label
 {
 	width: auto;
 	display: inline;

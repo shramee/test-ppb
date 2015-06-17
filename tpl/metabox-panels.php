@@ -12,19 +12,17 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<div id="add-to-panels">
 
-		<button
-			class="grid-add add-button ed_button button button-small"><?php _e( 'Add Row', 'siteorigin-panels' ) ?></button>
+		<button class="grid-add add-button ed_button button button-small"><?php _e( 'Add Row', 'ppb-panels' ) ?></button>
 
 		<?php if ( ! empty( $layouts ) ) : ?>
-			<button
-				class="prebuilt-set add-button ed_button button button-small"><?php _e( 'Use Existing Page Layout', 'siteorigin-panels' ) ?></button>
+			<button class="prebuilt-set add-button ed_button button button-small"><?php _e( 'Use Existing Page Layout', 'ppb-panels' ) ?></button>
 		<?php endif; ?>
 
 		<div class="clear"></div>
 	</div>
 
 	<?php // The add new widget dialog ?>
-	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget', 'siteorigin-panels' ) ?>"
+	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget', 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<div id="panels-dialog-inner">
 			<div class="panels-text-filter">
@@ -149,24 +147,24 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<?php // The add row dialog ?>
 
-	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row', 'siteorigin-panels' ) ?>"
+	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row', 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
-		<p><label><strong><?php _e( 'Columns', 'siteorigin-panels' ) ?></strong></label></p>
+		<p><label><strong><?php _e( 'Columns', 'ppb-panels' ) ?></strong></label></p>
 
 		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3"/></p>
 	</div>
 
-	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'siteorigin-panels' ) ?>"
+	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<p>Are you sure?</p>
 	</div>
 
-	<div id="remove-widget-dialog" data-title="<?php esc_attr_e( "Delete Content", 'siteorigin-panels' ) ?>"
+	<div id="remove-widget-dialog" data-title="<?php esc_attr_e( "Delete Content", 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<p>Are you sure?</p>
 	</div>
 
-	<div id="page-setting-dialog" data-title="<?php esc_attr_e( 'Page Settings', 'siteorigin-panels' ) ?>"
+	<div id="page-setting-dialog" data-title="<?php esc_attr_e( 'Page Settings', 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 
 		<?php
@@ -176,7 +174,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	</div>
 
-	<div id="hide-element-dialog" data-title="<?php esc_attr_e( 'Hide Elements', 'siteorigin-panels' ) ?>"
+	<div id="hide-element-dialog" data-title="<?php esc_attr_e( 'Hide Elements', 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 
 		<?php
@@ -190,18 +188,18 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<?php if ( ! empty( $layouts ) ) : ?>
 		<div id="grid-prebuilt-dialog"
-		     data-title="<?php esc_attr_e( 'Use Existing Page Layout', 'siteorigin-panels' ) ?>"
+		     data-title="<?php esc_attr_e( 'Use Existing Page Layout', 'ppb-panels' ) ?>"
 		     class="panels-admin-dialog">
-			<p><label><strong><?php _e( 'Page Layout', 'siteorigin-panels' ) ?></strong></label></p>
+			<p><label><strong><?php _e( 'Page Layout', 'ppb-panels' ) ?></strong></label></p>
 
 			<p>
 				<select type="text" id="grid-prebuilt-input" name="prebuilt_layout" style="width:580px;"
-				        placeholder="<?php esc_attr_e( 'Select Layout', 'siteorigin-panels' ) ?>">
+				        placeholder="<?php esc_attr_e( 'Select Layout', 'ppb-panels' ) ?>">
 					<option class="empty" <?php selected( true ) ?> value=""></option>
 					<?php foreach ( $layouts as $id => $data ) : ?>
 						<option id="panel-prebuilt-<?php echo esc_attr( $id ) ?>"
 						        data-layout-id="<?php echo esc_attr( $id ) ?>" class="prebuilt-layout">
-							<?php echo isset( $data['name'] ) ? $data['name'] : __( 'Untitled Layout', 'siteorigin-panels' ) ?>
+							<?php echo isset( $data['name'] ) ? $data['name'] : __( 'Untitled Layout', 'ppb-panels' ) ?>
 						</option>
 					<?php endforeach; ?>
 				</select>
@@ -210,7 +208,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php endif; ?>
 
 	<?php // The styles dialog ?>
-	<div id="grid-styles-dialog" data-title="<?php esc_attr_e( 'Row Visual Style', 'siteorigin-panels' ) ?>"
+	<div id="grid-styles-dialog" data-title="<?php esc_attr_e( 'Row Visual Style', 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<div class="ppb-cool-panel-wrap">
 
@@ -223,24 +221,24 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<?php pp_pb_widget_styles_dialog_form() ?>
 	</div>
 
-	<div id="content-loss-dialog" data-title="<?php esc_attr_e( 'Changing to Page Builder', 'siteorigin-panels' ) ?>"
-	     data-button-i-know="<?php esc_attr_e( "I know what I'm doing", 'siteorigin-panels' ) ?>"
-	     data-button-stop="<?php esc_attr_e( "Yep, I'll stop and create a new page", 'siteorigin-panels' ) ?>"
+	<div id="content-loss-dialog" data-title="<?php esc_attr_e( 'Changing to Page Builder', 'ppb-panels' ) ?>"
+	     data-button-i-know="<?php esc_attr_e( "I know what I'm doing", 'ppb-panels' ) ?>"
+	     data-button-stop="<?php esc_attr_e( "Yep, I'll stop and create a new page", 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<p>
-			<?php _e( 'Slow down tiger! Do you realise that changing to Page Builder for this page will make all your page content disappear forever?', 'siteorigin-panels' ) ?>
+			<?php _e( 'Slow down tiger! Do you realise that changing to Page Builder for this page will make all your page content disappear forever?', 'ppb-panels' ) ?>
 			<br><br>
-			<?php _e( 'Why not create a new page instead?', 'siteorigin-panels' ) ?>
+			<?php _e( 'Why not create a new page instead?', 'ppb-panels' ) ?>
 		</p>
 	</div>
 
 	<div id="layout-loss-dialog"
-	     data-title="<?php esc_attr_e( 'Changing to the default editor', 'siteorigin-panels' ) ?>"
-	     data-button-i-know="<?php esc_attr_e( "I know what I'm doing", 'siteorigin-panels' ) ?>"
-	     data-button-stop="<?php esc_attr_e( "I love Page Builder, keep me here", 'siteorigin-panels' ) ?>"
+	     data-title="<?php esc_attr_e( 'Changing to the default editor', 'ppb-panels' ) ?>"
+	     data-button-i-know="<?php esc_attr_e( "I know what I'm doing", 'ppb-panels' ) ?>"
+	     data-button-stop="<?php esc_attr_e( "I love Page Builder, keep me here", 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<p>
-			<?php _e( "Ummm... if you go back to the default editor you'll loose all your content. Are you sure you want to loose all that hard work you've done?", 'siteorigin-panels' ) ?>
+			<?php _e( "Ummm... if you go back to the default editor you'll loose all your content. Are you sure you want to loose all that hard work you've done?", 'ppb-panels' ) ?>
 		</p>
 	</div>
 

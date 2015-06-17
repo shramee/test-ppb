@@ -3,26 +3,26 @@
 class SiteOrigin_Panels_Widget_Animated_Image extends SiteOrigin_Panels_Widget {
 	function __construct() {
 		parent::__construct(
-			__( 'Animated Image ( Pootle )', 'siteorigin-panels' ),
+			__( 'Animated Image ( Pootle )', 'ppb-panels' ),
 			array(
-				'description'   => __( 'An image that animates in when it enters the screen.', 'siteorigin-panels' ),
+				'description'   => __( 'An image that animates in when it enters the screen.', 'ppb-panels' ),
 				'default_style' => 'simple',
 			),
 			array(),
 			array(
 				'image'     => array(
 					'type'  => 'text',
-					'label' => __( 'Image URL', 'siteorigin-panels' ),
+					'label' => __( 'Image URL', 'ppb-panels' ),
 				),
 				'animation' => array(
 					'type'    => 'select',
-					'label'   => __( 'Animation', 'siteorigin-panels' ),
+					'label'   => __( 'Animation', 'ppb-panels' ),
 					'options' => array(
-						'fade'        => __( 'Fade In', 'siteorigin-panels' ),
-						'slide-up'    => __( 'Slide Up', 'siteorigin-panels' ),
-						'slide-down'  => __( 'Slide Down', 'siteorigin-panels' ),
-						'slide-left'  => __( 'Slide Left', 'siteorigin-panels' ),
-						'slide-right' => __( 'Slide Right', 'siteorigin-panels' ),
+						'fade'        => __( 'Fade In', 'ppb-panels' ),
+						'slide-up'    => __( 'Slide Up', 'ppb-panels' ),
+						'slide-down'  => __( 'Slide Down', 'ppb-panels' ),
+						'slide-left'  => __( 'Slide Left', 'ppb-panels' ),
+						'slide-right' => __( 'Slide Right', 'ppb-panels' ),
 					)
 				),
 			)

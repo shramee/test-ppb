@@ -141,7 +141,7 @@ jQuery(function ($) {
         resizable: false,
         title: $('#page-setting-dialog').attr('data-title'),
         open: function () {
-            var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+            var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
             $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
             window.pootlePagePageSettingUploadButton();
@@ -227,7 +227,7 @@ jQuery(function ($) {
                 // This fixes the A element focus issue
                 $(this).closest('.ui-dialog').find('a').blur();
 
-                var overlay = $('<div class="siteorigin-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                var overlay = $('<div class="ppb-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                 var $hidden = window.$currentPanel.find('input[name$="[style]"]');
@@ -344,7 +344,7 @@ jQuery(function ($) {
         resizable: false,
         title: $('#hide-element-dialog').attr('data-title'),
         open: function () {
-            var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+            var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
             $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
             var fieldValues = JSON.parse($('#hide-elements').val());
@@ -404,7 +404,7 @@ jQuery(function ($) {
             title: $('#grid-add-dialog').attr('data-title'),
             open: function () {
                 $(this).find('input').val(2).select();
-                var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
             },
             close: function () {
@@ -438,7 +438,7 @@ jQuery(function ($) {
             title: $contentSwitchDialog.attr('data-title'),
             open: function () {
                 $(this).find('input').val(2).select();
-                var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
             },
             close: function () {
@@ -475,7 +475,7 @@ jQuery(function ($) {
             title: $contentSwitchDialog.attr('data-title'),
             open: function () {
                 $(this).find('input').val(2).select();
-                var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
             },
             close: function () {
@@ -515,7 +515,7 @@ jQuery(function ($) {
             minWidth: 960,
             maxHeight: Math.round($(window).height() * 0.8),
             open: function () {
-                var overlay = $('<div class="siteorigin-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                var overlay = $('<div class="ppb-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
             },
             close: function () {
@@ -762,9 +762,13 @@ jQuery(function ($) {
 
         // Handle the previews
         $('#post-preview').click(function (event) {
+
             var form = $('#panels-container').closest('form');
+
             var originalAction = form.attr('action');
+
             form.attr('action', panels.previewUrl).attr('target', '_blank').submit().attr('action', originalAction).attr('target', '_self');
+
             event.preventDefault();
         });
     }

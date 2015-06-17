@@ -225,7 +225,7 @@
                         // This fixes the A element focus issue
                         $(this).closest('.ui-dialog').find('a').blur();
 
-                        var overlay = $('<div class="siteorigin-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                        var overlay = $('<div class="ppb-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                         $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                     },
@@ -480,7 +480,7 @@
                 modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
                 title: $('#remove-widget-dialog').attr('data-title'),
                 open: function () {
-                    var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                    var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                     $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
                 },
                 close: function () {
@@ -677,7 +677,7 @@
         $('#panels-container .grid-container').each(function () {
             $(this).panelsResizeCells();
         });
-    }
+    };
 
     panels.pootlePageGetWidgetStyles = function ($styleForm) {
         var $styleDataField = window.$currentPanel.find('input[name$="[style]"]');

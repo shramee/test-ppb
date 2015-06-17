@@ -39,7 +39,7 @@ jQuery(function ($) {
                     $t.find('.field_row_height').hide();
                 }
 
-                var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                 $t.data('overlay', overlay).closest('.ui-dialog').before(overlay);
 
                 window.setRowOptionUploadButton();

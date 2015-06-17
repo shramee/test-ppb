@@ -42,13 +42,13 @@ function siteorigin_panels_black_studio_tinymce_admin_enqueue( $page ) {
 
 		if ( version_compare( $black_studio_tinymce_widget_version, '1.3.3', '<=' ) ) {
 			// Use the old compatibility file.
-			wp_enqueue_script( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.old.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+			wp_enqueue_script( 'black-studio-tinymce-widget-ppb-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-ppb-panels.old.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		} else {
 			// Use the new compatibility file
-			wp_enqueue_script( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+			wp_enqueue_script( 'black-studio-tinymce-widget-ppb-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-ppb-panels.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		}
 
-		wp_enqueue_style( 'black-studio-tinymce-widget-siteorigin-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-siteorigin-panels.css', array(), POOTLEPAGE_VERSION );
+		wp_enqueue_style( 'black-studio-tinymce-widget-ppb-panels', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/black-studio-tinymce/black-studio-tinymce-widget-ppb-panels.css', array(), POOTLEPAGE_VERSION );
 
 
 		if ( version_compare( $black_studio_tinymce_widget_version, '1.2.0', '<=' ) ) {

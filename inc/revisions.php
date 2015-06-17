@@ -57,7 +57,7 @@ function siteorigin_panels_revisions_fields( $fields ) {
 		return $fields;
 	}
 
-	$fields['panels_data_field'] = __( 'Page Builder Content', 'siteorigin-panels' );
+	$fields['panels_data_field'] = __( 'Page Builder Content', 'ppb-panels' );
 
 	return $fields;
 
