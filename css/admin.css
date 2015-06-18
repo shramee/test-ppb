@@ -1024,7 +1024,7 @@ button.wp-switch-editor {
 }
 
 .ui-dialog.panels-admin-dialog {
-    z-index: 80002 !important;
+    z-index: 99999 !important;
 }
 
 .ui-dialog.panels-admin-dialog .ui-dialog-content {
