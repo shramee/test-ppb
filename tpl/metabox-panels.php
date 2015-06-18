@@ -257,6 +257,10 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<input type="hidden" id="page-settings" name="page-settings" value="<?php esc_attr_e( $pageSettings ) ?>"/>
 	<input type="hidden" id="hide-elements" name="hide-elements" value="<?php esc_attr_e( $hideElements ) ?>"/>
 
+	<div class="ppb-hidden-editor-container" style="display:none;">
+		<?php ppb_print_editor_panel(); ?>
+	</div>
+
 	<?php wp_nonce_field( 'save', '_sopanels_nonce' ) ?>
 	<?php do_action( 'siteorigin_panels_metabox_end' ); ?>
 </div>

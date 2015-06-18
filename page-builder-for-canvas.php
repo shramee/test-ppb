@@ -1153,62 +1153,19 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			foreach ( $widgets as $pi => $widget_info ) {
 				$data = $widget_info;
 
-				$widgetStyle = isset( $data['info']['style'] ) ? json_decode( $data['info']['style'], true ) : pp_get_default_widget_style();
-
 				unset( $data['info'] );
 
-				// don't do shortcode or it will mess up shortcodes when WP do shortcode at the end
-				if ( $widget_info['info']['class'] == 'Pootle_Text_Widget' ) {
-					remove_filter( 'widget_text', 'do_shortcode' );
-				}
-
-				siteorigin_panels_the_widget( $widget_info['info']['class'], $data, $widgetStyle, $gi, $ci, $pi, $pi == 0, $pi == count( $widgets ) - 1, $post_id );
-
-				if ( $widget_info['info']['class'] == 'Pootle_Text_Widget' ) {
-					add_filter( 'widget_text', 'do_shortcode' );
-				}
-
-				// post loop css for multiple columns
-				if ( $widget_info['info']['class'] == "SiteOrigin_Panels_Widgets_PostLoop" ) {
-					$css = '';
-
-					if ( isset( $widget_info['column_count'] ) ) {
-						$count = ( int ) $widget_info['column_count'];
-						// fix division by zero
-						if ( $count < 1 ) {
-							$count = 1;
-						}
-						$width = ( 100 / $count ) . "%";
-						$cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
-
-						$css .= "#$cssId {\n";
-						$css .= "\t" . "font-size: 0; \n";
-						$css .= "}\n";
-
-						$css .= "#$cssId > article {\n";
-						$css .= "\t" . "width: " . $width . ";\n";
-						$css .= "\t" . 'display: inline-block;' . "\n";
-						$css .= "\t" . 'box-sizing: border-box;' . "\n";
-						$css .= "\t" . 'padding-right: 10px;' . "\n";
-						$css .= "\t" . 'vertical-align: top;' . "\n";
-						$css .= "}\n";
-					}
-
-					if ( isset( $widget_info['post_meta_enable'] ) ) {
-						if ( $widget_info['post_meta_enable'] != '1' ) {
-							$cssId = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
-
-							$css .= "#$cssId > article > .post-meta {\n";
-							$css .= "\t" . "display: none;\n";
-							$css .= "}\n";
-						}
-					}
-					echo "<style>\n" . $css . "</style>\n";
-				}
-
-				if ( $widget_info['info']['class'] == "Woo_Widget_Component" ) {
-					wp_reset_query();
-				}
+				/**
+				 * Render the content block via this hook
+				 *
+				 * @param array $widget_info - Info for this block - backwards compatible with widgets
+				 * @param int   $gi          - Grid Index
+				 * @param int   $ci          - Cell Index
+				 * @param int   $pi          - Panel/Content Block Index
+				 * @param int   $blocks_num  - Total number of Blocks in cell
+				 * @param int   $post_id     - The current post ID
+				 */
+				do_action( 'ppb_panels_render_content_block', $widget_info, $gi, $ci, $pi, count( $widgets ), $post_id );
 			}
 			if ( empty( $widgets ) ) {
 				echo '&nbsp;';
@@ -1567,40 +1524,31 @@ function pootlepage_body_class( $classes ) {
 }
 
 /**
- * Render the widget.
+ * Outputs opening container with styles and classes
  *
- * @param string $widget The widget class name.
- * @param array $instance The widget instance
- * @param int $grid The grid number.
- * @param int $cell The cell number.
- * @param int $panel the panel number.
- * @param bool $is_first Is this the first widget in the cell.
- * @param bool $is_last Is this the last widget in the cell.
- * @param bool $post_id
+ * @param $block_info
+ * @param $gi
+ * @param $ci
+ * @param $pi
+ * @param $blocks_num
+ * @param $post_id
  */
-function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, $cell, $panel, $is_first, $is_last, $post_id = false ) {
-	if ( ! class_exists( $widget ) ) {
-		return;
-	}
-	if ( empty( $post_id ) ) {
-		$post_id = get_the_ID();
-	}
+function ppb_panels_render_content_block_container_open( $block_info, $gi, $ci, $pi, $blocks_num, $post_id ) {
 
-	$the_widget = new $widget;
+	$styleArray  = $widgetStyle = isset( $block_info['info']['style'] ) ? json_decode( $block_info['info']['style'], true ) : pp_get_default_widget_style();;
 
+	//Classes for this content block
 	$classes = array( 'panel' );
-	if ( ! empty( $the_widget->id_base ) ) {
-		$classes[] = 'widget_' . $the_widget->id_base . ' ' . $the_widget->id_base;
-	}
-	if ( $is_first ) {
+	if ( 0 == $pi ) {
 		$classes[] = 'panel-first-child';
 	}
-	if ( $is_last ) {
+	if ( ( $blocks_num - 1 ) == $pi ) {
 		$classes[] = 'panel-last-child';
 	}
-	$id = 'panel-' . $post_id . '-' . $grid . '-' . $cell . '-' . $panel;
 
-	$styleArray  = $widgetStyle;
+	//Id for this content block
+	$id = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
+
 	$inlineStyle = '';
 
 	$widgetStyleFields = pp_pb_widget_styling_fields();
@@ -1664,36 +1612,33 @@ function siteorigin_panels_the_widget( $widget, $instance, $widgetStyle, $grid, 
 		}
 	}
 
-	$titleInlineStyle = '';
-
-	if ( ! empty( $styleArray['inline-css'] ) ) {
-		$inlineStyle .= str_replace( 'hide-title:none;', '', $styleArray['inline-css'] );
-		if ( false !== strpos( $styleArray['inline-css'], 'hide-title:none;' ) ) {
-			$titleInlineStyle .= 'display:none;';
-		}
-	}
-
-	$the_widget->widget( array(
-		'before_widget' => '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >',
-		'after_widget'  => '</div>',
-		'before_title'  => '<h3 class="widget-title" style="' . $titleInlineStyle . '">',
-		'after_title'   => '</h3>',
-		'widget_id'     => 'widget-' . $grid . '-' . $cell . '-' . $panel
-	), $instance );
-
 	if ( $styleWithSelector != '' ) {
 		echo "<style>\n";
 		echo str_replace( 'display', 'display:none;display', $styleWithSelector );
 		echo "</style>\n";
 	}
 
-	// Add js file for WooTabs widget
-	if ( $widget == 'Woo_Widget_WooTabs' ) {
-		if ( function_exists( 'woo_widget_tabs_js' ) ) {
-			add_action( 'wp_footer', 'woo_widget_tabs_js' );
-		}
-	}
+	echo '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >';
 }
+
+add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block_container_open', 5, 6 );
+
+function ppb_panels_render_content_block_container_close(){
+	echo '</div>';
+}
+
+add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block_container_close', 25 );
+
+/**
+ * Render the Content Panel.
+ *
+ * @param string $widget_info The widget class name.
+ */
+function ppb_panels_render_content_block( $block_info ) {
+	echo $block_info['text'];
+}
+
+add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block' );
 
 /**
  * Add the Edit Home Page item to the admin bar.
@@ -2019,31 +1964,15 @@ add_action( 'wp_ajax_ppb_widget_name', 'ppb_ajax_widget_name' );
 /**
  * Display a widget form with the provided data
  */
-function siteorigin_panels_ajax_widget_form() {
+function ppb_print_editor_panel( $request = null ) {
 
-	global $wp_widget_factory;
-
-	$request = array_map( 'stripslashes_deep', $_REQUEST );
-
-	if ( empty( $request['widget'] ) ) {
-		exit();
-	}
-	$widget_form = siteorigin_panels_render_form( $request['widget'], ! empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array(), $_REQUEST['raw'] );
 	?>
 	<div class="ppb-cool-panel-wrap">
 		<ul class="ppb-acp-sidebar">
 
 			<li>
-				<a class="ppb-tabs-anchors ppb-block-anchor ppb-editor"
-				   data-widgetClass="Pootle_Text_Widget" <?php selected( true ) ?> href="#pootle-editor-tab">
-					<?php
-					if ( 'Pootle_Text_Widget' == $request['widget'] ) {
-						echo 'Editor';
-					} else {
-						$widget = $wp_widget_factory->widgets[ $request['widget'] ];
-						echo '<span class="old-widget">' . $widget->name . '</span>';
-					}
-					?>
+				<a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" <?php selected( true ) ?> href="#pootle-editor-tab">
+					<?php echo apply_filters( 'ppb_content_block_editor_title', 'Editor', $request ); ?>
 				</a>
 			</li>
 
@@ -2058,18 +1987,9 @@ function siteorigin_panels_ajax_widget_form() {
 
 		<?php ?>
 		<div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
-			<?php
-			if ( 'Pootle_Text_Widget' == $request['widget'] ) {
-				echo $widget_form;
-			} else {
-				?>
-				<p class="old-widget">This is a widget used with the previous version of Page Builder. You can still
-					edit it here for now, but you can't add new widgets with Page Builder any more. Really sorry! It is
-					now better to shortcodes in the text tab of the editor.</p>
-				<?php
-				echo $widget_form;
-			}
-			?>
+
+			<?php echo apply_filters( 'ppb_content_block_editor_form', '', $request ); ?>
+
 		</div>
 
 		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
@@ -2085,13 +2005,31 @@ function siteorigin_panels_ajax_widget_form() {
 		<?php } ?>
 
 	</div>
-	<?php
+<?php
 
+}
+
+function ppb_panels_ajax_widget_form(){
+
+	$request = array_map( 'stripslashes_deep', $_REQUEST );
+
+	ppb_print_editor_panel( $request );
 
 	exit();
 }
 
-add_action( 'wp_ajax_so_panels_widget_form', 'siteorigin_panels_ajax_widget_form' );
+add_action( 'wp_ajax_so_panels_widget_form', 'ppb_panels_ajax_widget_form' );
+
+function ppb_panels_editor(  ) {
+
+	wp_editor( '', 'ppbeditor', array(
+		'textarea_name'  => 'widgets[{$id}][text]',
+		'default_editor' => 'tmce',
+	) );
+
+}
+
+add_filter( 'ppb_content_block_editor_form', 'ppb_panels_editor' );
 
 /**
  * Display a widget form with the provided data

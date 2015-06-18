@@ -19,10 +19,10 @@
         var parts;
 
         if (typeof $$.data('dialog') != 'undefined' && !$$.data('dialog').hasClass('ui-dialog-content-loading')) {
-
             $$.data('dialog').find('*[name^=widgets]').not('[data-info-field]').each(function () {
                 var $$ = $(this);
                 var name = /widgets\[[0-9]+\]\[(.*)\]/.exec($$.attr('name'));
+
                 name = name[1];
 
                 parts = name.split('][');
@@ -249,6 +249,11 @@
                             class: 'button pootle stop',
                             click: function () {
                                 doneClicked = true;
+                                var editor = $('#ppbeditor');
+                                if( ! editor.is(':visible') ) {
+                                    editor.val(tinyMCE.get('ppbeditor').getContent());
+                                }
+
                                 $(this).trigger('panelsdone', $currentPanel, activeDialog);
 
                                 var panelData = $currentPanel.panelsGetPanelData();
@@ -310,17 +315,19 @@
 
                 var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
 
-                result = panels.editor_form_cache.replace(/\{\$id\}/g, newPanelId);
-                result = result.replace(/\[PPBEditorTextHere\]/g, text.replace(/(?:\r\n|\r|\n)/g, '<br />'));
-
-                if (1 != instance.filter) {
-                    result = result.replace(/checked='checked'/g, '');
-                }
-
                 activeDialog
-                    .html(result)
+                    .html(panels.editor_form_cache)
                     .dialog("option", "position", {my: "center", at: "center", of: window})
                     .dialog("open");
+
+                tinyMCE.get('ppbeditor').setContent( text.replace( /(?:\r\n|\r|\n)/g, '<br />' ) );
+
+
+
+                var editor = $('#ppbeditor'),
+                    name = editor.attr('name');
+
+                editor.attr('name', name.replace(/\{\$id\}/g, newPanelId));
 
                 $('.ppb-add-content-panel')
                     .tabs({
@@ -346,7 +353,8 @@
                     title = $t.find('.ui-tabs-active a').html();
                 $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
 
-                //$('.ppb-cool-panel-wrap [selected]').click();
+                tinymce.execCommand( 'mceRemoveEditor', false, 'ppbeditor' );
+                tinymce.execCommand( 'mceAddEditor', false, 'ppbeditor' );
 
                 $(".ppb-cool-panel-wrap li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
@@ -736,23 +744,7 @@
     };
 
     $(document).ready(function () {
-        panels.editor_form_cache = null;
-        var data = {
-            action: "so_panels_widget_form",
-            widget: "Pootle_Text_Widget",
-            instance: JSON.stringify({text: "[PPBEditorTextHere]"}),
-            raw: "0"
-        };
-
-        $.post(
-            ajaxurl,
-            data,
-            function (result) {
-                panels.editor_form_cache = result;
-            },
-            'html'
-        );
-
+        panels.editor_form_cache = $('.ppb-hidden-editor-container').contents();
     });
 
 })(jQuery);
