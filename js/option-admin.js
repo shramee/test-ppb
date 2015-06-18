@@ -36,7 +36,7 @@
     }
 
     function moveVisualEditorToTopLeft() {
-        var $widget = $('.panel-type-list.used-list > .panel-type[data-class=Pootle_PB_Content_Block]');
+        var $widget = $('.panel-type-list.used-list > .panel-type[data-class=Pootle_Text_Widget]');
         if ($widget.length > 0) {
             $('.panel-type-list.used-list').prepend($widget);
         }

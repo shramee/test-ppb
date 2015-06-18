@@ -50,7 +50,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 				     count( $widgetSettings['unused-widgets'] ) == 0
 				) {
 					$widgetSettings['reorder-widgets'] = array(
-						'Pootle_PB_Content_Block',
+						'Pootle_Text_Widget',
 						'SiteOrigin_Panels_Widgets_PostLoop',
 						'Woo_Widget_Component'
 					);
@@ -75,11 +75,11 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 					}
 
 					// make visual editor as first one
-					if ( in_array( 'Pootle_PB_Content_Block', $usedSequence ) ) {
+					if ( in_array( 'Pootle_Text_Widget', $usedSequence ) ) {
 						$temp   = array();
-						$temp[] = 'Pootle_PB_Content_Block';
+						$temp[] = 'Pootle_Text_Widget';
 						foreach ( $usedSequence as $class ) {
-							if ( $class != 'Pootle_PB_Content_Block' ) {
+							if ( $class != 'Pootle_Text_Widget' ) {
 								$temp[] = $class;
 							}
 						}

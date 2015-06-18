@@ -67,6 +67,8 @@ function pp_pb_check_for_conflict() {
 
 require_once( 'page-builder-for-canvas-functions.php' );
 
+require_once 'widgets/basic.php';
+
 require_once 'inc/vars.php';
 require_once 'inc/options.php';
 require_once 'inc/revisions.php';
@@ -382,7 +384,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 				}
 
 				// bring over the hide title check box from old Pootle Visual Editor
-				if ( $widget['info']['class'] == 'Pootle_PB_Content_Block' ) {
+				if ( $widget['info']['class'] == 'Pootle_Text_Widget' ) {
 				}
 			}
 
