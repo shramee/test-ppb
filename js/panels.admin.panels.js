@@ -303,7 +303,7 @@
                 'raw': $currentPanel.find('input[name$="[info][raw]"]').val()
             };
 
-            if ("Pootle_Text_Widget" == widgetClass) {
+            if ("Pootle_PB_Content_Block" == widgetClass) {
 
                 var text = '',
                     filter = 1;
@@ -616,10 +616,10 @@
         if (typeof data != 'undefined' && typeof data.info != 'undefined') {
             widClass = data.info.class;
         } else {
-            widClass = 'Pootle_Text_Widget';
+            widClass = 'Pootle_PB_Content_Block';
         }
 
-        if ('Pootle_Text_Widget' != widClass) {
+        if ('Pootle_PB_Content_Block' != widClass) {
 
             $.get(ajaxurl, {
                 'action': 'ppb_widget_name',
