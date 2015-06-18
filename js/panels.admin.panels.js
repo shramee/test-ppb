@@ -108,6 +108,11 @@
         var newPanelId = newPanelIdInit++;
 
         var dialogWrapper = $(this);
+        var $$ = dialogWrapper.find('.panel-type').filter(function () {
+            return $(this).data('class') === type
+        });
+
+        if ($$.length == 0) return null;
 
         // Hide the undo message
         $('#panels-undo-message').fadeOut(function () {
@@ -115,8 +120,8 @@
         });
         var panel = $('<div class="panel new-panel"><div class="panel-wrapper"><div class="title"><h4></h4><span class="actions"></span></div></div></div>');
 
-        var description = 'Pootle Page Builder Content Block';
-        var widgetName = 'Editor';
+        var description = $$.find('.description').html();
+        var widgetName = $$.find('h3').html();
 
         window.activeDialog = undefined;
 
@@ -152,8 +157,8 @@
             .append($('<input type="hidden" name="panel_order[]" type="hidden">').val(newPanelId))
             .data({
                 // We need this data to update the title
-                'title-field': 'Editor',
-                'title': 'Editor',
+                'title-field': $$.attr('data-title-field'),
+                'title': $$.attr('data-title'),
                 'raw': false
             })
             .end().find('.title h4').html('Editor');
