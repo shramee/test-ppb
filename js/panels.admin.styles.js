@@ -58,8 +58,13 @@ jQuery(function ($) {
                 $bgToggle.off('change', panels.rowBgToggle);
                 $bgVidFlds.off('change', panels.BGVidMP4);
 
+                bg_color = $('#grid-styles-dialog [data-style-field=background]').val();
+
                 // Copy the dialog values back to the container style value fields
                 var container = $('#grid-styles-dialog').data('container');
+
+                container.css( 'border-left-color', bg_color );
+
                 $('#grid-styles-dialog [data-style-field]').each(function () {
                     var $$ = $(this);
                     var cf = container.find('[data-style-field="' + $$.data('style-field') + '"]');

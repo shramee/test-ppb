@@ -93,7 +93,7 @@
         }
 
         return data;
-    }
+    };
 
     /**
      * Create and return a new panel object

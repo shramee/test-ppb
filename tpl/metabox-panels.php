@@ -154,6 +154,46 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3"/></p>
 	</div>
 
+	<div id="ppb-hello-user">
+		<?php
+
+		//Get Current User
+		$current_user = wp_get_current_user();
+
+		//Get first name if set
+		$username = '';
+		if ( ! empty( $current_user->user_firstname ) ) {
+			$username = " {$current_user->user_firstname}";
+		}
+
+		//Get user's visit count
+		$visit_count = get_user_meta( $current_user->ID, 'ppb-visit-count', true );
+
+		//Message sections
+		$help_text = " Click the 'Add Row' button above to start building your page.";
+
+		//Set welcome message
+		if ( empty( $visit_count ) ) {
+
+			$visit_count = 0;
+			$message = "Welcome to Page Builder{$username}!$help_text";
+
+		} elseif ( 1 == $visit_count ) {
+			$message = "Welcome back to Page Builder{$username}!$help_text";
+		} else {
+			$message = "Welcome to Page Builder{$username}! You know what to do.";
+		}
+
+		//Print the message
+		echo $message;
+
+		//Update user visit count
+		$visit_count++;
+		update_user_meta( $current_user->ID, 'ppb-visit-count', $visit_count );
+
+		?>
+	</div>
+
 	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">
 		<p>Are you sure?</p>

@@ -39,7 +39,7 @@
                 );
 
                 $(this)
-                    .width(Math.floor(totalWidth * Number($(this).attr('data-percent'))))
+                    .width( Math.floor( ( totalWidth-1 ) * Number($(this).attr('data-percent') ) ) )
                     .css('left', left);
                 left += $(this).width() + 12;
             });
@@ -68,7 +68,7 @@
             }
         }
 
-        if (typeof style == 'undefined') style = {};
+        if (typeof style == 'undefined') style = {background:''};
 
         var weightSum = 0;
         for (var index in weights) {
@@ -76,7 +76,7 @@
         }
 
         // Create a new grid container
-        var container = $('<div />').addClass('grid-container').appendTo('#panels-container');
+        var container = $('<div />').css('border-left-color', style.background).addClass('grid-container').appendTo('#panels-container');
         // Add the hidden field to store the grid order
         container.append($('<input type="hidden" name="grids[' + gridId + '][cells]" />').val(cells));
 
@@ -641,9 +641,11 @@
         if( $( '#panels-container .grid-container').length < 1 + delay ) {
 
             $('#add-to-panels  .grid-add').addClass('pootle');
+            $('#ppb-hello-user').show();
         } else {
 
             $('#add-to-panels  .grid-add').removeClass('pootle');
+            $('#ppb-hello-user').hide();
         }
 
     };

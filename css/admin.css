@@ -85,7 +85,6 @@ html {
 
 #panels-container .grid {
     position: relative;
-    background: #fff url("images/cell-selected.png") repeat;
     margin: 0 0 61px;
 }
 
@@ -104,22 +103,19 @@ html {
     background: #ccc;
 }
 
-#panels-container .grid .ui-resizable-handle.ui-resizable-w {
-    background: #e0e0e0;
+#panels-container .grid-container:hover .ui-resizable-handle {
+    background: #f1f1f1;
 }
 
 #panels-container .grid .cell {
     position: absolute;
     top: 0;
-    background: #f1f1f1;
     border: 1px solid #ccc;
     padding-bottom: 61px;
 }
 
 #panels-container .grid .cell.cell-selected {
-    background: #f1f1f1;
     border-color: #aaa;
-    box-shadow: 0 0 4px 1px rgba(180, 180, 180, 0.3);
 }
 
 #panels-container .grid .cell.first {
@@ -154,20 +150,17 @@ html {
 #panels-container .grid .cell .cell-width-left {
     width: 5px;
     height: 11px;
-    background: url(images/cell-width.png) no-repeat left top;
     float: left;
 }
 
 #panels-container .grid .cell .cell-width-right {
     width: 5px;
     height: 11px;
-    background: url(images/cell-width.png) no-repeat left bottom;
     float: right;
 }
 
 #panels-container .grid .cell .cell-width-line {
     height: 11px;
-    background: url(images/cell-width.png) repeat-x left -11px;
     margin: 0 5px;
 }
 
@@ -192,9 +185,19 @@ div#panels-container {
     padding: 0;
 }
 
+div#ppb-hello-user {
+    padding: 36px 0 0 120px;
+    background: url(./images/ppb-arrow.png) 43px 0px/ 71px no-repeat;
+    min-height: 50px;
+}
+
 #panels-container .grid-container {
     position: relative;
-    padding: 10px 0 20px;
+    padding: 2px 0 20px;
+    margin: 10px 0 0;
+    background: #fff;
+    border: 1px solid #f1f1f1;
+    border-left-width: 5px;
 }
 
 #panels-container .grid-container .controls {
@@ -1045,9 +1048,10 @@ button.wp-switch-editor {
 
 #add-to-panels .button.button-small.add-button {
     float: left;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    margin-top: 1px !important;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 2px;
+    margin-top: 1px;
     font-size: 12px;
     line-height: 24px;
     height: 26px;
