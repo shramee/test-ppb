@@ -920,6 +920,10 @@ video.ppb-bg-video {
 
 .dashicons-editor-help.tooltip {
     float:right;
+    margin-top: 2px;
+    color: #aaa;
+    font-size: 25px;
+    line-height: 25px;
 }
 
 #grid-styles-dialog label.ppb-panels-checkbox-label,

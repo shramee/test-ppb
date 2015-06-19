@@ -273,12 +273,11 @@ function siteorigin_panels_style_dialog_form() {
 			echo '<p class="field_' . esc_attr( $name ) . '">';
 
 			echo '<label>' . $attr['name'];
-			if ( isset( $attr['help-text'] ) ) {
-				// don't use div for this or else div will appear outside of <p>
-				echo '<span class="dashicons dashicons-editor-help tooltip" data-tooltip="' . htmlentities( $attr['help-text'] ) . '"></span>';
-			}
 			echo '</label>';
 			pootlepage_render_single_field( $name, $attr );
+			if ( isset( $attr['help-text'] ) ) {
+				echo '<span class="dashicons dashicons-editor-help tooltip" data-tooltip="' . htmlentities( $attr['help-text'] ) . '"></span>';
+			}
 			echo '</p>';
 		}
 

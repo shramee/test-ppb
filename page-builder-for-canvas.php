@@ -91,6 +91,19 @@ if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) {
  */
 function siteorigin_panels_activate() {
 	add_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION, '', 'no' );
+	//@TODO add notice for Welcome page #275
+
+	$current_user = wp_get_current_user();
+
+	//Get first name if set
+	$username = '';
+	if ( ! empty( $current_user->user_firstname ) ) {
+		$username = " {$current_user->user_firstname}";
+	}
+
+	$welcome_message = "<b>Hey{$username}! Welcome to Page builder.</b> You're all set to start building stunning pages!<br><a class='button pootle' href='" . admin_url( '/options-general.php?page=page_builder&welcome_to_page_builder' ) . "'>Get started</a>";
+
+	ppb_add_admin_notice( 'welcome', $welcome_message );
 }
 
 register_activation_hook( __FILE__, 'siteorigin_panels_activate' );

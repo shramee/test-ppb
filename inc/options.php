@@ -83,7 +83,11 @@ add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu', 100 );
  * Display the admin page.
  */
 function pootle_page_options_page() {
-	include plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/tpl/options.php';
+	if ( isset( $_GET['welcome_to_page_builder'] ) ) {
+		include plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/tpl/welcome.php';
+	} else {
+		include plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/tpl/options.php';
+	}
 }
 
 /**
@@ -104,24 +108,6 @@ function siteorigin_panels_options_init() {
 }
 
 add_action( 'admin_init', 'siteorigin_panels_options_init' );
-
-add_action( 'admin_notices', 'pp_pb_admin_notices' );
-
-function pp_pb_admin_notices() {
-
-	$notices = get_option( 'pootle_page_admin_notices', array() );
-
-	delete_option( 'pootle_page_admin_notices' );
-
-	if ( 0 < count( $notices ) ) {
-		$html = '';
-		foreach ( $notices as $k => $v ) {
-			$html .= '<div id="' . esc_attr( $k ) . '" class="fade ' . esc_attr( $v['type'] ) . '">' . wpautop( '<strong>' . esc_html( $v['message'] ) . '</strong>' ) . '</div>' . "\n";
-		}
-		echo $html;
-	}
-
-}
 
 function pootlepage_options_page_styling() {
 	$customizeUrl = admin_url( 'customize.php' );

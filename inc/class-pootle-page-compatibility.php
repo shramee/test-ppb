@@ -103,7 +103,7 @@ class Pootle_Page_Compatibility {
 			);
 
 			update_option( 'pootle_page_admin_notices', $notices );
-			die( 'Page Builder Stuff Done :) ' );
+
 		}
 
 	}
