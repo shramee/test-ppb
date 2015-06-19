@@ -2033,7 +2033,6 @@ function ppb_panels_editor( $request ) {
 	wp_editor( $text, 'ppbeditor', array(
 		'textarea_name'  => 'widgets[{$id}][text]',
 		'default_editor' => 'tmce',
-		'wpautop' => false,
 		'tinymce' => array(
 			'force_p_newlines' => false,
 		)
