@@ -1988,7 +1988,7 @@ function ppb_print_editor_panel( $request = null ) {
 		<?php ?>
 		<div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
 
-			<?php echo apply_filters( 'ppb_content_block_editor_form', '', $request ); ?>
+			<?php echo do_action( 'ppb_content_block_editor_form', $request ); ?>
 
 		</div>
 
@@ -2020,16 +2020,28 @@ function ppb_panels_ajax_widget_form(){
 
 add_action( 'wp_ajax_so_panels_widget_form', 'ppb_panels_ajax_widget_form' );
 
-function ppb_panels_editor(  ) {
+function ppb_panels_editor( $request ) {
 
-	wp_editor( '', 'ppbeditor', array(
+	$text = '';
+
+	if ( ! empty( $request['instance'] ) ) {
+		$instance = json_decode( $request['instance'] );
+		if ( ! empty( $instance->text ) )
+		$text = $instance->text;
+	}
+
+	wp_editor( $text, 'ppbeditor', array(
 		'textarea_name'  => 'widgets[{$id}][text]',
 		'default_editor' => 'tmce',
+		'wpautop' => false,
+		'tinymce' => array(
+			'force_p_newlines' => false,
+		)
 	) );
 
 }
 
-add_filter( 'ppb_content_block_editor_form', 'ppb_panels_editor' );
+add_action( 'ppb_content_block_editor_form', 'ppb_panels_editor' );
 
 /**
  * Display a widget form with the provided data

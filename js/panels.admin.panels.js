@@ -315,14 +315,17 @@
 
                 var newPanelId = $currentPanel.find('> input[name$="[info][id]"]').val();
 
+                var editor_cache = panels.editor_form_cache;
+
                 activeDialog
-                    .html(panels.editor_form_cache)
+                    .html( editor_cache )
                     .dialog("option", "position", {my: "center", at: "center", of: window})
                     .dialog("open");
 
-                tinyMCE.get('ppbeditor').setContent( text.replace( /(?:\r\n|\r|\n)/g, '<br />' ) );
+                tinymce.execCommand( 'mceRemoveEditor', false, 'ppbeditor' );
+                tinymce.execCommand( 'mceAddEditor', false, 'ppbeditor' );
 
-
+                content = tinyMCE.get('ppbeditor').setContent( text );
 
                 var editor = $('#ppbeditor'),
                     name = editor.attr('name');
@@ -352,9 +355,6 @@
                 var $t = $('.ppb-cool-panel-wrap'),
                     title = $t.find('.ui-tabs-active a').html();
                 $('.ppb-add-content-panel .ui-dialog-titlebar .ui-dialog-title').html(title);
-
-                tinymce.execCommand( 'mceRemoveEditor', false, 'ppbeditor' );
-                tinymce.execCommand( 'mceAddEditor', false, 'ppbeditor' );
 
                 $(".ppb-cool-panel-wrap li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
