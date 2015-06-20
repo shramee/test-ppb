@@ -5,5 +5,5 @@
 
     $(document).ready(function () {
         $('.colour').wpColorPicker();
-    } );
-} )(jQuery);
+    });
+})(jQuery);

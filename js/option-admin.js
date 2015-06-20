@@ -1,7 +1,7 @@
 (function ($) {
 
     $(document).ready(function () {
-        $( ".panel-type-list" ).sortable({
+        $(".panel-type-list").sortable({
             connectWith: ".panel-type-list",
             update: function (event, ui) {
                 moveVisualEditorToTopLeft();
@@ -18,7 +18,7 @@
     function updateUsedList() {
         var value = [];
         $('.panel-type-list.used-list > .panel-type').each(function () {
-           var widgetClass = $(this).attr('data-class');
+            var widgetClass = $(this).attr('data-class');
             value.push(widgetClass);
         });
 

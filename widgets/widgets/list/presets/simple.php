@@ -1,39 +1,31 @@
 <?php
 
 return array(
-	'charcoal' => array(
+	'charcoal'  => array(
 		'image' => 'charcoal',
-	 ),
-
-	'pink' => array(
+	),
+	'pink'      => array(
 		'image' => 'pink',
-	 ),
-
-	'orange' => array(
+	),
+	'orange'    => array(
 		'image' => 'orange',
-	 ),
-
-	'green' => array(
+	),
+	'green'     => array(
 		'image' => 'green',
-	 ),
-
-	'blue' => array(
+	),
+	'blue'      => array(
 		'image' => 'blue',
-	 ),
-
-	'purple' => array(
+	),
+	'purple'    => array(
 		'image' => 'purple',
-	 ),
-
+	),
 	'turquoise' => array(
 		'image' => 'turquoise',
-	 ),
-
-	'slate' => array(
+	),
+	'slate'     => array(
 		'image' => 'slate',
-	 ),
-
-	'black' => array(
+	),
+	'black'     => array(
 		'image' => 'black',
-	 ),
- );
+	),
+);

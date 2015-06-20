@@ -40,7 +40,7 @@ msgstr ""
 msgid "Support Forums"
 msgstr ""
 
-#: inc/notice.php:32 siteorigin-panels.php:1094
+#: inc/notice.php:32 ppb-panels.php:1094
 msgid "Newsletter"
 msgstr ""
 
@@ -58,8 +58,8 @@ msgstr ""
 msgid "SiteOrigin Page Builder"
 msgstr ""
 
-#: inc/options.php:57 siteorigin-panels.php:78 siteorigin-panels.php:87
-#: siteorigin-panels.php:339
+#: inc/options.php:57 ppb-panels.php:78 ppb-panels.php:87
+#: ppb-panels.php:339
 msgid "Page Builder"
 msgstr ""
 
@@ -144,98 +144,98 @@ msgstr ""
 msgid "Your theme doesn't provide any visual style fields. "
 msgstr ""
 
-#: siteorigin-panels.php:65
+#: ppb-panels.php:65
 msgid "Custom Home Page Builder"
 msgstr ""
 
-#: siteorigin-panels.php:66
+#: ppb-panels.php:66
 msgid "Home Page"
 msgstr ""
 
-#: siteorigin-panels.php:242
+#: ppb-panels.php:242
 msgid "Insert"
 msgstr ""
 
-#: siteorigin-panels.php:243
+#: ppb-panels.php:243
 msgid "cancel"
 msgstr ""
 
-#: siteorigin-panels.php:244
+#: ppb-panels.php:244
 msgid "Delete"
 msgstr ""
 
-#: siteorigin-panels.php:245
+#: ppb-panels.php:245
 msgid "Duplicate"
 msgstr ""
 
 msgid "Copy"
 msgstr ""
 
-#: siteorigin-panels.php:246
+#: ppb-panels.php:246
 msgid "Edit"
 msgstr ""
 
-#: siteorigin-panels.php:247
+#: ppb-panels.php:247
 msgid "Done"
 msgstr ""
 
-#: siteorigin-panels.php:248
+#: ppb-panels.php:248
 msgid "Undo"
 msgstr ""
 
-#: siteorigin-panels.php:249
+#: ppb-panels.php:249
 msgid "Add"
 msgstr ""
 
-#: siteorigin-panels.php:252
+#: ppb-panels.php:252
 msgid "Columns deleted"
 msgstr ""
 
-#: siteorigin-panels.php:253
+#: ppb-panels.php:253
 msgid "Widget deleted"
 msgstr ""
 
-#: siteorigin-panels.php:254
+#: ppb-panels.php:254
 msgid ""
 "Are you sure you want to load this layout? It will overwrite your current "
 "page."
 msgstr ""
 
-#: siteorigin-panels.php:255
+#: ppb-panels.php:255
 #, php-format
 msgid "Edit %s Widget"
 msgstr ""
 
-#: siteorigin-panels.php:836
+#: ppb-panels.php:836
 msgid "Edit Home Page"
 msgstr ""
 
-#: siteorigin-panels.php:944
+#: ppb-panels.php:944
 msgid "Untitled"
 msgstr ""
 
-#: siteorigin-panels.php:945
+#: ppb-panels.php:945
 msgid "Unpublished"
 msgstr ""
 
-#: siteorigin-panels.php:950
+#: ppb-panels.php:950
 #, php-format
 msgid "Clone Page: %s"
 msgstr ""
 
-#: siteorigin-panels.php:963
+#: ppb-panels.php:963
 msgid "Clone: Current Home Page"
 msgstr ""
 
-#: siteorigin-panels.php:982
+#: ppb-panels.php:982
 msgid "Recommended Plugins and Widgets"
 msgstr ""
 
-#: siteorigin-panels.php:983
+#: ppb-panels.php:983
 msgid "Free plugins that work well with Page Builder"
 msgstr ""
 
-#: siteorigin-panels.php:1093
+#: ppb-panels.php:1093
 msgid "Support Forum"
 msgstr ""
 
