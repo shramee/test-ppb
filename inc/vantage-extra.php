@@ -29,8 +29,10 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 				'name'    => __( 'Set Background', 'vantage' ),
 				'type'    => 'select',
 				'options' => array(
-					'.bg_image' => 'Image',
-					'.bg_video' => 'Video'
+					'' => 'Please choose...',
+					'.bg_color' => 'Background color',
+					'.bg_image' => 'Background image',
+					'.bg_video' => 'Background video'
 				),
 				'default' => 'bg_image',
 			),
@@ -38,14 +40,21 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 				'name' => 'Make row go full width',
 				'type' => 'checkbox',
 			),
+			'hide_row'                  => array(
+				'name' => 'Hide row',
+				'type' => 'checkbox',
+			),
 			'background'                  => array(
 				'name' => __( 'Background Color', 'vantage' ),
 				'type' => 'color',
 			),
-			'background_color_over_image' => array(
-				'name'      => 'Put color on top of image',
-				'type'      => 'checkbox',
-				'help-text' => 'Great for adjusting opacity with <a target="_blank" href="http://hex2rgba.devoth.com">rgba colors</a>',
+			'bg_overlay_color' => array(
+				'name'      => 'Overlay color on image',
+				'type'      => 'color',
+			),
+			'bg_overlay_opacity' => array(
+				'name'      => 'Overlay color opacity',
+				'type'      => 'slider',
 			),
 			'background_image'            => array(
 				'name' => __( 'Background Image', 'vantage' ),
@@ -125,7 +134,7 @@ function pp_vantage_panels_panels_row_style_attributes( $attr, $style ) {
 	}
 
 // background-color is set in :before element if color over image is set
-	if ( ! empty( $style['background'] ) && empty( $style['background_color_over_image'] ) ) {
+	if ( ! empty( $style['background'] ) && empty( $style['bg_overlay_color'] ) ) {
 		$attr['style'] .= 'background-color: ' . $style['background'] . ';';
 	}
 

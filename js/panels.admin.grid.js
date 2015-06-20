@@ -188,6 +188,10 @@
             var $t = $(this),
                 $container = $t.closest('.grid-container'),
                 $screen = $t.siblings('.row-bg-preview-screen');
+
+            if( $container.find("[data-style-field$='hide_row']").val() ){
+                return;
+            };
             $screen.fadeIn(250);
             if ('.bg_video' == $container.find("[data-style-field$='background_toggle']").val()) {
                 if ($container.find("[data-style-field$='bg_video']").val()) {

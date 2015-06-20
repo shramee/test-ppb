@@ -154,7 +154,6 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3"/></p>
 	</div>
 
-	<div id="ppb-hello-user">
 		<?php
 
 		//Get Current User
@@ -169,30 +168,29 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		//Get user's visit count
 		$visit_count = get_user_meta( $current_user->ID, 'ppb-visit-count', true );
 
-		//Message sections
-		$help_text = " Click the 'Add Row' button above to start building your page.";
-
 		//Set welcome message
 		if ( empty( $visit_count ) ) {
 
 			$visit_count = 0;
-			$message = "Welcome to Page Builder{$username}!$help_text";
+			$message = "Welcome to Page Builder{$username}! Click the 'Add Row' button above to start building your page.";
 
 		} elseif ( 1 == $visit_count ) {
-			$message = "Welcome back to Page Builder{$username}!$help_text";
+			$message = "Welcome back to Page Builder{$username}! Click the 'Add Row' button above to start building your page. You can now also use existing pages as a template to start your page and save you time!";
 		} else {
 			$message = "Welcome to Page Builder{$username}! You know what to do.";
 		}
 
 		//Print the message
-		echo $message;
+		echo "<div id='ppb-hello-user' class='visit-count-{$visit_count}'> $message </div>";
 
 		//Update user visit count
 		$visit_count++;
-		update_user_meta( $current_user->ID, 'ppb-visit-count', $visit_count );
+		global $pagenow;
+		if ( 'post-new.php' == $pagenow &&  ! empty( $layouts )  ){
+			update_user_meta( $current_user->ID, 'ppb-visit-count', $visit_count );
+		}
 
 		?>
-	</div>
 
 	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog">

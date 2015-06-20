@@ -208,16 +208,25 @@ function pootlepage_hide_elements_dialog_echo( $fields ) {
 function siteorigin_panels_style_dialog_form() {
 	$fields = siteorigin_panels_style_get_fields();
 
-	$sections['Background'][] = 'background';
+	$sections['Layout'][]     = 'full_width';
+	$sections['Layout'][]     = 'row_height';
+	$sections['Layout'][]     = 'hide_row';
+	/** @hook ppb_row_styles_section_bg_image Add field id in layout section */
+	$sections['Layout'] = apply_filters( 'ppb_row_styles_section_layout', $sections['Layout'] );
+
 	$sections['Background'][] = 'background_toggle';
 
+	$sections['Background'][] = array( '<div class="bg_section bg_color">' );
+	$sections['Background'][] = 'background';
+	$sections['Background'][] = array( '</div>' );
+
 	$sections['Background'][] = array( '<div class="bg_section bg_image">' );
-	$sections['Background'][] = 'background_color_over_image';
 	$sections['Background'][] = 'background_image';
 	$sections['Background'][] = 'background_image_repeat';
 	$sections['Background'][] = 'background_parallax';
 	$sections['Background'][] = 'background_image_size';
-
+	$sections['Background'][] = 'bg_overlay_color';
+	$sections['Background'][] = 'bg_overlay_opacity';
 	/** @hook ppb_row_styles_section_bg_image Add field id in background image sub section */
 	$sections['Background'] = apply_filters( 'ppb_row_styles_section_bg_image', $sections['Background'] );
 	$sections['Background'][] = array( '</div>' );
@@ -227,13 +236,7 @@ function siteorigin_panels_style_dialog_form() {
 	$sections['Background'][] = 'bg_mobile_image';
 	/** @hook ppb_row_styles_section_bg_image Add field id in background video sub section */
 	$sections['Background'] = apply_filters( 'ppb_row_styles_section_bg_video', $sections['Background'] );
-
 	$sections['Background'][] = array( '</div>' );
-
-	$sections['Layout'][]     = 'full_width';
-	$sections['Layout'][]     = 'row_height';
-	/** @hook ppb_row_styles_section_bg_image Add field id in layout section */
-	$sections['Layout'] = apply_filters( 'ppb_row_styles_section_layout', $sections['Layout'] );
 
 	$sections['Advanced'][]   = 'style';
 	$sections['Advanced'][]   = 'class';
@@ -270,7 +273,7 @@ function siteorigin_panels_style_dialog_form() {
 
 			$attr = $fields[ $name ];
 
-			echo '<p class="field_' . esc_attr( $name ) . '">';
+			echo '<div class="field field_' . esc_attr( $name ) . '">';
 
 			echo '<label>' . $attr['name'];
 			echo '</label>';
@@ -278,7 +281,7 @@ function siteorigin_panels_style_dialog_form() {
 			if ( isset( $attr['help-text'] ) ) {
 				echo '<span class="dashicons dashicons-editor-help tooltip" data-tooltip="' . htmlentities( $attr['help-text'] ) . '"></span>';
 			}
-			echo '</p>';
+			echo '</div>';
 		}
 
 		echo "</div>";
@@ -350,6 +353,14 @@ function pootlepage_render_single_field( $name, $attr ) {
 			?><textarea type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 			            data-style-field="<?php echo esc_attr( $name ) ?>"
 			            data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" ></textarea> <?php
+			break;
+
+		case 'slider':
+			?><input type="hidden" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+			         data-style-field="<?php echo esc_attr( $name ) ?>"
+			         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
+			<div data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"></div>
+			<?php
 			break;
 
 		default :

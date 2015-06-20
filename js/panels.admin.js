@@ -324,12 +324,6 @@ jQuery(function ($) {
         .closest('p').find('a').click(function () {
             $('#widget-styles-dialog').dialog("option", "position", "center");
         });
-//    $(this).find('[data-style-field-type="color"]')
-//        .wpColorPicker()
-//        .closest('p').find('a').click(function(){
-//            $( '#widget-styles-dialog').dialog("option", "position", "center");
-//        });
-
 
     //
     // Hide Element Dialog

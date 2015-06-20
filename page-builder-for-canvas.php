@@ -103,7 +103,7 @@ function siteorigin_panels_activate() {
 
 	$welcome_message = "<b>Hey{$username}! Welcome to Page builder.</b> You're all set to start building stunning pages!<br><a class='button pootle' href='" . admin_url( '/options-general.php?page=page_builder&welcome_to_page_builder' ) . "'>Get started</a>";
 
-	ppb_add_admin_notice( 'welcome', $welcome_message );
+	ppb_add_admin_notice( 'welcome', $welcome_message, 'updated pootle' );
 }
 
 register_activation_hook( __FILE__, 'siteorigin_panels_activate' );
@@ -328,6 +328,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 	if ( ( $screen->base == 'post' && in_array( $screen->id, siteorigin_panels_setting( 'post-types' ) ) ) || $screen->base == 'appearance_page_so_panels_home_page' ) {
 		wp_enqueue_script( 'jquery-ui-resizable' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-button' );
 
@@ -348,7 +349,7 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		wp_enqueue_script( 'so-panels-admin-prebuilt', plugin_dir_url( __FILE__ ) . 'js/panels.admin.prebuilt.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-tooltip', plugin_dir_url( __FILE__ ) . 'js/panels.admin.tooltip.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-media', plugin_dir_url( __FILE__ ) . 'js/panels.admin.media.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
-		wp_enqueue_script( 'so-panels-admin-styles', plugin_dir_url( __FILE__ ) . 'js/panels.admin.styles.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'so-panels-admin-styles', plugin_dir_url( __FILE__ ) . 'js/panels.admin.styles.js', array( 'jquery', 'jquery-ui-slider' ), POOTLEPAGE_VERSION );
 
 		wp_enqueue_script( 'row-options', plugin_dir_url( __FILE__ ) . 'js/row.options.admin.js', array( 'jquery' ) );
 
@@ -392,12 +393,9 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 		if ( count( $panels_data ) > 0 ) {
 
 			foreach ( $panels_data['widgets'] as $i => $widget ) {
-				if ( ! class_exists( $widget['info']['class'] ) ) {
-					unset( $panels_data['widgets'][ $i ] );
-				}
 
-				// bring over the hide title check box from old Pootle Visual Editor
-				if ( $widget['info']['class'] == 'Pootle_Text_Widget' ) {
+				if ( ! empty( $widget['info']['class'] ) && ! class_exists( $widget['info']['class'] ) ) {
+					unset( $panels_data['widgets'][ $i ] );
 				}
 			}
 
@@ -510,6 +508,9 @@ add_action( 'admin_print_styles-post.php', 'siteorigin_panels_admin_enqueue_styl
 add_action( 'admin_print_styles-appearance_page_so_panels_home_page', 'siteorigin_panels_admin_enqueue_styles' );
 
 function pootlepage_option_page_styles() {
+
+	wp_enqueue_style( 'pootlepage-main-admin', plugin_dir_url( __FILE__ ) . 'css/main-admin.css', array(), POOTLEPAGE_VERSION );
+
 	// using $screen->id is not reliable, because it can change if using child theme
 	global $pagenow;
 	if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
@@ -994,6 +995,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 	if ( ! empty( $panels_data['widgets'] ) && is_array( $panels_data['widgets'] ) ) {
 		foreach ( $panels_data['widgets'] as $widget ) {
+
 			$grids[ intval( $widget['info']['grid'] ) ][ intval( $widget['info']['cell'] ) ][] = $widget;
 		}
 	}
@@ -1107,7 +1109,11 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			}
 		}
 
-		if ( isset( $styleArray['background'] ) && isset( $styleArray['background_color_over_image'] ) && $styleArray['background_color_over_image'] == true ) {
+		if ( isset( $styleArray['background'] ) && ! empty( $styleArray['bg_overlay_color'] ) ) {
+			$overlay_color = $styleArray['bg_overlay_color'];
+			if ( ! empty( $styleArray['bg_overlay_opacity'] ) ) {
+				$overlay_color = 'rgba( ' . ppb_hex2rgb($overlay_color) . ", {$styleArray['bg_overlay_opacity']} )";
+			}
 			$rowID = '#pg-' . $post_id . '-' . $gi;
 			?>
 
@@ -1116,7 +1122,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				<?php echo esc_attr( $rowID ) ?>
 				>
 				.panel-row-style:before {
-					background-color: <?php echo $styleArray['background'] ?>;
+					background-color: <?php echo $overlay_color ?>;
 				}
 
 				<?php echo esc_attr( $rowID ) ?>
@@ -1648,7 +1654,7 @@ add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block_
  * @param string $widget_info The widget class name.
  */
 function ppb_panels_render_content_block( $block_info ) {
-	echo $block_info['text'];
+	if ( ! empty( $block_info['text'] ) ) echo $block_info['text'];
 }
 
 add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block' );
