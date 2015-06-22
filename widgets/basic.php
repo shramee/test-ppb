@@ -216,43 +216,26 @@ class SiteOrigin_Panels_Widgets_Image extends WP_Widget {
  * Class SiteOrigin_Panels_Widgets_PostLoop
  */
 class SiteOrigin_Panels_Widgets_PostLoop extends WP_Widget{
+
+	private $instance;
+
 	function __construct() {
 		parent::__construct(
 			'siteorigin-panels-postloop',
 			__( 'Post Loop ( Pootle )', 'siteorigin-panels' ),
 			array(
 				'description' => __( 'Displays a post loop.', 'siteorigin-panels' ),
-			 )
-		 );
+			)
+		);
 	}
-
-	private $instance;
 
 	/**
 	 * @param array $args
 	 * @param array $instance
 	 */
 	function widget( $args, $instance ) {
-		require_once "post-loop-public.php";
+		require "post-loop-public.php";
 	}
-
-//	public function option_css() {
-//		if ( isset( $this->instance['column_count'] ) ) {
-//			$count = ( int )$this->instance['column_count'];
-//			if ( $count > 1 ) {
-//				$columnWidth = ( 100 / $count ) . "%";
-//
-////				$css = '';
-////				$css .= ".widget_siteorigin-panels-postloop > article {\n";
-////				$css .= "\t" . "display: inline-block;" . "\n";
-////				$css .= "\t" . "width: " . $columnWidth . ";\n";
-////				$css .= "\t" . "padding-right: 10px;" . "\n";
-////
-////				echo "<style>\n" . $css . "</style>\n";
-//			}
-//
-//		}
-//	}
 
 	public function filter_excerpt_length( $length ) {
 		if ( isset( $this->instance['excerpt_length'] ) ) {
