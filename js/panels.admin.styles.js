@@ -26,8 +26,6 @@ jQuery(function ($) {
             title: $('#grid-styles-dialog').attr('data-title'),
             height: 500,
             width: 700,
-            maxHeight: Math.round($(window).height() - 25),
-            maxWidth: Math.round($(window).width() - 25),
             open: function () {
                 $t = $(this);
 
@@ -112,6 +110,19 @@ jQuery(function ($) {
             .closest('p').find('a').click(function () {
                 $('#grid-styles-dialog').dialog("option", "position", "center");
             });
+        $('#grid-styles-dialog div[data-style-field-type="slider"]').each(function() {
+            var $t = $(this),
+                $f = $t.siblings('input');
+            $t.slider({
+                min: 0,
+                max: 1,
+                step: 0.05,
+                value: $f.val(),
+                change: function (e, ui) {
+                    $(this).siblings('input').val(ui.value);
+                }
+            });
+        });
     }
 
     panels.rowBgToggle = function () {

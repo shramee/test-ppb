@@ -1,6 +1,8 @@
+/*! jQuery UI - v1.11.4 - 2015-06-20 * http://jqueryui.com * Includes: core.css, slider.css * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
+.ui-helper-hidden{display:none}.ui-helper-hidden-accessible{border:0;clip:rect(0 0 0 0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.ui-helper-reset{margin:0;padding:0;border:0;outline:0;line-height:1.3;text-decoration:none;font-size:100%;list-style:none}.ui-helper-clearfix:before,.ui-helper-clearfix:after{content:"";display:table;border-collapse:collapse}.ui-helper-clearfix:after{clear:both}.ui-helper-clearfix{min-height:0}.ui-helper-zfix{width:100%;height:100%;top:0;left:0;position:absolute;opacity:0;filter:Alpha(Opacity=0)}.ui-front{z-index:100}.ui-state-disabled{cursor:default!important}.ui-icon{display:block;text-indent:-99999px;overflow:hidden;background-repeat:no-repeat}.ui-widget-overlay{position:fixed;top:0;left:0;width:100%;height:100%}.ui-slider{position:relative;text-align:left}.ui-slider .ui-slider-handle{position:absolute;z-index:2;width:1.2em;height:1.2em;cursor:default;-ms-touch-action:none;touch-action:none}.ui-slider .ui-slider-range{position:absolute;z-index:1;font-size:.7em;display:block;border:0;background-position:0 0}.ui-slider.ui-state-disabled .ui-slider-handle,.ui-slider.ui-state-disabled .ui-slider-range{filter:inherit}.ui-slider-horizontal{height:.8em;background: #f2f2f2;}.ui-slider-horizontal, .ui-slider-horizontal .ui-slider-handle{border-radius: 9px;border: 1px solid #aaa;}.ui-slider-horizontal .ui-slider-handle{top:-.3em;margin-left:-.6em;background: #fff;}.ui-slider-horizontal .ui-slider-range{top:0;height:100%}.ui-slider-horizontal .ui-slider-range-min{left:0}.ui-slider-horizontal .ui-slider-range-max{right:0}.ui-slider-vertical{width:.8em;height:100px}.ui-slider-vertical .ui-slider-handle{left:-.3em;margin-left:0;margin-bottom:-.6em}.ui-slider-vertical .ui-slider-range{left:0;width:100%}.ui-slider-vertical .ui-slider-range-min{bottom:0}.ui-slider-vertical .ui-slider-range-max{top:0}:focus {outline: none;}
+
 #panels {
     position: relative;
-    min-height: 120px;
 }
 
 html {
@@ -100,7 +102,7 @@ html {
 }
 
 #panels-container .grid .ui-resizable-handle.ui-resizable-w:hover {
-    background: #ccc;
+    background: #eee;
 }
 
 #panels-container .grid-container:hover .ui-resizable-handle {
@@ -110,13 +112,10 @@ html {
 #panels-container .grid .cell {
     position: absolute;
     top: 0;
-    border: 1px solid #ccc;
     padding-bottom: 61px;
 }
 
-#panels-container .grid .cell.cell-selected {
-    border-color: #aaa;
-}
+#panels-container .grid .cell.cell-selected {}
 
 #panels-container .grid .cell.first {
     margin-left: 0;
@@ -150,17 +149,20 @@ html {
 #panels-container .grid .cell .cell-width-left {
     width: 5px;
     height: 11px;
+    background: url(images/cell-width.png) no-repeat left top;
     float: left;
 }
 
 #panels-container .grid .cell .cell-width-right {
     width: 5px;
     height: 11px;
+    background: url(images/cell-width.png) no-repeat left bottom;
     float: right;
 }
 
 #panels-container .grid .cell .cell-width-line {
     height: 11px;
+    background: url(images/cell-width.png) repeat-x left -11px;
     margin: 0 5px;
 }
 
@@ -173,7 +175,7 @@ html {
 }
 
 #panels-container .grid .cell .cell-width-value span {
-    background: #f6f6f6;
+    background: #fff;
     color: #848484;
     display: inline-block;
     font-size: 9px;
@@ -186,23 +188,46 @@ div#panels-container {
 }
 
 div#ppb-hello-user {
-    padding: 36px 0 0 120px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+div#ppb-hello-user.visit-count-0 {
+    padding-left: 115px;
     background: url(./images/ppb-arrow.png) 43px 0px/ 71px no-repeat;
-    min-height: 50px;
+    text-align: initial;
+}
+
+div#ppb-hello-user.visit-count-1 {
+    padding-left: 205px;
+    background: url(./images/ppb-arrow.png) 133px 0px/ 71px no-repeat;
+    text-align: initial;
 }
 
 #panels-container .grid-container {
     position: relative;
-    padding: 2px 0 20px;
+    padding: 10px 0 20px;
     margin: 10px 0 0;
     background: #fff;
     border: 1px solid #f1f1f1;
-    border-left-width: 5px;
+    border-left-width: 0px;
+    padding-left: 5px;
+}
+
+#panels-container .grid-container:before {
+    position: absolute;
+    content:'';
+    display: block;
+    border-left: 5px solid;
+    border-left-color: inherit;
+    top: 0;
+    bottom: 0;
+    left: 0;
 }
 
 #panels-container .grid-container .controls {
     line-height: 1;
-    margin: 0;
+    margin: 0 8px;
     text-align: right;
 }
 
@@ -891,7 +916,7 @@ video.ppb-bg-video {
     display: block;
 }
 
-#grid-styles-dialog p,
+#grid-styles-dialog .field,
 #page-setting-dialog p,
 #hide-element-dialog p {
     margin-bottom: 20px;
@@ -911,19 +936,20 @@ video.ppb-bg-video {
     font-weight: bold;
 }
 
-#grid-styles-dialog p > *,
+#grid-styles-dialog .field > *,
 #page-setting-dialog p > *,
 #hide-element-dialog p > * {
     display: inline-block;
     vertical-align: middle;
 }
 
+#grid-styles-dialog .field .ui-slider{
+    width:200px;
+}
+
 .dashicons-editor-help.tooltip {
-    float:right;
-    margin-top: 2px;
-    color: #aaa;
-    font-size: 25px;
-    line-height: 25px;
+    color: #ccc;
+    font-size: 22px;
 }
 
 #grid-styles-dialog label.ppb-panels-checkbox-label,
