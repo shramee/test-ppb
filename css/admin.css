@@ -200,8 +200,10 @@ div#ppb-hello-user.visit-count-0 {
 
 div#ppb-hello-user.visit-count-1 {
     padding-left: 205px;
+    padding-right: 160px;
+    padding-right: 14vw;
+    text-align: center;
     background: url(./images/ppb-arrow.png) 133px 0px/ 71px no-repeat;
-    text-align: initial;
 }
 
 #panels-container .grid-container {
@@ -238,6 +240,31 @@ div#ppb-hello-user.visit-count-1 {
     border-width: 0;
     margin-left: 5px;
     cursor: pointer;
+}
+
+#panels-container .grid-container .controls .row-bg-preview {
+    display: none;
+}
+
+#panels-container .grid-container.hide-row-enabled .controls .row-bg-preview {
+    display: inline-block;
+    position: relative;
+    color: #ef4832;
+    cursor: initial;
+}
+
+#panels-container .grid-container.hide-row-enabled .controls .row-bg-preview:after {
+    content: '';
+    border-left: 2px solid;
+    border-right: 1px solid #fff;
+    position: absolute;
+    top: 2px;
+    right: 9px;
+    height: 16px;
+    -o-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 #panels-container .grid-container:hover .controls .row-button {
@@ -941,6 +968,10 @@ video.ppb-bg-video {
 #hide-element-dialog p > * {
     display: inline-block;
     vertical-align: middle;
+}
+
+input:disabled{
+    background: #f5f5f5;
 }
 
 #grid-styles-dialog .field .ui-slider{

@@ -33,8 +33,9 @@ jQuery(function ($) {
                     active: 0
                 });
 
+                $t.find('.field_row_height input').prop('disabled', false);
                 if (0 < $('#grid-styles-dialog').data('container').find('.panel').length) {
-                    $t.find('.field_row_height').hide();
+                    $t.find('.field_row_height input').prop('disabled', true);
                 }
 
                 var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
@@ -56,12 +57,17 @@ jQuery(function ($) {
                 $bgToggle.off('change', panels.rowBgToggle);
                 $bgVidFlds.off('change', panels.BGVidMP4);
 
-                bg_color = $('#grid-styles-dialog [data-style-field=background]').val();
-
                 // Copy the dialog values back to the container style value fields
                 var container = $('#grid-styles-dialog').data('container');
 
+                bg_color = $('#grid-styles-dialog [data-style-field=background]').val();
+
                 container.css( 'border-left-color', bg_color );
+
+                container.removeClass( 'hide-row-enabled' );
+                if ( $('#grid-styles-dialog [data-style-field=hide_row]').prop('checked') ) {
+                    container.addClass( 'hide-row-enabled' );
+                }
 
                 $('#grid-styles-dialog [data-style-field]').each(function () {
                     var $$ = $(this);
