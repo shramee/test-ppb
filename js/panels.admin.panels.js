@@ -238,6 +238,8 @@
                         //Set the widget styles
                         panels.pootlePageSetWidgetStyles($('#pootle-style-tab'));
 
+                        $currentPanel.panelsSetPanelTitle( $currentPanel.panelsGetPanelData() );
+
                         // Destroy the dialog and remove it
                         $(this).data('overlay').remove();
                         $(this).dialog('destroy').remove();
@@ -259,7 +261,6 @@
                                 var panelData = $currentPanel.panelsGetPanelData();
 
                                 $currentPanel.find('input[name$="[data]"]').val(JSON.stringify(panelData));
-                                $currentPanel.panelsSetPanelTitle(panelData);
                                 $currentPanel.find('input[name$="[info][raw]"]').val(1);
 
                                 // Change the title of the panel
@@ -613,24 +614,37 @@
 
         var $t = $(this);
 
-        if (typeof data != 'undefined' && typeof data.info != 'undefined') {
-            widClass = data.info.class;
-        } else {
-            widClass = 'Pootle_Text_Widget';
-        }
-
-        if ('Pootle_Text_Widget' != widClass) {
-
-            $.get(ajaxurl, {
-                'action': 'ppb_widget_name',
-                'widget': widClass
-            })
-                .done(function (data) {
-                    $t.find('h4').html(data);
-                });
-        } else {
+        if ( typeof data == 'undefined' || typeof data.text == 'undefined' || data.text == '') {
             $t.find('h4').html('Editor');
+            return;
         }
+
+        var text = data.text,
+            title = 'Editor';
+
+        console.log(text);
+
+        console.log( text.match( /\[.+]/gi ) );
+
+        if ( -1 != text.indexOf('https://vimeo.com/') ) {
+            title = 'Vimeo Video';
+        } else if ( -1 != text.indexOf('https://www.youtube.com/') ) {
+            title = 'YouTube Video';
+        } else if ( text.match( /\[.+]/gi ) && 0 < text.match( /\[.+]/gi ).length ) {
+
+            shortcode = ' ' + text.match( /\[.+]/gi )[0].replace( /[\[\]]/g, '' );
+
+            title = 'Shortcode' + shortcode;
+        } else if ( -1 != text.indexOf('<img') ) {
+            title = 'Image';
+            if ( 1 < text.match( /<img/gi ).length ) {
+                title = 'Images';
+            }
+        } else if ( text.indexOf(/.+/) ) {
+            title = 'Text';
+        }
+
+        $t.find('h4').html(title);
     }
 
     /**

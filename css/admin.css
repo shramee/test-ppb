@@ -352,11 +352,11 @@ video.ppb-bg-video {
 #so-panels-panels .panels-container .panel h4 {
     position: absolute;
     top: 15px;
-    height: 1em;
+    height: auto;
     color: #474747;
     cursor: pointer;
     font-weight: 600;
-    line-height: 1em;
+    line-height: 1.4em;
     margin: 0;
     margin-right: 15px;
     overflow: hidden;
