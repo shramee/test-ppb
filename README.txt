@@ -16,6 +16,9 @@ Support
 
 Versions
 
+22.06.2015 - Version 2.2.10.1
+ * Fix - issue with multiple featured images
+
 09.06.2015 - Version 2.2.10
  * Fix - general bug fixes
 
