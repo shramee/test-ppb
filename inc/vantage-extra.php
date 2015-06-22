@@ -19,8 +19,8 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 	$fields = array_merge(
 		$fields,
 		array(
-			'row_height'                  => array(
-				'name'      => __( 'Row Height', 'ppb-panels' ),
+			'row_height' => array(
+				'name'      => __( 'Empty Row Height', 'ppb-panels' ),
 				'type'      => 'text',
 				'default'   => '',
 				'help-text' => 'Row height can only be set when there is no content in a row.',

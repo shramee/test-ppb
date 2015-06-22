@@ -148,9 +148,15 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php // The add row dialog ?>
 
 	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row', 'ppb-panels' ) ?>"
-	     class="panels-admin-dialog">
-		<p><label><strong><?php _e( 'Columns', 'ppb-panels' ) ?></strong></label></p>
-
+	     class="panels-admin-dialog" style="text-align: center">
+		<p>
+			<label>
+				<strong>
+					<?php _e( 'How many columns do you want your row to have? ', 'ppb-panels' ) ?><br>
+					(<?php _e( 'You can adjust the widths later', 'ppb-panels' ) ?>)
+				</strong>
+			</label>
+		</p>
 		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3"/></p>
 	</div>
 
@@ -175,7 +181,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 			$message = "Welcome to Page Builder{$username}! Click the 'Add Row' button above to start building your page.";
 
 		} elseif ( 1 == $visit_count ) {
-			$message = "Welcome back to Page Builder{$username}! Click the 'Add Row' button above to start building your page. You can now also use existing pages as a template to start your page and save you time!";
+			$message = "Welcome back to Page Builder{$username}! You can now also use existing pages as a template to start your page and save you time!";
 		} else {
 			$message = "Welcome to Page Builder{$username}! You know what to do.";
 		}

@@ -404,6 +404,7 @@ jQuery(function ($) {
             close: function () {
                 $(this).data('overlay').remove();
             },
+            width: 430,
             buttons: gridAddDialogButtons
         })
         .on('keydown', function (e) {

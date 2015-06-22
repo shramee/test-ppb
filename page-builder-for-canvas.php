@@ -980,7 +980,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 	remove_filter( 'the_content', 'convert_chars' );    //convert_chars : Converts lone & characters into &#38; ( a.k.a. &amp; )
 	remove_filter( 'the_content', 'wpautop' );    //wpautop : Adds the Stupid Paragraphs for two line breaks
 
-
 	// Create the skeleton of the grids
 	$grids = array();
 	if ( ! empty( $panels_data['grids'] ) ) {
@@ -996,7 +995,9 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 	if ( ! empty( $panels_data['widgets'] ) && is_array( $panels_data['widgets'] ) ) {
 		foreach ( $panels_data['widgets'] as $widget ) {
 
-			$grids[ intval( $widget['info']['grid'] ) ][ intval( $widget['info']['cell'] ) ][] = $widget;
+			if ( ! empty( $widget['info'] ) ) {
+				$grids[ intval( $widget['info']['grid'] ) ][ intval( $widget['info']['cell'] ) ][] = $widget;
+			}
 		}
 	}
 
@@ -1064,6 +1065,7 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			//Apply height if row doesn't contain widgets
 			$contains_widgets = false;
 			foreach ( $cells as $cell ) {
+
 				if ( ! empty( $cell ) ) {
 					$contains_widgets = true;
 				}
@@ -1077,6 +1079,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 				$style_attributes['data-top-bottom'][] = 'background-position:center 0px';
 				$style_attributes['data-bottom-top'][] = 'background-position:center -500px';
 				$style_attributes['class'][]           = 'ppb-parallax';
+			}
+
+			if ( ! empty( $styleArray['hide_row'] ) ) {
+				$style_attributes['style'] .= 'display:none;';
 			}
 
 			echo '<div ';
