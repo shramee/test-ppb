@@ -34,6 +34,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
+
 			return self::$_instance;
 		}
 
@@ -92,6 +93,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		 * @uses SCRIPT_DEBUG
 		 *
 		 * @param mixed[] $pointers
+		 *
 		 * @return void
 		 * @since 2.1.0
 		 */
@@ -105,7 +107,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 				array( 'wp-pointer' ),
 				bstw()->get_version(),
 				true
-			 );
+			);
 			wp_localize_script( 'black-studio-tinymce-widget-pointer', 'bstw_pointers', $pointers );
 		}
 
@@ -119,7 +121,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		 * @since 2.1.0
 		 */
 		public function load() {
-			$screen = get_current_screen();
+			$screen   = get_current_screen();
 			$pointers = apply_filters( 'black_studio_tinymce_admin_pointers-' . $screen->id, array() );
 			if ( ! empty( $pointers ) ) {
 				$this->enqueue( $pointers );
@@ -133,6 +135,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		 * @uses get_current_user_id()
 		 *
 		 * @param mixed[] $pointers
+		 *
 		 * @return mixed[]
 		 * @since 2.1.0
 		 */
@@ -142,11 +145,12 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 				$dismissed = explode( ',', ( string ) get_user_meta( get_current_user_id(), 'dismissed_wp_pointers', true ) );
 				foreach ( $pointers as $pointer_id => $pointer ) {
 					if ( ! in_array( $pointer_id, $dismissed ) ) {
-						$pointer['pointer_id'] = $pointer_id;
+						$pointer['pointer_id']        = $pointer_id;
 						$valid_pointers['pointers'][] = $pointer;
 					}
 				}
 			}
+
 			return $valid_pointers;
 		}
 
@@ -154,22 +158,24 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Admin_Pointer' ) ) {
 		 * Register admin pointer( s )
 		 *
 		 * @param mixed[] $pointers
+		 *
 		 * @return mixed[]
 		 * @since 2.1.0
 		 */
 		public function register( $pointers ) {
 			$pointers['black_studio_tinymce_widget'] = array(
-				'target' => 'div[id$=black-studio-tinymce-__i__] .widget-top',
+				'target'  => 'div[id$=black-studio-tinymce-__i__] .widget-top',
 				'options' => array(
-					'content' => sprintf( '<h3>%s</h3> <p>%s</p>',
+					'content'  => sprintf( '<h3>%s</h3> <p>%s</p>',
 						/* translators: title for the dismissable admin pointer tooltip ( same as plugin name ) */
 						__( 'Black Studio TinyMCE Widget', 'black-studio-tinymce-widget' ),
 						/* translators: text for the dismissable admin pointer tooltip */
 						__( 'The Visual Editor widget allows you to insert rich text and media objects in your sidebars', 'black-studio-tinymce-widget' )
-					 ),
+					),
 					'position' => array( 'edge' => 'left', 'align' => 'middle' )
-				 )
-			 );
+				)
+			);
+
 			return $pointers;
 		}
 

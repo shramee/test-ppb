@@ -28,6 +28,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 * Return the single class instance
 		 *
 		 * @param string[] $plugins
+		 *
 		 * @return object
 		 * @since 2.0.0
 		 */
@@ -35,6 +36,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self( $plugins );
 			}
+
 			return self::$_instance;
 		}
 
@@ -83,6 +85,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 *
 		 * @param mixed[] $instance
 		 * @param object $widget
+		 *
 		 * @return mixed[]
 		 * @since 2.0.0
 		 */
@@ -90,6 +93,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 			if ( function_exists( 'icl_register_string' ) && ! empty( $widget->number ) ) {
 				icl_register_string( 'Widgets', 'widget body - ' . $widget->id_base . '-' . $widget->number, $instance['text'] );
 			}
+
 			return $instance;
 		}
 
@@ -101,6 +105,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 * @param string $text
 		 * @param mixed[]|null $instance
 		 * @param object|null $widget
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 */
@@ -110,6 +115,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 					$text = icl_t( 'Widgets', 'widget body - ' . $widget->id_base . '-' . $widget->number, $text );
 				}
 			}
+
 			return $text;
 		}
 
@@ -147,6 +153,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 		 * Enable filter for WP Page Widget plugin
 		 *
 		 * @param string[] $pages
+		 *
 		 * @return string[]
 		 * @since 2.0.0
 		 */
@@ -159,6 +166,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 			if ( isset( $_GET['page'] ) && in_array( $_GET['page'], array( 'pw-front-page', 'pw-search-page' ) ) ) {
 				$pages[] = 'admin.php';
 			}
+
 			return $pages;
 		}
 
@@ -177,7 +185,12 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Plugins' ) ) {
 
 			$main_script = apply_filters( 'black-studio-tinymce-widget-script', 'black-studio-tinymce-widget' );
 
-			wp_enqueue_script( 'wp-page-widget', plugins_url( 'js/wp-page-widget.min.js', dirname( __FILE__ ) ), array( 'jquery', 'editor', 'quicktags', $main_script ), bstw()->get_version(), true );
+			wp_enqueue_script( 'wp-page-widget', plugins_url( 'js/wp-page-widget.min.js', dirname( __FILE__ ) ), array(
+				'jquery',
+				'editor',
+				'quicktags',
+				$main_script
+			), bstw()->get_version(), true );
 		}
 
 		/**

@@ -13,96 +13,96 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../siteorigin-panels.php:92
+#: ../ppb-panels.php:92
 msgid "Custom Home Page Builder"
 msgstr ""
 
-#: ../siteorigin-panels.php:93
+#: ../ppb-panels.php:93
 msgid "Home Page"
 msgstr ""
 
-#: ../siteorigin-panels.php:105 ../siteorigin-panels.php:114
-#: ../siteorigin-panels.php:369 ../inc/options.php:7
+#: ../ppb-panels.php:105 ../ppb-panels.php:114
+#: ../ppb-panels.php:369 ../inc/options.php:7
 msgid "Page Builder"
 msgstr ""
 
-#: ../siteorigin-panels.php:282
+#: ../ppb-panels.php:282
 msgid "Insert"
 msgstr ""
 
-#: ../siteorigin-panels.php:283
+#: ../ppb-panels.php:283
 msgid "cancel"
 msgstr ""
 
-#: ../siteorigin-panels.php:284
+#: ../ppb-panels.php:284
 msgid "Delete"
 msgstr ""
 
-#: ../siteorigin-panels.php:285
+#: ../ppb-panels.php:285
 msgid "Duplicate"
 msgstr ""
 
-#: ../siteorigin-panels.php:286
+#: ../ppb-panels.php:286
 msgid "Edit"
 msgstr ""
 
-#: ../siteorigin-panels.php:287
+#: ../ppb-panels.php:287
 msgid "Done"
 msgstr ""
 
-#: ../siteorigin-panels.php:288
+#: ../ppb-panels.php:288
 msgid "Undo"
 msgstr ""
 
-#: ../siteorigin-panels.php:289
+#: ../ppb-panels.php:289
 msgid "Add"
 msgstr ""
 
-#: ../siteorigin-panels.php:292
+#: ../ppb-panels.php:292
 msgid "Columns deleted"
 msgstr ""
 
-#: ../siteorigin-panels.php:293
+#: ../ppb-panels.php:293
 msgid "Widget deleted"
 msgstr ""
 
-#: ../siteorigin-panels.php:294
+#: ../ppb-panels.php:294
 msgid ""
 "Are you sure you want to load this layout? It will overwrite your current "
 "page."
 msgstr ""
 
-#: ../siteorigin-panels.php:295
+#: ../ppb-panels.php:295
 #, php-format
 msgid "Edit %s Widget"
 msgstr ""
 
-#: ../siteorigin-panels.php:858
+#: ../ppb-panels.php:858
 msgid "Edit Home Page"
 msgstr ""
 
-#: ../siteorigin-panels.php:960
+#: ../ppb-panels.php:960
 msgid "Untitled"
 msgstr ""
 
-#: ../siteorigin-panels.php:961
+#: ../ppb-panels.php:961
 msgid "Unpublished"
 msgstr ""
 
-#: ../siteorigin-panels.php:966
+#: ../ppb-panels.php:966
 #, php-format
 msgid "Clone Page: %s"
 msgstr ""
 
-#: ../siteorigin-panels.php:979
+#: ../ppb-panels.php:979
 msgid "Clone: Current Home Page"
 msgstr ""
 
-#: ../siteorigin-panels.php:997
+#: ../ppb-panels.php:997
 msgid "Recommended Plugins and Widgets"
 msgstr ""
 
-#: ../siteorigin-panels.php:998
+#: ../ppb-panels.php:998
 msgid "Free plugins that work well with Page Builder"
 msgstr ""
 

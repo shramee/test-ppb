@@ -34,6 +34,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
+
 			return self::$_instance;
 		}
 
@@ -44,6 +45,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 		 * @uses add_action()
 		 *
 		 * @param object $plugin
+		 *
 		 * @since 2.0.0
 		 */
 		protected function __construct() {
@@ -51,7 +53,10 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 			$previous_versions = array( '3.2', '3.3', '3.5', '3.9' );
 			foreach ( $previous_versions as $previous_version ) {
 				if ( version_compare( $current_version, $previous_version, '<' ) ) {
-					add_action( 'admin_init', array( $this, 'wp_pre_' . str_replace( '.', '', $previous_version ) ), intval( 10 * $previous_version ) );
+					add_action( 'admin_init', array(
+						$this,
+						'wp_pre_' . str_replace( '.', '', $previous_version )
+					), intval( 10 * $previous_version ) );
 				}
 			}
 		}
@@ -123,11 +128,17 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 				add_action( 'admin_print_scripts', array( $this, 'wp_pre_33_admin_print_scripts' ) );
 				remove_action( 'admin_print_footer_scripts', array( bstw()->admin(), 'admin_print_footer_scripts' ) );
 				if ( ! version_compare( $wp_version, '3.2', '<' ) ) {
-					remove_action( 'admin_print_footer_scripts', array( $this, 'wp_pre_32_admin_print_footer_scripts' ) );
+					remove_action( 'admin_print_footer_scripts', array(
+						$this,
+						'wp_pre_32_admin_print_footer_scripts'
+					) );
 				}
 				add_action( 'admin_print_footer_scripts', array( $this, 'wp_pre_33_admin_print_footer_scripts' ) );
 				remove_action( 'admin_print_scripts', array( bstw()->admin(), 'pointer_load' ) );
-				remove_filter( 'black_studio_tinymce_admin_pointers-widgets', array( bstw()->admin(), 'pointer_register' ) );
+				remove_filter( 'black_studio_tinymce_admin_pointers-widgets', array(
+					bstw()->admin(),
+					'pointer_register'
+				) );
 			}
 		}
 
@@ -135,6 +146,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 		 * Remove WP fullscreen mode and set the native tinyMCE fullscreen mode for WordPress prior to 3.3
 		 *
 		 * @param mixed[] $settings
+		 *
 		 * @return mixed[]
 		 * @since 2.0.0
 		 */
@@ -147,6 +159,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 				$plugins[] = 'fullscreen';
 			}
 			$settings['plugins'] = implode( ',', $plugins );
+
 			return $settings;
 		}
 
@@ -229,7 +242,9 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 		 * ( this is done excluding post_id parameter in Thickbox iframe url )
 		 *
 		 * @global string $pagenow
+		 *
 		 * @param string $upload_iframe_src
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 */
@@ -238,6 +253,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Compatibility_Wordpress' ) ) {
 			if ( $pagenow == 'widgets.php' ) {
 				$upload_iframe_src = str_replace( 'post_id=0', '', $upload_iframe_src );
 			}
+
 			return $upload_iframe_src;
 		}
 

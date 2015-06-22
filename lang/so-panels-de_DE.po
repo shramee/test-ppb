@@ -14,56 +14,56 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../siteorigin-panels.php:75
+#: ../ppb-panels.php:75
 msgid "Custom Home Page Builder"
 msgstr "Individuelle Homepage Erstellung"
 
-#: ../siteorigin-panels.php:76
+#: ../ppb-panels.php:76
 msgid "Home Page"
 msgstr "Homepage"
 
-#: ../siteorigin-panels.php:88 ../siteorigin-panels.php:97
-#: ../siteorigin-panels.php:321 ../inc/options.php:7
+#: ../ppb-panels.php:88 ../ppb-panels.php:97
+#: ../ppb-panels.php:321 ../inc/options.php:7
 msgid "Page Builder"
 msgstr "Page Builder"
 
-#: ../siteorigin-panels.php:230
+#: ../ppb-panels.php:230
 msgid "Insert"
 msgstr "Einfügen"
 
-#: ../siteorigin-panels.php:231
+#: ../ppb-panels.php:231
 msgid "cancel"
 msgstr "Abbrechen"
 
-#: ../siteorigin-panels.php:232
+#: ../ppb-panels.php:232
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../siteorigin-panels.php:233
+#: ../ppb-panels.php:233
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: ../siteorigin-panels.php:234
+#: ../ppb-panels.php:234
 msgid "Done"
 msgstr "Einfügen"
 
-#: ../siteorigin-panels.php:235
+#: ../ppb-panels.php:235
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: ../siteorigin-panels.php:236
+#: ../ppb-panels.php:236
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: ../siteorigin-panels.php:239
+#: ../ppb-panels.php:239
 msgid "Columns deleted"
 msgstr "Spalten gelöscht"
 
-#: ../siteorigin-panels.php:240
+#: ../ppb-panels.php:240
 msgid "Widget deleted"
 msgstr "Widget gelöscht"
 
-#: ../siteorigin-panels.php:241
+#: ../ppb-panels.php:241
 msgid ""
 "Are you sure you want to load this layout? It will overwrite your current "
 "page."
@@ -71,28 +71,28 @@ msgstr ""
 "Soll dieses Layout wirklich geladen werden? Die aktuelle Seite wird "
 "überschrieben werden."
 
-#: ../siteorigin-panels.php:242
+#: ../ppb-panels.php:242
 #, php-format
 msgid "Edit %s Widget"
 msgstr "%s Widget bearbeiten"
 
-#: ../siteorigin-panels.php:721
+#: ../ppb-panels.php:721
 msgid "Edit Home Page"
 msgstr "Homepage bearbeiten"
 
-#: ../siteorigin-panels.php:787
+#: ../ppb-panels.php:787
 msgid "SiteOrigin Themes"
 msgstr "SiteOrigin Themes"
 
-#: ../siteorigin-panels.php:821
+#: ../ppb-panels.php:821
 msgid "Untitled"
 msgstr "Ohne Titel"
 
-#: ../siteorigin-panels.php:822
+#: ../ppb-panels.php:822
 msgid "Unpublished"
 msgstr "Unveröffentlicht"
 
-#: ../siteorigin-panels.php:826
+#: ../ppb-panels.php:826
 #, php-format
 msgid "Clone Page: %s"
 msgstr "Seite klonen: %s"

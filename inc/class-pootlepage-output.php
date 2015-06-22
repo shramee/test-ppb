@@ -14,64 +14,18 @@ class PootlePage_Output {
 
 	public $options;
 
-	public function __construct( $options ){
+	public function __construct( $options ) {
 		$this->options = $options;
 	}
 
 	public function google_webfonts() {
 
-		if ( ! function_exists( 'wf_get_google_fonts' ) ) {
-			return;
-		}
-
-		$google_fonts = wf_get_google_fonts();
-
-		$fonts_to_load = array();
-		$output = '';
-
-		// Go through the options
-		if ( ! empty( $this->options ) && ! empty( $google_fonts ) ) {
-			foreach ( $this->options as $key => $option ) {
-
-				if ( is_array( $option ) && $option['type'] == 'font' ) {
-
-					$fontFamilySettingId = $option['settings']['font_id'];
-					$fontFamilyDefault = $option['defaults']['font_id'];
-					$fontFamily = get_option( $fontFamilySettingId, $fontFamilyDefault );
-
-					// Go through the google font array
-					foreach ( $google_fonts as $font ) {
-						// Check if the google font name exists in the current "face" option
-						if ( $fontFamily == $font['name'] && ! in_array( $font['name'], array_keys( $fonts_to_load ) ) ) {
-							// Add google font to output
-							$variant = '';
-							if ( isset( $font['variant'] ) ) $variant = $font['variant'];
-							$fonts_to_load[$font['name']] = $variant;
-						}
-					}
-				}
-			}
-
-			// Output google font css in header
-			if ( 0 < count( $fonts_to_load ) ) {
-				$fonts_and_variants = array();
-				foreach ( $fonts_to_load as $k => $v ) {
-					$fonts_and_variants[] = $k . $v;
-				}
-				$fonts_and_variants = array_map( 'urlencode', $fonts_and_variants );
-				$fonts = join( '|', $fonts_and_variants );
-
-				$output .= "\n<!-- Google Webfonts -->\n";
-				$output .= '<link href="http'. ( is_ssl() ? 's' : '' ) .'://fonts.googleapis.com/css?family=' . $fonts .'" rel="stylesheet" type="text/css" />'."\n";
-
-				echo $output;
-			}
-		}
+		//Use this method when we need font control
 	}
 
 	private function get_font_css_value( $element ) {
 
-		$fontOption = $this->options[ $element];
+		$fontOption = $this->options[ $element ];
 
 		$fontFamily = get_option( $element . '_font_id', $fontOption['defaults']['font_id'] );
 
@@ -93,9 +47,9 @@ class PootlePage_Output {
 
 		$result = array(
 			'font-family' => '"' . $fontFamily . '"',
-			'font-size' => $fontSize . $fontSizeUnit,
-			'color' => $fontColor,
-			'font-style' => $fontStyle,
+			'font-size'   => $fontSize . $fontSizeUnit,
+			'color'       => $fontColor,
+			'font-style'  => $fontStyle,
 			'font-weight' => $fontWeight
 		);
 
@@ -110,7 +64,7 @@ class PootlePage_Output {
 			<?php echo $this->widget_css(); ?>
 			}
 		</style>
-		<?php
+	<?php
 	}
 
 	/**
@@ -118,7 +72,7 @@ class PootlePage_Output {
 	 *
 	 * @return string $widget_title_css
 	 */
-	public function widget_css(){
+	public function widget_css() {
 
 		$widget_css = '';
 
@@ -129,8 +83,8 @@ class PootlePage_Output {
 		//CSS3 border radius property
 		$widget_border_radius = get_option( 'pp_widget_border_radius', 0 );
 		$widget_css .= 'border-radius:' . $widget_border_radius . 'px; ' .
-		        '-moz-border-radius:' . $widget_border_radius . 'px; ' .
-		        '-webkit-border-radius:' . $widget_border_radius . 'px;';
+		               '-moz-border-radius:' . $widget_border_radius . 'px; ' .
+		               '-webkit-border-radius:' . $widget_border_radius . 'px;';
 
 		//Widget padding styles
 //		$widget_css .= $this->widget_padding_css();
@@ -146,7 +100,7 @@ class PootlePage_Output {
 	 *
 	 * @return string $widget_title_css
 	 */
-	public function widget_border_css(){
+	public function widget_border_css() {
 
 		$css = '';
 
@@ -159,7 +113,7 @@ class PootlePage_Output {
 	 *
 	 * @return string $widget_title_css
 	 */
-	public function widget_padding_css(){
+	public function widget_padding_css() {
 
 		$css = '';
 
@@ -176,7 +130,7 @@ class PootlePage_Output {
 	 *
 	 * @return string $widget_title_css
 	 */
-	public function widget_typography_css(){
+	public function widget_typography_css() {
 
 		$css = '';
 

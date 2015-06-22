@@ -5,8 +5,8 @@
  * @license GPL 2.0 http://www.gnu.org/licenses/gpl-2.0.html
  */
 
-(function($){
-    
+(function ($) {
+
     // The initial values
     var gridId = 0;
     var cellId = 0;
@@ -14,38 +14,38 @@
     /**
      * Visually resize the height of all cells, this should happen after a new panel is added.
      */
-    $.fn.panelsResizeCells = function(){
+    $.fn.panelsResizeCells = function () {
 
-        return $(this ).each(function(){
+        return $(this).each(function () {
             var $$ = $(this);
 
-            $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', 'auto' );
-            var totalWidth = $$.find( '.grid' ).outerWidth();
-            
-            if ( $$.find( '.grid .cell' ).length > 1 ) {
-                $$.find( '.grid .cell' ).each( function () {
-                    if ( $( this ).is( '.first, .last' ) ) totalWidth -= 6;
+            $$.find('.grid, .grid .cell, .grid .cell .cell-wrapper').css('height', 'auto');
+            var totalWidth = $$.find('.grid').outerWidth();
+
+            if ($$.find('.grid .cell').length > 1) {
+                $$.find('.grid .cell').each(function () {
+                    if ($(this).is('.first, .last')) totalWidth -= 6;
                     else totalWidth -= 12;
-                } );
+                });
             }
 
             var left = 0;
             var maxHeight = 0;
-            $$.find( '.grid .cell' ).each( function () {
-                maxHeight = Math.max( maxHeight,
+            $$.find('.grid .cell').each(function () {
+                maxHeight = Math.max(maxHeight,
                     // The height of a panel is 54 (49 height with 5 bottom margin) and an extra 14 for top and bottom cell-wrapper paddings
                     //($(this).find('.panel').length * 54) + 14
-                    $(this ).height()
+                    $(this).height()
                 );
-                
-                $( this )
-                    .width( Math.floor( totalWidth * Number( $( this ).attr( 'data-percent' ) ) ) )
-                    .css( 'left', left );
-                left += $( this ).width() + 12;
-            } );
+
+                $(this)
+                    .width( Math.floor( ( totalWidth-1 ) * Number($(this).attr('data-percent') ) ) )
+                    .css('left', left);
+                left += $(this).width() + 12;
+            });
 
             // Resize all the grids and cell wrappers
-            $$.find( '.grid, .grid .cell, .grid .cell .cell-wrapper' ).css( 'height', Math.max( maxHeight, 1 ) );
+            $$.find('.grid, .grid .cell, .grid .cell .cell-wrapper').css('height', Math.max(maxHeight, 1));
         });
 
     };
@@ -59,16 +59,16 @@
      *
      * @return {*}
      */
-    panels.createGrid = function ( cells, weights, style ) {
+    panels.createGrid = function (cells, weights, style) {
 
-        if ( weights == null || weights.length == 0 ) {
+        if (weights == null || weights.length == 0) {
             weights = [];
-            for ( var i = 0; i < cells; i++ ) {
+            for (var i = 0; i < cells; i++) {
                 weights[i] = 1;
             }
         }
 
-        if(typeof style == 'undefined') style = {};
+        if (typeof style == 'undefined') style = {background:''};
 
         var weightSum = 0;
         for (var index in weights) {
@@ -76,18 +76,23 @@
         }
 
         // Create a new grid container
-        var container = $( '<div />' ).addClass( 'grid-container' ).appendTo( '#panels-container' );
+        var container = $('<div />').css('border-left-color', style.background).addClass('grid-container').appendTo('#panels-container');
+
+        if ( undefined != typeof style.hide_row && style.hide_row ) {
+            container.addClass( 'hide-row-enabled' );
+        }
+
         // Add the hidden field to store the grid order
-        container.append( $( '<input type="hidden" name="grids[' + gridId + '][cells]" />' ).val( cells ) );
+        container.append($('<input type="hidden" name="grids[' + gridId + '][cells]" />').val(cells));
 
         // Load the inputs required for the style
         var styleInput = {};
-        for(var fieldName in panelsStyleFields) {
+        for (var fieldName in panelsStyleFields) {
 
-            styleInput[fieldName] = $( '<input type="hidden" name="grids[' + gridId + '][style][' + fieldName + ']" data-style-field="' + fieldName + '" />' ).appendTo(container);
-            if(typeof style[fieldName] != 'undefined') {
-                if(panelsStyleFields[fieldName]['type'] == 'checkbox') {
-                    styleInput[fieldName].val( style[fieldName] ? 'true' : '' );
+            styleInput[fieldName] = $('<input type="hidden" name="grids[' + gridId + '][style][' + fieldName + ']" data-style-field="' + fieldName + '" />').appendTo(container);
+            if (typeof style[fieldName] != 'undefined') {
+                if (panelsStyleFields[fieldName]['type'] == 'checkbox') {
+                    styleInput[fieldName].val(style[fieldName] ? 'true' : '');
                 }
                 else {
                     styleInput[fieldName].val(style[fieldName]);
@@ -99,65 +104,65 @@
 
         container
             .append(
-                $( '<div class="controls" />' )
-                    // Add the move/reorder button
-                    .append(
-                        $( '<div class="row-bg-preview-screen"></div>')
-                    )
-                    .append(
-                        $( '<div class="row-button row-bg-preview sort-button dashicons-before dashicons-visibility"></div>' )
-                    )
-                    .append(
-                        $( '<div class="row-button sort-button dashicons-before dashicons-sort grid-handle"></div>' )
-                    )
-                    // Add the duplicate button
-                    .append(
-                        $('<div class="row-button duplicate-button dashicons-before dashicons-admin-page"></div>')
-                            .attr('data-tooltip', 'Duplicate')
-                    )
-                    // Add the button for selecting the row style
-                    .append (
-                        $( '<div class="row-button style-button dashicons-before dashicons-admin-generic panels-visual-style"></div>' )
-                            .attr( 'data-tooltip', 'Row display settings' )
-                    )
-                    // Add the remove button
-                    .append(
-                        $( '<div class="row-button delete-button dashicons-before dashicons-dismiss"></div>' )
-                            .attr( 'data-tooltip', panels.i10n.buttons['delete'] )
-                    )
-            );
+            $('<div class="controls" />')
+                // Add the move/reorder button
+                .append(
+                $('<div class="row-bg-preview-screen"></div>')
+            )
+                .append(
+                $('<div class="row-button row-bg-preview sort-button dashicons-before dashicons-visibility"></div>')
+            )
+                .append(
+                $('<div class="row-button sort-button dashicons-before dashicons-sort grid-handle"></div>')
+            )
+                // Add the duplicate button
+                .append(
+                $('<div class="row-button duplicate-button dashicons-before dashicons-admin-page"></div>')
+                    .attr('data-tooltip', 'Duplicate')
+            )
+                // Add the button for selecting the row style
+                .append(
+                $('<div class="row-button style-button dashicons-before dashicons-admin-generic panels-visual-style"></div>')
+                    .attr('data-tooltip', 'Row display settings')
+            )
+                // Add the remove button
+                .append(
+                $('<div class="row-button delete-button dashicons-before dashicons-dismiss"></div>')
+                    .attr('data-tooltip', panels.i10n.buttons['delete'])
+            )
+        );
 
         panels.setupGridButtons(container);
 
         // Hide the row style button if none are available
-        if( ! Object.keys(panelsStyleFields).length ) {
+        if (!Object.keys(panelsStyleFields).length) {
             container.find('.panels-visual-style').remove();
         }
 
-        var grid = $( '<div />' ).addClass( 'grid' ).appendTo( container );
+        var grid = $('<div />').addClass('grid').appendTo(container);
 
-        for ( var i = 0; i < cells; i++ ) {
+        for (var i = 0; i < cells; i++) {
             var cell = $(
                 '<div class="cell" data-percent="' + (weights[i] / weightSum) + '">' +
-                    '<div class="cell-wrapper panels-container">' +
-                        '<div class="add-widget-button dashicons-before dashicons-plus"> </div>' +
-                    '</div>' +
-                    '<div class="cell-width"><div class="cell-width-left"></div><div class="cell-width-right"></div><div class="cell-width-line"></div><div class="cell-width-value"><span></span></div></div>' +
-                    '</div>'
+                '<div class="cell-wrapper panels-container">' +
+                '<div class="add-widget-button dashicons-before dashicons-plus"> </div>' +
+                '</div>' +
+                '<div class="cell-width"><div class="cell-width-left"></div><div class="cell-width-right"></div><div class="cell-width-line"></div><div class="cell-width-value"><span></span></div></div>' +
+                '</div>'
             );
-            if ( i == 0 ) cell.addClass( 'first' );
-            if ( i == cells - 1 ) cell.addClass( 'last' );
-            grid.append( cell );
+            if (i == 0) cell.addClass('first');
+            if (i == cells - 1) cell.addClass('last');
+            grid.append(cell);
 
             // Add the cell information fields
             cell
-                .append( $( '<input type="hidden" name="grid_cells[' + cellId + '][weight]" />' ).val( weights[i] / weightSum ) )
-                .append( $( '<input type="hidden" name="grid_cells[' + cellId + '][grid]" />' ).val( gridId ) )
-                .data( 'cellId', cellId )
+                .append($('<input type="hidden" name="grid_cells[' + cellId + '][weight]" />').val(weights[i] / weightSum))
+                .append($('<input type="hidden" name="grid_cells[' + cellId + '][grid]" />').val(gridId))
+                .data('cellId', cellId)
 
             cellId++;
         }
-        grid.append( $( '<div />' ).addClass( 'clear' ) );
+        grid.append($('<div />').addClass('clear'));
         gridId++;
 
         // Setup the grid
@@ -165,9 +170,9 @@
 
         // setup add widget icons click handler
         container.find('.cell-wrapper .add-widget-button').each(function () {
-           $(this).click(function () {
-               panels.addContentModule( this );
-           });
+            $(this).click(function () {
+                panels.addContentModule(this);
+            });
         });
 
         container.find('> .grid > .cell').each(function () {
@@ -177,41 +182,12 @@
             });
         });
 
+        panels.checkAddRowButtonColor();
+
         return container;
     };
 
     panels.setupGridButtons = function ($gridContainer) {
-
-        $gridContainer.find('> .controls > .row-bg-preview').hover(function () {
-            var $t = $(this),
-                $container = $t.closest('.grid-container'),
-                $screen = $t.siblings('.row-bg-preview-screen');
-            $screen.fadeIn(250);
-            if ( '.bg_video' == $container.find("[data-style-field$='background_toggle']").val() ) {
-                if ($container.find("[data-style-field$='bg_video']").val()) {
-
-                    $screen.html('<video class="ppb-bg-video" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">' +
-                    '<source src="' +
-                    $container.find("[data-style-field$='bg_video']").val() +
-                    '" type="video/mp4"><source src="' +
-                    $container.find("[data-style-field$='bg_video']").val() +
-                    '" type="video/webm">Sorry, your browser does not support HTML5 video.' +
-                    '</video>');
-                }
-            } else {
-                $screen.css({
-                    backgroundColor: $container.find("[data-style-field$='background']").val(),
-                    backgroundImage: 'url(' + $container.find("[data-style-field$='background_image']").val() + ')',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                });
-            }
-
-        }, function () {
-
-            $(this).siblings('.row-bg-preview-screen').fadeOut(250).html('');
-
-        });
 
         $gridContainer.find('> .controls > .duplicate-button').click(function () {
 
@@ -278,10 +254,10 @@
             });
 
             $('#panels-container .grid-container').each(function () {
-                $(this).find( '.cell' ).each( function () {
+                $(this).find('.cell').each(function () {
                     // Store which grid this is in by finding the index of the closest .grid-container
-                    $( this ).find( 'input[name$="[grid]"]' ).val( $( '#panels-container .grid-container' ).index( $( this ).closest( '.grid-container' ) ) );
-                } );
+                    $(this).find('input[name$="[grid]"]').val($('#panels-container .grid-container').index($(this).closest('.grid-container')));
+                });
 
             });
 
@@ -294,7 +270,7 @@
             // setup add widget icons click handler
             $newGridContainer.find('.cell-wrapper .add-widget-button').each(function () {
                 $(this).click(function () {
-                    panels.addContentModule( this );
+                    panels.addContentModule(this);
                 });
             });
 
@@ -315,26 +291,26 @@
             panels.loadStyleValues($container);
         });
 
-        $gridContainer.find('> .controls > .delete-button').click( function () {
+        $gridContainer.find('> .controls > .delete-button').click(function () {
 
             var that = this;
 
             var $container = $(this).closest('.grid-container');
 
-            $('#remove-row-dialog').dialog( {
+            $('#remove-row-dialog').dialog({
                 dialogClass: 'panels-admin-dialog',
                 autoOpen: true,
                 modal: false, // Disable modal so we don't mess with media editor. We'll create our own overlay.
-                title:   $( '#remove-row-dialog' ).attr( 'data-title' ),
-                open:    function () {
-                    var overlay = $('<div class="siteorigin-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
+                title: $('#remove-row-dialog').attr('data-title'),
+                open: function () {
+                    var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
                     $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
                 },
-                close : function(){
+                close: function () {
                     $(this).data('overlay').remove();
                 },
                 buttons: {
-                    Yes:    function () {
+                    Yes: function () {
 
                         $(that).removeTooltip();
 
@@ -449,9 +425,11 @@
                             remove();
                         }
 
+                        panels.checkAddRowButtonColor( true );
+
                         $(this).dialog('close');
                     },
-                    Cancel : function(){
+                    Cancel: function () {
                         $(this).dialog('close');
                     }
                 }
@@ -460,7 +438,7 @@
             })
 
 
-        } )
+        })
     };
 
     /**
@@ -468,87 +446,89 @@
      *
      * @param $$
      */
-    panels.setupGrid = function ( $$ ) {
+    panels.setupGrid = function ($$) {
         // Hide the undo message
-        $('#panels-undo-message' ).fadeOut(function(){ $(this ).remove() });
+        $('#panels-undo-message').fadeOut(function () {
+            $(this).remove()
+        });
 
         $$.panelsResizeCells();
 
-        $$.find( '.grid .cell' ).not( '.first' ).each( function () {
+        $$.find('.grid .cell').not('.first').each(function () {
 
             var $gridContainer = $(this).closest('.grid-container');
 
             var sharedCellWidth, sharedCellLeft;
 
-            $( this ).resizable( {
-                handles:    'w',
-                containment:'parent',
-                start:      function ( event, ui ) {
-                    sharedCellWidth = $( this ).prev().outerWidth();
-                    sharedCellLeft = $( this ).prev().position().left;
+            $(this).resizable({
+                handles: 'w',
+                containment: 'parent',
+                start: function (event, ui) {
+                    sharedCellWidth = $(this).prev().outerWidth();
+                    sharedCellLeft = $(this).prev().position().left;
                 },
-                stop:       function ( event, ui ) {
-                    $gridContainer.find( '.grid .cell' ).not( '.first' ).resizable( 'disable' ).resizable( 'enable' );
+                stop: function (event, ui) {
+                    $gridContainer.find('.grid .cell').not('.first').resizable('disable').resizable('enable');
                 },
-                resize:     function ( event, ui ) {
-                    var c = $( this );
-                    var p = $( this ).prev();
+                resize: function (event, ui) {
+                    var c = $(this);
+                    var p = $(this).prev();
 
-                    p.css( 'width', c.position().left - p.position().left - 12 );
+                    p.css('width', c.position().left - p.position().left - 12);
 
                     var totalWidth = 0;
-                    $gridContainer.find( '.grid .cell' )
-                        .each( function () {
-                            totalWidth += $( this ).width();
-                        } )
-                        .each( function () {
-                            var percent = $( this ).width() / totalWidth;
-                            $( this ).find( '.cell-width-value span' ).html( Math.round( percent * 1000 ) / 10 + '%' );
-                            $( this ).attr( 'data-percent', percent ).find( 'input[name$="[weight]"]' ).val( percent );
-                        } );
+                    $gridContainer.find('.grid .cell')
+                        .each(function () {
+                            totalWidth += $(this).width();
+                        })
+                        .each(function () {
+                            var percent = $(this).width() / totalWidth;
+                            $(this).find('.cell-width-value span').html(Math.round(percent * 1000) / 10 + '%');
+                            $(this).attr('data-percent', percent).find('input[name$="[weight]"]').val(percent);
+                        });
 
                     $gridContainer.panelsResizeCells();
                 }
-            } );
-        } );
+            });
+        });
 
         // Enable double clicking on the resizer
-        $$.find( '.grid .cell .ui-resizable-handle' ).dblclick( function () {
+        $$.find('.grid .cell .ui-resizable-handle').dblclick(function () {
 
             var $gridContainer = $(this).closest('.grid-container');
 
-            var c1 = $( this ).closest( '.cell' );
+            var c1 = $(this).closest('.cell');
             var c2 = c1.prev();
-            var totalPercent = Number( c1.attr( 'data-percent' ) ) + Number( c2.attr( 'data-percent' ) );
-            c1.attr( 'data-percent', totalPercent / 2 ).find( 'input[name$="[weight]"]' ).val( totalPercent / 2 );
-            c2.attr( 'data-percent', totalPercent / 2 ).find( 'input[name$="[weight]"]' ).val( totalPercent / 2 );
-            c1.add( c2 ).find( '.cell-width-value span' ).html( Math.round( totalPercent / 2 * 1000 ) / 10 + '%' );
+            var totalPercent = Number(c1.attr('data-percent')) + Number(c2.attr('data-percent'));
+            c1.attr('data-percent', totalPercent / 2).find('input[name$="[weight]"]').val(totalPercent / 2);
+            c2.attr('data-percent', totalPercent / 2).find('input[name$="[weight]"]').val(totalPercent / 2);
+            c1.add(c2).find('.cell-width-value span').html(Math.round(totalPercent / 2 * 1000) / 10 + '%');
             $gridContainer.panelsResizeCells();
 
             return false;
-        } );
+        });
 
-        $$.find( '.grid .cell' )
-            .click(function(){
-                $( '.grid .cell' ).removeClass('cell-selected');
-                $(this ).addClass('cell-selected');
+        $$.find('.grid .cell')
+            .click(function () {
+                $('.grid .cell').removeClass('cell-selected');
+                $(this).addClass('cell-selected');
             })
-            .each( function () {
-                var percent = Number( $( this ).attr( 'data-percent' ) );
-                $( this ).find( '.cell-width-value span' ).html( Math.round( percent * 1000 ) / 10 + '%' );
-            } )
-            .find( '.panels-container' )
+            .each(function () {
+                var percent = Number($(this).attr('data-percent'));
+                $(this).find('.cell-width-value span').html(Math.round(percent * 1000) / 10 + '%');
+            })
+            .find('.panels-container')
             // This sortable handles the widgets inside the cell
-            .sortable( {
-                placeholder:"ui-state-highlight",
-                connectWith:".panels-container",
-                items:    '> .panel',
-                tolerance:  'pointer',
+            .sortable({
+                placeholder: "ui-state-highlight",
+                connectWith: ".panels-container",
+                items: '> .panel',
+                tolerance: 'pointer',
                 change: function (ui) {
-                    var thisContainer = $('#panels-container .ui-state-highlight' ).closest('.cell' ).get(0);
-                    if(typeof this.lastContainer != 'undefined' && this.lastContainer != thisContainer){
+                    var thisContainer = $('#panels-container .ui-state-highlight').closest('.cell').get(0);
+                    if (typeof this.lastContainer != 'undefined' && this.lastContainer != thisContainer) {
                         // Resize the new and the last containers
-                        $(this.lastContainer ).closest('.grid-container').panelsResizeCells();
+                        $(this.lastContainer).closest('.grid-container').panelsResizeCells();
                         $(thisContainer).closest('.grid-container').panelsResizeCells();
                         thisContainer.click();
                     }
@@ -556,24 +536,24 @@
                     // Refresh all the cell sizes after we stop sorting
                     this.lastContainer = thisContainer;
                 },
-                helper: function(e, el){
+                helper: function (e, el) {
                     return el.clone().css('opacity', panels.animations ? 0.9 : 1).addClass('panel-being-dragged');
                 },
                 stop: function (ui, el) {
-                    $( '#panels-container .grid-container' ).each( function () {
+                    $('#panels-container .grid-container').each(function () {
                         $(this).panelsResizeCells();
-                    } );
+                    });
                 },
                 receive: function () {
-                    $( this ).trigger( 'refreshcells' );
+                    $(this).trigger('refreshcells');
                 }
-            } )
-            .bind( 'refreshcells', function () {
+            })
+            .bind('refreshcells', function () {
                 // Set the cell for each panel
-                $( '#panels-container .panel' ).each( function () {
-                    var container = $( this ).closest( '.grid-container' );
-                    $( this).find( 'input[name$="[info][grid]"]' ).val( $( '#panels-container .grid-container' ).index( container ) );
-                    $( this ).find( 'input[name$="[info][cell]"]' ).val( container.find( '.cell' ).index( $( this ).closest( '.cell' ) ) );
+                $('#panels-container .panel').each(function () {
+                    var container = $(this).closest('.grid-container');
+                    $(this).find('input[name$="[info][grid]"]').val($('#panels-container .grid-container').index(container));
+                    $(this).find('input[name$="[info][cell]"]').val(container.find('.cell').index($(this).closest('.cell')));
 
                     var dataJson = $(this).find('input[type=hidden][name$="[data]"]').val();
                     if (dataJson != null && dataJson != '') {
@@ -582,36 +562,36 @@
                         if (typeof dataObject.info == 'undefined') {
                             dataObject.info = {};
                         }
-                        dataObject.info.raw = $( this).find( 'input[name$="[info][raw]"]' ).val();
-                        dataObject.info.grid = $( this).find( 'input[name$="[info][grid]"]' ).val();
-                        dataObject.info.cell = $( this).find( 'input[name$="[info][cell]"]' ).val();
-                        dataObject.info.id = $( this).find( 'input[name$="[info][id]"]' ).val();
-                        dataObject.info.class = $( this).find( 'input[name$="[info][class]"]' ).val();
+                        dataObject.info.raw = $(this).find('input[name$="[info][raw]"]').val();
+                        dataObject.info.grid = $(this).find('input[name$="[info][grid]"]').val();
+                        dataObject.info.cell = $(this).find('input[name$="[info][cell]"]').val();
+                        dataObject.info.id = $(this).find('input[name$="[info][id]"]').val();
+                        dataObject.info.class = $(this).find('input[name$="[info][class]"]').val();
 
                         // serialize back data
                         dataJson = JSON.stringify(dataObject);
                         $(this).find('input[type=hidden][name$="[data]"]').val(dataJson);
 
                     }
-                } );
+                });
 
-                $( '#panels-container .cell' ).each( function () {
-                    $( this ).find( 'input[name$="[grid]"]' ).val( $( '#panels-container .grid-container' ).index( $( this ).closest( '.grid-container' ) ) );
-                } );
-            } );
-    }
+                $('#panels-container .cell').each(function () {
+                    $(this).find('input[name$="[grid]"]').val($('#panels-container .grid-container').index($(this).closest('.grid-container')));
+                });
+            });
+    };
 
     /**
      * Clears all the grids
      */
-    panels.clearGrids = function(){
-        $('#panels-container .grid-container' ).remove();
-    }
+    panels.clearGrids = function () {
+        $('#panels-container .grid-container').remove();
+    };
 
     /**
      * Add the content module in the cell
      */
-    panels.addContentModule = function ( tis ) {
+    panels.addContentModule = function (tis) {
 
         $t = $(tis);
 
@@ -619,9 +599,33 @@
 
         $t.parents('.cell').eq(0).addClass('cell-selected')
 
-        var panel = $('#panels-dialog').panelsCreatePanel( 'Pootle_Text_Widget' );
+        var panel = $('#panels-dialog').panelsCreatePanel('Pootle_Text_Widget');
         panels.addPanel(panel, null, null, true);
 
-    }
-    
+    };
+
+    panels.checkAddRowButtonColor = function ( delay ) {
+
+        if( delay ) {
+            delay = 1;
+        } else {
+            delay = 0;
+        }
+
+        if( $( '#panels-container .grid-container').length < 1 + delay ) {
+
+            $('#add-to-panels  .grid-add').addClass('pootle');
+            $('#ppb-hello-user').show();
+        } else {
+
+            $('#add-to-panels  .grid-add').removeClass('pootle');
+            $('#ppb-hello-user').hide();
+        }
+
+    };
+
+    $(document).ready( function(){
+        panels.checkAddRowButtonColor();
+    } )
+
 })(jQuery);

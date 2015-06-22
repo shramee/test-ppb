@@ -12,7 +12,7 @@ function pp_page_builder_pootle_text_widget_admin_init() {
 	if (
 		in_array( $pagenow, array( 'post-new.php', 'post.php' ) ) ||
 		( $pagenow == 'themes.php' && isset( $_GET['page'] ) && $_GET['page'] == 'so_panels_home_page' )
-	 )  {
+	) {
 		add_action( 'admin_head', 'pootle_text_widget_load_tiny_mce' );
 		add_filter( 'tiny_mce_before_init', 'pootle_text_widget_init_editor', 20 );
 		add_action( 'admin_print_scripts', 'pootle_text_widget_scripts' );
@@ -21,6 +21,7 @@ function pp_page_builder_pootle_text_widget_admin_init() {
 	}
 
 }
+
 add_action( 'admin_init', 'pp_page_builder_pootle_text_widget_admin_init' );
 
 /**
@@ -42,15 +43,15 @@ function pp_page_builder_pootle_text_widget_admin_enqueue( $page ) {
 
 //		if ( version_compare( $pootle_text_widget_version, '1.3.3', '<=' ) ) {
 //			// Use the old compatibility file.
-			// pootle-text-widget is based on black-studio 1.3.3
-			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.old.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		// pootle-text-widget is based on black-studio 1.3.3
+		wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.old.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 //		}
 //		else {
-			// Use the new compatibility file
+		// Use the new compatibility file
 //			wp_enqueue_script( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 //		}
 
-		wp_enqueue_style( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ).'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.css', array(), POOTLEPAGE_VERSION );
+		wp_enqueue_style( 'pootle-text-widget-pp-page-builder', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'widgets/compat/pootle-text-widget/pootle-text-widget-pp-page-builder.css', array(), POOTLEPAGE_VERSION );
 
 
 //		if ( version_compare( $pootle_text_widget_version, '1.2.0', '<=' ) ) {
@@ -59,4 +60,5 @@ function pp_page_builder_pootle_text_widget_admin_enqueue( $page ) {
 //		}
 	}
 }
+
 add_action( 'admin_enqueue_scripts', 'pp_page_builder_pootle_text_widget_admin_enqueue', 15 );

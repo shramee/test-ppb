@@ -14,12 +14,12 @@
 		<div class="jp-progress">
 			<div class="jp-seek-bar">
 				<div class="jp-play-bar">
-	
+
 					<div class="jp-time-info">
 						<div class="jp-current-time"></div>
 						<div class="jp-time-info-pointer"></div>
 					</div>
-				
+
 				</div>
 			</div>
 		</div>

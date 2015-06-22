@@ -34,6 +34,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}
+
 			return self::$_instance;
 		}
 
@@ -78,6 +79,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 		 * @uses wp_kses_post()
 		 *
 		 * @param string $text
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 * @deprecated 2.0.3
@@ -87,6 +89,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 			if ( bstw()->check_widget( $widget ) && ! empty( $instance ) ) {
 				$text = wp_kses_post( $text );
 			}
+
 			return $text;
 		}
 
@@ -94,6 +97,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 		 * Apply auto_embed to widget text
 		 *
 		 * @param string $text
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 */
@@ -103,6 +107,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 				$text = $wp_embed->run_shortcode( $text );
 				$text = $wp_embed->autoembed( $text );
 			}
+
 			return $text;
 		}
 
@@ -110,8 +115,9 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 		 * Apply smilies conversion to widget text
 		 *
 		 * @uses convert_smilies()
-		 * 
+		 *
 		 * @param string $text
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 */
@@ -119,6 +125,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 			if ( bstw()->check_widget( $widget ) && ! empty( $instance ) ) {
 				$text = convert_smilies( $text );
 			}
+
 			return $text;
 		}
 
@@ -128,6 +135,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 		 * @uses apply_filters()
 		 *
 		 * @param mixed[] $instance
+		 *
 		 * @return boolean
 		 * @since 2.1.0
 		 */
@@ -138,6 +146,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 				$need_wpautop = $instance['filter'] == 1;
 			}
 			$need_wpautop = apply_filters( 'black_studio_tinymce_need_wpautop', $need_wpautop, $instance );
+
 			return $need_wpautop;
 		}
 
@@ -149,6 +158,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 		 * @param string $text
 		 * @param mixed[]|null $instance
 		 * @param object|null $widget
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 */
@@ -158,6 +168,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 					$text = wpautop( $text );
 				}
 			}
+
 			return $text;
 		}
 
@@ -167,6 +178,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 		 * @uses do_shortcode()
 		 *
 		 * @param string $text
+		 *
 		 * @return string
 		 * @since 2.0.0
 		 */
@@ -174,6 +186,7 @@ if ( ! class_exists( 'Black_Studio_TinyMCE_Text_Filters' ) ) {
 			if ( bstw()->check_widget( $widget ) && ! empty( $instance ) ) {
 				$text = do_shortcode( $text );
 			}
+
 			return $text;
 		}
 

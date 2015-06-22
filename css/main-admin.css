@@ -1,0 +1,11 @@
+.button.pootle {
+    background: #ef4832;
+    border-color: #b32 !important;
+    color: #fff;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 1px 0 rgba(0, 0, 0, .25);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .52), 0 1px 0 rgba(0, 0, 0, .25);
+}
+
+div.pootle.updated {
+    border-left-color: #ef4832;
+}

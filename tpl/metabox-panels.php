@@ -9,23 +9,24 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<div id="panels-container">
 	</div>
-	
+
 	<div id="add-to-panels">
 
-		<button class="grid-add add-button ed_button button button-small"><?php _e( 'Add Row', 'siteorigin-panels' ) ?></button>
+		<button class="grid-add add-button ed_button button button-small"><?php _e( 'Add Row', 'ppb-panels' ) ?></button>
 
 		<?php if ( ! empty( $layouts ) ) : ?>
-			<button class="prebuilt-set add-button ed_button button button-small"><?php _e( 'Use Existing Page Layout', 'siteorigin-panels' ) ?></button>
+			<button class="prebuilt-set add-button ed_button button button-small"><?php _e( 'Use Existing Page Layout', 'ppb-panels' ) ?></button>
 		<?php endif; ?>
 
 		<div class="clear"></div>
 	</div>
 
 	<?php // The add new widget dialog ?>
-	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget','siteorigin-panels' ) ?>" class="panels-admin-dialog">
+	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget', 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
 		<div id="panels-dialog-inner">
 			<div class="panels-text-filter">
-				<input type="search" class="widefat" placeholder="Filter" id="panels-text-filter-input" />
+				<input type="search" class="widefat" placeholder="Filter" id="panels-text-filter-input"/>
 			</div>
 
 			<ul class="panel-type-list">
@@ -43,13 +44,16 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 				}
 
 				$widgetSettings['reorder-widgets'] = json_decode( $widgetSettings['reorder-widgets'], true );
-				$widgetSettings['unused-widgets'] = json_decode( $widgetSettings['unused-widgets'], true );
+				$widgetSettings['unused-widgets']  = json_decode( $widgetSettings['unused-widgets'], true );
 
 				if ( count( $widgetSettings['reorder-widgets'] ) == 0 &&
-					count( $widgetSettings['unused-widgets'] ) == 0
+				     count( $widgetSettings['unused-widgets'] ) == 0
 				) {
-					$widgetSettings['reorder-widgets'] = array( 'Pootle_Text_Widget',
-						'SiteOrigin_Panels_Widgets_PostLoop', 'Woo_Widget_Component' );
+					$widgetSettings['reorder-widgets'] = array(
+						'Pootle_Text_Widget',
+						'SiteOrigin_Panels_Widgets_PostLoop',
+						'Woo_Widget_Component'
+					);
 
 					foreach ( $wp_widget_factory->widgets as $class => $widget_obj ) {
 						if ( ! in_array( $class, $widgetSettings['reorder-widgets'] ) ) {
@@ -57,11 +61,11 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 						}
 					}
 
-					$usedSequence = $widgetSettings['reorder-widgets'];
+					$usedSequence   = $widgetSettings['reorder-widgets'];
 					$unusedSequence = $widgetSettings['unused-widgets'];
 				} else {
 
-					$usedSequence = $widgetSettings['reorder-widgets'];
+					$usedSequence   = $widgetSettings['reorder-widgets'];
 					$unusedSequence = $widgetSettings['unused-widgets'];
 
 					foreach ( $wp_widget_factory->widgets as $class => $widget_obj ) {
@@ -72,7 +76,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 					// make visual editor as first one
 					if ( in_array( 'Pootle_Text_Widget', $usedSequence ) ) {
-						$temp = array();
+						$temp   = array();
 						$temp[] = 'Pootle_Text_Widget';
 						foreach ( $usedSequence as $class ) {
 							if ( $class != 'Pootle_Text_Widget' ) {
@@ -88,20 +92,21 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 				<?php
 
 				foreach ( $usedSequence as $class ) :
-					if ( ! isset( $wp_widget_factory->widgets[$class] ) ) {
+					if ( ! isset( $wp_widget_factory->widgets[ $class ] ) ) {
 						continue;
 					}
-					$widget_obj = $wp_widget_factory->widgets[$class];
+					$widget_obj = $wp_widget_factory->widgets[ $class ];
 
-				?>
+					?>
 					<li class="panel-type"
-						data-class="<?php echo esc_attr( $class ) ?>"
-						data-title="<?php echo esc_attr( $widget_obj->name ) ?>"
+					    data-class="<?php echo esc_attr( $class ) ?>"
+					    data-title="<?php echo esc_attr( $widget_obj->name ) ?>"
 						>
 						<div class="panel-type-wrapper">
 							<h3><?php echo esc_html( $widget_obj->name ) ?></h3>
 							<?php if ( ! empty( $widget_obj->widget_options['description'] ) ) : ?>
-								<small class="description"><?php echo esc_html( $widget_obj->widget_options['description'] ) ?></small>
+								<small
+									class="description"><?php echo esc_html( $widget_obj->widget_options['description'] ) ?></small>
 							<?php endif; ?>
 						</div>
 					</li>
@@ -109,29 +114,32 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 				<?php
 				foreach ( $unusedSequence as $class ) :
-					if ( ! isset( $wp_widget_factory->widgets[$class] ) ) {
+					if ( ! isset( $wp_widget_factory->widgets[ $class ] ) ) {
 						continue;
 					}
-				$widget_obj = $wp_widget_factory->widgets[$class];
+					$widget_obj = $wp_widget_factory->widgets[ $class ];
 
-				?>
-				<li class="panel-type unused"
-					data-class="<?php echo esc_attr( $class ) ?>"
-					data-title="<?php echo esc_attr( $widget_obj->name ) ?>"
-					>
-					<div class="panel-type-wrapper">
-						<h3><?php echo esc_html( $widget_obj->name ) ?></h3>
-						<?php if ( ! empty( $widget_obj->widget_options['description'] ) ) : ?>
-							<small class="description"><?php echo esc_html( $widget_obj->widget_options['description'] ) ?></small>
-						<?php endif; ?>
-					</div>
-				</li>
+					?>
+					<li class="panel-type unused"
+					    data-class="<?php echo esc_attr( $class ) ?>"
+					    data-title="<?php echo esc_attr( $widget_obj->name ) ?>"
+						>
+						<div class="panel-type-wrapper">
+							<h3><?php echo esc_html( $widget_obj->name ) ?></h3>
+							<?php if ( ! empty( $widget_obj->widget_options['description'] ) ) : ?>
+								<small
+									class="description"><?php echo esc_html( $widget_obj->widget_options['description'] ) ?></small>
+							<?php endif; ?>
+						</div>
+					</li>
 				<?php endforeach; ?>
 
 				<div class="clear"></div>
 
 			</ul>
-			<div class='help-text'>To include more widgets for selection please go to Canvas > Page Builder > Widget Selection and drag widgets into the selection area</div>
+			<div class='help-text'>To include more widgets for selection please go to Canvas > Page Builder > Widget
+				Selection and drag widgets into the selection area
+			</div>
 			<?php do_action( 'siteorigin_panels_after_widgets' ); ?>
 		</div>
 
@@ -139,33 +147,83 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<?php // The add row dialog ?>
 
-	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row','siteorigin-panels' ) ?>" class="panels-admin-dialog">
-		<p><label><strong><?php _e( 'Columns', 'siteorigin-panels' ) ?></strong></label></p>
-		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3" /></p>
+	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row', 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog" style="text-align: center">
+		<p>
+			<label>
+				<strong>
+					<?php _e( 'How many columns do you want your row to have? ', 'ppb-panels' ) ?><br>
+					(<?php _e( 'You can adjust the widths later', 'ppb-panels' ) ?>)
+				</strong>
+			</label>
+		</p>
+		<p><input type="number" id="grid-add-dialog-input" name="column_count" class="small-text" value="3"/></p>
 	</div>
-
-	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
-		<p>Are you sure?</p>
-	</div>
-
-	<div id="remove-widget-dialog" data-title="<?php esc_attr_e( "Delete Content", 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
-		<p>Are you sure?</p>
-	</div>
-
-	<div id="page-setting-dialog" data-title="<?php esc_attr_e( 'Page Settings', 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
 
 		<?php
-			$pageSettingsFields = pootlepage_page_settings_fields();
-			pootlepage_dialog_form_echo( $pageSettingsFields );
+
+		//Get Current User
+		$current_user = wp_get_current_user();
+
+		//Get first name if set
+		$username = '';
+		if ( ! empty( $current_user->user_firstname ) ) {
+			$username = " {$current_user->user_firstname}";
+		}
+
+		//Get user's visit count
+		$visit_count = get_user_meta( $current_user->ID, 'ppb-visit-count', true );
+
+		//Set welcome message
+		if ( empty( $visit_count ) ) {
+
+			$visit_count = 0;
+			$message = "Welcome to Page Builder{$username}! Click the 'Add Row' button above to start building your page.";
+
+		} elseif ( 1 == $visit_count ) {
+			$message = "Welcome back to Page Builder{$username}! You can now also use existing pages as a template to start your page and save you time!";
+		} else {
+			$message = "Welcome to Page Builder{$username}! You know what to do.";
+		}
+
+		//Print the message
+		echo "<div id='ppb-hello-user' class='visit-count-{$visit_count}'> $message </div>";
+
+		//Update user visit count
+		$visit_count++;
+		global $pagenow;
+		if ( 'post-new.php' == $pagenow &&  ! empty( $layouts )  ){
+			update_user_meta( $current_user->ID, 'ppb-visit-count', $visit_count );
+		}
+
+		?>
+
+	<div id="remove-row-dialog" data-title="<?php esc_attr_e( "Remove Row", 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
+		<p>Are you sure?</p>
+	</div>
+
+	<div id="remove-widget-dialog" data-title="<?php esc_attr_e( "Delete Content", 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
+		<p>Are you sure?</p>
+	</div>
+
+	<div id="page-setting-dialog" data-title="<?php esc_attr_e( 'Page Settings', 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
+
+		<?php
+		$pageSettingsFields = pootlepage_page_settings_fields();
+		pootlepage_dialog_form_echo( $pageSettingsFields );
 		?>
 
 	</div>
 
-	<div id="hide-element-dialog" data-title="<?php esc_attr_e( 'Hide Elements', 'siteorigin-panels' ) ?>" class="panels-admin-dialog">
+	<div id="hide-element-dialog" data-title="<?php esc_attr_e( 'Hide Elements', 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
 
 		<?php
-			$hideElementsFields = pootlepage_hide_elements_fields();
-			pootlepage_hide_elements_dialog_echo( $hideElementsFields );
+		$hideElementsFields = pootlepage_hide_elements_fields();
+		pootlepage_hide_elements_dialog_echo( $hideElementsFields );
 		?>
 
 	</div>
@@ -173,14 +231,19 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php // The layouts dialog ?>
 
 	<?php if ( ! empty( $layouts ) ) : ?>
-		<div id="grid-prebuilt-dialog" data-title="<?php esc_attr_e( 'Use Existing Page Layout','siteorigin-panels' ) ?>" class="panels-admin-dialog">
-			<p><label><strong><?php _e( 'Page Layout', 'siteorigin-panels' ) ?></strong></label></p>
+		<div id="grid-prebuilt-dialog"
+		     data-title="<?php esc_attr_e( 'Use Existing Page Layout', 'ppb-panels' ) ?>"
+		     class="panels-admin-dialog">
+			<p><label><strong><?php _e( 'Page Layout', 'ppb-panels' ) ?></strong></label></p>
+
 			<p>
-				<select type="text" id="grid-prebuilt-input" name="prebuilt_layout" style="width:580px;" placeholder="<?php esc_attr_e( 'Select Layout', 'siteorigin-panels' ) ?>" >
+				<select type="text" id="grid-prebuilt-input" name="prebuilt_layout" style="width:580px;"
+				        placeholder="<?php esc_attr_e( 'Select Layout', 'ppb-panels' ) ?>">
 					<option class="empty" <?php selected( true ) ?> value=""></option>
-					<?php foreach( $layouts as $id => $data ) : ?>
-						<option id="panel-prebuilt-<?php echo esc_attr( $id ) ?>" data-layout-id="<?php echo esc_attr( $id ) ?>" class="prebuilt-layout">
-							<?php echo isset( $data['name'] ) ? $data['name'] : __( 'Untitled Layout', 'siteorigin-panels' ) ?>
+					<?php foreach ( $layouts as $id => $data ) : ?>
+						<option id="panel-prebuilt-<?php echo esc_attr( $id ) ?>"
+						        data-layout-id="<?php echo esc_attr( $id ) ?>" class="prebuilt-layout">
+							<?php echo isset( $data['name'] ) ? $data['name'] : __( 'Untitled Layout', 'ppb-panels' ) ?>
 						</option>
 					<?php endforeach; ?>
 				</select>
@@ -189,7 +252,8 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php endif; ?>
 
 	<?php // The styles dialog ?>
-	<div id="grid-styles-dialog" data-title="<?php esc_attr_e( 'Row Visual Style','siteorigin-panels' ) ?>" class="panels-admin-dialog">
+	<div id="grid-styles-dialog" data-title="<?php esc_attr_e( 'Row Visual Style', 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
 		<div class="ppb-cool-panel-wrap">
 
 			<?php siteorigin_panels_style_dialog_form() ?>
@@ -201,34 +265,45 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<?php pp_pb_widget_styles_dialog_form() ?>
 	</div>
 
-	<div id="content-loss-dialog" data-title="<?php esc_attr_e( 'Changing to Page Builder','siteorigin-panels' ) ?>" data-button-i-know="<?php esc_attr_e( "I know what I'm doing",'siteorigin-panels' ) ?>" data-button-stop="<?php esc_attr_e( "Yep, I'll stop and create a new page",'siteorigin-panels' ) ?>" class="panels-admin-dialog">
+	<div id="content-loss-dialog" data-title="<?php esc_attr_e( 'Changing to Page Builder', 'ppb-panels' ) ?>"
+	     data-button-i-know="<?php esc_attr_e( "I know what I'm doing", 'ppb-panels' ) ?>"
+	     data-button-stop="<?php esc_attr_e( "Yep, I'll stop and create a new page", 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
 		<p>
-			<?php _e( 'Slow down tiger! Do you realise that changing to Page Builder for this page will make all your page content disappear forever?', 'siteorigin-panels' ) ?>
+			<?php _e( 'Slow down tiger! Do you realise that changing to Page Builder for this page will make all your page content disappear forever?', 'ppb-panels' ) ?>
 			<br><br>
-			<?php _e( 'Why not create a new page instead?', 'siteorigin-panels' ) ?>
+			<?php _e( 'Why not create a new page instead?', 'ppb-panels' ) ?>
 		</p>
 	</div>
 
-	<div id="layout-loss-dialog" data-title="<?php esc_attr_e( 'Changing to the default editor','siteorigin-panels' ) ?>" data-button-i-know="<?php esc_attr_e( "I know what I'm doing",'siteorigin-panels' ) ?>" data-button-stop="<?php esc_attr_e( "I love Page Builder, keep me here",'siteorigin-panels' ) ?>" class="panels-admin-dialog">
+	<div id="layout-loss-dialog"
+	     data-title="<?php esc_attr_e( 'Changing to the default editor', 'ppb-panels' ) ?>"
+	     data-button-i-know="<?php esc_attr_e( "I know what I'm doing", 'ppb-panels' ) ?>"
+	     data-button-stop="<?php esc_attr_e( "I love Page Builder, keep me here", 'ppb-panels' ) ?>"
+	     class="panels-admin-dialog">
 		<p>
-			<?php _e( "Ummm... if you go back to the default editor you'll loose all your content. Are you sure you want to loose all that hard work you've done?", 'siteorigin-panels' ) ?>
+			<?php _e( "Ummm... if you go back to the default editor you'll loose all your content. Are you sure you want to loose all that hard work you've done?", 'ppb-panels' ) ?>
 		</p>
 	</div>
 
 	<?php
-		global $post;
-		$pageSettings = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
-		if ( empty( $pageSettings ) ) {
-			$pageSettings = '{}';
-		}
+	global $post;
+	$pageSettings = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
+	if ( empty( $pageSettings ) ) {
+		$pageSettings = '{}';
+	}
 
-		$hideElements = get_post_meta( $post->ID, 'pootlepage-hide-elements', true );
-		if ( empty( $hideElements ) ) {
-			$hideElements = '{}';
-		}
+	$hideElements = get_post_meta( $post->ID, 'pootlepage-hide-elements', true );
+	if ( empty( $hideElements ) ) {
+		$hideElements = '{}';
+	}
 	?>
-	<input type="hidden" id="page-settings" name="page-settings" value="<?php esc_attr_e( $pageSettings ) ?>" />
-	<input type="hidden" id="hide-elements" name="hide-elements" value="<?php esc_attr_e( $hideElements ) ?>" />
+	<input type="hidden" id="page-settings" name="page-settings" value="<?php esc_attr_e( $pageSettings ) ?>"/>
+	<input type="hidden" id="hide-elements" name="hide-elements" value="<?php esc_attr_e( $hideElements ) ?>"/>
+
+	<div class="ppb-hidden-editor-container" style="display:none;">
+		<?php ppb_print_editor_panel(); ?>
+	</div>
 
 	<?php wp_nonce_field( 'save', '_sopanels_nonce' ) ?>
 	<?php do_action( 'siteorigin_panels_metabox_end' ); ?>

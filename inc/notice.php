@@ -7,31 +7,34 @@ function siteorigin_panels_update_notice() {
 	$dismissed = get_option( 'siteorigin_panels_notice_dismissed' );
 
 	if ( empty( $dismissed ) || $dismissed != POOTLEPAGE_VERSION ) {
-		wp_enqueue_script( 'siteorigin-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'ppb-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
 		?>
 		<div class="updated">
 			<p>
 				<?php
 				if ( get_option( 'siteorigin_panels_initial_version' ) == POOTLEPAGE_VERSION ) {
-					printf( __( "You've successfully installed <strong>Page Builder</strong> version %s. ", 'siteorigin-panels' ), POOTLEPAGE_VERSION );
-				}
-				else {
-					printf( __( "You've successfully updated <strong>Page Builder</strong> to version %s. ", 'siteorigin-panels' ), POOTLEPAGE_VERSION );
+					printf( __( "You've successfully installed <strong>Page Builder</strong> version %s. ", 'ppb-panels' ), POOTLEPAGE_VERSION );
+				} else {
+					printf( __( "You've successfully updated <strong>Page Builder</strong> to version %s. ", 'ppb-panels' ), POOTLEPAGE_VERSION );
 				}
 
 				printf(
-					__( 'Please post on our <a href="%s" target="_blank">support forums</a> if you have any issues and sign up to <a href="%s" target="_blank">our newsletter</a> to stay up to date.', 'siteorigin-panels' ),
+					__( 'Please post on our <a href="%s" target="_blank">support forums</a> if you have any issues and sign up to <a href="%s" target="_blank">our newsletter</a> to stay up to date.', 'ppb-panels' ),
 					'http://siteorigin.com/threads/plugin-page-builder/',
 					'http://siteorigin.com/page-builder/#newsletter'
-				 )
+				)
 				?>
 			</p>
+
 			<p>
-				<a href="http://siteorigin.com/threads/plugin-page-builder/" class="button button-secondary" target="_blank"><?php _e( 'Support Forums', 'siteorigin-panels' ) ?></a>
-				<a href="http://siteorigin.com/page-builder/#newsletter" class="button button-secondary" target="_blank"><?php _e( 'Newsletter', 'siteorigin-panels' ) ?></a>
+				<a href="http://siteorigin.com/threads/plugin-page-builder/" class="button button-secondary"
+				   target="_blank"><?php _e( 'Support Forums', 'ppb-panels' ) ?></a>
+				<a href="http://siteorigin.com/page-builder/#newsletter" class="button button-secondary"
+				   target="_blank"><?php _e( 'Newsletter', 'ppb-panels' ) ?></a>
 				<?php if ( empty( $dismissed ) ) : ?>
-					<a href="<?php echo add_query_arg( 'action', 'siteorigin_panels_update_notice_dismiss', admin_url( 'admin-ajax.php' ) ) ?>" class="button button-primary siteorigin-panels-dismiss"><?php _e( 'Dismiss', 'siteorigin-panels' ) ?></a>
+					<a href="<?php echo add_query_arg( 'action', 'siteorigin_panels_update_notice_dismiss', admin_url( 'admin-ajax.php' ) ) ?>"
+					   class="button button-primary ppb-panels-dismiss"><?php _e( 'Dismiss', 'ppb-panels' ) ?></a>
 				<?php endif; ?>
 			</p>
 		</div>
@@ -42,10 +45,12 @@ function siteorigin_panels_update_notice() {
 		}
 	}
 }
+
 //add_action( 'siteorigin_panels_before_interface', 'siteorigin_panels_update_notice' );
 
 function siteorigin_panels_get_incompatible_plugins() {
-	$incompatible = array_map( 'trim', ( array ) file( plugin_dir_path( POOTLEPAGE_BASE_FILE ).'/incompatible.txt' ) );
+	$incompatible = array_map( 'trim', ( array ) file( plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/incompatible.txt' ) );
+
 	return array_slice( $incompatible, 1 );
 }
 
@@ -53,8 +58,8 @@ function siteorigin_panels_get_incompatible_plugins() {
  * Displays notices for incompatible plugins
  */
 function siteorigin_panels_incompatibility_notice() {
-	$active = get_option( 'active_plugins' );
-	$incompatible = siteorigin_panels_get_incompatible_plugins();
+	$active              = get_option( 'active_plugins' );
+	$incompatible        = siteorigin_panels_get_incompatible_plugins();
 	$active_incompatible = array_intersect( $active, $incompatible );
 
 	if ( ! empty( $active_incompatible ) ) {
@@ -62,37 +67,46 @@ function siteorigin_panels_incompatibility_notice() {
 		$dismissed_incompatible = get_option( 'siteorigin_panels_incompatible_dismissed' );
 		if ( ! empty( $dismissed_incompatible ) ) {
 			$non_dismissed = array_diff( $active_incompatible, ( array ) $dismissed_incompatible );
-			if ( empty( $non_dismissed ) ) return;
+			if ( empty( $non_dismissed ) ) {
+				return;
+			}
 		}
 
-		wp_enqueue_script( 'siteorigin-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'ppb-panels-admin-notice', plugin_dir_url( POOTLEPAGE_BASE_FILE ) . 'js/panels.admin.notice.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
 		?>
 		<div class="error">
 			<p>
-				<?php
+			<?php
 
-				_e( "One or more of your active plugins are known to be incompatible with Page Builder. If you have any issues, please disable these plugins." );
-				?><ul><?php
-				foreach( $active_incompatible as $incompatible_plugin ) {
+			_e( "One or more of your active plugins are known to be incompatible with Page Builder. If you have any issues, please disable these plugins." );
+			?>
+			<ul><?php
+				foreach ( $active_incompatible as $incompatible_plugin ) {
 					$data = get_plugin_data( WP_PLUGIN_DIR . '/' . $incompatible_plugin );
-					if ( empty( $data['Name'] ) ) continue;
-					?><li><?php echo $data['Name'] ?></li><?php
+					if ( empty( $data['Name'] ) ) {
+						continue;
+					}
+					?>
+					<li><?php echo $data['Name'] ?></li><?php
 				}
 				?></ul><?php
 
-				?>
+			?>
 			</p>
 			<p>
-				<a href="http://siteorigin.com/threads/plugin-page-builder/" class="button button-secondary" target="_blank"><?php _e( 'Support Forums', 'siteorigin-panels' ) ?></a>
-				<a href="<?php echo add_query_arg( 'action', 'siteorigin_panels_incompatible_notice_dismiss', admin_url( 'admin-ajax.php' ) ) ?>" class="button button-primary siteorigin-panels-dismiss"><?php _e( 'Dismiss', 'siteorigin-panels' ) ?></a>
+				<a href="http://siteorigin.com/threads/plugin-page-builder/" class="button button-secondary"
+				   target="_blank"><?php _e( 'Support Forums', 'ppb-panels' ) ?></a>
+				<a href="<?php echo add_query_arg( 'action', 'siteorigin_panels_incompatible_notice_dismiss', admin_url( 'admin-ajax.php' ) ) ?>"
+				   class="button button-primary ppb-panels-dismiss"><?php _e( 'Dismiss', 'ppb-panels' ) ?></a>
 			</p>
 		</div>
-		<?php
+	<?php
 
 	}
 
 }
+
 //add_action( 'siteorigin_panels_before_interface', 'siteorigin_panels_incompatibility_notice' );
 
 /**
@@ -102,25 +116,26 @@ function siteorigin_panels_update_notice_dismiss_action() {
 	add_option( 'siteorigin_panels_notice_dismissed', POOTLEPAGE_VERSION, '', 'no' );
 	exit();
 }
+
 add_action( 'wp_ajax_siteorigin_panels_update_notice_dismiss', 'siteorigin_panels_update_notice_dismiss_action' );
 
 /**
  * This action handles dismissing the incompatibility notice.
  */
 function siteorigin_panels_incompatibility_notice_dismiss_action() {
-	$active = get_option( 'active_plugins' );
-	$incompatible = siteorigin_panels_get_incompatible_plugins();
+	$active              = get_option( 'active_plugins' );
+	$incompatible        = siteorigin_panels_get_incompatible_plugins();
 	$active_incompatible = array_intersect( $active, $incompatible );
 
 	// Add the option for these dismissed incompatible plugins
 	$current = get_option( 'siteorigin_panels_incompatible_dismissed' );
 	if ( $current === false ) {
 		add_option( 'siteorigin_panels_incompatible_dismissed', $active_incompatible, '', 'no' );
-	}
-	else {
+	} else {
 		update_option( 'siteorigin_panels_incompatible_dismissed', $active_incompatible );
 	}
 
 	exit();
 }
+
 add_action( 'wp_ajax_siteorigin_panels_incompatible_notice_dismiss', 'siteorigin_panels_incompatibility_notice_dismiss_action' );
