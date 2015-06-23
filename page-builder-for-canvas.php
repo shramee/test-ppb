@@ -1217,7 +1217,14 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 	return apply_filters( 'siteorigin_panels_render', $html, $post_id, null );
 }
 
-function ppb_content_block_oembed( $text ) {
+/**
+ * Appends and prepends the contents of paragraphs with line breaks
+ *
+ * @param $text
+ * @since 3.0.0
+ * @return mixed
+ */
+function ppb_content_block_format_p( $text ) {
 
 	return str_replace(
 		array( '<p>', '</p>', ), array( "<p>\n", "\n</p>",
@@ -1225,7 +1232,7 @@ function ppb_content_block_oembed( $text ) {
 	);
 }
 
-add_filter( 'ppb_content_block', 'ppb_content_block_oembed', 8 );
+add_filter( 'ppb_content_block', 'ppb_content_block_format_p', 8 );
 
 add_filter( 'ppb_content_block', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
 
