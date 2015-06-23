@@ -304,7 +304,7 @@
                 'raw': $currentPanel.find('input[name$="[info][raw]"]').val()
             };
 
-            if ("Pootle_Text_Widget" == widgetClass) {
+            if ("Pootle_PB_Content_Block" == widgetClass) {
 
                 var text = '',
                     filter = 1;
@@ -346,7 +346,7 @@
                         active: 0
                     })
                     .addClass("ui-tabs-vertical ui-helper-clearfix")
-                    .find('input').each(function () {
+                    .find('span:not(.wp-picker-input-wrap) > input').each(function () {
                         $t = $(this);
                         if ($t.attr('data-style-field-type') == 'color') {
                             $t.wpColorPicker();
@@ -361,8 +361,6 @@
 
                 //Get style data in fields
                 panels.pootlePageGetWidgetStyles($('.pootle-style-fields'));
-
-                $(window).resize();
 
                 // This is to refresh the dialog positions
                 $(window).resize();
@@ -718,7 +716,7 @@
 
                 var $field = $styleForm.find('input[dialog-field="' + key + '"]');
 
-                if ($field.attr('data-style-field-type') == "color") {
+                if ($field.attr('data-style-field-type') == "color" ) {
                     $field.wpColorPicker('color', styleData[key]);
                 } else if ($field.attr('data-style-field-type') == "checkbox") {
                     if (styleData[key] == $field.val()) {

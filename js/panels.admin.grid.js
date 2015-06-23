@@ -599,7 +599,7 @@
 
         $t.parents('.cell').eq(0).addClass('cell-selected')
 
-        var panel = $('#panels-dialog').panelsCreatePanel('Pootle_Text_Widget');
+        var panel = $('#panels-dialog').panelsCreatePanel('Pootle_PB_Content_Block');
         panels.addPanel(panel, null, null, true);
 
     };
