@@ -35,7 +35,9 @@ jQuery(function ($) {
 
                 $t.find('.field_row_height input').prop('disabled', false);
                 if (0 < $('#grid-styles-dialog').data('container').find('.panel').length) {
-                    $t.find('.field_row_height input').prop('disabled', true);
+                    $t
+                        .find('.field_row_height input').val('')
+                        .prop('disabled', true);
                 }
 
                 var overlay = $('<div class="ppb-panels ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
