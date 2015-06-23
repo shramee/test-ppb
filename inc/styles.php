@@ -211,6 +211,8 @@ function siteorigin_panels_style_dialog_form() {
 	$sections['Layout'][]     = 'full_width';
 	$sections['Layout'][]     = 'row_height';
 	$sections['Layout'][]     = 'hide_row';
+	$sections['Layout'][]     = 'margin_bottom';
+	$sections['Layout'][]     = 'col_gutter';
 	/** @hook ppb_row_styles_section_bg_image Add field id in layout section */
 	$sections['Layout'] = apply_filters( 'ppb_row_styles_section_layout', $sections['Layout'] );
 
@@ -371,10 +373,20 @@ function pootlepage_render_single_field( $name, $attr ) {
 	}
 }
 
-function pp_pb_widget_styles_dialog_form() {
+function pp_pb_widget_styles_dialog_form( $specific = null ) {
 	$fields = pp_pb_widget_styling_fields();
 
 	foreach ( $fields as $key => $field ) {
+
+		if ( empty( $specific ) ) {
+			if ( 'inline-css' == $key ) {
+				continue;
+			}
+		} else {
+			if ( $specific != $key ) {
+				continue;
+			}
+		}
 
 		echo "<div class='field'>";
 		echo "<label>" . esc_html( $field['name'] ) . "</label>";

@@ -44,7 +44,7 @@ function siteorigin_panels_setting( $key = '' ) {
 
 			'margin-bottom'     => ! isset( $display_settings['margin-bottom'] ) ? 0 : $display_settings['margin-bottom'],
 			// Bottom margin of a cell
-			'margin-sides'      => ! isset( $display_settings['margin-sides'] ) ? 0 : $display_settings['margin-sides'],
+			'margin-sides'      => ! isset( $display_settings['margin-sides'] ) ? 10 : $display_settings['margin-sides'],
 			// Spacing between 2 cells
 			'affiliate-id'      => false,
 			// Set your affiliate ID
@@ -103,8 +103,6 @@ function siteorigin_panels_options_init() {
 	// The display fields
 	add_settings_field( 'responsive', __( 'Responsive', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'responsive' ) );
 	add_settings_field( 'mobile-width', __( 'Mobile Width', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
-	add_settings_field( 'margin-sides', __( 'Margin Sides', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-sides' ) );
-	add_settings_field( 'margin-bottom', __( 'Margin Bottom', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'margin-bottom' ) );
 }
 
 add_action( 'admin_init', 'siteorigin_panels_options_init' );

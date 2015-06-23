@@ -36,15 +36,23 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 				),
 				'default' => 'bg_image',
 			),
-			'full_width'                  => array(
+			'full_width' => array(
 				'name' => 'Make row go full width',
 				'type' => 'checkbox',
 			),
-			'hide_row'                  => array(
+			'hide_row' => array(
 				'name' => 'Hide row',
 				'type' => 'checkbox',
 			),
-			'background'                  => array(
+			'margin_bottom' => array(
+				'name' => 'Row Bottom Margin',
+				'type' => 'text',
+			),
+			'col_gutter' => array(
+				'name' => 'Column Gutters',
+				'type' => 'text',
+			),
+			'background' => array(
 				'name' => __( 'Background Color', 'vantage' ),
 				'type' => 'color',
 			),
@@ -167,11 +175,18 @@ function pp_vantage_panels_panels_row_attributes( $attr, $row ) {
 			$attr['style'] = '';
 		}
 
+		if ( ! empty( $row['style']['col_gutter'] ) || '0' === ( $row['style']['col_gutter'] ) ) {
+			$attr['style'] .= 'margin-left: -' . $row['style']['col_gutter'] / 2 . 'px;';
+			$attr['style'] .= 'margin-right: -' . $row['style']['col_gutter'] / 2 . 'px;';
+		}
+
 		$marginBottom = siteorigin_panels_setting( 'margin-bottom' );
-		if ( isset( $marginBottom ) ) {
+		if ( ! empty( $row['style']['margin_bottom'] ) || '0' === ( $row['style']['margin_bottom'] ) ) {
+			$attr['style'] .= "margin-bottom: {$row['style']['margin_bottom']}px;";
+		} elseif ( $marginBottom ) {
 			$attr['style'] .= "margin-bottom: {$marginBottom}px;";
 		} else {
-			$attr['style'] .= 'margin-bottom: 30px;';
+			$attr['style'] .= 'margin-bottom: 0;';
 		}
 
 	}

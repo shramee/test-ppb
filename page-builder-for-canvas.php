@@ -21,7 +21,7 @@ if ( - 1 == version_compare( get_option( 'siteorigin_panels_initial_version' ), 
 }
 
 //Solving old version post types
-add_action( 'init', 'pp_pb_version_check' );
+add_action( 'admin_init', 'pp_pb_version_check' );
 /**
  * Checks if older version of Page Builder was being used on site
  * Then runs compatibility functions accordingly
@@ -1120,49 +1120,52 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			<?php
 			}
 		}
+		$rowID = '#pg-' . $post_id . '-' . $gi;
 
-		if ( isset( $styleArray['background'] ) && ! empty( $styleArray['bg_overlay_color'] ) ) {
-			$overlay_color = $styleArray['bg_overlay_color'];
-			if ( ! empty( $styleArray['bg_overlay_opacity'] ) ) {
-				$overlay_color = 'rgba( ' . ppb_hex2rgb($overlay_color) . ", {$styleArray['bg_overlay_opacity']} )";
-			}
-			$rowID = '#pg-' . $post_id . '-' . $gi;
-			?>
+		?>
+		<style>
 
-			<style>
-				/* make this sit under .panel-row-style:before, so background color will be on top on background image */
-				<?php echo esc_attr( $rowID ) ?>
-				>
-				.panel-row-style:before {
-					background-color: <?php echo $overlay_color ?>;
-				}
-
-				<?php echo esc_attr( $rowID ) ?>
-				>
-				.panel-row-style {
-					position: relative;
-					z-index: 10;
-				}
-
-				<?php echo esc_attr( $rowID ) ?>
-				>
-				.panel-row-style:before {
-					position: absolute;
-					width: 100%;
-					height: 100%;
-					content: "";
-					top: 0;
-					left: 0;
-					z-index: 20;
-				}
-
-				.panel-grid-cell-container {
-					position: relative;
-					z-index: 30; /* row content needs to be on top of row background color */
-				}
-			</style>
-		<?php
+	<?php
+		if ( ! empty( $styleArray['col_gutter'] ) ) {
+			 echo esc_attr( $rowID ) . ' .panel-grid-cell { padding: 0 ' . ( $styleArray['col_gutter']/2 ) . 'px 0; }';
 		}
+				if ( isset( $styleArray['background'] ) && ! empty( $styleArray['bg_overlay_color'] ) ) {
+					$overlay_color = $styleArray['bg_overlay_color'];
+				if ( ! empty( $styleArray['bg_overlay_opacity'] ) ) {
+					$overlay_color = 'rgba( ' . ppb_hex2rgb($overlay_color) . ", {$styleArray['bg_overlay_opacity']} )";
+				}
+			?>
+	/* make this sit under .panel-row-style:before, so background color will be on top on background image */
+	<?php echo esc_attr( $rowID ) ?> > .panel-row-style:before {
+		background-color: <?php echo $overlay_color ?>;
+	}
+
+	<?php echo esc_attr( $rowID ) ?> > .panel-row-style {
+		position: relative;
+		z-index: 10;
+	}
+
+	<?php echo esc_attr( $rowID ) ?>
+	>
+	.panel-row-style:before {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		content: "";
+		top: 0;
+		left: 0;
+		z-index: 20;
+	}
+
+	.panel-grid-cell-container {
+		position: relative;
+		z-index: 30; /* row content needs to be on top of row background color */
+	}
+	<?php
+	}
+	?>
+		</style>
+	<?php
 
 		echo "<div class='panel-grid-cell-container'>";
 
@@ -1635,6 +1638,12 @@ function ppb_panels_render_content_block_container_open( $block_info, $gi, $ci, 
 				}
 			}
 
+		} elseif ( $key == 'inline-css' ) {
+
+			if ( ! empty( $styleArray[ $key ] ) ) {
+				$inlineStyle .= $styleArray[ $key ];
+			}
+
 		} else {
 
 
@@ -2033,6 +2042,8 @@ function ppb_print_editor_panel( $request = null ) {
 			<li class="ppb-seperator"></li>
 
 			<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
+
+			<li><a class="ppb-tabs-anchors" href="#pootle-advanced-tab">Advanced</a></li>
 		</ul>
 
 		<?php ?>
@@ -2042,9 +2053,15 @@ function ppb_print_editor_panel( $request = null ) {
 
 		</div>
 
-		<div id="pootle-style-tab" class="pootle-content-module tab-contents">
+		<div id="pootle-style-tab" class="pootle-style-fields pootle-content-module tab-contents">
 			<?php
 			pp_pb_widget_styles_dialog_form();
+			?>
+		</div>
+
+		<div id="pootle-advanced-tab" class="pootle-style-fields pootle-content-module tab-contents">
+			<?php
+			pp_pb_widget_styles_dialog_form( 'inline-css' );
 			?>
 		</div>
 
@@ -2486,17 +2503,17 @@ function pp_pb_generate_font_css( $option, $em = '1' ) {
 function pp_pb_widget_styling_fields() {
 	return array(
 		'background-color'   => array(
-			'name' => 'Widget background color',
+			'name' => 'Background color',
 			'type' => 'color',
 			'css'  => 'background-color',
 		),
 		'border'             => array(
-			'name' => 'Widget border',
+			'name' => 'Border',
 			'type' => 'border',
 			'css'  => 'border'
 		),
 		'padding-top-bottom' => array(
-			'name' => 'Widget top/bottom padding',
+			'name' => 'Top/bottom padding',
 			'type' => 'number',
 			'min'  => '0',
 			'max'  => '100',
@@ -2505,7 +2522,7 @@ function pp_pb_widget_styling_fields() {
 			'css'  => array( 'padding-top', 'padding-bottom' )
 		),
 		'padding-left-right' => array(
-			'name' => 'Widget left/right padding',
+			'name' => 'Left/right padding',
 			'type' => 'number',
 			'min'  => '0',
 			'max'  => '100',
@@ -2514,7 +2531,7 @@ function pp_pb_widget_styling_fields() {
 			'css'  => array( 'padding-left', 'padding-right' )
 		),
 		'rounded-corners'    => array(
-			'name' => 'Widget rounded corners',
+			'name' => 'Rounded corners',
 			'type' => 'number',
 			'min'  => '0',
 			'max'  => '100',
@@ -2525,7 +2542,7 @@ function pp_pb_widget_styling_fields() {
 		'inline-css'         => array(
 			'name' => 'Inline Styles',
 			'type' => 'textarea',
-			'css'  => 'inline-css'
+			'css'  => ''
 		),
 	);
 }

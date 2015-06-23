@@ -31,7 +31,7 @@ class Pootle_Page_Compatibility {
 
 		$this->get_old_page_builder_posts();
 
-		$this->put_page_builder_stuff_in_content();
+		//$this->put_page_builder_stuff_in_content();
 
 		$this->reorganise_old_panels_data();
 
@@ -225,16 +225,59 @@ class Pootle_Page_Compatibility {
 	 */
 	private function new_widget_style_format( $styles ) {
 
-		if ( strpos( $styles, 'hide-title":"none' ) ) {
+		//Decoding styles JSON
+		$styles = json_decode( $styles, true );
 
-			$styles = str_replace( array( '"hide-title":"none",', '"}' ), array(
-					'',
-					'"'
-				), $styles ) . ',"inline-css":"hide-title:none;"}';
-
+		//Set inline css field
+		if ( ! isset( $styles['inline-css'] ) ) {
+			$styles['inline-css'] = '';
 		}
 
+		//Old properties in inline styles
+		$this->set_as_inline_css( $styles, 'hide-title' );
+		$this->set_as_inline_css( $styles, 'padding-top-bottom', array( 'padding-top', 'padding-bottom' ), '%' );
+		$this->set_as_inline_css( $styles, 'padding-left-right', array( 'padding-left', 'padding-right' ), '%' );
+
+		//Encode styles in JSON
+		$styles = json_encode( $styles );
+
 		return $styles;
+	}
+
+	/**
+	 * @param array $styles Decoded widget styles
+	 * @param string $property ID of deprecated property
+	 * @param null $css_property
+	 * @param string $unit
+	 */
+	private function set_as_inline_css( &$styles, $property, $css_property = null, $unit = '' ) {
+
+		if ( ! $css_property ) {
+			$css_property = $property;
+		}
+
+		if ( is_array( $css_property ) ){
+
+			foreach ( $css_property as $prop ) {
+
+				$this->set_inline_css_property( $styles, $property, $prop, $unit );
+			}
+
+			unset( $styles[ $property ] );
+			return;
+		}
+
+		$this->set_inline_css_property( $styles, $property, $css_property, $unit );
+
+		unset( $styles[ $property ] );
+	}
+
+	private function set_inline_css_property( &$styles, $property, $css_property = null, $unit = '' ) {
+
+		if ( !empty( $styles[ $property ] ) ) {
+
+			$styles['inline-css'] .= "$css_property: {$styles[ $property ]}{$unit}; ";
+		}
 	}
 
 	/**

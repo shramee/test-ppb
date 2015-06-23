@@ -1251,12 +1251,12 @@ div#pootle-content-module-tabs li.ui-tabs-active a:focus {
 }
 
 #so-panels-panels .field,
-#pootle-style-tab .field {
+.pootle-style-fields .field {
     margin-bottom: 15px;
 }
 
 #so-panels-panels .field > label,
-#pootle-style-tab .field > label {
+.pootle-style-fields .field > label {
     width: 200px;
     display: inline-block;
     vertical-align: middle;
@@ -1264,18 +1264,18 @@ div#pootle-content-module-tabs li.ui-tabs-active a:focus {
 }
 
 #so-panels-panels .field > span > .wp-picker-container,
-#pootle-style-tab .field > span > .wp-picker-container {
+.pootle-style-fields .field > span > .wp-picker-container {
     margin: 0;
     vertical-align: middle;
 }
 
 #so-panels-panels .field > span > .wp-picker-container > .wp-color-result,
-#pootle-style-tab .field > span > .wp-picker-container > .wp-color-result {
+.pootle-style-fields .field > span > .wp-picker-container > .wp-color-result {
     margin: 0;
 }
 
 #so-panels-panels .field > span > input,
-#pootle-style-tab .field > span > input {
+.pootle-style-fields .field > span > input {
     vertical-align: middle;
 }
 

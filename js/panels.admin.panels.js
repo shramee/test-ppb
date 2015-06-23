@@ -236,7 +236,7 @@
                         }
 
                         //Set the widget styles
-                        panels.pootlePageSetWidgetStyles($('#pootle-style-tab'));
+                        panels.pootlePageSetWidgetStyles($('.pootle-style-fields'));
 
                         $currentPanel.panelsSetPanelTitle( $currentPanel.panelsGetPanelData() );
 
@@ -360,7 +360,7 @@
                 $(".ppb-cool-panel-wrap li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
                 //Get style data in fields
-                panels.pootlePageGetWidgetStyles($('#pootle-style-tab'));
+                panels.pootlePageGetWidgetStyles($('.pootle-style-fields'));
 
                 $(window).resize();
 
@@ -421,7 +421,7 @@
                         $(".ppb-cool-panel-wrap li").removeClass("ui-corner-top").addClass("ui-corner-left");
 
                         //Get style data in fields
-                        panels.pootlePageGetWidgetStyles($('#pootle-style-tab'));
+                        panels.pootlePageGetWidgetStyles($('.pootle-style-fields'));
 
                         $(window).resize();
 
