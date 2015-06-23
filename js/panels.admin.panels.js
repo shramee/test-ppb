@@ -620,40 +620,50 @@
         var text = data.text,
             title = 'Editor';
 
-        console.log(text);
-
-        console.log( text.match( /\[.+]/gi ) );
-
-        detectText(text);
-
         if ( -1 != text.indexOf('https://vimeo.com/') ) {
             title = 'Vimeo Video';
         } else if ( -1 != text.indexOf('https://www.youtube.com/') ) {
             title = 'YouTube Video';
         } else if ( text.match( /\[.+]/gi ) && 0 < text.match( /\[.+]/gi ).length ) {
 
-            var shortcode = text.match( /\[.+]/gi )[0].replace( /[\[]/g, '' ).split( /[^\w]/g )[0];
+            var shortcode = text.match( /\[.+]/g )[0].replace( /[\[]/g, '' ).split( /[^\w]/g )[0];
 
             title = shortcode + ' Shortcode';
         } else if ( -1 != text.indexOf('<img') ) {
-            title = 'Image';
-            if ( 1 < text.match( /<img/gi ).length ) {
+            var imgMatch = text.match( /<img [^>]+?>/gi );
+            if ( 1 < imgMatch.length ) {
                 title = 'Images';
+            } else {
+                title = 'Image: \'' + $(imgMatch[0]).attr('alt') + '\'';
             }
-        } else if ( text.indexOf(/.+/) ) {
-            title = 'Text';
         }
+
+        //Check Text
+        title = detectText(text, title);
 
         $t.find('h4').html(title);
     };
 
-    detectText = function( text ) {
-        console.log(text);
-        text = text.replace( /http\W+?<\/p>/g, '' );
-        console.log(text);
-        text = text.replace( /<[\w=!%\/]+?>/g, '' );
-        console.log(text);
+    detectText = function( text, title ) {
 
+        //Remove urls
+        text = text.replace( /http\S+?<\/p>/g, '' );
+
+        //Remove shortcodes
+        text = text.replace( /\[.+]/gi, '' );
+
+        //Removing HTML tags
+        text = $(text).text();
+
+        if ( text ) {
+            if ( 'Editor' == title ) {
+                if(text.length > 10) text = text.substring(0,14);
+                return 'Text: \'' + text + '...\'';
+            }
+            return title + ' & text';
+        } else {
+            return title;
+        }
     }
 
     /**
