@@ -2512,23 +2512,14 @@ function pp_pb_widget_styling_fields() {
 			'type' => 'border',
 			'css'  => 'border'
 		),
-		'padding-top-bottom' => array(
-			'name' => 'Top/bottom padding',
+		'padding' => array(
+			'name' => 'Padding',
 			'type' => 'number',
 			'min'  => '0',
 			'max'  => '100',
 			'step' => '1',
-			'unit' => '%',
-			'css'  => array( 'padding-top', 'padding-bottom' )
-		),
-		'padding-left-right' => array(
-			'name' => 'Left/right padding',
-			'type' => 'number',
-			'min'  => '0',
-			'max'  => '100',
-			'step' => '1',
-			'unit' => '%',
-			'css'  => array( 'padding-left', 'padding-right' )
+			'unit' => 'px',
+			'css'  => array( 'padding' )
 		),
 		'rounded-corners'    => array(
 			'name' => 'Rounded corners',

@@ -624,6 +624,8 @@
 
         console.log( text.match( /\[.+]/gi ) );
 
+        detectText(text);
+
         if ( -1 != text.indexOf('https://vimeo.com/') ) {
             title = 'Vimeo Video';
         } else if ( -1 != text.indexOf('https://www.youtube.com/') ) {
@@ -643,6 +645,15 @@
         }
 
         $t.find('h4').html(title);
+    };
+
+    detectText = function( text ) {
+        console.log(text);
+        text = text.replace( /http\W+?<\/p>/g, '' );
+        console.log(text);
+        text = text.replace( /<[\w=!%\/]+?>/g, '' );
+        console.log(text);
+
     }
 
     /**
@@ -717,7 +728,9 @@
                 var $field = $styleForm.find('input[dialog-field="' + key + '"]');
 
                 if ($field.attr('data-style-field-type') == "color" ) {
-                    $field.wpColorPicker('color', styleData[key]);
+                    $field
+                        .val( styleData[key] )
+                        .change();
                 } else if ($field.attr('data-style-field-type') == "checkbox") {
                     if (styleData[key] == $field.val()) {
                         $field.prop('checked', true);
