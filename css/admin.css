@@ -362,7 +362,10 @@ video.ppb-bg-video {
     overflow: hidden;
     text-shadow: 0 1px 0 #FFF;
     white-space: nowrap;
+    text-transform: capitalize;
 }
+
+h4 {}
 
 #so-panels-panels .panels-container .panel h4 span {
     color: #999;

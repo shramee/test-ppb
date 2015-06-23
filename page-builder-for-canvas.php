@@ -944,6 +944,7 @@ add_filter( 'the_content', 'siteorigin_panels_filter_content', 0 );
  * @return string
  */
 function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panels_data = false ) {
+
 	if ( empty( $post_id ) ) {
 		$post_id = get_the_ID();
 	}
@@ -1215,6 +1216,18 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 	return apply_filters( 'siteorigin_panels_render', $html, $post_id, null );
 }
+
+function ppb_content_block_oembed( $text ) {
+
+	return str_replace(
+		array( '<p>', '</p>', ), array( "<p>\n", "\n</p>",
+	), $text
+	);
+}
+
+add_filter( 'ppb_content_block', 'ppb_content_block_oembed', 8 );
+
+add_filter( 'ppb_content_block', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
 
 /**
  * Print inline CSS in the header and footer.
@@ -1660,7 +1673,7 @@ add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block_
  * @param string $widget_info The widget class name.
  */
 function ppb_panels_render_content_block( $block_info ) {
-	if ( ! empty( $block_info['text'] ) ) echo $block_info['text'];
+	if ( ! empty( $block_info['text'] ) ) echo apply_filters( 'ppb_content_block', $block_info['text'] );
 }
 
 add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block' );

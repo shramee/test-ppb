@@ -632,9 +632,9 @@
             title = 'YouTube Video';
         } else if ( text.match( /\[.+]/gi ) && 0 < text.match( /\[.+]/gi ).length ) {
 
-            shortcode = ' ' + text.match( /\[.+]/gi )[0].replace( /[\[\]]/g, '' );
+            var shortcode = text.match( /\[.+]/gi )[0].replace( /[\[]/g, '' ).split( /[^\w]/g )[0];
 
-            title = 'Shortcode' + shortcode;
+            title = shortcode + ' Shortcode';
         } else if ( -1 != text.indexOf('<img') ) {
             title = 'Image';
             if ( 1 < text.match( /<img/gi ).length ) {
