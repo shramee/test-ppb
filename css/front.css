@@ -172,6 +172,17 @@ video.ppb-bg-video {
     object-fit: cover;
 }
 
+img.ppb-bg-parallax {
+    position: absolute;
+    left: -999px;
+    right: -999px;
+    margin: auto;
+    top:0;
+    max-width: none;
+    width: auto;
+    height: auto;
+}
+
 @media only screen and (min-width: 769px) {
     .panel-row-style.video-bg {
         background: initial !important;

@@ -591,9 +591,9 @@
 // This will handle stretching the cells.
 jQuery(function ($) {
 
-    $(document).ready(function () {
+    $(document).imagesLoaded(function () {
 
-        var ppbSkrollr = skrollr.init({smoothScrolling: false});
+        ppbSkrollr = skrollr.init({smoothScrolling: false});
 
         /**
          * Adds full width functionality
@@ -630,38 +630,28 @@ jQuery(function ($) {
          */
         ppbParallax = function () {
             $('.ppb-parallax').each(function () {
-                var $t = $(this);
+                var $t = $(this),
+                    image = $t.find('img.ppb-bg-parallax'),
+                    ratio = image.width() / image.height(),
+                    $tHeight = $t.height(),
+                    minHi = $tHeight + 500,
+                    topSkOffset = $t.offset().top;
 
-                var image_url = $t.css('background-image'),
-                    image;
+                image.attr( 'data-'+Math.round(topSkOffset + $tHeight) + '-start', "-webkit-transform:translateY(0px);transform:translateY(0px);" );
+                image.attr( 'data-'+Math.round(topSkOffset - $(window).height()) + '-start', "-webkit-transform:translateY(-500px);transform:translateY(-500px);" );
 
-                // Remove url() or in case of Chrome url("")
-                image_url = image_url.match(/^url\("?(.+?)"?\)$/);
-
-                if ( image_url && image_url[1] ) {
-                    image_url = image_url[1];
-                    image = new Image();
-
-                    // just in case it is not already loaded
-                    $(image).load(function () {
-                        var ratio = image.width / image.height,
-                            minHi = $t.height() + 500;
-
-                        if (( minHi * ratio ) > $t.outerWidth()) {
-                            $t.css({
-                                backgroundSize: 'auto ' + (minHi) + 'px'
-                            });
-                        } else {
-                            $t.css({
-                                backgroundSize: '100% auto'
-                            });
-                        }
-
+                if (( minHi * ratio ) > $t.outerWidth()) {
+                    image.css({
+                        height: (minHi)
                     });
-
-                    image.src = image_url;
+                } else {
+                    image.css({
+                        width: '100%'
+                    });
                 }
+                ppbSkrollr.refresh();
             });
+
         };
         /**
          * Calls all functions on resize event
