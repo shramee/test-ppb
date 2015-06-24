@@ -664,12 +664,11 @@ jQuery(function ($) {
                                 backgroundSize: '100% auto'
                             });
                             //Set img width for reference
-                            image.dataWidth = $t.height();
+                            image.dataWidth = $t.outerWidth();
 
                         }
 
-                        leftOffset$t = $t.offset().left - ( image.dataWidth - $t.width() ) / 2;
-
+                        leftOffset$t = $t.offset().left - ( image.dataWidth - $t.outerWidth() ) / 2;
                         topOffset$t = $t.offset().top - $(window).height();
 
                         $t.attr( 'data-bottom-top', 'background-position: ' + leftOffset$t + 'px ' + $(window).height() + 'px;' );
