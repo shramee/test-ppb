@@ -630,26 +630,57 @@ jQuery(function ($) {
          */
         ppbParallax = function () {
             $('.ppb-parallax').each(function () {
-                var $t = $(this),
-                    image = $t.find('img.ppb-bg-parallax'),
-                    ratio = image.width() / image.height(),
-                    $tHeight = $t.height(),
-                    minHi = $tHeight + 500,
-                    topSkOffset = $t.offset().top;
+                var $t = $(this);
+                var image_url = $t.css('background-image'),
+                    image;
 
-                image.attr( 'data-'+Math.round(topSkOffset + $tHeight) + '-start', "-webkit-transform:translateY(0px);transform:translateY(0px);" );
-                image.attr( 'data-'+Math.round(topSkOffset - $(window).height()) + '-start', "-webkit-transform:translateY(-500px);transform:translateY(-500px);" );
+                // Remove url() or in case of Chrome url("")
+                image_url = image_url.match(/^url\("?(.+?)"?\)$/);
 
-                if (( minHi * ratio ) > $t.outerWidth()) {
-                    image.css({
-                        height: (minHi)
+                if ( image_url && image_url[1] ) {
+                    image_url = image_url[1];
+                    image = new Image();
+
+                    // just in case it is not already loaded
+                    $(image).load(function () {
+                        var ratio = image.width / image.height,
+                            minHi = $t.height() + 500,
+                            leftOffset$t,
+                            topOffset$t;
+
+                        if (( minHi * ratio ) > $t.outerWidth()) {
+
+                            //Set bg image size
+                            $t.css({
+                                backgroundSize: 'auto ' + (minHi) + 'px'
+                            });
+                            //Set img width for reference
+                            image.dataWidth = minHi * ratio;
+
+                        } else {
+
+                            //Set bg image size
+                            $t.css({
+                                backgroundSize: '100% auto'
+                            });
+                            //Set img width for reference
+                            image.dataWidth = $t.height();
+
+                        }
+
+                        leftOffset$t = $t.offset().left - ( image.dataWidth - $t.width() ) / 2;
+
+                        topOffset$t = $t.offset().top - $(window).height();
+
+                        $t.attr( 'data-bottom-top', 'background-position: ' + leftOffset$t + 'px ' + $(window).height() + 'px;' );
+                        $t.attr( 'data-top-bottom', 'background-position: ' + leftOffset$t + 'px -' + ($t.height() + 500) + 'px;' );
+
+                        ppbSkrollr.refresh();
                     });
-                } else {
-                    image.css({
-                        width: '100%'
-                    });
+
+                    image.src = image_url;
                 }
-                ppbSkrollr.refresh();
+
             });
 
         };

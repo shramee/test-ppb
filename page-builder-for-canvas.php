@@ -1057,7 +1057,8 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			$style_attributes['style'] .= ! empty( $styleArray['style'] ) ? $styleArray['style'] : '';
 
 			if ( ! empty( $styleArray['background_parallax'] ) ) {
-				$style_attributes['class'][]           = 'ppb-parallax';
+				$style_attributes['class'][] = 'ppb-parallax';
+				$style_attributes['style'] .= 'background-attachment: fixed;background-size: cover;';
 			}
 
 			if ( $bgVideo ) {
@@ -1098,13 +1099,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 			if ( ! empty( $styleArray['bg_mobile_image'] ) ) {
 				$videoClasses .= ' hide-on-mobile';
-			}
-
-			if ( ! empty( $styleArray['background_parallax'] ) ) {
-				?>
-				<img class="ppb-bg-parallax" src="<?php echo $styleArray['background_image'] ?>">
-				<?php
-				$style_attributes['class'][]           = 'ppb-parallax';
 			}
 
 			if ( ! empty( $styleArray['bg_video'] ) && $bgVideo ) {
