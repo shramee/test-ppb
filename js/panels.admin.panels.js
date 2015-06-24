@@ -304,7 +304,7 @@
                 'raw': $currentPanel.find('input[name$="[info][raw]"]').val()
             };
 
-            if ("Pootle_PB_Content_Block" == widgetClass) {
+            if ("Pootle_Text_Widget" == widgetClass) {
 
                 var text = '',
                     filter = 1;

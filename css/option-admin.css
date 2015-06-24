@@ -86,3 +86,50 @@ span.logo img {
 .wrap > form > h3 {
     font-size: 23px;
 }
+.settings_page_page_builder h3 {
+    display: none
+}
+
+.button.pootle:hover {
+    background: #e04025;
+    color: #fff;
+}
+/* Welcome Page */
+.ppb-badge {
+    float: right;
+    width: 160px;
+    padding: 35px 0 35px;
+    text-align: center;
+    background: #ef4832;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ppb-badge .dashicons {
+    font-size: 7em;
+    height: auto;
+    width: auto;
+    margin: 0 0 10px;
+}
+
+.ppb-video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 25px;
+    height: 0;
+    margin-bottom: 40px;
+}
+
+.ppb-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* New page */
+.page_builder_add a{
+    text-decoration: none;
+}

@@ -12,10 +12,10 @@ jQuery(function ($) {
 
     $(document).on('panelsopen', function (e) {
         var dialog = $(e.target);
-        if (dialog.data('widget-type') != 'Pootle_PB_Content_Block') return;
+        if (dialog.data('widget-type') != 'Pootle_Text_Widget') return;
 
         if (dialog.data('bs_tinymce_setup') == null) {
-            dialog.filter('.widget-dialog-wp_widget_Pootle_PB_Content_Block').find('a[id$=tmce]').click();
+            dialog.filter('.widget-dialog-wp_widget_Pootle_Text_Widget').find('a[id$=tmce]').click();
             dialog.find('.wp-editor-container iframe[id$="_ifr"]').css('height', 350);
             dialog.data('bs_tinymce_setup', true);
         }

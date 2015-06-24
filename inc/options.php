@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Register's the settings
+ */
+require_once( 'settings.php' );
+
+/**
  * Get the settings
  *
  * @param string $key Only get a specific key.
@@ -69,43 +74,6 @@ function siteorigin_panels_setting( $key = '' ) {
 
 	return $settings;
 }
-
-/**
- * Add the options page
- */
-function siteorigin_panels_options_admin_menu() {
-	add_options_page( 'Page Builder', 'Page Builder', 'manage_options', 'page_builder', 'pootle_page_options_page' );
-}
-
-add_action( 'admin_menu', 'siteorigin_panels_options_admin_menu', 100 );
-
-/**
- * Display the admin page.
- */
-function pootle_page_options_page() {
-	if ( isset( $_GET['welcome_to_page_builder'] ) ) {
-		include plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/tpl/welcome.php';
-	} else {
-		include plugin_dir_path( POOTLEPAGE_BASE_FILE ) . '/tpl/options.php';
-	}
-}
-
-/**
- * Register all the settings fields.
- */
-function siteorigin_panels_options_init() {
-	register_setting( 'pootlepage-general', 'siteorigin_panels_general', 'siteorigin_panels_options_sanitize_general' );
-	register_setting( 'pootlepage-display', 'siteorigin_panels_display', 'siteorigin_panels_options_sanitize_display' );
-	register_setting( 'pootlepage-widgets', 'pootlepage-widgets' );
-
-	add_settings_section( 'display', __( 'Display', 'ppb-panels' ), '__return_false', 'pootlepage-display' );
-
-	// The display fields
-	add_settings_field( 'responsive', __( 'Responsive', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'responsive' ) );
-	add_settings_field( 'mobile-width', __( 'Mobile Width', 'ppb-panels' ), 'siteorigin_panels_options_field_display', 'pootlepage-display', 'display', array( 'type' => 'mobile-width' ) );
-}
-
-add_action( 'admin_init', 'siteorigin_panels_options_init' );
 
 function pootlepage_options_page_styling() {
 	$customizeUrl = admin_url( 'customize.php' );

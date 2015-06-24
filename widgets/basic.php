@@ -12,7 +12,7 @@ function siteorigin_panels_compatibility_init() {
 //	}
 }
 
-function pp_page_builder_Pootle_PB_Content_Block_frontend_style() {
+function pp_page_builder_Pootle_Text_Widget_frontend_style() {
 	include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 //	if ( is_plugin_active( 'wx-pootle-text-widget/pootlepress-text-widget.php' ) ||

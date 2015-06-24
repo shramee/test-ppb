@@ -13,12 +13,12 @@ jQuery(function ($) {
 
     $(document).on('panelsopen', function (e) {
         var dialog = $(e.target);
-        if (dialog.data('widget-type') != 'Pootle_PB_Content_Block') return;
+        if (dialog.data('widget-type') != 'Pootle_Text_Widget') return;
 
-        dialog.filter('.widget-dialog-Pootle_PB_Content_Block').find('.editor_links').remove();
+        dialog.filter('.widget-dialog-Pootle_Text_Widget').find('.editor_links').remove();
 
         if (dialog.data('bs_tinymce_setup') == null) {
-            dialog.filter('.widget-dialog-Pootle_PB_Content_Block').find('a[id$=visual]').click();
+            dialog.filter('.widget-dialog-Pootle_Text_Widget').find('a[id$=visual]').click();
 
             // show full height, so scroll bar will appear in the visual editor if content is long
             var fullHeight = dialog.find('.editor_container iframe[id$="_ifr"]').contents().find("body").outerHeight(true);

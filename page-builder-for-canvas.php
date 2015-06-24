@@ -88,7 +88,6 @@ if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) {
  */
 function siteorigin_panels_activate() {
 	add_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION, '', 'no' );
-	//@TODO add notice for Welcome page #275
 
 	$current_user = wp_get_current_user();
 
@@ -98,7 +97,7 @@ function siteorigin_panels_activate() {
 		$username = " {$current_user->user_firstname}";
 	}
 
-	$welcome_message = "<b>Hey{$username}! Welcome to Page builder.</b> You're all set to start building stunning pages!<br><a class='button pootle' href='" . admin_url( '/options-general.php?page=page_builder&welcome_to_page_builder' ) . "'>Get started</a>";
+	$welcome_message = "<b>Hey{$username}! Welcome to Page builder.</b> You're all set to start building stunning pages!<br><a class='button pootle' href='" . admin_url( '/admin.php?page=page_builder_home' ) . "'>Get started</a>";
 
 	ppb_add_admin_notice( 'welcome', $welcome_message, 'updated pootle' );
 }
@@ -440,21 +439,6 @@ add_action( 'admin_print_scripts-post-new.php', 'siteorigin_panels_admin_enqueue
 add_action( 'admin_print_scripts-post.php', 'siteorigin_panels_admin_enqueue_scripts' );
 add_action( 'admin_print_scripts-appearance_page_so_panels_home_page', 'siteorigin_panels_admin_enqueue_scripts' );
 
-function pootle_page_admin_enqueue_scripts() {
-	$screen = get_current_screen();
-
-	if ( 'settings_page_page_builder' != $screen->base ) {
-		return;
-	}
-
-	pootle_page_enqueue_color_picker();
-	wp_enqueue_script( 'ppb-settings-script', plugin_dir_url( __FILE__ ) . 'js/settings.js', array() );
-	wp_enqueue_style( 'ppb-settings-styles', plugin_dir_url( __FILE__ ) . 'css/settings.css', array() );
-
-}
-
-add_action( 'admin_enqueue_scripts', 'pootle_page_admin_enqueue_scripts' );
-
 /**
  * Enqueue script for custom customize control.
  */
@@ -504,30 +488,20 @@ add_action( 'admin_print_styles-post-new.php', 'siteorigin_panels_admin_enqueue_
 add_action( 'admin_print_styles-post.php', 'siteorigin_panels_admin_enqueue_styles' );
 add_action( 'admin_print_styles-appearance_page_so_panels_home_page', 'siteorigin_panels_admin_enqueue_styles' );
 
-function pootlepage_option_page_styles() {
+function pootlepage_option_page_enqueue() {
 
 	wp_enqueue_style( 'pootlepage-main-admin', plugin_dir_url( __FILE__ ) . 'css/main-admin.css', array(), POOTLEPAGE_VERSION );
-
-	// using $screen->id is not reliable, because it can change if using child theme
 	global $pagenow;
-	if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
+	if ( $pagenow == 'admin.php' && false !== strpos( filter_input( INPUT_GET, 'page' ), 'page_builder' ) ) {
+
+		wp_enqueue_script( 'ppb-settings-script', plugin_dir_url( __FILE__ ) . 'js/settings.js', array() );
+		wp_enqueue_style( 'ppb-settings-styles', plugin_dir_url( __FILE__ ) . 'css/settings.css', array() );
 		wp_enqueue_style( 'pootlepage-option-admin', plugin_dir_url( __FILE__ ) . 'css/option-admin.css', array(), POOTLEPAGE_VERSION );
-	}
-}
-
-add_action( 'admin_print_styles', 'pootlepage_option_page_styles' );
-
-function pootlepage_option_page_scripts() {
-
-	// using $screen->id is not reliable, because it can change if using child theme
-	global $pagenow;
-	if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == 'page_builder' ) {
-		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'pootlepage-option-admin', plugin_dir_url( __FILE__ ) . 'js/option-admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 	}
 }
 
-add_action( 'admin_print_scripts', 'pootlepage_option_page_scripts' );
+add_action( 'admin_enqueue_scripts', 'pootlepage_option_page_enqueue' );
 
 /**
  * Add a help tab to pages with panels.
