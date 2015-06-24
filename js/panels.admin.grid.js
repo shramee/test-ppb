@@ -142,8 +142,15 @@
         var grid = $('<div />').addClass('grid').appendTo(container);
 
         for (var i = 0; i < cells; i++) {
+
+            var element_class = 'cell';
+
+            if ( 0.25 > ( weights[i]/weightSum ) ) {
+                element_class += ' small-cell';
+            }
+
             var cell = $(
-                '<div class="cell" data-percent="' + (weights[i] / weightSum) + '">' +
+                '<div class="' + element_class + '" data-percent="' + (weights[i] / weightSum) + '">' +
                 '<div class="cell-wrapper panels-container">' +
                 '<div class="add-widget-button dashicons-before dashicons-plus"> </div>' +
                 '</div>' +
@@ -482,9 +489,17 @@
                             totalWidth += $(this).width();
                         })
                         .each(function () {
-                            var percent = $(this).width() / totalWidth;
-                            $(this).find('.cell-width-value span').html(Math.round(percent * 1000) / 10 + '%');
-                            $(this).attr('data-percent', percent).find('input[name$="[weight]"]').val(percent);
+                            var percent = $(this).width() / totalWidth,
+                                $t = $(this);
+                            $t.find('.cell-width-value span')
+                              .html(Math.round(percent * 1000) / 10 + '%');
+                            $t
+                                .attr('data-percent', percent)
+                                .removeClass('small-cell')
+                                .find('input[name$="[weight]"]').val(percent);
+                            if ( 0.25 > percent ) {
+                                $t.addClass('small-cell');
+                            }
                         });
 
                     $gridContainer.panelsResizeCells();

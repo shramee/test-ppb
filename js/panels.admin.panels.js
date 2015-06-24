@@ -621,20 +621,20 @@
             title = 'Editor';
 
         if ( -1 != text.indexOf('https://vimeo.com/') ) {
-            title = 'Vimeo Video';
+            title = '<span class="extra">Vimeo</span> Video';
         } else if ( -1 != text.indexOf('https://www.youtube.com/') ) {
-            title = 'YouTube Video';
+            title = '<span class="extra">YouTube</span> Video';
         } else if ( text.match( /\[.+]/gi ) && 0 < text.match( /\[.+]/gi ).length ) {
 
             var shortcode = text.match( /\[.+]/g )[0].replace( /[\[]/g, '' ).split( /[^\w]/g )[0];
 
-            title = shortcode + ' Shortcode';
+            title = '<span class="extra">' + shortcode + '</span> Shortcode';
         } else if ( -1 != text.indexOf('<img') ) {
             var imgMatch = text.match( /<img [^>]+?>/gi );
             if ( 1 < imgMatch.length ) {
                 title = 'Images';
             } else {
-                title = 'Image: \'' + $(imgMatch[0]).attr('alt') + '\'';
+                title = 'Image<span class="extra">: ' + $(imgMatch[0]).attr('alt') + '</span>';
             }
         }
 
@@ -658,9 +658,9 @@
         if ( text ) {
             if ( 'Editor' == title ) {
                 if(text.length > 10) text = text.substring(0,14);
-                return 'Text: \'' + text + '...\'';
+                return 'Text<span class="extra">: ' + text + '...</span>';
             }
-            return title + ' & text';
+            return title + ' <span class="extra">& text</span>';
         } else {
             return title;
         }
