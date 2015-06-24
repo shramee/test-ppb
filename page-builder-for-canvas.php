@@ -79,9 +79,6 @@ require_once 'inc/notice.php';
 require_once 'inc/vantage-extra.php';
 require_once 'inc/class-pootlepress-updater.php';
 require_once 'inc/class-pootlepage-font-utility.php';
-require_once 'inc/class-pootlepage-output.php';
-require_once 'inc/class-pootlepage-customizer.php';
-new PootlePage_Customizer();
 if ( defined( 'SITEORIGIN_PANELS_DEV' ) && SITEORIGIN_PANELS_DEV ) {
 	include plugin_dir_path( __FILE__ ) . 'inc/debug.php';
 }
