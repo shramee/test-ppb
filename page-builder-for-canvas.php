@@ -69,6 +69,7 @@ function pp_pb_check_for_conflict() {
 require_once 'inc/class-render-layout.php';
 require_once 'inc/class-content-blocks.php';
 require_once 'inc/class-front-css-js.php';
+require_once 'inc/cxpb-styles.php';
 
 require_once 'page-builder-for-canvas-functions.php';
 require_once 'widgets/basic.php';
