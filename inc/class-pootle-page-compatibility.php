@@ -81,13 +81,13 @@ class Pootle_Page_Compatibility {
 
 		return;
 
-		global $siteorigin_panels_inline_css;
+		global $ppb_panels_inline_css;
 
 		foreach ( $this->unsupported_page_builder_posts as $id ) {
 
 			$panel_content = siteorigin_panels_render( $id );
 
-			$panel_style = '<style>' . $siteorigin_panels_inline_css . '</style>';
+			$panel_style = '<style>' . $ppb_panels_inline_css . '</style>';
 
 			$updated_post = array(
 				'ID'           => $id,

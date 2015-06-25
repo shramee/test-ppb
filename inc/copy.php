@@ -151,7 +151,7 @@ function siteorigin_panels_get_panels_data_from_post( $form_post ) {
 
 		// if widget style is not present in $_POST, set a default
 		if ( ! isset( $info['style'] ) ) {
-			$widgetStyle = pp_get_default_widget_style();
+			$widgetStyle = ppb_default_content_block_style();
 
 			$info['style'] = $widgetStyle;
 		}

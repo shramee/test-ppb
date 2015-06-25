@@ -298,7 +298,7 @@
             instance = $currentPanel.panelsGetPanelData();
 
             var data = {
-                'action': 'so_panels_widget_form',
+                'action': 'ppb_panels_editor_form',
                 'widget': widgetClass,
                 'instance': JSON.stringify(instance),
                 'raw': $currentPanel.find('input[name$="[info][raw]"]').val()

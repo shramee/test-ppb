@@ -12,6 +12,8 @@ License: GPL version 3
 
 define( 'POOTLEPAGE_VERSION', '2.9.9' );
 define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
+define( 'POOTLEPAGE_DIR', __DIR__ );
+define( 'POOTLEPAGE_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * Tracking presence of version older than 3.0.0
@@ -64,9 +66,11 @@ function pp_pb_check_for_conflict() {
 	}
 }
 
+require_once 'inc/class-render-layout.php';
+require_once 'inc/class-content-blocks.php';
+require_once 'inc/class-front-css-js.php';
 
-require_once( 'page-builder-for-canvas-functions.php' );
-
+require_once 'page-builder-for-canvas-functions.php';
 require_once 'widgets/basic.php';
 
 require_once 'inc/vars.php';
@@ -189,31 +193,6 @@ function siteorigin_panels_save_home_page() {
 add_action( 'admin_init', 'siteorigin_panels_save_home_page' );
 
 /**
- * Modify the front page template
- *
- * @param $template
- *
- * @return string
- */
-function siteorigin_panels_filter_home_template( $template ) {
-	if (
-		! get_option( 'siteorigin_panels_home_page_enabled', siteorigin_panels_setting( 'home-page-default' ) )
-		|| ! siteorigin_panels_setting( 'home-page' )
-	) {
-		return $template;
-	}
-
-	$GLOBALS['siteorigin_panels_is_panels_home'] = true;
-
-	return locate_template( array(
-		'home-panels.php',
-		$template
-	) );
-}
-
-add_filter( 'home_template', 'siteorigin_panels_filter_home_template' );
-
-/**
  * If this is the main query, store that we're accessing the front page
  *
  * @param $wp_query
@@ -294,9 +273,9 @@ add_action( 'update_option_show_on_front', 'siteorigin_panels_disable_on_front_p
  *
  * @return bool
  */
-function siteorigin_panels_is_panel( $can_edit = false ) {
+function ppb_is_panel( $can_edit = false ) {
 	// Check if this is a panel
-	$is_panel = ( siteorigin_panels_is_home() || ( is_singular() && get_post_meta( get_the_ID(), 'panels_data', false ) != '' ) );
+	$is_panel = ( is_singular() && get_post_meta( get_the_ID(), 'panels_data', false ) != '' );
 
 	return $is_panel && ( ! $can_edit || ( ( is_singular() && current_user_can( 'edit_post', get_the_ID() ) ) || ( siteorigin_panels_is_home() && current_user_can( 'edit_theme_options' ) ) ) );
 }
@@ -506,29 +485,24 @@ add_action( 'admin_enqueue_scripts', 'pootlepage_option_page_enqueue' );
 /**
  * Add a help tab to pages with panels.
  */
-function siteorigin_panels_add_help_tab( $prefix ) {
+function ppb_panels_add_help_tab( $prefix ) {
 	$screen = get_current_screen();
-	if (
-		( $screen->base == 'post' && ( in_array( $screen->id, siteorigin_panels_setting( 'post-types' ) ) || $screen->id == '' ) )
-		|| ( $screen->id == 'appearance_page_so_panels_home_page' )
-	) {
+	if ( $screen->base == 'post' && in_array( $screen->id, siteorigin_panels_setting( 'post-types' ) ) ) {
 		$screen->add_help_tab( array(
 			'id'       => 'panels-help-tab', //unique id for the tab
 			'title'    => __( 'Page Builder', 'ppb-panels' ), //unique visible title for the tab
-			'callback' => 'siteorigin_panels_add_help_tab_content'
+			'callback' => 'ppb_panels_help_tab'
 		) );
 	}
 }
-
-add_action( 'load-page.php', 'siteorigin_panels_add_help_tab', 12 );
-add_action( 'load-post-new.php', 'siteorigin_panels_add_help_tab', 12 );
-add_action( 'load-appearance_page_so_panels_home_page', 'siteorigin_panels_add_help_tab', 12 );
+add_action( 'load-page.php', 'ppb_panels_add_help_tab', 12 );
+add_action( 'load-post-new.php', 'ppb_panels_add_help_tab', 12 );
 
 /**
  * Display the content for the help tab.
  */
-function siteorigin_panels_add_help_tab_content() {
-	include plugin_dir_path( __FILE__ ) . 'tpl/help.php';
+function ppb_panels_help_tab() {
+	include POOTLEPAGE_DIR . 'tpl/help.php';
 }
 
 /**
@@ -589,34 +563,20 @@ function siteorigin_panels_get_home_page_data() {
 function siteorigin_panels_get_current_admin_panels_data() {
 	$screen = get_current_screen();
 
-	// Localize the panels with the panels data
-	if ( $screen->base == 'appearance_page_so_panels_home_page' ) {
-		$panels_data = get_option( 'siteorigin_panels_home_page', null );
-		if ( is_null( $panels_data ) ) {
-			// Load the default layout
-			$layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
-
-			$home_name   = siteorigin_panels_setting( 'home-page-default' ) ? siteorigin_panels_setting( 'home-page-default' ) : 'home';
-			$panels_data = ! empty( $layouts[ $home_name ] ) ? $layouts[ $home_name ] : current( $layouts );
-		}
-		$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, 'home' );
-	} else {
-		global $post;
-		$panels_data = get_post_meta( $post->ID, 'panels_data', true );
-		$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post->ID );
-	}
+	global $post;
+	$panels_data = get_post_meta( $post->ID, 'panels_data', true );
+	$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post->ID );
 
 	if ( empty( $panels_data ) ) {
 		$panels_data = array();
 	}
 
-	// widget style is new addition, it may not be present in panel data in database before,
-	// so set a default widget when loading panel data
+	//Set default styles if none
 	if ( isset( $panels_data['widgets'] ) ) {
 		foreach ( $panels_data['widgets'] as &$widget ) {
 			if ( isset( $widget['info'] ) ) {
 				if ( ! isset( $widget['info']['style'] ) ) {
-					$widget['info']['style'] = pp_get_default_widget_style();
+					$widget['info']['style'] = ppb_default_content_block_style();
 				}
 			}
 		}
@@ -626,7 +586,7 @@ function siteorigin_panels_get_current_admin_panels_data() {
 	return $panels_data;
 }
 
-function pp_get_default_widget_style() {
+function ppb_default_content_block_style() {
 	$widgetStyleFields = pp_pb_widget_styling_fields();
 
 	$result = array();
@@ -647,588 +607,6 @@ function pp_get_default_widget_style() {
 
 }
 
-/**
- * Echo the CSS for the current panel
- *
- * @action init
- */
-function siteorigin_panels_css() {
-	if ( ! isset( $_GET['post'] ) || ! isset( $_GET['ver'] ) ) {
-		return;
-	}
-
-	if ( $_GET['post'] == 'home' ) {
-		$panels_data = siteorigin_panels_get_home_page_data();
-	} else {
-		$panels_data = get_post_meta( $_GET['post'], 'panels_data', true );
-	}
-
-	header( "Content-type: text/css" );
-	echo siteorigin_panels_generate_css( $_GET['post'], $panels_data );
-	exit();
-}
-
-add_action( 'wp_ajax_siteorigin_panels_post_css', 'siteorigin_panels_css' );
-add_action( 'wp_ajax_nopriv_siteorigin_panels_post_css', 'siteorigin_panels_css' );
-
-/**
- * Generate the actual CSS.
- *
- * @param $post_id
- * @param $panels_data
- *
- * @return string
- */
-function siteorigin_panels_generate_css( $post_id, $panels_data ) {
-	// Exit if we don't have panels data
-	if ( empty( $panels_data ) || empty( $panels_data['grids'] ) ) {
-		return;
-	}
-
-	$settings = siteorigin_panels_setting();
-
-	$panels_mobile_width  = $settings['mobile-width'];
-	$panels_margin_bottom = $settings['margin-bottom'];
-
-	$css                         = array();
-	$css[1920]                   = array();
-	$css[ $panels_mobile_width ] = array(); // This is a mobile resolution
-
-	// Add the grid sizing
-	$ci = 0;
-	foreach ( $panels_data['grids'] as $gi => $grid ) {
-		$cell_count = intval( $grid['cells'] );
-		for ( $i = 0; $i < $cell_count; $i ++ ) {
-			$cell = $panels_data['grid_cells'][ $ci ++ ];
-
-			if ( $cell_count > 1 ) {
-				$css_new = 'width:' . round( $cell['weight'] * 100, 3 ) . '%';
-				if ( empty( $css[1920][ $css_new ] ) ) {
-					$css[1920][ $css_new ] = array();
-				}
-				$css[1920][ $css_new ][] = '#pgc-' . $post_id . '-' . $gi . '-' . $i;
-			}
-		}
-
-		// Add the bottom margin to any grids that aren't the last
-		if ( $gi != count( $panels_data['grids'] ) - 1 ) {
-			$css[1920][ 'margin-bottom: ' . $panels_margin_bottom . 'px' ][] = '#pg-' . $post_id . '-' . $gi;
-		}
-
-		if ( $settings['responsive'] ) {
-			// Mobile Responsive
-			$mobile_css = array( 'float:none', 'width:auto' );
-			foreach ( $mobile_css as $c ) {
-				if ( empty( $css[ $panels_mobile_width ][ $c ] ) ) {
-					$css[ $panels_mobile_width ][ $c ] = array();
-				}
-				$css[ $panels_mobile_width ][ $c ][] = '#pg-' . $post_id . '-' . $gi . ' .panel-grid-cell';
-			}
-
-			for ( $i = 0; $i < $cell_count; $i ++ ) {
-				if ( $i != $cell_count - 1 ) {
-					$css_new = 'margin-bottom:' . $panels_margin_bottom . 'px';
-					if ( empty( $css[ $panels_mobile_width ][ $css_new ] ) ) {
-						$css[ $panels_mobile_width ][ $css_new ] = array();
-					}
-					$css[ $panels_mobile_width ][ $css_new ][] = '#pgc-' . $post_id . '-' . $gi . '-' . $i;
-				}
-			}
-		}
-	}
-
-	if ( $settings['responsive'] ) {
-		// Add CSS to prevent overflow on mobile resolution.
-		$panel_grid_css      = 'margin-left: 0 !important; margin-right: 0 !important;';
-		$panel_grid_cell_css = 'padding: 0 !important; width: 100% !important;';// TODO copy changes back to folio
-		if ( empty( $css[ $panels_mobile_width ][ $panel_grid_css ] ) ) {
-			$css[ $panels_mobile_width ][ $panel_grid_css ] = array();
-		}
-		if ( empty( $css[ $panels_mobile_width ][ $panel_grid_cell_css ] ) ) {
-			$css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
-		}
-		$css[ $panels_mobile_width ][ $panel_grid_css ][]      = '.panel-grid';
-		$css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
-	} else {
-		// TODO Copy changes back to Folio
-		$panel_grid_cell_css = 'display: inline-block !important; vertical-align: top !important;';
-
-		if ( empty( $css[ $panels_mobile_width ][ $panel_grid_cell_css ] ) ) {
-			$css[ $panels_mobile_width ][ $panel_grid_cell_css ] = array();
-		}
-
-		$css[ $panels_mobile_width ][ $panel_grid_cell_css ][] = '.panel-grid-cell';
-	}
-
-	// Add the bottom margin
-	$bottom_margin      = 'margin-bottom: ' . $panels_margin_bottom . 'px';
-	$bottom_margin_last = 'margin-bottom: 0 !important';
-	if ( empty( $css[1920][ $bottom_margin ] ) ) {
-		$css[1920][ $bottom_margin ] = array();
-	}
-	if ( empty( $css[1920][ $bottom_margin_last ] ) ) {
-		$css[1920][ $bottom_margin_last ] = array();
-	}
-	$css[1920][ $bottom_margin ][]      = '.panel-grid-cell .panel';
-	$css[1920][ $bottom_margin_last ][] = '.panel-grid-cell .panel:last-child';
-
-	// This is for the side margins
-	$magin_half    = $settings['margin-sides'] / 2;
-	$side_margins  = "margin: 0 -{$magin_half}px 0";
-	$side_paddings = "padding: 0 {$magin_half}px 0";
-
-	if ( empty( $css[1920][ $side_margins ] ) ) {
-		$css[1920][ $side_margins ] = array();
-	}
-	if ( empty( $css[1920][ $side_paddings ] ) ) {
-		$css[1920][ $side_paddings ] = array();
-	}
-
-	$css[1920][ $side_margins ][]  = '.panel-grid';
-	$css[1920][ $side_paddings ][] = '.panel-grid-cell';
-
-	if ( ! defined( 'POOTLEPAGE_OLD_V' ) ) {
-
-		$css[1920]['padding: 10px'][] = '.panel';
-		$css[768]['padding: 5px'][]   = '.panel';
-
-	}
-
-	/**
-	 * Filter the unprocessed CSS array
-	 */
-	$css = apply_filters( 'siteorigin_panels_css', $css );
-
-	// Build the CSS
-	$css_text = '';
-	krsort( $css );
-	foreach ( $css as $res => $def ) {
-		if ( empty( $def ) ) {
-			continue;
-		}
-
-		if ( $res < 1920 ) {
-			$css_text .= '@media ( max-width:' . $res . 'px )';
-			$css_text .= ' { ';
-		}
-
-		foreach ( $def as $property => $selector ) {
-			$selector = array_unique( $selector );
-			$css_text .= implode( ' , ', $selector ) . ' { ' . $property . ' } ';
-		}
-
-		if ( $res < 1920 ) {
-			$css_text .= ' } ';
-		}
-	}
-
-	return $css_text;
-}
-
-/**
- * Filter the content of the panel, adding all the widgets.
- *
- * @param $content
- *
- * @return string
- *
- * @filter the_content
- */
-function siteorigin_panels_filter_content( $content ) {
-
-	$isWooCommerceInstalled =
-		function_exists( 'is_shop' ) && function_exists( 'wc_get_page_id' );
-
-	if ( $isWooCommerceInstalled ) {
-		// prevent Page Builder overwrite taxonomy description with widget content
-		if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) == 0 ) {
-			return $content;
-		}
-
-		if ( is_post_type_archive() && ! is_shop() ) {
-			return $content;
-		}
-
-		if ( is_shop() ) {
-			$postID = wc_get_page_id( 'shop' );
-		} else {
-			$postID = get_the_ID();
-		}
-	} else {
-		if ( is_post_type_archive() ) {
-			return $content;
-		}
-
-		$postID = get_the_ID();
-	}
-
-	//If product done once set $postID to Tabs Post ID
-	if ( isset( $GLOBALS['canvasPB_ProductDoneOnce'] ) ) {
-		global $wpdb;
-		$results = $wpdb->get_results(
-			"SELECT ID FROM "
-			. $wpdb->posts
-			. " WHERE "
-			. "post_content LIKE '"
-			. esc_sql( $content )
-			. "'"
-			. " AND post_type LIKE 'wc_product_tab'"
-			. " AND post_status LIKE 'publish'" );
-		foreach ( $results as $id ) {
-			$postID = $id->ID;
-		}
-	}
-	//If its product set canvasPB_ProductDoneOnce to skip this for TAB
-	if ( function_exists( 'is_product' ) ) {
-		if ( is_single() && is_product() ) {
-			$GLOBALS['canvasPB_ProductDoneOnce'] = true;
-		}
-	}
-
-	$post = get_post( $postID );
-
-	if ( empty( $post ) ) {
-		return $content;
-	}
-	if ( in_array( $post->post_type, siteorigin_panels_setting( 'post-types' ) ) ) {
-		$panel_content = siteorigin_panels_render( $post->ID );
-
-		if ( ! empty( $panel_content ) ) {
-			$content = $panel_content;
-		}
-	}
-
-	return $content;
-}
-
-// set priority to 5 so Paid Membership Pro can filter it later, and overwrite Page Builder content
-// set to 0 to execute this before any other actions and get raw $content for db lookup for tab CPT
-add_filter( 'the_content', 'siteorigin_panels_filter_content', 0 );
-
-/**
- * Render the panels
- *
- * @param int|string|bool $post_id The Post ID or 'home'.
- * @param bool $enqueue_css Should we also enqueue the layout CSS.
- * @param array|bool $panels_data Existing panels data. By default load from settings or post meta.
- *
- * @return string
- */
-function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panels_data = false ) {
-
-	if ( empty( $post_id ) ) {
-		$post_id = get_the_ID();
-	}
-
-	global $siteorigin_panels_current_post;
-	$old_current_post               = $siteorigin_panels_current_post;
-	$siteorigin_panels_current_post = $post_id;
-
-	if ( empty( $panels_data ) ) {
-		if ( $post_id == 'home' ) {
-			$panels_data = get_option( 'siteorigin_panels_home_page', get_theme_mod( 'panels_home_page', null ) );
-
-			if ( is_null( $panels_data ) ) {
-				// Load the default layout
-				$layouts     = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
-				$panels_data = ! empty( $layouts['home'] ) ? $layouts['home'] : current( $layouts );
-			}
-		} else {
-			//Allowing rendering for password protected Tab( wc_product_tab ) post types
-			if ( post_password_required( $post_id ) && get_post_type( $post_id ) != 'wc_product_tab' ) {
-				return false;
-			}
-			$panels_data = get_post_meta( $post_id, 'panels_data', true );
-		}
-	}
-
-	$panels_data = apply_filters( 'siteorigin_panels_data', $panels_data, $post_id );
-	if ( empty( $panels_data ) || empty( $panels_data['grids'] ) ) {
-		return '';
-	}
-
-	//Removing filters for proper functionality
-	remove_filter( 'the_content', 'wptexturize' );    //wptexturize : Replaces each & with &#038; unless it already looks like an entity
-	remove_filter( 'the_content', 'convert_chars' );    //convert_chars : Converts lone & characters into &#38; ( a.k.a. &amp; )
-	remove_filter( 'the_content', 'wpautop' );    //wpautop : Adds the Stupid Paragraphs for two line breaks
-
-	// Create the skeleton of the grids
-	$grids = array();
-	if ( ! empty( $panels_data['grids'] ) ) {
-		foreach ( $panels_data['grids'] as $gi => $grid ) {
-			$gi           = intval( $gi );
-			$grids[ $gi ] = array();
-			for ( $i = 0; $i < $grid['cells']; $i ++ ) {
-				$grids[ $gi ][ $i ] = array();
-			}
-		}
-	}
-
-	if ( ! empty( $panels_data['widgets'] ) && is_array( $panels_data['widgets'] ) ) {
-		foreach ( $panels_data['widgets'] as $widget ) {
-
-			if ( ! empty( $widget['info'] ) ) {
-				$grids[ intval( $widget['info']['grid'] ) ][ intval( $widget['info']['cell'] ) ][] = $widget;
-			}
-		}
-	}
-
-	ob_start();
-
-	global $siteorigin_panels_inline_css;
-	if ( empty( $siteorigin_panels_inline_css ) ) {
-		$siteorigin_panels_inline_css = '';
-	}
-
-	if ( $enqueue_css ) {
-		wp_enqueue_style( 'ppb-panels-front' );
-		$siteorigin_panels_inline_css .= siteorigin_panels_generate_css( $post_id, $panels_data );
-	}
-
-	foreach ( $grids as $gi => $cells ) {
-
-		// This allows other themes and plugins to add html before the row
-		echo apply_filters( 'siteorigin_panels_before_row', '', $panels_data['grids'][ $gi ] );
-
-		$grid_classes    = apply_filters( 'siteorigin_panels_row_classes', array( 'panel-grid' ), $panels_data['grids'][ $gi ] );
-		$grid_attributes = apply_filters( 'siteorigin_panels_row_attributes', array(
-			'class' => implode( ' ', $grid_classes ),
-			'id'    => 'pg-' . $post_id . '-' . $gi
-		), $panels_data['grids'][ $gi ] );
-
-		echo '<div ';
-		foreach ( $grid_attributes as $name => $value ) {
-			echo $name . '="' . esc_attr( $value ) . '" ';
-		}
-		echo '>';
-
-		$style_attributes = array();
-
-		if ( ! empty( $panels_data['grids'][ $gi ]['style']['class'] ) ) {
-			$style_attributes['class'] = array( 'panel-row-style-' . $panels_data['grids'][ $gi ]['style']['class'] );
-		}
-
-		// Themes can add their own attributes to the style wrapper
-		$styleArray       = ! empty( $panels_data['grids'][ $gi ]['style'] ) ? $panels_data['grids'][ $gi ]['style'] : array();
-		$style_attributes = apply_filters( 'siteorigin_panels_row_style_attributes', $style_attributes, $styleArray );
-
-		$bgVideo = ! empty( $styleArray['background_toggle'] ) ? '.bg_video' == $styleArray['background_toggle'] : false;
-
-		if ( ! empty( $style_attributes ) ) {
-			if ( empty( $style_attributes['class'] ) ) {
-				$style_attributes['class'] = array();
-			}
-			$style_attributes['class'][] = 'panel-row-style';
-			if ( $bgVideo ) {
-				$style_attributes['class'][] = 'video-bg';
-			}
-			$style_attributes['class'][] = ! empty( $styleArray['full_width'] ) ? 'ppb-full-width-row' : '';
-			$style_attributes['class']   = array_unique( $style_attributes['class'] );
-
-			$style_attributes['style'] .= ! empty( $styleArray['style'] ) ? $styleArray['style'] : '';
-
-			if ( ! empty( $styleArray['background_parallax'] ) ) {
-				$style_attributes['class'][] = 'ppb-parallax';
-				$style_attributes['style'] .= 'background-attachment: fixed;background-size: cover;';
-			}
-
-			if ( $bgVideo ) {
-				if ( ! empty( $style['background_image'] ) ) {
-					$style_attributes['style'] .= 'background-image: url( ' . esc_url( $style['bg_mobile_image'] ) . ' ); ';
-				}
-				$style_attributes['style'] .= ! empty( $styleArray['style'] ) ? $styleArray['style'] : '';
-			}
-
-			//Apply height if row doesn't contain widgets
-			$contains_widgets = false;
-			foreach ( $cells as $cell ) {
-
-				if ( ! empty( $cell ) ) {
-					$contains_widgets = true;
-				}
-			}
-
-			if ( ! $contains_widgets ) {
-				$style_attributes['style'] .= ! empty( $styleArray['row_height'] ) ? 'height:' . $styleArray['row_height'] . 'px' : '';
-			}
-
-			if ( ! empty( $styleArray['hide_row'] ) ) {
-				$style_attributes['style'] .= 'display:none;';
-			}
-
-			echo '<div ';
-			foreach ( $style_attributes as $name => $value ) {
-				if ( is_array( $value ) ) {
-					echo $name . '="' . esc_attr( implode( " ", array_unique( $value ) ) ) . '" ';
-				} else {
-					echo $name . '="' . esc_attr( $value ) . '" ';
-				}
-			}
-			echo '>';
-
-			$videoClasses = 'ppb-bg-video';
-
-			if ( ! empty( $styleArray['bg_mobile_image'] ) ) {
-				$videoClasses .= ' hide-on-mobile';
-			}
-
-			if ( ! empty( $styleArray['bg_video'] ) && $bgVideo ) {
-				?>
-				<video class="<?php echo $videoClasses; ?>" preload="auto" autoplay="true" loop="loop" muted="muted"
-				       volume="0">
-					<?php
-					echo "<source src='{$styleArray['bg_video']}' type='video/mp4'>";
-					echo "<source src='{$styleArray['bg_video']}' type='video/webm'>";
-					?>
-					Sorry, your browser does not support HTML5 video.
-				</video>
-			<?php
-			}
-		}
-		$rowID = '#pg-' . $post_id . '-' . $gi;
-
-		?>
-		<style>
-
-	<?php
-		if ( ! empty( $styleArray['col_gutter'] ) ) {
-			 echo esc_attr( $rowID ) . ' .panel-grid-cell { padding: 0 ' . ( $styleArray['col_gutter']/2 ) . 'px 0; }';
-		}
-				if ( isset( $styleArray['background'] ) && ! empty( $styleArray['bg_overlay_color'] ) ) {
-					$overlay_color = $styleArray['bg_overlay_color'];
-				if ( ! empty( $styleArray['bg_overlay_opacity'] ) ) {
-					$overlay_color = 'rgba( ' . ppb_hex2rgb($overlay_color) . ", {$styleArray['bg_overlay_opacity']} )";
-				}
-			?>
-	/* make this sit under .panel-row-style:before, so background color will be on top on background image */
-	<?php echo esc_attr( $rowID ) ?> > .panel-row-style:before {
-		background-color: <?php echo $overlay_color ?>;
-	}
-
-	<?php echo esc_attr( $rowID ) ?> > .panel-row-style {
-		position: relative;
-		z-index: 10;
-	}
-
-	<?php echo esc_attr( $rowID ) ?>
-	>
-	.panel-row-style:before {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		content: "";
-		top: 0;
-		left: 0;
-		z-index: 20;
-	}
-
-	.panel-grid-cell-container {
-		position: relative;
-		z-index: 30; /* row content needs to be on top of row background color */
-	}
-	<?php
-	}
-	?>
-		</style>
-	<?php
-
-		echo "<div class='panel-grid-cell-container'>";
-
-		foreach ( $cells as $ci => $widgets ) {
-			// Themes can add their own styles to cells
-			$cellId          = 'pgc-' . $post_id . '-' . $gi . '-' . $ci;
-			$cell_classes    = apply_filters( 'siteorigin_panels_row_cell_classes', array( 'panel-grid-cell' ), $panels_data );
-			$cell_attributes = apply_filters( 'siteorigin_panels_row_cell_attributes', array(
-				'class' => implode( ' ', $cell_classes ),
-				'id'    => $cellId
-			), $panels_data );
-
-			echo '<div ';
-			foreach ( $cell_attributes as $name => $value ) {
-				echo $name . '="' . esc_attr( $value ) . '" ';
-			}
-			echo '>';
-
-			foreach ( $widgets as $pi => $widget_info ) {
-				$data = $widget_info;
-
-				unset( $data['info'] );
-
-				/**
-				 * Render the content block via this hook
-				 *
-				 * @param array $widget_info - Info for this block - backwards compatible with widgets
-				 * @param int   $gi          - Grid Index
-				 * @param int   $ci          - Cell Index
-				 * @param int   $pi          - Panel/Content Block Index
-				 * @param int   $blocks_num  - Total number of Blocks in cell
-				 * @param int   $post_id     - The current post ID
-				 */
-				do_action( 'ppb_panels_render_content_block', $widget_info, $gi, $ci, $pi, count( $widgets ), $post_id );
-			}
-			if ( empty( $widgets ) ) {
-				echo '&nbsp;';
-			}
-			echo '</div>';
-		}
-		echo "</div>";
-		echo '</div>';
-
-		if ( ! empty( $style_attributes ) ) {
-			echo '</div>';
-		}
-
-		// This allows other themes and plugins to add html after the row
-		echo apply_filters( 'siteorigin_panels_after_row', '', $panels_data['grids'][ $gi ] );
-	}
-
-	$html = ob_get_clean();
-
-	// Reset the current post
-	$siteorigin_panels_current_post = $old_current_post;
-
-	return apply_filters( 'siteorigin_panels_render', $html, $post_id, null );
-}
-
-/**
- * Appends and prepends the contents of paragraphs with line breaks
- *
- * @param $text
- * @since 3.0.0
- * @return mixed
- */
-function ppb_content_block_format_p( $text ) {
-
-	return str_replace(
-		array( '<p>', '</p>', ), array( "<p>\n", "\n</p>",
-	), $text
-	);
-}
-
-add_filter( 'ppb_content_block', 'ppb_content_block_format_p', 8 );
-
-add_filter( 'ppb_content_block', array( $GLOBALS['wp_embed'], 'autoembed' ), 8 );
-
-/**
- * Print inline CSS in the header and footer.
- */
-function siteorigin_panels_print_inline_css() {
-	global $siteorigin_panels_inline_css;
-
-	if ( ! empty( $siteorigin_panels_inline_css ) ) {
-		?>
-		<style type="text/css" media="all"><?php echo $siteorigin_panels_inline_css ?></style><?php
-	}
-
-	$siteorigin_panels_inline_css = '';
-}
-
-add_action( 'wp_head', 'siteorigin_panels_print_inline_css', 12 );
-add_action( 'wp_footer', 'siteorigin_panels_print_inline_css' );
-
-
-//add_action( 'wp_head', 'pootlepage_page_css', 100 );
-
 add_action( 'after_setup_theme', 'pootlepage_after_setup_theme' );
 
 function pootlepage_after_setup_theme() {
@@ -1240,463 +618,6 @@ function pootlepage_after_setup_theme() {
 function pootlepage_fix_framework_js_error() {
 	echo "<script>var wooSelectedShortcodeType = typeof wooSelectedShortcodeType == 'undefined' ? '' : wooSelectedShortcodeType;</script>\n";
 }
-
-function pootlepage_page_css() {
-	global $post;
-
-	if ( ! is_page() ) {
-		return;
-	}
-
-	$pageSettingsJson = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
-	if ( empty( $pageSettingsJson ) ) {
-		$pageSettingsJson = '{}';
-	}
-	$pageSettings = json_decode( $pageSettingsJson, true );
-
-	$backgroundColor           = isset( $pageSettings['background'] ) ? $pageSettings['background'] : false;
-	$backgroundImage           = isset( $pageSettings['background_image'] ) ? $pageSettings['background_image'] : false;
-	$backgroundImageRepeat     = isset( $pageSettings['background_image_repeat'] ) ? $pageSettings['background_image_repeat'] : false;
-	$backgroundImagePosition   = isset( $pageSettings['background_image_position'] ) ? $pageSettings['background_image_position'] : false;
-	$backgroundImageAttachment = isset( $pageSettings['background_image_attachment'] ) ? $pageSettings['background_image_attachment'] : false;
-	$removeSideBar             = isset( $pageSettings['remove_sidebar'] ) ? $pageSettings['remove_sidebar'] : false;
-	$fullWidth                 = isset( $pageSettings['full_width'] ) ? $pageSettings['full_width'] : false;
-	$keepContentAtSiteWidth    = isset( $pageSettings['keep_content_at_site_width'] ) ? $pageSettings['keep_content_at_site_width'] : false;
-
-	$css = '';
-
-	$theme       = get_stylesheet();
-	$parentTheme = get_template();
-	if ( $theme == 'twentyfourteen' ) {
-		$css .= "#page {\n";
-	} elseif ( $theme == 'twentythirteen' ) {
-		$css .= "#page {\n";
-	} elseif ( $parentTheme == 'make' ) {
-		$css .= "#site-header, #site-content { float: none !important; }\n"; // do this orelse#site-wrapper is height 0px
-		$css .= "body, #site-header > .site-header-main, #site-content { background: initial !important; }\n";
-		$css .= "#site-wrapper {\n";
-	} else {
-		$css .= "body {\n";
-	}
-
-	if ( $backgroundColor ) {
-		$css .= "\t" . 'background-color: ' . $backgroundColor . " !important;\n";
-	}
-	if ( $backgroundImage ) {
-		$css .= "\t" . 'background-image: url( "' . $backgroundImage . "\" ) !important;\n";
-	}
-	if ( $backgroundImageRepeat ) {
-		$css .= "\t" . 'background-repeat: repeat' . " !important;\n";
-	} else {
-		$css .= "\t" . 'background-repeat: no-repeat' . " !important;\n";
-	}
-	if ( $backgroundImagePosition ) {
-		$css .= "\t" . 'background-position: ' . $backgroundImagePosition . " !important;\n";
-	}
-	if ( $backgroundImageAttachment ) {
-		$css .= "\t" . 'background-attachment: ' . $backgroundImageAttachment . " !important;\n";
-	}
-	$css .= "}\n";
-
-	if ( $removeSideBar ) {
-		if ( $theme == 'twentythirteen' ) {
-			$css .= "#tertiary { display: none !important; }\n";
-		} elseif ( $parentTheme == 'genesis' ) {
-			$css .= ".site-inner .sidebar { display: none !important; }\n";
-		} elseif ( $parentTheme == 'make' ) {
-			$css .= "#sidebar-left, #sidebar-right { display: none !important; }\n";
-			$css .= "#site-main { width: 100% !important; margin-left: 0 !important; }\n";
-		} else {
-			$css .= "#sidebar { display: none !important ; }\n";
-		}
-	}
-
-	if ( $theme == 'twentyfourteen' ) {
-		// theme specific fix
-		$css .= ".panel-grid-cell .panel { box-sizing: border-box !important; }\n";
-	}
-
-	if ( $fullWidth ) {
-
-		if ( $theme == 'twentyfourteen' ) {
-			// if theme is twentyfourteen
-
-			$css .= "#content > article > .entry-content { \n";
-			$css .= "\t" . "margin-left: 0; margin-right: 0; width: 100%; max-width: 100%; padding-left: 0; padding-right: 0;\n";
-			$css .= "}\n";
-
-			$css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
-			$css .= ".panel-grid-cell:first-child { padding-left: 0; }\n";
-			$css .= ".panel-grid-cell:last-child { padding-right: 0; }\n";
-
-			if ( $keepContentAtSiteWidth ) {
-				global $content_width;
-				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $content_width . "px; }\n";
-			}
-
-		} elseif ( $theme == 'twentythirteen' ) {
-			// if theme is twentythirteen
-
-			$css .= "#content > article > .entry-content { padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0; width: 100%; max-width: 100% }\n";
-
-			$css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
-			$css .= ".panel-grid-cell:first-child { padding-left: 0; }\n";
-			$css .= ".panel-grid-cell:last-child { padding-right: 0; }\n";
-
-			if ( $keepContentAtSiteWidth ) {
-				global $content_width;
-				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $content_width . "px; }\n";
-			}
-		} elseif ( $parentTheme == 'genesis' ) {
-
-			$css .= ".site-inner { max-width: 100%; width: 100%; }\n";
-			$css .= "main.content { width: 100%; }\n";
-			$css .= "main.content > article { padding-left: 0; padding-right: 0; }\n";
-
-			if ( $keepContentAtSiteWidth ) {
-				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: 960px; }\n";
-			}
-		} elseif ( $parentTheme == 'make' ) {
-
-			$css .= "#site-content > .container { \n";
-			$css .= "\t" . 'margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; width: 100%; max-width: 100%;' . "\n";
-			$css .= "}\n";
-			$css .= ".panel-grid { margin-left: 0; margin-right: 0; }\n";
-			$css .= ".panel-grid-cell { padding-left: 0; padding-right: 0; }\n";
-
-			if ( $keepContentAtSiteWidth ) {
-				$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: 960px; }\n";
-			}
-		} else {
-
-			$css .= "#content, #wrapper { max-width: 100% !important; width:100%; margin-left:0; margin-right:0; padding-left: 0 !important; padding-right: 0 !important; }\n";
-			$css .= ".panel-grid { margin-left: 0 !important; margin-right: 0 !important; }\n";
-			$css .= ".panel-grid-cell { padding: 0 !important; }\n";
-
-			if ( $keepContentAtSiteWidth ) {
-				$siteWidth = get_option( 'woo_layout_width', 960 );
-				if ( $siteWidth ) {
-					$css .= ".panel-grid-cell-container { margin-left: auto; margin-right: auto; width: " . $siteWidth . "px; }\n";
-				}
-			}
-		}
-
-	}
-
-	$hideElementsJson = get_post_meta( $post->ID, 'pootlepage-hide-elements', true );
-	if ( empty( $hideElementsJson ) ) {
-		$hideElementsJson = '{}';
-	}
-	$hideElements = json_decode( $hideElementsJson, true );
-
-	$hideLogoStrapLine  = isset( $hideElements['hide_logo_strapline'] ) ? $hideElements['hide_logo_strapline'] : false;
-	$hideHeader         = isset( $hideElements['hide_header'] ) ? $hideElements['hide_header'] : false;
-	$hideMainNavigation = isset( $hideElements['hide_main_navigation'] ) ? $hideElements['hide_main_navigation'] : false;
-	$hidePageTitle      = isset( $hideElements['hide_page_title'] ) ? $hideElements['hide_page_title'] : false;
-	$hideFooterWidgets  = isset( $hideElements['hide_footer_widgets'] ) ? $hideElements['hide_footer_widgets'] : false;
-	$hideFooter         = isset( $hideElements['hide_footer'] ) ? $hideElements['hide_footer'] : false;
-
-	if ( $theme == 'twentyfourteen' ) {
-		if ( $hideLogoStrapLine ) {
-			$css .= ".site-title { display: none !important; }\n";
-			$css .= "#secondary .site-description { display: none !important; }\n";
-		}
-		if ( $hideHeader ) {
-			$css .= "#site-header { display: none !important; }\n";
-		}
-		if ( $hideMainNavigation ) {
-			$css .= "#primary-navigation { display: none !important;  }\n";
-		}
-		if ( $hidePageTitle ) {
-			$css .= "#content > article > header.entry-header { display: none !important; }\n";
-		}
-		if ( $hideFooterWidgets ) {
-			$css .= "#footer-sidebar { display: none !important; }\n";
-		}
-		if ( $hideFooter ) {
-			$css .= "#colophon > .site-info { display: none !important; }\n";
-		}
-	} elseif ( $theme == 'twentythirteen' ) {
-		if ( $hideLogoStrapLine ) {
-			$css .= "#masthead .site-title { display: none !important; }\n";
-			$css .= "#masthead .site-description { display: none !important; }\n";
-		}
-		if ( $hideHeader ) {
-			$css .= "#masthead .home-link { display: none !important; }\n";
-		}
-		if ( $hideMainNavigation ) {
-			$css .= "#navbar { display: none !important;  }\n";
-		}
-		if ( $hidePageTitle ) {
-			$css .= "#content > article > header.entry-header { display: none !important; }\n";
-		}
-		if ( $hideFooterWidgets ) {
-			$css .= "#secondary { display: none !important; }\n";
-		}
-		if ( $hideFooter ) {
-			$css .= "#colophon > .site-info { display: none !important; }\n";
-		}
-	} elseif ( $parentTheme == 'genesis' ) {
-		if ( $hideLogoStrapLine ) {
-			$css .= ".title-area { display: none !important; }\n";
-		}
-		if ( $hideHeader ) {
-			$css .= ".site-header { display: none !important; }\n";
-		}
-		if ( $hideMainNavigation ) {
-			$css .= ".nav-primary { display: none !important; }\n";
-		}
-		if ( $hidePageTitle ) {
-			$css .= ".site-inner .content > article > .entry-header { display: none !important; }\n";
-		}
-		if ( $hideFooterWidgets ) {
-			$css .= ".footer-widgets { display: none !important; }\n";
-		}
-		if ( $hideFooter ) {
-			$css .= ".site-footer { display: none !important; }\n";
-		}
-	} elseif ( $theme == 'make' ) {
-
-		if ( $hideLogoStrapLine ) {
-			$css .= ".site-branding { display: none !important; }\n";
-		}
-		if ( $hideHeader ) {
-			$css .= "#site-header { display: none !important; }\n";
-		}
-		if ( $hideMainNavigation ) {
-			$css .= "#site-navigation { display: none !important; }\n";
-		}
-		if ( $hidePageTitle ) {
-			$css .= "#site-main > article > .entry-header { display: none !important; }\n";
-		}
-		if ( $hideFooterWidgets ) {
-			$css .= "#site-footer .footer-widget-container { display: none !important; }\n";
-		}
-		if ( $hideFooter ) {
-			$css .= "#site-footer { display: none !important; }\n";
-		}
-
-	} else {
-		if ( $hideLogoStrapLine ) {
-			$css .= "#logo { visibility: hidden !important; }\n";
-		}
-		if ( $hideHeader ) {
-			$css .= "#header { display: none !important; }\n";
-		}
-		if ( $hideMainNavigation ) {
-			$css .= "#nav-container, #navigation { display: none !important;  }\n";
-		}
-		if ( $hidePageTitle ) {
-			$css .= "#main > article > header > .entry-title { display: none !important; }\n";
-		}
-		if ( $hideFooterWidgets ) {
-			$css .= "#footer-widgets { display: none !important; }\n";
-		}
-		if ( $hideFooter ) {
-			$css .= "#footer { display: none !important; }\n";
-		}
-	}
-
-	echo "<style>\n" . $css . "</style>\n";
-}
-
-add_filter( 'body_class', 'pootlepage_body_class', 100 );
-
-function pootlepage_body_class( $classes ) {
-	// possible layout classes added by Canvas is
-	$allLayouts = array(
-		'one-col',
-		'two-col-left',
-		'two-col-right',
-		'three-col-left',
-		'three-col-middle',
-		'three-col-right'
-	);
-
-	global $post;
-
-	if ( ! is_page() ) {
-		return $classes;
-	}
-
-	$pageSettingsJson = get_post_meta( $post->ID, 'pootlepage-page-settings', true );
-	if ( empty( $pageSettingsJson ) ) {
-		$pageSettingsJson = '{}';
-	}
-	$pageSettings  = json_decode( $pageSettingsJson, true );
-	$removeSideBar = isset( $pageSettings['remove_sidebar'] ) ? $pageSettings['remove_sidebar'] : false;
-
-	if ( $removeSideBar ) {
-		$newClasses = array();
-		for ( $i = 0; $i < count( $classes ); ++ $i ) {
-			if ( ! in_array( $classes[ $i ], $allLayouts ) ) {
-				$newClasses[] = $classes[ $i ];
-			}
-		}
-		$newClasses[] = 'one-col';
-
-		return $newClasses;
-	} else {
-		return $classes;
-	}
-}
-
-/**
- * Outputs opening container with styles and classes
- *
- * @param $block_info
- * @param $gi
- * @param $ci
- * @param $pi
- * @param $blocks_num
- * @param $post_id
- */
-function ppb_panels_render_content_block_container_open( $block_info, $gi, $ci, $pi, $blocks_num, $post_id ) {
-
-	$styleArray  = $widgetStyle = isset( $block_info['info']['style'] ) ? json_decode( $block_info['info']['style'], true ) : pp_get_default_widget_style();;
-
-	//Classes for this content block
-	$classes = array( 'panel' );
-	if ( 0 == $pi ) {
-		$classes[] = 'panel-first-child';
-	}
-	if ( ( $blocks_num - 1 ) == $pi ) {
-		$classes[] = 'panel-last-child';
-	}
-
-	//Id for this content block
-	$id = 'panel-' . $post_id . '-' . $gi . '-' . $ci . '-' . $pi;
-
-	$inlineStyle = '';
-
-	$widgetStyleFields = pp_pb_widget_styling_fields();
-
-	$styleWithSelector = '';
-
-	foreach ( $widgetStyleFields as $key => $field ) {
-		if ( $field['type'] == 'border' ) {
-			// a border field has 2 settings
-			$key1 = $key . '-width';
-			$key2 = $key . '-color';
-
-			if ( isset( $styleArray[ $key1 ] ) && $styleArray[ $key1 ] != '' ) {
-				if ( ! is_array( $field['css'] ) ) {
-					$cssArr = array( $field['css'] );
-				} else {
-					$cssArr = $field['css'];
-				}
-
-				foreach ( $cssArr as $cssProperty ) {
-					$inlineStyle .= $cssProperty . '-width: ' . $styleArray[ $key1 ] . 'px; border-style: solid;';
-				}
-			}
-
-			if ( isset( $styleArray[ $key2 ] ) && $styleArray[ $key2 ] != '' ) {
-				if ( ! is_array( $field['css'] ) ) {
-					$cssArr = array( $field['css'] );
-				} else {
-					$cssArr = $field['css'];
-				}
-
-				foreach ( $cssArr as $cssProperty ) {
-					$inlineStyle .= $cssProperty . '-color: ' . $styleArray[ $key2 ] . ';';
-				}
-			}
-
-		} elseif ( $key == 'inline-css' ) {
-
-			if ( ! empty( $styleArray[ $key ] ) ) {
-				$inlineStyle .= $styleArray[ $key ];
-			}
-
-		} else {
-
-
-			if ( isset( $styleArray[ $key ] ) && $styleArray[ $key ] != '' ) {
-				if ( ! is_array( $field['css'] ) ) {
-					$cssArr = array( $field['css'] );
-				} else {
-					$cssArr = $field['css'];
-				}
-
-				foreach ( $cssArr as $cssProperty ) {
-					if ( isset( $field['unit'] ) ) {
-						$unit = $field['unit'];
-					} else {
-						$unit = '';
-					}
-
-					if ( ! isset( $field['selector'] ) ) {
-						$inlineStyle .= $cssProperty . ': ' . $styleArray[ $key ] . $unit . ';';
-					} else {
-						$styleWithSelector .= '#' . $id . ' > ' . $field['selector'] . ' { ' . $cssProperty . ': ' . $styleArray[ $key ] . $unit . '; }';
-					}
-				}
-			}
-		}
-	}
-
-	if ( $styleWithSelector != '' ) {
-		echo "<style>\n";
-		echo str_replace( 'display', 'display:none;display', $styleWithSelector );
-		echo "</style>\n";
-	}
-
-	echo '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" id="' . $id . '" style="' . $inlineStyle . '" >';
-}
-
-add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block_container_open', 5, 6 );
-
-function ppb_panels_render_content_block_container_close(){
-	echo '</div>';
-}
-
-add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block_container_close', 25 );
-
-/**
- * Render the Content Panel.
- *
- * @param string $widget_info The widget class name.
- */
-function ppb_panels_render_content_block( $block_info ) {
-	if ( ! empty( $block_info['text'] ) ) echo apply_filters( 'ppb_content_block', $block_info['text'] );
-}
-
-add_action( 'ppb_panels_render_content_block', 'ppb_panels_render_content_block' );
-
-/**
- * Add the Edit Home Page item to the admin bar.
- *
- * @param WP_Admin_Bar $admin_bar
- *
- * @return WP_Admin_Bar
- */
-function siteorigin_panels_admin_bar_menu( $admin_bar ) {
-	/**
-	 * @var WP_Query $wp_query
-	 */
-	global $wp_query;
-
-	if ( ( $wp_query->is_home() && $wp_query->is_main_query() ) || siteorigin_panels_is_home() ) {
-		// Check that we support the home page
-		if ( ! siteorigin_panels_setting( 'home-page' ) || ! current_user_can( 'edit_theme_options' ) ) {
-			return $admin_bar;
-		}
-		if ( ! get_option( 'siteorigin_panels_home_page_enabled', siteorigin_panels_setting( 'home-page-default' ) ) ) {
-			return $admin_bar;
-		}
-
-		$admin_bar->add_node( array(
-			'id'    => 'edit-home-page',
-			'title' => __( 'Edit Home Page', 'ppb-panels' ),
-			'href'  => admin_url( 'themes.php?page=so_panels_home_page' )
-		) );
-	}
-
-	return $admin_bar;
-}
-
-add_action( 'admin_bar_menu', 'siteorigin_panels_admin_bar_menu', 100 );
 
 /**
  * Handles creating the preview.
@@ -1726,7 +647,7 @@ add_action( 'template_redirect', 'siteorigin_panels_preview' );
 function siteorigin_panels_is_preview() {
 	global $siteorigin_panels_is_preview;
 
-	return ( bool ) $siteorigin_panels_is_preview;
+	return (bool) $siteorigin_panels_is_preview;
 }
 
 /**
@@ -1755,6 +676,7 @@ add_filter( 'show_admin_bar', 'siteorigin_panels_preview_adminbar' );
  */
 function siteorigin_panels_preview_load_data( $val ) {
 	if ( isset( $_GET['siteorigin_panels_preview'] ) ) {
+
 		$val = siteorigin_panels_get_panels_data_from_post( $_POST );
 	}
 
@@ -1769,56 +691,15 @@ function siteorigin_panels_preview_load_data( $val ) {
  * @return array
  */
 function siteorigin_panels_body_class( $classes ) {
-	if ( siteorigin_panels_is_panel() ) {
-		$classes[] = 'ppb-panels';
-	}
-	if ( siteorigin_panels_is_home() ) {
-		$classes[] = 'ppb-panels-home';
-	}
 
-	if ( isset( $_GET['siteorigin_panels_preview'] ) && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'ppb-panels-preview' ) ) {
-		// This is a home page preview
+	if ( ppb_is_panel() ) {
 		$classes[] = 'ppb-panels';
-		$classes[] = 'ppb-panels-home';
 	}
 
 	return $classes;
 }
 
 add_filter( 'body_class', 'siteorigin_panels_body_class' );
-
-/**
- * Enqueue the required styles
- */
-function siteorigin_panels_enqueue_styles() {
-	wp_enqueue_style( 'ppb-panels-front', plugin_dir_url( __FILE__ ) . 'css/front.css', array(), POOTLEPAGE_VERSION );
-}
-
-add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_styles', 1 );
-
-function siteorigin_panels_enqueue_scripts() {
-	$isWooCommerceInstalled = /* isset( $GLOBALS['woocommerce'] ) && */
-		function_exists( 'is_product' );
-
-	if ( $isWooCommerceInstalled ) {
-		if ( is_product() ) {
-			wp_dequeue_script( 'wc-single-product' );
-		}
-		wp_enqueue_script( 'pb-wc-single-product', plugin_dir_url( __FILE__ ) . 'js/wc-single-product.js', array( 'jquery' ) );
-		wp_localize_script( 'pb-wc-single-product', 'wc_single_product_params', apply_filters( 'wc_single_product_params', array(
-			'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'woocommerce' ),
-			'review_rating_required'    => get_option( 'woocommerce_review_rating_required' ),
-		) ) );
-	}
-	wp_register_script( 'general', plugin_dir_url( __FILE__ ) . '/js/canvas-general.js', array(
-		'jquery',
-		'third-party'
-	) );
-	wp_enqueue_script( 'pootle-page-builder-front-js', plugin_dir_url( __FILE__ ) . '/js/front-end.js', array( 'jquery' ) );
-
-}
-
-add_action( 'wp_enqueue_scripts', 'siteorigin_panels_enqueue_scripts', 100 );
 
 /**
  * Add current pages as cloneable pages
@@ -1874,28 +755,6 @@ function siteorigin_panels_cloned_page_layouts( $layouts ) {
 }
 
 add_filter( 'siteorigin_panels_prebuilt_layouts', 'siteorigin_panels_cloned_page_layouts', 20 );
-
-/**
- * Add a link to recommended plugins and widgets.
- */
-function siteorigin_panels_recommended_widgets() {
-	// This filter can be used to hide the recommended plugins button.
-	if ( ! apply_filters( 'siteorigin_panels_show_recommended', true ) || is_multisite() ) {
-		return;
-	}
-
-	?>
-	<p id="so-panels-recommended-plugins">
-		<a href="<?php echo admin_url( 'plugin-install.php?tab=favorites&user=siteorigin-pagebuilder' ) ?>"
-		   target="_blank"><?php _e( 'Recommended Plugins and Widgets', 'ppb-panels' ) ?></a>
-		<small><?php _e( 'Free plugins that work well with Page Builder', 'ppb-panels' ) ?></small>
-	</p>
-<?php
-}
-
-add_action( 'siteorigin_panels_after_widgets', 'siteorigin_panels_recommended_widgets' );
-
-add_filter( 'siteorigin_panels_show_recommended', '__return_false' );
 
 /**
  * Add a filter to import panels_data meta key. This fixes serialized PHP.
@@ -1958,32 +817,12 @@ function siteorigin_panels_ajax_action_prebuilt() {
 
 add_action( 'wp_ajax_so_panels_prebuilt', 'siteorigin_panels_ajax_action_prebuilt' );
 
-add_action( 'ppb_add_content_woocommerce_tab', 'ppb_woocommerce_tab' );
 function ppb_woocommerce_tab() {
 	?>
 	Using WooCommerce? You can now build a stunning shop with Page Builder. Just get our WooCommerce extension and start building!
 <?php
 }
-
-/**
- * Display a widget form with the provided data
- */
-function ppb_ajax_widget_name() {
-
-	global $wp_widget_factory;
-
-	$request = array_map( 'stripslashes_deep', $_REQUEST );
-
-	if ( empty( $wp_widget_factory->widgets[ $request['widget'] ] ) ) {
-		return '';
-	}
-
-	echo $wp_widget_factory->widgets[ $request['widget'] ]->name;;
-
-	exit();
-}
-
-add_action( 'wp_ajax_ppb_widget_name', 'ppb_ajax_widget_name' );
+add_action( 'ppb_add_content_woocommerce_tab', 'ppb_woocommerce_tab' );
 
 /**
  * Display a widget form with the provided data
@@ -2049,87 +888,7 @@ function ppb_panels_ajax_widget_form(){
 
 	exit();
 }
-
-add_action( 'wp_ajax_so_panels_widget_form', 'ppb_panels_ajax_widget_form' );
-
-function ppb_panels_editor( $request ) {
-
-	$text = '';
-
-	if ( ! empty( $request['instance'] ) ) {
-		$instance = json_decode( $request['instance'] );
-		if ( ! empty( $instance->text ) )
-		$text = $instance->text;
-	}
-
-	wp_editor( $text, 'ppbeditor', array(
-		'textarea_name'  => 'widgets[{$id}][text]',
-		'default_editor' => 'tmce',
-		'tinymce' => array(
-			'force_p_newlines' => false,
-		)
-	) );
-
-}
-
-add_action( 'ppb_content_block_editor_form', 'ppb_panels_editor' );
-
-/**
- * Display a widget form with the provided data
- */
-function siteorigin_panels_ajax_content_block_form() {
-	$request = array_map( 'stripslashes_deep', $_REQUEST );
-
-	if ( empty( $request['widget'] ) ) {
-		exit();
-	}
-
-	echo siteorigin_panels_render_form( $request['widget'], ! empty( $request['instance'] ) ? json_decode( $request['instance'], true ) : array(), $_REQUEST['raw'] );
-
-	exit();
-}
-
-add_action( 'wp_ajax_so_panels_content_block_form', 'siteorigin_panels_ajax_content_block_form' );
-
-/**
- * Render a form with all the Page Builder specific fields
- *
- * @param string $widget The class of the widget
- * @param array $instance Widget values
- * @param bool $raw
- *
- * @return mixed|string The form
- */
-function siteorigin_panels_render_form( $widget, $instance = array(), $raw = false ) {
-	global $wp_widget_factory;
-	if ( empty( $wp_widget_factory->widgets[ $widget ] ) ) {
-		return '';
-	}
-
-	$widget_obj = $wp_widget_factory->widgets[ $widget ];
-	if ( ! is_a( $widget_obj, 'WP_Widget' ) ) {
-		return;
-	}
-
-	if ( $raw && method_exists( $widget_obj, 'update' ) ) {
-		$instance = $widget_obj->update( $instance, $instance );
-	}
-
-	$widget_obj->id     = 'temp';
-	$widget_obj->number = '{$id}';
-
-	ob_start();
-	$widget_obj->form( $instance );
-	$form = ob_get_clean();
-
-	// Convert the widget field naming into ones that Page Builder uses
-	$exp  = preg_quote( $widget_obj->get_field_name( '____' ) );
-	$exp  = str_replace( '____', '(.*?)', $exp );
-	$form = preg_replace( '/' . $exp . '/', 'widgets[{$id}][$1]', $form );
-
-	// Add all the information fields
-	return $form;
-}
+add_action( 'wp_ajax_ppb_panels_editor_form', 'ppb_panels_ajax_widget_form' );
 
 /**
  * Add some action links.
@@ -2152,296 +911,6 @@ function pp_pb_load_slider_js( $doLoad ) {
 }
 
 add_filter( 'woo_load_slider_js', 'pp_pb_load_slider_js' );
-
-function pp_pb_add_theme_options( $options ) {
-
-	$options_pixels         = array();
-	$total_possible_numbers = intval( apply_filters( 'woo_total_possible_numbers', 20 ) );
-	for ( $i = 0; $i <= $total_possible_numbers; $i ++ ) {
-		$options_pixels[] = $i . 'px';
-	}
-
-	$options[] = array(
-		'name' => 'Widget Styling',
-		'type' => 'heading'
-	);
-
-	$options[] = array(
-		'name' => 'Page Builder Widgets',
-		'type' => 'subheading'
-	);
-
-	$shortname = 'page_builder';
-
-	$options[] = array(
-		"name" => __( 'Page Builder Widget Background Color', 'woothemes' ),
-		"desc" => __( 'Pick a custom color for the widget background or add a hex color code e.g. #cccccc', 'woothemes' ),
-		"id"   => $shortname . "_widget_bg",
-		"std"  => "",
-		"type" => "color"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Widget Border', 'woothemes' ),
-		"desc" => __( 'Specify border properties for widgets.', 'woothemes' ),
-		"id"   => $shortname . "_widget_border",
-		"std"  => array( 'width' => '0', 'style' => 'solid', 'color' => '#dbdbdb' ),
-		"type" => "border"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Widget Padding', 'woothemes' ),
-		"desc" => __( 'Enter an integer value i.e. 20 for the desired widget padding.', 'woothemes' ),
-		"id"   => $shortname . "_widget_padding",
-		"std"  => "",
-		"type" => array(
-			array(
-				'id'   => $shortname . '_widget_padding_tb',
-				'type' => 'text',
-				'std'  => '',
-				'meta' => __( 'Top/Bottom', 'woothemes' )
-			),
-			array(
-				'id'   => $shortname . '_widget_padding_lr',
-				'type' => 'text',
-				'std'  => '',
-				'meta' => __( 'Left/Right', 'woothemes' )
-			)
-		)
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Widget Title', 'woothemes' ),
-		"desc" => __( 'Select the typography you want for the widget title.', 'woothemes' ),
-		"id"   => $shortname . "_widget_font_title",
-		"std"  => array(
-			'size'  => '14',
-			'unit'  => 'px',
-			'face'  => 'Helvetica, Arial, sans-serif',
-			'style' => 'bold',
-			'color' => '#555555'
-		),
-		"type" => "typography"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Widget Title Bottom Border', 'woothemes' ),
-		"desc" => __( 'Specify border property for the widget title.', 'woothemes' ),
-		"id"   => $shortname . "_widget_title_border",
-		"std"  => array( 'width' => '1', 'style' => 'solid', 'color' => '#e6e6e6' ),
-		"type" => "border"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Widget Text', 'woothemes' ),
-		"desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
-		"id"   => $shortname . "_widget_font_text",
-		"std"  => array(
-			'size'  => '13',
-			'unit'  => 'px',
-			'face'  => 'Helvetica, Arial, sans-serif',
-			'style' => 'thin',
-			'color' => '#555555'
-		),
-		"type" => "typography"
-	);
-
-	$options[] = array(
-		"name"    => __( 'Page Builder Widget Rounded Corners', 'woothemes' ),
-		"desc"    => __( 'Set amount of pixels for border radius ( rounded corners ). Will only show in CSS3 compatible browser.', 'woothemes' ),
-		"id"      => $shortname . "_widget_border_radius",
-		"type"    => "select",
-		"options" => $options_pixels
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Tabs Widget Background color', 'woothemes' ),
-		"desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
-		"id"   => $shortname . "_widget_tabs_bg",
-		"std"  => "",
-		"type" => "color"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Tabs Widget Inside Background Color', 'woothemes' ),
-		"desc" => __( 'Pick a custom color for the tabs widget or add a hex color code e.g. #cccccc', 'woothemes' ),
-		"id"   => $shortname . "_widget_tabs_bg_inside",
-		"std"  => "",
-		"type" => "color"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Tabs Widget Title', 'woothemes' ),
-		"desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
-		"id"   => $shortname . "_widget_tabs_font",
-		"std"  => array(
-			'size'  => '12',
-			'unit'  => 'px',
-			'face'  => 'Helvetica, Arial, sans-serif',
-			'style' => 'bold',
-			'color' => '#555555'
-		),
-		"type" => "typography"
-	);
-
-	$options[] = array(
-		"name" => __( 'Page Builder Tabs Widget Meta / Tabber Font', 'woothemes' ),
-		"desc" => __( 'Select the typography you want for the widget text.', 'woothemes' ),
-		"id"   => $shortname . "_widget_tabs_font_meta",
-		"std"  => array(
-			'size'  => '11',
-			'unit'  => 'px',
-			'face'  => 'Helvetica, Arial, sans-serif',
-			'style' => 'thin',
-			'color' => '#999999'
-		),
-		"type" => "typography"
-	);
-
-	return $options;
-}
-
-add_action( 'wp_head', 'pp_pb_option_css' );
-
-function pp_pb_option_css() {
-
-	$output = '';
-
-	// Widget Styling
-	$widget_font_title    = get_option( 'page_builder_widget_font_title', array(
-		'size'  => '14',
-		'unit'  => 'px',
-		'face'  => 'Helvetica, Arial, sans-serif',
-		'style' => 'bold',
-		'color' => '#555555'
-	) );
-	$widget_font_text     = get_option( 'page_builder_widget_font_text', array(
-		'size'  => '13',
-		'unit'  => 'px',
-		'face'  => 'Helvetica, Arial, sans-serif',
-		'style' => 'thin',
-		'color' => '#555555'
-	) );
-	$widget_padding_tb    = get_option( 'page_builder_widget_padding_tb', '0' );
-	$widget_padding_lr    = get_option( 'page_builder_widget_padding_lr', '0' );
-	$widget_bg            = get_option( 'page_builder_widget_bg', 'transparent' );
-	$widget_border        = get_option( 'page_builder_widget_border', array(
-		'width' => '0',
-		'style' => 'solid',
-		'color' => '#dbdbdb'
-	) );
-	$widget_title_border  = get_option( 'page_builder_widget_title_border', array(
-		'width' => '1',
-		'style' => 'solid',
-		'color' => '#e6e6e6'
-	) );
-	$widget_border_radius = get_option( 'page_builder_widget_border_radius', '0px' );
-
-	// in Visual Editor, dont set underline for h3
-	$output .= '.widget_pootle-text-widget > .textwidget h3 { border-bottom: none !important; }';
-
-	$widget_title_css = '';
-	if ( $widget_font_title ) {
-		$widget_title_css .= 'font:' . $widget_font_title["style"] . ' ' . $widget_font_title["size"] . $widget_font_title["unit"] . '/1.2em ' . stripslashes( $widget_font_title["face"] ) . ';color:' . $widget_font_title["color"] . ';';
-	}
-	if ( $widget_title_border ) {
-		$widget_title_css .= 'border-bottom:' . $widget_title_border["width"] . 'px ' . $widget_title_border["style"] . ' ' . $widget_title_border["color"] . ' !important;';
-	}
-	if ( isset( $widget_title_border["width"] ) AND $widget_title_border["width"] == 0 ) {
-		$widget_title_css .= 'margin-bottom:0 !important;';
-	}
-
-	if ( $widget_title_css != '' ) {
-		$output .= '.panel-grid-cell .widget h3.widget-title {' . $widget_title_css . '}' . "\n";
-	}
-
-
-	if ( $widget_title_border ) {
-		$output .= '.panel-grid-cell .widget_recent_comments li{ border-color: ' . $widget_title_border["color"] . ';}' . "\n";
-	}
-
-	if ( $widget_font_text ) {
-		$output .= '.panel-grid-cell .widget p, .panel-grid-cell .widget .textwidget { ' . pp_pb_generate_font_css( $widget_font_text, 1.5 ) . ' }' . "\n";
-	}
-
-	$widget_css = '';
-	if ( $widget_font_text ) {
-		$widget_css .= 'font:' . $widget_font_text["style"] . ' ' . $widget_font_text["size"] . $widget_font_text["unit"] . '/1.5em ' . stripslashes( $widget_font_text["face"] ) . ';color:' . $widget_font_text["color"] . ';';
-	}
-
-	if ( ! $widget_padding_lr ) {
-		$widget_css .= 'padding-left: 0; padding-right: 0;';
-	} else {
-		$widget_css .= 'padding-left: ' . $widget_padding_lr . 'px ; padding-right: ' . $widget_padding_lr . 'px;';
-	}
-	if ( ! $widget_padding_tb ) {
-		$widget_css .= 'padding-top: 0; padding-bottom: 0;';
-	} else {
-		$widget_css .= 'padding-top: ' . $widget_padding_tb . 'px ; padding-bottom: ' . $widget_padding_tb . 'px;';
-	}
-
-	if ( $widget_bg ) {
-		$widget_css .= 'background-color:' . $widget_bg . ';';
-	} else {
-		$widget_css .= 'background-color: transparent;';
-	}
-
-
-	if ( $widget_border["width"] > 0 ) {
-		$widget_css .= 'border:' . $widget_border["width"] . 'px ' . $widget_border["style"] . ' ' . $widget_border["color"] . ';';
-	}
-	if ( $widget_border_radius ) {
-		$widget_css .= 'border-radius:' . $widget_border_radius . ';-moz-border-radius:' . $widget_border_radius . ';-webkit-border-radius:' . $widget_border_radius . ';';
-	}
-
-	if ( $widget_css != '' ) {
-		$output .= '.panel-grid-cell .widget {' . $widget_css . '}' . "\n";
-	}
-
-	if ( $widget_border["width"] > 0 ) {
-		$output .= '.panel-grid-cell #tabs {border:' . $widget_border["width"] . 'px ' . $widget_border["style"] . ' ' . $widget_border["color"] . ';}' . "\n";
-	}
-
-	// Tabs Widget
-	$widget_tabs_bg        = get_option( 'page_builder_widget_tabs_bg', 'transparent' );
-	$widget_tabs_bg_inside = get_option( 'page_builder_widget_tabs_bg_inside', '' );
-	$widget_tabs_font      = get_option( 'page_builder_widget_tabs_font', array(
-		'size'  => '12',
-		'unit'  => 'px',
-		'face'  => 'Helvetica, Arial, sans-serif',
-		'style' => 'bold',
-		'color' => '#555555'
-	) );
-	$widget_tabs_font_meta = get_option( 'page_builder_widget_tabs_font_meta', array(
-		'size'  => '11',
-		'unit'  => 'px',
-		'face'  => 'Helvetica, Arial, sans-serif',
-		'style' => 'thin',
-		'color' => ''
-	) );
-
-	if ( $widget_tabs_bg ) {
-		$output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color:' . $widget_tabs_bg . ';}' . "\n";
-	} else {
-		$output .= '.panel-grid-cell #tabs, .panel-grid-cell .widget_woodojo_tabs .tabbable {background-color: transparent;}' . "\n";
-	}
-
-	if ( $widget_tabs_bg_inside ) {
-		$output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color:' . $widget_tabs_bg_inside . ';}' . "\n";
-	} else {
-		//$output .= '.panel-grid-cell #tabs .inside, .panel-grid-cell #tabs ul.wooTabs li a.selected, .panel-grid-cell #tabs ul.wooTabs li a:hover {background-color: transparent; }' . "\n";
-	}
-
-	if ( $widget_tabs_font ) {
-		$output .= '.panel-grid-cell #tabs .inside li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li a { ' . pp_pb_generate_font_css( $widget_tabs_font, 1.5 ) . ' }' . "\n";
-	}
-	if ( $widget_tabs_font_meta ) {
-		$output .= '.panel-grid-cell #tabs .inside li span.meta, .panel-grid-cell .widget_woodojo_tabs .tabbable .tab-pane li span.meta { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 1.5 ) . ' }' . "\n";
-	}
-	$output .= '.panel-grid-cell #tabs ul.wooTabs li a, .panel-grid-cell .widget_woodojo_tabs .tabbable .nav-tabs li a { ' . pp_pb_generate_font_css( $widget_tabs_font_meta, 2 ) . ' }' . "\n";
-
-	echo "<style>\n" . $output . "\n" . "</style>\n";
-}
 
 function pp_pb_generate_font_css( $option, $em = '1' ) {
 

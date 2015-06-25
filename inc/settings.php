@@ -66,8 +66,12 @@ function pootle_page_submenu_page() {
 /**
  * Redirecting for Page Builder > Add New option
  */
+function pootle_page_add_now() {
+	global $pagenow;
 
-if ( 'admin.php' == $pagenow && 'page_builder_add' == filter_input( INPUT_GET, 'page' ) ) {
-	header( 'Location: ' . admin_url( '/post-new.php?post_type=page&page_builder=pootle' ) );
-	die();
+	if ( 'admin.php' == $pagenow && 'page_builder_add' == filter_input( INPUT_GET, 'page' ) ) {
+		header( 'Location: ' . admin_url( '/post-new.php?post_type=page&page_builder=pootle' ) );
+		die();
+	}
 }
+add_action( 'admin_init', 'pootle_page_add_now' );
