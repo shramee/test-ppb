@@ -374,7 +374,7 @@ function pootlepage_render_single_field( $name, $attr ) {
 }
 
 function pp_pb_widget_styles_dialog_form( $specific = null ) {
-	$fields = pp_pb_widget_styling_fields();
+	$fields = ppb_block_styling_fields();
 
 	foreach ( $fields as $key => $field ) {
 

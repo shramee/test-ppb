@@ -8,7 +8,7 @@
 
 /**
  * Output old Page Builder for Canvas styles
- * @TODO Update add-on
+ * @TODO Move to update add-on
  */
 function ppb_cxpb_option_css() {
 
@@ -156,7 +156,7 @@ add_action( 'wp_head', 'ppb_cxpb_option_css' );
  *
  * @param $option
  * @param string $em
- * @TODO Update Add-on
+ * @TODO Move to update add-on
  * @return string
  */
 function pp_pb_generate_font_css( $option, $em = '1' ) {
@@ -184,7 +184,7 @@ function pp_pb_generate_font_css( $option, $em = '1' ) {
 /**
  * Checks if older version of Page Builder was being used on site
  * Then runs compatibility functions accordingly
- * @TODO Update add-on
+ * @TODO Move to update add-on
  * @since 0.9.0
  */
 function pp_pb_version_check() {

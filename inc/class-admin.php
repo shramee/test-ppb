@@ -7,13 +7,13 @@
  */
 class Pootle_Page_Builder_Admin extends Pootle_Page_Builder_Abstract {
 	/**
-	 * @var Pootle_Page_Builder_Admin instance of Pootle_Page_Builder
+	 * @var Pootle_Page_Builder_Admin
 	 */
 	protected static $instance;
 
 	/**
 	 * Magic __construct
-	 *
+	 * @since 1.0.0
 	 */
 	protected function __construct() {
 		$this->includes();
@@ -36,6 +36,8 @@ class Pootle_Page_Builder_Admin extends Pootle_Page_Builder_Abstract {
 		require_once POOTLEPAGE_DIR . 'inc/copy.php';
 		/** Pootle Press Updater */
 		require_once POOTLEPAGE_DIR . 'inc/class-pootlepress-updater.php';
+		/** More styling */
+		require_once POOTLEPAGE_DIR . 'inc/vantage-extra.php';
 	}
 
 	/**
@@ -72,7 +74,10 @@ class Pootle_Page_Builder_Admin extends Pootle_Page_Builder_Abstract {
 	 * @TODO Make it more useful
 	 */
 	public function render_help_tab() {
-		include POOTLEPAGE_DIR . 'tpl/help.php';
+		echo '<p>';
+		_e( 'You can use Pootle Page Builder to create amazing pages, use addons to extend functionality.', 'siteorigin-panels' );
+		_e( 'The page layouts are responsive and fully customizable.', 'siteorigin-panels' );
+		echo '</p>';
 	}
 
 	/**

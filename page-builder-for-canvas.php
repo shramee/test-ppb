@@ -9,12 +9,19 @@ Author URI: http://pootlepress.com/
 License: GPL version 3
 */
 
+/** Include PPB abstract class */
 require_once 'inc/class-abstract.php';
 
+/**
+ * Pootle Page Builder admin class
+ * Class Pootle_Page_Builder_Public
+ * Use Pootle_Page_Builder::instance() to get an instance
+ */
 final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 
 	/**
 	 * @var Pootle_Page_Builder instance of Pootle_Page_Builder
+	 * @access protected
 	 */
 	protected static $instance;
 
@@ -32,7 +39,6 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 
 	/**
 	 * Magic __construct
-	 * @access private
 	 * @since 0.9.0
 	 */
 	protected function __construct() {
@@ -43,10 +49,9 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 
 	/**
 	 * Set the constants
-	 * @access private
 	 * @since 0.9.0
 	 */
-	protected function constants() {
+	private function constants() {
 		define( 'POOTLEPAGE_VERSION', '2.9.9' );
 		define( 'POOTLEPAGE_BASE_FILE', __FILE__ );
 		define( 'POOTLEPAGE_DIR', __DIR__ . '/' );
@@ -59,34 +64,34 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 
 	/**
 	 * Include the required files
-	 * @access protected
 	 * @since 0.9.0
 	 */
-	protected function includes() {
+	private function includes() {
 
 		/** Variables used throughout the plugin */
 		require_once POOTLEPAGE_DIR . 'inc/vars.php';
+		/** Functions used throughout the plugin */
 		require_once POOTLEPAGE_DIR . 'page-builder-for-canvas-functions.php';
-		/** Enhancements */
+		/** Enhancements and fixes */
 		require_once POOTLEPAGE_DIR . '/inc/enhancements-and-fixes.php';
 
-		//Admin
+		/** PPB Admin Class */
 		require_once POOTLEPAGE_DIR . 'inc/class-admin.php';
+		/** Instantiating PPB Admin Class */
 		$this->admin = Pootle_Page_Builder_Admin::instance();
 
-		//Public
+		/** PPB Public Class */
 		require_once POOTLEPAGE_DIR . 'inc/class-public.php';
+		/** Instantiating PPB Public Class */
 		$this->public = Pootle_Page_Builder_Public::instance();
 
+		//@TODO Get rid of these
 		require_once POOTLEPAGE_DIR . 'inc/cxpb-support.php';
-
 		require_once POOTLEPAGE_DIR . 'widgets/basic.php';
-		require_once POOTLEPAGE_DIR . 'inc/vantage-extra.php';
 	}
 
 	/**
 	 * Adds the actions anf filter hooks for plugin functioning
-	 * @access protected
 	 * @since 0.9.0
 	 */
 	private function actions() {
@@ -131,6 +136,7 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	 * Enqueue admin scripts and styles
 	 * @global $pagenow
 	 * @action admin_notices
+	 * @since 0.9.0
 	 */
 	public function enqueue(){
 		global $pagenow;
@@ -149,6 +155,7 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	 * Outputs admin notices
 	 * @since 1.0.0
 	 * @action admin_notices
+	 * @since 0.9.0
 	 */
 	public function admin_notices() {
 
@@ -168,9 +175,10 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	/**
 	 * Add plugin action links.
 	 * @param $links
-	 * @TODO Shramee Use this
 	 * @action plugin_action_links_$file
 	 * @return array
+	 * @since 0.9.0
+	 * @TODO Use this
 	 */
 	function siteorigin_panels_plugin_action_links( $links ) {
 		$links[] = '<a href="http://siteorigin.com/threads/plugin-page-builder/">' . __( 'Support Forum', 'ppb-panels' ) . '</a>';
@@ -184,6 +192,7 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	 * @param array $args Plugin metadata.
 	 * @param array $r Metadata about the available plugin update
 	 * @action in_plugin_update_message-$file
+	 * @since 0.9.0
 	 */
 	public function plugin_update_message( $args, $r ) {
 		if ( $args['update'] ) {

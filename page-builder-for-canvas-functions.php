@@ -1,24 +1,5 @@
 <?php
 
-$health = 'ok';
-
-add_action( 'admin_init', 'poo_commit_suicide' );
-if ( ! function_exists( 'poo_commit_suicide' ) ) {
-	function poo_commit_suicide() {
-		global $health;
-		$pluginFile  = str_replace( '-functions', '', __FILE__ );
-		$plugin      = plugin_basename( $pluginFile );
-		$plugin_data = get_plugin_data( $pluginFile, false );
-		if ( $health == 'ng' && is_plugin_active( $plugin ) ) {
-			deactivate_plugins( $plugin );
-			wp_die( "ERROR: <strong>woo_options_add</strong> function already defined by another plugin. " .
-			        $plugin_data['Name'] . " is unable to continue and has been deactivated. " .
-			        "<br /><br />Please contact PootlePress at <a href=\"mailto:support@pootlepress.com?subject=Woo_Options_Add Conflict\"> support@pootlepress.com</a> for additional information / assistance." .
-			        "<br /><br />Back to the WordPress <a href='" . get_admin_url( null, 'plugins.php' ) . "'>Plugins page</a>." );
-		}
-	}
-}
-
 /**
  * Adds notice to output in next admin_notices actions call
  *
@@ -145,7 +126,7 @@ function ppb_hex2rgb( $hex ) {
 		$b = hexdec( substr( $hex, 4, 2 ) );
 	}
 
-	return " $r, $g, $b"; // returns an array with the rgb values
+	return " $r, $g, $b";
 }
 
 /**
@@ -160,7 +141,11 @@ function ppb_is_panel( $can_edit = false ) {
 	return $is_panel && ( ! $can_edit || ( is_singular() && current_user_can( 'edit_post', get_the_ID() ) ) );
 }
 
-function pp_pb_widget_styling_fields() {
+/**
+ * Returns content block styling fields
+ * @return array Style fields
+ */
+function ppb_block_styling_fields() {
 	global $content_block_styling_fields;
 	return $content_block_styling_fields;
 }

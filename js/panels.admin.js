@@ -835,7 +835,6 @@ jQuery(function ($) {
         );
     };
     panels.ppbGridExpandHandler = function ($t) {
-        //@TODO Shramee
         var numPanels = $t.find('.panel-wrapper').length;
         if (numPanels > 0) {
             //$t.find('.cell').css('padding-bottom', '61px');
