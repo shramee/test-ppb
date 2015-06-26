@@ -18,30 +18,24 @@
  */
 function siteorigin_panels_filter_content( $content ) {
 
+	$postID = get_the_ID();
+
 	$isWooCommerceInstalled =
 		function_exists( 'is_shop' ) && function_exists( 'wc_get_page_id' );
 
 	if ( $isWooCommerceInstalled ) {
 		// prevent Page Builder overwrite taxonomy description with widget content
-		if ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) == 0 ) {
-			return $content;
-		}
-
-		if ( is_post_type_archive() && ! is_shop() ) {
+		if ( ( is_tax( array( 'product_cat', 'product_tag' ) ) && get_query_var( 'paged' ) == 0 ) || ( is_post_type_archive() && ! is_shop() ) ) {
 			return $content;
 		}
 
 		if ( is_shop() ) {
 			$postID = wc_get_page_id( 'shop' );
-		} else {
-			$postID = get_the_ID();
 		}
 	} else {
 		if ( is_post_type_archive() ) {
 			return $content;
 		}
-
-		$postID = get_the_ID();
 	}
 
 	//If product done once set $postID to Tabs Post ID

@@ -164,6 +164,10 @@ function siteorigin_panels_print_inline_css() {
 add_action( 'wp_head', 'siteorigin_panels_print_inline_css', 12 );
 add_action( 'wp_footer', 'siteorigin_panels_print_inline_css' );
 
+/**
+ * Output TMCE Editor
+ * @param $request
+ */
 function ppb_panels_editor( $request ) {
 
 	$text = '';
@@ -183,3 +187,77 @@ function ppb_panels_editor( $request ) {
 	) );
 }
 add_action( 'ppb_content_block_editor_form', 'ppb_panels_editor' );
+
+/**
+ * Display a widget form with the provided data
+ * @param array|null $request Request data ($_POST/$_GET)
+ */
+function ppb_print_editor_panel( $request = null ) {
+
+	?>
+	<div class="ppb-cool-panel-wrap">
+		<ul class="ppb-acp-sidebar">
+
+			<li>
+				<a class="ppb-tabs-anchors ppb-block-anchor ppb-editor" <?php selected( true ) ?> href="#pootle-editor-tab">
+					<?php echo apply_filters( 'ppb_content_block_editor_title', 'Editor', $request ); ?>
+				</a>
+			</li>
+
+			<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+				<li><a class="ppb-tabs-anchors" href="#pootle-wc-tab">WooCommerce</a></li>
+			<?php } ?>
+
+			<li class="ppb-seperator"></li>
+
+			<li><a class="ppb-tabs-anchors" href="#pootle-style-tab">Style</a></li>
+
+			<li><a class="ppb-tabs-anchors" href="#pootle-advanced-tab">Advanced</a></li>
+		</ul>
+
+		<?php ?>
+		<div id="pootle-editor-tab" class="pootle-content-module tab-contents content-block">
+
+			<?php echo do_action( 'ppb_content_block_editor_form', $request ); ?>
+
+		</div>
+
+		<div id="pootle-style-tab" class="pootle-style-fields pootle-content-module tab-contents">
+			<?php
+			pp_pb_widget_styles_dialog_form();
+			?>
+		</div>
+
+		<div id="pootle-advanced-tab" class="pootle-style-fields pootle-content-module tab-contents">
+			<?php
+			pp_pb_widget_styles_dialog_form( 'inline-css' );
+			?>
+		</div>
+
+		<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+			<div id="pootle-wc-tab" class="pootle-content-module tab-contents">
+				<?php do_action( 'ppb_add_content_woocommerce_tab' ); ?>
+			</div>
+		<?php } ?>
+
+	</div>
+<?php
+
+}
+
+function ppb_panels_ajax_widget_form(){
+
+	$request = array_map( 'stripslashes_deep', $_REQUEST );
+
+	ppb_print_editor_panel( $request );
+
+	exit();
+}
+add_action( 'wp_ajax_ppb_panels_editor_form', 'ppb_panels_ajax_widget_form' );
+
+function ppb_woocommerce_tab() {
+	?>
+	Using WooCommerce? You can now build a stunning shop with Page Builder. Just get our WooCommerce extension and start building!
+<?php
+}
+add_action( 'ppb_add_content_woocommerce_tab', 'ppb_woocommerce_tab' );

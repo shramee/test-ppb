@@ -54,7 +54,6 @@ function siteorigin_panels_content_save_pre( $content ) {
 
 	return $content;
 }
-
 add_filter( 'content_save_pre', 'siteorigin_panels_content_save_pre' );
 
 /**
@@ -118,14 +117,11 @@ function siteorigin_panels_content_save_pre_get() {
 	echo $content;
 	exit();
 }
-
 add_action( 'wp_ajax_nopriv_siteorigin_panels_get_post_content', 'siteorigin_panels_content_save_pre_get' );
 
 /**
  * Convert form post data into more efficient panels data.
- *
  * @param $form_post
- *
  * @return array
  */
 function siteorigin_panels_get_panels_data_from_post( $form_post ) {

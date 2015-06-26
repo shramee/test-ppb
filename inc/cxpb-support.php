@@ -8,7 +8,7 @@
 
 /**
  * Output old Page Builder for Canvas styles
- * @TODO Move this to update addon
+ * @TODO Update add-on
  */
 function ppb_cxpb_option_css() {
 
@@ -151,3 +151,55 @@ function ppb_cxpb_option_css() {
 }
 add_action( 'wp_head', 'ppb_cxpb_option_css' );
 
+/**
+ * Generates font CSS from options
+ *
+ * @param $option
+ * @param string $em
+ * @TODO Update Add-on
+ * @return string
+ */
+function pp_pb_generate_font_css( $option, $em = '1' ) {
+
+	// Test if font-face is a Google font
+	global $google_fonts;
+	if ( is_array( $google_fonts ) ) {
+		foreach ( $google_fonts as $google_font ) {
+
+			// Add single quotation marks to font name and default arial sans-serif ending
+			if ( $option['face'] == $google_font['name'] ) {
+				$option['face'] = "'" . $option['face'] . "', arial, sans-serif";
+			}
+
+		} // END foreach
+	}
+
+	if ( ! @$option['style'] && ! @$option['size'] && ! @$option['unit'] && ! @$option['color'] ) {
+		return 'font-family: ' . stripslashes( $option["face"] ) . ' !important;';
+	} else {
+		return 'font:' . $option['style'] . ' ' . $option['size'] . $option['unit'] . '/' . $em . 'em ' . stripslashes( $option['face'] ) . ' !important; color:' . $option['color'] . ' !important;';
+	}
+} // End pp_pb_generate_font_css( )
+
+/**
+ * Checks if older version of Page Builder was being used on site
+ * Then runs compatibility functions accordingly
+ * @TODO Update add-on
+ * @since 0.9.0
+ */
+function pp_pb_version_check() {
+	//Get initial version
+	$initial_version = get_option( 'siteorigin_panels_initial_version', POOTLEPAGE_VERSION );
+
+	if ( POOTLEPAGE_VERSION != get_option( 'pootle_page_builder_version' ) ) {
+		//If initial version < Current version
+		if ( - 1 == version_compare( $initial_version, POOTLEPAGE_VERSION ) ) {
+			//Sort compatibility issues
+			require_once 'inc/class-pootle-page-compatibility.php';
+			new Pootle_Page_Compatibility();
+		}
+		//Update current version
+		update_option( 'pootle_page_builder_version', POOTLEPAGE_VERSION );
+	}
+}
+add_action( 'admin_init', 'pp_pb_version_check' );

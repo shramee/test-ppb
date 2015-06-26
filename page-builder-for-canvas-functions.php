@@ -2,30 +2,7 @@
 
 $health = 'ok';
 
-if ( ! function_exists( 'check_main_heading' ) ) {
-	function check_main_heading() {
-		global $health;
-		if ( ! function_exists( 'woo_options_add' ) ) {
-			function woo_options_add( $options ) {
-				$cx_heading = array(
-					'name' => __( 'Canvas Extensions', 'pootlepress-canvas-extensions' ),
-					'icon' => 'favorite',
-					'type' => 'heading'
-				);
-				if ( ! in_array( $cx_heading, $options ) ) {
-					$options[] = $cx_heading;
-				}
-
-				return $options;
-			}
-		} else {    // another ( unknown ) child-theme or plugin has defined woo_options_add
-			$health = 'ng';
-		}
-	}
-}
-
 add_action( 'admin_init', 'poo_commit_suicide' );
-
 if ( ! function_exists( 'poo_commit_suicide' ) ) {
 	function poo_commit_suicide() {
 		global $health;
@@ -39,23 +16,6 @@ if ( ! function_exists( 'poo_commit_suicide' ) ) {
 			        "<br /><br />Please contact PootlePress at <a href=\"mailto:support@pootlepress.com?subject=Woo_Options_Add Conflict\"> support@pootlepress.com</a> for additional information / assistance." .
 			        "<br /><br />Back to the WordPress <a href='" . get_admin_url( null, 'plugins.php' ) . "'>Plugins page</a>." );
 		}
-	}
-}
-
-add_action( 'admin_notices', 'pp_pb_admin_notices' );
-
-function pp_pb_admin_notices() {
-
-	$notices = get_option( 'pootle_page_admin_notices', array() );
-
-	delete_option( 'pootle_page_admin_notices' );
-
-	if ( 0 < count( $notices ) ) {
-		$html = '';
-		foreach ( $notices as $k => $v ) {
-			$html .= '<div id="' . esc_attr( $k ) . '" class="fade ' . esc_attr( $v['type'] ) . '">' . wpautop( $v['message'] ) . '</div>' . "\n";
-		}
-		echo $html;
 	}
 }
 
@@ -135,9 +95,9 @@ function pootlepage_test_typeface_against_test_case( $face, $test_case ) {
  * @return string
  */
 function pootle_page_output_font_select_options( $value ) {
+	global $pootle_page_font;
 
-	$font_faces = PootlePage_Font_Utility::get_all_fonts();
-
+	$font_faces = $pootle_page_font;
 	$test_cases = array();
 
 	if ( function_exists( 'wf_get_system_fonts_test_cases' ) ) {
@@ -186,4 +146,36 @@ function ppb_hex2rgb( $hex ) {
 	}
 
 	return " $r, $g, $b"; // returns an array with the rgb values
+}
+
+/**
+ * Check if we're currently viewing a panel.
+ * @param bool $can_edit Also check if the user can edit this page
+ * @return bool
+ */
+function ppb_is_panel( $can_edit = false ) {
+	// Check if this is a panel
+	$is_panel = ( is_singular() && get_post_meta( get_the_ID(), 'panels_data', false ) != '' );
+
+	return $is_panel && ( ! $can_edit || ( is_singular() && current_user_can( 'edit_post', get_the_ID() ) ) );
+}
+
+function pp_pb_widget_styling_fields() {
+	global $content_block_styling_fields;
+	return $content_block_styling_fields;
+}
+
+/**
+ * A callback that replaces temporary break tag with actual line breaks.
+ *
+ * @param $val
+ *
+ * @return array|mixed
+ */
+function siteorigin_panels_wp_import_post_meta_map( $val ) {
+	if ( is_string( $val ) ) {
+		return str_replace( '<<<br>>>', "\n", $val );
+	} else {
+		return array_map( 'siteorigin_panels_wp_import_post_meta_map', $val );
+	}
 }

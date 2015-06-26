@@ -6,6 +6,46 @@
  * Time: 12:37 PM
  */
 
+global $content_block_styling_fields, $pootle_page_font;
+
+/**
+ *
+ */
+$content_block_styling_fields = array(
+	'background-color'   => array(
+		'name' => 'Background color',
+		'type' => 'color',
+		'css'  => 'background-color',
+	),
+	'border'             => array(
+		'name' => 'Border',
+		'type' => 'border',
+		'css'  => 'border'
+	),
+	'padding' => array(
+		'name' => 'Padding',
+		'type' => 'number',
+		'min'  => '0',
+		'max'  => '100',
+		'step' => '1',
+		'unit' => 'px',
+		'css'  => array( 'padding' )
+	),
+	'rounded-corners'    => array(
+		'name' => 'Rounded corners',
+		'type' => 'number',
+		'min'  => '0',
+		'max'  => '100',
+		'step' => '1',
+		'unit' => 'px',
+		'css'  => 'border-radius'
+	),
+	'inline-css'         => array(
+		'name' => 'Inline Styles',
+		'type' => 'textarea',
+		'css'  => ''
+	),
+);
 /**
  * Fonts to use in pootlepage builder settings
  *
