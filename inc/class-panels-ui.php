@@ -35,6 +35,7 @@ function siteorigin_panels_admin_enqueue_styles() {
 	$screen = get_current_screen();
 	if ( in_array( $screen->id, siteorigin_panels_setting( 'post-types' ) ) || $screen->base == 'appearance_page_so_panels_home_page' ) {
 		wp_enqueue_style( 'so-panels-admin', POOTLEPAGE_URL . 'css/admin.css', array(), POOTLEPAGE_VERSION );
+		wp_enqueue_style( 'ppb-chosen-style', POOTLEPAGE_URL . 'js/chosen/chosen.css' );
 
 		global $wp_version;
 		if ( version_compare( $wp_version, '3.9.beta.1', '<' ) ) {
@@ -68,14 +69,26 @@ function siteorigin_panels_admin_enqueue_scripts( $prefix ) {
 
 		wp_enqueue_script( 'so-undomanager', POOTLEPAGE_URL . 'js/undomanager.min.js', array(), 'fb30d7f' );
 
-		wp_enqueue_script( 'so-panels-admin', POOTLEPAGE_URL . 'js/panels.admin.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'ppb-chosen', POOTLEPAGE_URL . 'js/chosen/chosen.jquery.min.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+
+		$deps = array(
+			'jquery',
+			'jquery-ui-resizable',
+			'jquery-ui-sortable',
+			'jquery-ui-slider',
+			'jquery-ui-dialog',
+			'jquery-ui-button',
+			'jquery-ui-tabs',
+			);
+
+		wp_enqueue_script( 'so-panels-admin', POOTLEPAGE_URL . 'js/panels.admin.js', $deps, POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-sticky-admin-panels', POOTLEPAGE_URL . 'js/sticky.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
-		wp_enqueue_script( 'so-panels-admin-panels', POOTLEPAGE_URL . 'js/panels.admin.panels.js', array( 'jquery', 'jquery-ui-tabs' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'so-panels-admin-panels', POOTLEPAGE_URL . 'js/panels.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-grid', POOTLEPAGE_URL . 'js/panels.admin.grid.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-prebuilt', POOTLEPAGE_URL . 'js/panels.admin.prebuilt.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-tooltip', POOTLEPAGE_URL . 'js/panels.admin.tooltip.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 		wp_enqueue_script( 'so-panels-admin-media', POOTLEPAGE_URL . 'js/panels.admin.media.min.js', array( 'jquery' ), POOTLEPAGE_VERSION );
-		wp_enqueue_script( 'so-panels-admin-styles', POOTLEPAGE_URL . 'js/panels.admin.styles.js', array( 'jquery', 'jquery-ui-slider' ), POOTLEPAGE_VERSION );
+		wp_enqueue_script( 'so-panels-admin-styles', POOTLEPAGE_URL . 'js/panels.admin.styles.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 
 		wp_enqueue_script( 'row-options', POOTLEPAGE_URL . 'js/row.options.admin.js', array( 'jquery' ) );
 

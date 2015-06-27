@@ -591,39 +591,40 @@
 // This will handle stretching the cells.
 jQuery(function ($) {
 
+    /**
+     * Adds full width functionality
+     */
+    ppbFullWidth = function () {
+        $t = $('.panel-row-style.ppb-full-width-row');
+
+        if ($t.length < 1) {
+            return
+        }
+        var fullContainer = $(window);
+        $t.css({
+            'margin-left': 0,
+            'margin-right': 0,
+            'padding-left': 0,
+            'padding-right': 0
+        });
+
+        var leftSpace = $t.offset().left;
+        var rightSpace = fullContainer.outerWidth() - leftSpace - $t.parent().outerWidth();
+
+        $t.css({
+            'margin-left': -leftSpace,
+            'margin-right': -rightSpace,
+            'padding-left': leftSpace,
+            'padding-right': rightSpace,
+            'border-left': 0,
+            'border-right': 0
+        });
+    };
+    ppbFullWidth();
+
     $(document).imagesLoaded(function () {
 
         ppbSkrollr = skrollr.init({smoothScrolling: false});
-
-        /**
-         * Adds full width functionality
-         */
-        ppbFullWidth = function () {
-            $t = $('.panel-row-style.ppb-full-width-row');
-
-            if ($t.length < 1) {
-                return
-            }
-            var fullContainer = $(window);
-            $t.css({
-                'margin-left': 0,
-                'margin-right': 0,
-                'padding-left': 0,
-                'padding-right': 0
-            });
-
-            var leftSpace = $t.offset().left;
-            var rightSpace = fullContainer.outerWidth() - leftSpace - $t.parent().outerWidth();
-
-            $t.css({
-                'margin-left': -leftSpace,
-                'margin-right': -rightSpace,
-                'padding-left': leftSpace,
-                'padding-right': rightSpace,
-                'border-left': 0,
-                'border-right': 0
-            });
-        };
 
         /**
          * Adds parallax functionality
@@ -670,6 +671,8 @@ jQuery(function ($) {
 
                         leftOffset$t = $t.offset().left - ( image.dataWidth - $t.outerWidth() ) / 2;
                         topOffset$t = $t.offset().top - $(window).height();
+
+                        console.log(leftOffset$t + ' = ' + $t.offset().left + ' - ' + image.dataWidth + ' - ' + $t.outerWidth() );
 
                         $t.attr( 'data-bottom-top', 'background-position: ' + leftOffset$t + 'px ' + $(window).height() + 'px;' );
                         $t.attr( 'data-top-bottom', 'background-position: ' + leftOffset$t + 'px -' + ($t.height() + 500) + 'px;' );
