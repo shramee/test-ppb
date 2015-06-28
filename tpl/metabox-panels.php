@@ -302,7 +302,10 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<input type="hidden" id="hide-elements" name="hide-elements" value="<?php esc_attr_e( $hideElements ) ?>"/>
 
 	<div class="ppb-hidden-editor-container" style="display:none;">
-		<?php ppb_print_editor_panel(); ?>
+		<?php
+		$ppb_editor = Pootle_Page_Builder_Content_Block::instance();
+		require POOTLEPAGE_DIR . 'tpl/content-block-panel.php';
+		?>
 	</div>
 
 	<?php wp_nonce_field( 'save', '_sopanels_nonce' ) ?>

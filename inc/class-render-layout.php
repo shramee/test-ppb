@@ -194,7 +194,10 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			if ( $bgVideo ) {
 				$style_attributes['class'][] = 'video-bg';
 			}
-			$style_attributes['class'][] = ! empty( $styleArray['full_width'] ) ? 'ppb-full-width-row' : '';
+			if ( ! empty( $styleArray['full_width'] ) ) {
+				$style_attributes['class'][] = 'ppb-full-width-row';
+				$style_attributes['class'][] = 'ppb-full-width-no-bg';
+			}
 			$style_attributes['class']   = array_unique( $style_attributes['class'] );
 
 			$style_attributes['style'] .= ! empty( $styleArray['style'] ) ? $styleArray['style'] : '';
@@ -238,13 +241,13 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 			}
 			echo '>';
 
-			$videoClasses = 'ppb-bg-video';
-
-			if ( ! empty( $styleArray['bg_mobile_image'] ) ) {
-				$videoClasses .= ' hide-on-mobile';
-			}
-
 			if ( ! empty( $styleArray['bg_video'] ) && $bgVideo ) {
+
+				$videoClasses = 'ppb-bg-video';
+
+				if ( ! empty( $styleArray['bg_mobile_image'] ) ) {
+					$videoClasses .= ' hide-on-mobile';
+				}
 				?>
 				<video class="<?php echo $videoClasses; ?>" preload="auto" autoplay="true" loop="loop" muted="muted"
 				       volume="0">
@@ -284,16 +287,6 @@ function siteorigin_panels_render( $post_id = false, $enqueue_css = true, $panel
 
 			<?php echo esc_attr( $rowID ) ?>
 			>
-			.panel-row-style:before {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				content: "";
-				top: 0;
-				left: 0;
-				z-index: 20;
-			}
-
 			.panel-grid-cell-container {
 				position: relative;
 				z-index: 30; /* row content needs to be on top of row background color */

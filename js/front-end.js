@@ -588,36 +588,39 @@
     }, s
 });
 
-// This will handle stretching the cells.
+// Full width and parallax
 jQuery(function ($) {
 
     /**
      * Adds full width functionality
      */
     ppbFullWidth = function () {
-        $t = $('.panel-row-style.ppb-full-width-row');
+        $('.panel-row-style.ppb-full-width-row').each(function(){
+            $t = $(this);
 
-        if ($t.length < 1) {
-            return
-        }
-        var fullContainer = $(window);
-        $t.css({
-            'margin-left': 0,
-            'margin-right': 0,
-            'padding-left': 0,
-            'padding-right': 0
-        });
+            if ($t.length < 1) {
+                return
+            }
+            var fullContainer = $(window);
+            $t.css({
+                'margin-left': 0,
+                'margin-right': 0,
+                'padding-left': 0,
+                'padding-right': 0
+            });
 
-        var leftSpace = $t.offset().left;
-        var rightSpace = fullContainer.outerWidth() - leftSpace - $t.parent().outerWidth();
+            var leftSpace = $t.offset().left;
+            var rightSpace = fullContainer.outerWidth() - leftSpace - $t.parent().outerWidth();
 
-        $t.css({
-            'margin-left': -leftSpace,
-            'margin-right': -rightSpace,
-            'padding-left': leftSpace,
-            'padding-right': rightSpace,
-            'border-left': 0,
-            'border-right': 0
+            $t.css({
+                'margin-left': -leftSpace,
+                'margin-right': -rightSpace,
+                'padding-left': leftSpace,
+                'padding-right': rightSpace,
+                'border-left': 0,
+                'border-right': 0
+            });
+            $t.removeClass( 'ppb-full-width-no-bg' );
         });
     };
     ppbFullWidth();
