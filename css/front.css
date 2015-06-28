@@ -191,7 +191,7 @@ img.ppb-bg-parallax {
     content: "";
     top: 0;
     left: 0;
-    z-index: 20;
+    z-index: 0;
 }
 .ppb-full-width-no-bg, .ppb-full-width-no-bg:before{
     background: none !important;
