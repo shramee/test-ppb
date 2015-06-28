@@ -164,3 +164,53 @@ function siteorigin_panels_wp_import_post_meta_map( $val ) {
 		return array_map( 'siteorigin_panels_wp_import_post_meta_map', $val );
 	}
 }
+
+/**
+ * Get the settings
+ *
+ * @param string $key Only get a specific key.
+ *
+ * @return mixed
+ */
+function pootle_pb_settings( $key = '' ) {
+
+	if ( has_action( 'after_setup_theme' ) ) {
+		// Only use static settings if we've initialized the theme
+		static $settings;
+	} else {
+		$settings = false;
+	}
+
+	if ( empty( $settings ) ) {
+		$display_settings = get_option( 'siteorigin_panels_display', array() );
+
+		$settings = get_theme_support( 'ppb-panels' );
+		if ( ! empty( $settings ) ) {
+			$settings = $settings[0];
+		} else {
+			$settings = array();
+		}
+
+
+		$settings = wp_parse_args( $settings, array(
+			'post-types'        => apply_filters( 'pootle_page_builder_post_types', array( 'page' ) ),
+			// Post types that can be edited using panels.
+			'responsive'        => ! isset( $display_settings['responsive'] ) ? true : $display_settings['responsive'] == '1',
+			// Should we use a responsive layout
+			'mobile-width'      => ! isset( $display_settings['mobile-width'] ) ? 780 : $display_settings['mobile-width'],
+			// What is considered a mobile width?
+			'margin-bottom'     => ! isset( $display_settings['margin-bottom'] ) ? 0 : $display_settings['margin-bottom'],
+			// Bottom margin of a cell
+			'margin-sides'      => ! isset( $display_settings['margin-sides'] ) ? 10 : $display_settings['margin-sides'],
+			// Spacing between 2 cells
+			'inline-css'        => true,
+			// How to display CSS
+		) );
+	}
+
+	if ( ! empty( $key ) ) {
+		return isset( $settings[ $key ] ) ? $settings[ $key ] : null;
+	}
+
+	return $settings;
+}

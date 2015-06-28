@@ -11,7 +11,7 @@
  * Class Pootle_Page_Builder_Public
  * Use Pootle_Page_Builder_Public::instance() to get an instance
  */
-class Pootle_Page_Builder_Public extends Pootle_Page_Builder_Abstract {
+final class Pootle_Page_Builder_Public extends Pootle_Page_Builder_Abstract {
 	/**
 	 * @var Pootle_Page_Builder_Public
 	 */

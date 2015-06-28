@@ -3,7 +3,6 @@
  */
 
 //3rd party js
-
 /*! skrollr 0.6.29 (2014-11-17) | Alexander Prinzhorn - https://github.com/Prinzhorn/skrollr | Free to use under terms of MIT license */
 (function (e, t, r) {
     "use strict";
@@ -674,8 +673,6 @@ jQuery(function ($) {
 
                         leftOffset$t = $t.offset().left - ( image.dataWidth - $t.outerWidth() ) / 2;
                         topOffset$t = $t.offset().top - $(window).height();
-
-                        console.log(leftOffset$t + ' = ' + $t.offset().left + ' - ' + image.dataWidth + ' - ' + $t.outerWidth() );
 
                         $t.attr( 'data-bottom-top', 'background-position: ' + leftOffset$t + 'px ' + $(window).height() + 'px;' );
                         $t.attr( 'data-top-bottom', 'background-position: ' + leftOffset$t + 'px -' + ($t.height() + 500) + 'px;' );

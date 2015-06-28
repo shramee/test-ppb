@@ -9,13 +9,11 @@
 /**
  * Class Pootle_Page_Builder_Content_Block
  */
-class Pootle_Page_Builder_Content_Block extends Pootle_Page_Builder_Abstract {
-
+final class Pootle_Page_Builder_Content_Block extends Pootle_Page_Builder_Abstract {
 	/**
-	 * @var Pootle_Page_Builder_Content_Block instance of Pootle_Page_Builder_Content_Block
+	 * @var Pootle_Page_Builder_Content_Block
 	 */
 	protected static $instance;
-
 
 	/**
 	 * Magic __construct
@@ -234,7 +232,9 @@ class Pootle_Page_Builder_Content_Block extends Pootle_Page_Builder_Abstract {
 	}
 
 	/**
-	 *
+	 * Handles ajax requests for the content panel
+	 * @since 1.0.0
+	 * @uses Pootle_Page_Builder_Content_Block::editor_panel()
 	 */
 	public function ajax_content_panel() {
 		$request = array_map( 'stripslashes_deep', $_REQUEST );

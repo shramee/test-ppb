@@ -9,7 +9,7 @@ abstract class Pootle_Page_Builder_Abstract{
 
 	/**
 	 * Get instance of Pootle Page Builder
-	 * @return Pootle_Page_Builder
+	 * @return object Called class instance
 	 */
 	public static function instance() {
 

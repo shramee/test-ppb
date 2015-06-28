@@ -9,10 +9,6 @@ html {
     overflow-y: scroll; /* This fixes the tooltips */
 }
 
-#panels-dialog-tabs {
-    margin-bottom: -10px;
-}
-
 /* The Panel Type List */
 .panel-type-list {
     margin: 0 -5px 10px -5px;
@@ -435,7 +431,6 @@ h4 {}
 }
 
 /* The Dialogs */
-#panels-dialog,
 #grid-setting-dialog,
 #grid-add-dialog,
 #grid-prebuilt-dialog,
@@ -445,10 +440,6 @@ h4 {}
 #remove-row-dialog,
 #remove-widget-dialog {
     display: none;
-}
-
-#panels-dialog .panels-text-filter {
-    margin-bottom: 10px;
 }
 
 /* The Tooltips */
@@ -1091,7 +1082,7 @@ button.wp-switch-editor {
 }
 
 .ui-dialog.panels-admin-dialog {
-    z-index: 80002 !important;
+    z-index: 999999 !important;
 }
 
 .ui-dialog.panels-admin-dialog .ui-dialog-content {
@@ -1291,10 +1282,6 @@ a.wp-switch-editor {
 
 .widget-dialog-siteorigin_panels_widgets_postloop > p > input[type=checkbox] {
     margin-left: 1px;
-}
-
-#panels-dialog .panel-type.unused {
-    display: none !important;
 }
 
 #pootle-editor-tab .old-widget {

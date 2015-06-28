@@ -1,62 +1,6 @@
 <?php
 
 /**
- * Filter content before we save it.
- *
- * @param $content
- *
- * @return array|mixed|string
- * @filter content_save_pre
- */
-function siteorigin_panels_content_save_pre( $content ) {
-	global $post;
-
-	if ( ! siteorigin_panels_setting( 'copy-content' ) ) {
-		return $content;
-	}
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return $content;
-	}
-	if ( empty( $_POST['_sopanels_nonce'] ) || ! wp_verify_nonce( $_POST['_sopanels_nonce'], 'save' ) ) {
-		return $content;
-	}
-	if ( empty( $_POST['panels_js_complete'] ) ) {
-		return $content;
-	}
-	if ( ! current_user_can( 'edit_post', $post->ID ) ) {
-		return $content;
-	}
-	if ( empty( $_POST['grids'] ) || empty( $_POST['grid_cells'] ) || empty( $_POST['widgets'] ) || empty( $_POST['panel_order'] ) ) {
-		return $content;
-	}
-
-	$data['grids']       = $_POST['grids'];
-	$data['grid_cells']  = $_POST['grid_cells'];
-	$data['widgets']     = $_POST['widgets'];
-	$data['panel_order'] = $_POST['panel_order'];
-	$data['action']      = 'siteorigin_panels_get_post_content';
-	$data['post_id']     = ( string ) $post->ID;
-
-	$data['widgets']    = array_map( 'stripslashes_deep', $data['widgets'] );
-	$data['_signature'] = sha1( NONCE_SALT . serialize( $data ) );
-
-	// This can cause a fatal error, so handle in a separate request.
-	$request = wp_remote_post( admin_url( 'admin-ajax.php?action=siteorigin_panels_get_post_content' ), array(
-		'method'      => 'POST',
-		'timeout'     => 5,
-		'redirection' => 0,
-		'body'        => $data
-	) );
-
-	if ( ! is_wp_error( $request ) && $request['response']['code'] == 200 && ! empty( $request['body'] ) ) {
-		$content = $request['body'];
-	}
-
-	return $content;
-}
-add_filter( 'content_save_pre', 'siteorigin_panels_content_save_pre' );
-
-/**
  * Ajax handler to get the HTML representation of the request.
  */
 function siteorigin_panels_content_save_pre_get() {
@@ -130,16 +74,19 @@ function siteorigin_panels_get_panels_data_from_post( $form_post ) {
 
 	foreach ( $panels_data['widgets'] as $i => $widget ) {
 
-		$info = $widget['info'];
-		if ( ! class_exists( $info['class'] ) ) {
+		if ( empty( $widget['info'] ) ) {
 			continue;
 		}
 
-		$the_widget = new $info['class'];
-		$widget     = json_decode( $widget['data'], true );
+		$info = $widget['info'];
 
-		if ( method_exists( $the_widget, 'update' ) && ! empty( $info['raw'] ) ) {
-			$widget = $the_widget->update( $widget, $widget );
+		$widget = json_decode( $widget['data'], true );
+
+		if ( class_exists( $info['class'] ) ) {
+			$the_widget = new $info['class'];
+			if ( method_exists( $the_widget, 'update' ) && ! empty( $info['raw'] ) ) {
+				$widget = $the_widget->update( $widget, $widget );
+			}
 		}
 
 		unset( $info['raw'] );

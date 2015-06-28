@@ -74,12 +74,10 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 		require_once POOTLEPAGE_DIR . 'page-builder-for-canvas-functions.php';
 		/** Enhancements and fixes */
 		require_once POOTLEPAGE_DIR . '/inc/enhancements-and-fixes.php';
-
 		/** PPB Admin Class */
 		require_once POOTLEPAGE_DIR . 'inc/class-admin.php';
 		/** Instantiating PPB Admin Class */
 		$this->admin = Pootle_Page_Builder_Admin::instance();
-
 		/** PPB Public Class */
 		require_once POOTLEPAGE_DIR . 'inc/class-public.php';
 		/** Instantiating PPB Public Class */
@@ -87,7 +85,6 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 
 		//@TODO Get rid of these
 		require_once POOTLEPAGE_DIR . 'inc/cxpb-support.php';
-		require_once POOTLEPAGE_DIR . 'widgets/basic.php';
 	}
 
 	/**
@@ -101,6 +98,7 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 		add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
 		add_action( 'in_plugin_update_message-' . plugin_basename( __FILE__ ), 'plugin_update_message', 10, 2 );
+		add_action( 'init', array( $this, 'pp_updater' ) );
 	}
 
 	/**
@@ -228,6 +226,22 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 			echo $upgrade_notice;
 		}
 	}
+
+	/**
+	 * Initiates pootlepress updater
+	 * @action init
+	 */
+	public function pp_updater() {
+		if ( ! function_exists( 'get_plugin_data' ) ) {
+			include( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		$data                          = get_plugin_data( __FILE__ );
+		$wptuts_plugin_current_version = $data['Version'];
+		$wptuts_plugin_remote_path     = 'http://www.pootlepress.com/?updater=1';
+		$wptuts_plugin_slug            = plugin_basename( __FILE__ );
+		new Pootlepress_Updater ( $wptuts_plugin_current_version, $wptuts_plugin_remote_path, $wptuts_plugin_slug );
+	}
+
 } //class Pootle_Page_Builder
 
 //Instantiating Pootle_Page_Builder

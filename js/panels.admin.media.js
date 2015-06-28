@@ -23,7 +23,7 @@ jQuery(function ($) {
             });
 
             // Create a new gallery panel
-            var panel = $('#panels-dialog').panelsCreatePanel('SiteOrigin_Panels_Widgets_Gallery', {
+            var panel = panelsCreatePanel('SiteOrigin_Panels_Widgets_Gallery', {
                 'ids': ids.join(',')
             });
 
@@ -40,19 +40,19 @@ jQuery(function ($) {
             var panel;
             if ($el.prop("tagName") == 'A' && $el.children().eq(0).prop('tagName') == 'IMG') {
                 // This is an image with a link
-                panel = $('#panels-dialog').panelsCreatePanel('SiteOrigin_Panels_Widgets_Image', {
+                panel = panelsCreatePanel('SiteOrigin_Panels_Widgets_Image', {
                     'href': $el.attr('href'),
                     'src': $el.children().eq(0).attr('src')
                 });
             }
             else if ($el.prop("tagName") == 'IMG') {
                 // This is just an image tag
-                panel = $('#panels-dialog').panelsCreatePanel('SiteOrigin_Panels_Widgets_Image', {
+                panel = panelsCreatePanel('SiteOrigin_Panels_Widgets_Image', {
                     'src': $el.attr('src')
                 });
             }
             else if ($el.prop('tagName') == 'A' && ($el.attr('href').indexOf('.mp4') !== -1 || $el.attr('href').indexOf('.avi') !== -1)) {
-                panel = $('#panels-dialog').panelsCreatePanel('SiteOrigin_Panels_Widgets_Video', {
+                panel = panelsCreatePanel('SiteOrigin_Panels_Widgets_Video', {
                     'url': $el.attr('href')
                 });
             }
@@ -65,7 +65,7 @@ jQuery(function ($) {
         }
         else {
             // Create a new gallery panel
-            var panel = $('#panels-dialog').panelsCreatePanel('WP_Widget_Text', {
+            var panel = panelsCreatePanel('WP_Widget_Text', {
                 'text': h
             });
 

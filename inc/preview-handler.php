@@ -18,7 +18,7 @@ function siteorigin_panels_preview() {
 			$GLOBALS['siteorigin_panels_is_panels_home'] = true;
 		}
 		add_action( 'option_siteorigin_panels_home_page', 'siteorigin_panels_preview_load_data' );
-		locate_template( siteorigin_panels_setting( 'home-template' ), true );
+		locate_template( pootle_pb_settings( 'home-template' ), true );
 		exit();
 	}
 }

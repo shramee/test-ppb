@@ -103,16 +103,11 @@
      *
      * @return {*}
      */
-    $.fn.panelsCreatePanel = function (type, data) {
+    panelsCreatePanel = function (type, data) {
 
         var newPanelId = newPanelIdInit++;
 
         var dialogWrapper = $(this);
-        var $$ = dialogWrapper.find('.panel-type').filter(function () {
-            return $(this).data('class') === type
-        });
-
-        if ($$.length == 0) return null;
 
         // Hide the undo message
         $('#panels-undo-message').fadeOut(function () {
@@ -120,14 +115,9 @@
         });
         var panel = $('<div class="panel new-panel"><div class="panel-wrapper"><div class="title"><h4></h4><span class="actions"></span></div></div></div>');
 
-        var description = $$.find('.description').html();
-        var widgetName = $$.find('h3').html();
-
         window.activeDialog = undefined;
 
-
         // normalize data.info.style to be object
-
         var widgetStyleJson = "{}";
         if (typeof data != 'undefined') {
             if (typeof data.info == 'undefined') {
@@ -157,8 +147,8 @@
             .append($('<input type="hidden" name="panel_order[]" type="hidden">').val(newPanelId))
             .data({
                 // We need this data to update the title
-                'title-field': $$.attr('data-title-field'),
-                'title': $$.attr('data-title'),
+                'title-field': undefined,
+                'title': 'Editor',
                 'raw': false
             })
             .end().find('.title h4').html('Editor');
@@ -304,7 +294,7 @@
                 'raw': $currentPanel.find('input[name$="[info][raw]"]').val()
             };
 
-            if ("Pootle_Text_Widget" == widgetClass) {
+            if ("Pootle_Text_Widget" == widgetClass || "Pootle_PB_Content_Block" == widgetClass) {
 
                 var text = '',
                     filter = 1;
@@ -457,7 +447,7 @@
                 data.info.style = JSON.parse($currentPanel.find('input[name*="[info][style]"]').val());
             }
 
-            var duplicatePanel = $('#panels-dialog').panelsCreatePanel($currentPanel.attr('data-type'), data);
+            var duplicatePanel = panelsCreatePanel($currentPanel.attr('data-type'), data);
             window.panels.addPanel(duplicatePanel, $currentPanel.closest('.panels-container'), null, false);
             duplicatePanel.removeClass('new-panel');
 
@@ -504,7 +494,7 @@
                                 this,
                                 function (type, data, container, position) {
                                     // Readd the panel
-                                    var panel = $('#panels-dialog').panelsCreatePanel(type, data, container);
+                                    var panel = panelsCreatePanel(type, data, container);
                                     panels.addPanel(panel, container, position, true);
 
                                     // We don't want to animate the undone panels
@@ -696,7 +686,7 @@
 
                     if (Number(data.widgets[pi]['info']['grid']) == gi) {
                         var pd = data.widgets[pi];
-                        var panel = $('#panels-dialog').panelsCreatePanel(pd['info']['class'], pd);
+                        var panel = panelsCreatePanel(pd['info']['class'], pd);
                         grid
                             .find('.panels-container').eq(Number(data.widgets[pi]['info']['cell']))
                             .append(panel)

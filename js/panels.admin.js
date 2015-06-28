@@ -6,7 +6,6 @@
  */
 
 jQuery(function ($) {
-
     function add_block_button_hide_text_for_small_cells() {
         $('#panels-container .cell-wrapper').each(function () {
 
@@ -498,32 +497,6 @@ jQuery(function ($) {
             ]
         });
 
-    // Create the main add widgets dialog
-    $('#panels-dialog').show()
-        .dialog({
-            dialogClass: 'panels-admin-dialog',
-            autoOpen: false,
-            resizable: false,
-            draggable: false,
-            modal: false,
-            title: $('#panels-dialog').attr('data-title'),
-            minWidth: 960,
-            maxHeight: Math.round($(window).height() * 0.8),
-            open: function () {
-                var overlay = $('<div class="ppb-panels-ui-widget-overlay ui-widget-overlay ui-front"></div>').css('z-index', 80001);
-                $(this).data('overlay', overlay).closest('.ui-dialog').before(overlay);
-            },
-            close: function () {
-                $(this).data('overlay').remove();
-                if (panels.animations) $('#panels-container .panel.new-panel').hide().slideDown(1000).removeClass('new-panel');
-                else $('#panels-container .panel.new-panel').show().removeClass('new-panel');
-            }
-        })
-        .on('keydown', function (e) {
-            if (e.keyCode === $.ui.keyCode.ESCAPE) {
-                $(this).dialog('close');
-            }
-        });
 
     $('#so-panels-panels .handlediv').click(function () {
         // Trigger the resize to reorganise the columns
@@ -531,18 +504,6 @@ jQuery(function ($) {
             $(window).resize();
         }, 150);
     });
-
-    // The button for adding a panel
-    $('#panels .panels-add')
-//        .button( {
-//            //icons: {primary: 'ui-icon-add'},
-//            text:  'Add Widget'
-//        } )
-        .click(function () {
-            $('#panels-text-filter-input').val('').keyup();
-            $('#panels-dialog').dialog('open');
-            return false;
-        });
 
     // The button for adding a grid
     $('#panels .grid-add')
@@ -569,37 +530,15 @@ jQuery(function ($) {
         .keyup(function (e) {
             if (e.keyCode == 13) {
                 // If we pressed enter and there's only one widget, click it
-                var p = $('#panels-dialog .panel-type-list .panel-type:visible');
                 if (p.length == 1) p.click();
                 return;
             }
 
             var value = $(this).val().toLowerCase();
-
-            // Filter the panels
-            $('#panels-dialog .panel-type-list .panel-type')
-                .show()
-                .each(function () {
-                    if (value == '') return;
-
-                    if ($(this).find('h3').html().toLowerCase().indexOf(value) == -1) {
-                        $(this).hide();
-                    }
-                })
         })
         .click(function () {
             $(this).keyup()
         });
-
-    // Handle adding a new panel
-    $('#panels-dialog .panel-type').click(function () {
-        var panel = $('#panels-dialog').panelsCreatePanel($(this).attr('data-class'));
-
-        panels.addPanel(panel, null, null, true);
-
-        // Close the add panel dialog
-        $('#panels-dialog').dialog('close');
-    });
 
     $(window).resize(function () {
         // When the window is resized, we want to center any panels-admin-dialog dialogs

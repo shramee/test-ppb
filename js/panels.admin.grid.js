@@ -368,7 +368,7 @@
                                     for (var j = 0; j < containerData[i].widgets.length; j++) {
                                         // Readd the panel
                                         var theWidget = containerData[i].widgets[j];
-                                        var panel = $('#panels-dialog').panelsCreatePanel(theWidget.type, theWidget.data);
+                                        var panel = panelsCreatePanel(theWidget.type, theWidget.data);
                                         window.panels.addPanel(panel, gridContainer.find('.panels-container').eq(i));
                                     }
                                 }
@@ -614,7 +614,7 @@
 
         $t.parents('.cell').eq(0).addClass('cell-selected')
 
-        var panel = $('#panels-dialog').panelsCreatePanel('Pootle_Text_Widget');
+        var panel = panelsCreatePanel('Pootle_Text_Widget');
         panels.addPanel(panel, null, null, true);
 
     };

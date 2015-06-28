@@ -3,7 +3,7 @@ global $wp_widget_factory;
 $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 ?>
 
-<div id="panels" data-animations="<?php echo siteorigin_panels_setting( 'animations' ) ? 'true' : 'false' ?>">
+<div id="panels" data-animations="true">
 
 	<?php do_action( 'siteorigin_panels_before_interface' ) ?>
 
@@ -21,132 +21,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		<div class="clear"></div>
 	</div>
 
-	<?php // The add new widget dialog ?>
-	<div id="panels-dialog" data-title="<?php esc_attr_e( 'Add New Widget', 'ppb-panels' ) ?>"
-	     class="panels-admin-dialog">
-		<div id="panels-dialog-inner">
-			<div class="panels-text-filter">
-				<input type="search" class="widefat" placeholder="Filter" id="panels-text-filter-input"/>
-			</div>
-
-			<ul class="panel-type-list">
-
-				<?php
-				$widgetSettings = get_option( 'pootlepage-widgets', array() );
-				if ( ! is_array( $widgetSettings ) ) {
-					$widgetSettings = array();
-				}
-				if ( ! isset( $widgetSettings['reorder-widgets'] ) ) {
-					$widgetSettings['reorder-widgets'] = '[]';
-				}
-				if ( ! isset( $widgetSettings['unused-widgets'] ) ) {
-					$widgetSettings['unused-widgets'] = '[]';
-				}
-
-				$widgetSettings['reorder-widgets'] = json_decode( $widgetSettings['reorder-widgets'], true );
-				$widgetSettings['unused-widgets']  = json_decode( $widgetSettings['unused-widgets'], true );
-
-				if ( count( $widgetSettings['reorder-widgets'] ) == 0 &&
-				     count( $widgetSettings['unused-widgets'] ) == 0
-				) {
-					$widgetSettings['reorder-widgets'] = array(
-						'Pootle_Text_Widget',
-						'SiteOrigin_Panels_Widgets_PostLoop',
-						'Woo_Widget_Component'
-					);
-
-					foreach ( $wp_widget_factory->widgets as $class => $widget_obj ) {
-						if ( ! in_array( $class, $widgetSettings['reorder-widgets'] ) ) {
-							$widgetSettings['unused-widgets'][] = $class;
-						}
-					}
-
-					$usedSequence   = $widgetSettings['reorder-widgets'];
-					$unusedSequence = $widgetSettings['unused-widgets'];
-				} else {
-
-					$usedSequence   = $widgetSettings['reorder-widgets'];
-					$unusedSequence = $widgetSettings['unused-widgets'];
-
-					foreach ( $wp_widget_factory->widgets as $class => $widget_obj ) {
-						if ( ! in_array( $class, $widgetSettings['reorder-widgets'] ) && ! in_array( $class, $widgetSettings['unused-widgets'] ) ) {
-							$usedSequence[] = $class;
-						}
-					}
-
-					// make visual editor as first one
-					if ( in_array( 'Pootle_Text_Widget', $usedSequence ) ) {
-						$temp   = array();
-						$temp[] = 'Pootle_Text_Widget';
-						foreach ( $usedSequence as $class ) {
-							if ( $class != 'Pootle_Text_Widget' ) {
-								$temp[] = $class;
-							}
-						}
-
-						$usedSequence = $temp;
-					}
-				}
-
-				?>
-				<?php
-
-				foreach ( $usedSequence as $class ) :
-					if ( ! isset( $wp_widget_factory->widgets[ $class ] ) ) {
-						continue;
-					}
-					$widget_obj = $wp_widget_factory->widgets[ $class ];
-
-					?>
-					<li class="panel-type"
-					    data-class="<?php echo esc_attr( $class ) ?>"
-					    data-title="<?php echo esc_attr( $widget_obj->name ) ?>"
-						>
-						<div class="panel-type-wrapper">
-							<h3><?php echo esc_html( $widget_obj->name ) ?></h3>
-							<?php if ( ! empty( $widget_obj->widget_options['description'] ) ) : ?>
-								<small
-									class="description"><?php echo esc_html( $widget_obj->widget_options['description'] ) ?></small>
-							<?php endif; ?>
-						</div>
-					</li>
-				<?php endforeach; ?>
-
-				<?php
-				foreach ( $unusedSequence as $class ) :
-					if ( ! isset( $wp_widget_factory->widgets[ $class ] ) ) {
-						continue;
-					}
-					$widget_obj = $wp_widget_factory->widgets[ $class ];
-
-					?>
-					<li class="panel-type unused"
-					    data-class="<?php echo esc_attr( $class ) ?>"
-					    data-title="<?php echo esc_attr( $widget_obj->name ) ?>"
-						>
-						<div class="panel-type-wrapper">
-							<h3><?php echo esc_html( $widget_obj->name ) ?></h3>
-							<?php if ( ! empty( $widget_obj->widget_options['description'] ) ) : ?>
-								<small
-									class="description"><?php echo esc_html( $widget_obj->widget_options['description'] ) ?></small>
-							<?php endif; ?>
-						</div>
-					</li>
-				<?php endforeach; ?>
-
-				<div class="clear"></div>
-
-			</ul>
-			<div class='help-text'>To include more widgets for selection please go to Canvas > Page Builder > Widget
-				Selection and drag widgets into the selection area
-			</div>
-			<?php do_action( 'siteorigin_panels_after_widgets' ); ?>
-		</div>
-
-	</div>
-
 	<?php // The add row dialog ?>
-
 	<div id="grid-add-dialog" data-title="<?php esc_attr_e( 'Add Row', 'ppb-panels' ) ?>"
 	     class="panels-admin-dialog" style="text-align: center">
 		<p>
@@ -303,7 +178,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 
 	<div class="ppb-hidden-editor-container" style="display:none;">
 		<?php
-		$ppb_editor = Pootle_Page_Builder_Content_Block::instance();
+		$request = null;
 		require POOTLEPAGE_DIR . 'tpl/content-block-panel.php';
 		?>
 	</div>

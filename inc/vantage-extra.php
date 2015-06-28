@@ -180,7 +180,7 @@ function pp_vantage_panels_panels_row_attributes( $attr, $row ) {
 			$attr['style'] .= 'margin-right: -' . $row['style']['col_gutter'] / 2 . 'px;';
 		}
 
-		$marginBottom = siteorigin_panels_setting( 'margin-bottom' );
+		$marginBottom = pootle_pb_settings( 'margin-bottom' );
 		if ( ! empty( $row['style']['margin_bottom'] ) || '0' === ( $row['style']['margin_bottom'] ) ) {
 			$attr['style'] .= "margin-bottom: {$row['style']['margin_bottom']}px;";
 		} elseif ( $marginBottom ) {
