@@ -44,7 +44,7 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	protected function __construct() {
 		$this->constants();
 		$this->includes();
-		$this->actions();
+		$this->hooks();
 	}
 
 	/**
@@ -91,10 +91,10 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	}
 
 	/**
-	 * Adds the actions anf filter hooks for plugin functioning
+	 * Adds the actions and filter hooks for plugin functioning
 	 * @since 0.9.0
 	 */
-	private function actions() {
+	private function hooks() {
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
@@ -180,9 +180,9 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 	 * @since 0.9.0
 	 * @TODO Use this
 	 */
-	function siteorigin_panels_plugin_action_links( $links ) {
-		$links[] = '<a href="http://siteorigin.com/threads/plugin-page-builder/">' . __( 'Support Forum', 'ppb-panels' ) . '</a>';
-		$links[] = '<a href="http://siteorigin.com/page-builder/#newsletter">' . __( 'Newsletter', 'ppb-panels' ) . '</a>';
+	public function plugin_action_links( $links ) {
+		//$links[] = '<a href="http://pootlepress.com/pootle-page-builder/">' . __( 'Support Forum', 'ppb-panels' ) . '</a>';
+		//$links[] = '<a href="http://pootlepress.com/page-builder/#newsletter">' . __( 'Newsletter', 'ppb-panels' ) . '</a>';
 
 		return $links;
 	}
