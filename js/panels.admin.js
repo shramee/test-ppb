@@ -720,31 +720,27 @@ jQuery(function ($) {
                 .find('.cell').css('padding-bottom', '3px')
                 .find('.add-widget-button').hide();
         }
-
-        container.hover(
+        var delay=500, ppbSetTimeout;
+        container.find('.cell').hover(
             //MOUSE IN
             function () {
-                var $t = $(this);
-                $t
-                    .find('.grid').animate(
-                    {
-                        marginBottom: '61px'
-                    }, 160, 'linear', function () {
-                        $(this).find('.add-widget-button')
-                            .show();
-                    }
-                )
-                    .find('.cell').animate(
-                    {
-                        paddingBottom: '61px'
-                    }, 160, 'linear', function () {
-                        $(this).find('.add-widget-button').show();
-                    }
-                );
+                var $t = $(this),
+                    $gc = $(this).closest('.grid-container');
+
+                setTimeoutConst = setTimeout(function(){
+                    $gc
+                        .find('.grid').animate( { marginBottom: '61px' }, 160, 'linear' )
+                        .find('.cell').animate( { paddingBottom: '61px' }, 160, 'linear', function () {
+                            $t.find('.add-widget-button').show();
+                        }
+                    );
+                }, 500);
+
             },
             //MOUSE OUT
             function () {
-                var $t = $(this);
+                clearTimeout(setTimeoutConst );
+                var $t = $(this).closest('.grid-container');
                 var numPanels = $t.find('.panel-wrapper').length;
                 if (numPanels > 0) {
                     var $grids = $t.find('.grid'),
