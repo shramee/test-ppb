@@ -8,19 +8,18 @@
 ?>
 <div class="wrap ppb-welcome about-wrap">
 
-	<h1>Welcome to Pootle Page Builder</h1>
+	<h1>Welcome to pootle page builder</h1>
 
 	<div class="about-text ppb-about-text">
-		Thank you for using pootle page builder. We've worked day and night to make page builder great. If you love it &amp; want to let us know, Please rate it here. It will take you less than two minutes.<br>
-		Thanks!
+		Thank you for using pootle page builder. The aim of pootle page builder is to help you create compelling WordPress pages more easily. We hope you like it.
 	</div>
 
-	<div class="ppb-badge">Version <?php echo POOTLEPAGE_VERSION ?></div>
+	<div class="ppb-badge"></div>
 
 	<p class="ppb-actions">
 		<a href="<?php echo admin_url( 'admin.php?page=page_builder_settings' ) ?>" class="button pootle">Settings</a>
-		<a href="http://pootlepress.com/" class="button pootle">Docs</a>
-		<a href="http://pootlepress.com/">Love Page Builder? Please rate it.</a>
+		<a href="http://docs.pootlepress.com/" class="button pootle">Docs</a>
+		<b>Version <?php echo POOTLEPAGE_VERSION ?></b>
 	</p>
 
 	<hr>
@@ -29,22 +28,22 @@
 	<p>Page Builder is easy to use but you can check out the video below to get started.</p>
 
 	<div class="ppb-video-container">
-	<iframe src="https://www.youtube.com/embed/hahpE8b6fDI" frameborder="0" allowfullscreen></iframe>
+		<iframe src="https://player.vimeo.com/video/131757773" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/131757773">Pootle Page Builder Sneak Peek 2</a> from <a href="https://vimeo.com/user8529687">pootlepress</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
 	</div>
 
 	<div class="changelog">
 		<div class="feature-section col three-col">
 			<div>
-				<h4>Geo-locating Customer Location</h4>
-				<p>We have added a new option to geolocate the "Default Customer Location". Coupled with ability to show taxes in your store based on this location, you can show relevant prices store-wide. Enable this in the <a href="http://wp/1/wp-admin/admin.php?page=ppb-settings&amp;tab=tax">settings</a>.</p>
+				<h4>Easy to use</h4>
+				<p>We've designed pootle page builder to look and work as much like WordPress as possible. We've worked hard to make the easy features intuitive and the complex features straight-forward to use. Look out for tooltips (these are small question mark icons in grey than you can hover over for more information)</p>
 			</div>
 			<div>
-				<h4>Color Customization</h4>
-				<p>If you're looking to customise the look and feel of the frontend in 2.3, take a look at the free <a href="https://wordpress.org/plugins/ppb-colors/">WooCommerce Colors plugin</a>. This lets you change the colors with a live preview.</p>
+				<h4>All themes</h4>
+				<p>page builder works on all themes, so you can change the theme of your website but still keep using page builder!</p>
 			</div>
 			<div class="last-feature">
-				<h4>Improved Reports</h4>
-				<p>Sales reports can now show net and gross amounts, we've added a print stylesheet, and added extra data on refunds to reports.</p>
+				<h4>Amazing Rows</h4>
+				<p>Rows in Page Builder all you to add background colors, images or autoplay videos. Row background images can have a parallax effect. They can also be full width.</p>
 			</div>
 		</div>
 	</div>

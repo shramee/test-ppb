@@ -130,12 +130,12 @@ final class Pootle_Page_Builder_Admin_UI extends Pootle_Page_Builder_Abstract {
 						'style'     => __( 'Style', 'ppb-panels' ),
 						'edit'      => __( 'Edit', 'ppb-panels' ),
 						'done'      => __( 'Done', 'ppb-panels' ),
-						'undo'      => __( 'Undo', 'ppb-panels' ),
+						'undo'      => __( 'Want to undo?', 'ppb-panels' ),
 						'add'       => __( 'Add', 'ppb-panels' ),
 					),
 					'messages' => array(
 						'deleteColumns' => __( 'Columns deleted', 'ppb-panels' ),
-						'deleteWidget'  => __( 'Widget deleted', 'ppb-panels' ),
+						'deleteWidget'  => __( 'Content deleted', 'ppb-panels' ),
 						'confirmLayout' => __( 'Are you sure you want to load this layout? It will overwrite your current page.', 'ppb-panels' ),
 						'editWidget'    => __( 'Edit %s Widget', 'ppb-panels' ),
 						'styleWidget'   => __( 'Style Widget', 'ppb-panels' )
