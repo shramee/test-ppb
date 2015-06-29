@@ -109,7 +109,7 @@ final class Pootle_Page_Builder_Admin_UI extends Pootle_Page_Builder_Abstract {
 			);
 
 			wp_enqueue_script( 'so-panels-admin', POOTLEPAGE_URL . 'js/panels.admin.js', $deps, POOTLEPAGE_VERSION );
-			wp_enqueue_script( 'so-sticky-admin-panels', POOTLEPAGE_URL . 'js/sticky.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
+			wp_enqueue_script( 'so-panels-admin-sticky', POOTLEPAGE_URL . 'js/panels.admin.sticky.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 			wp_enqueue_script( 'so-panels-admin-panels', POOTLEPAGE_URL . 'js/panels.admin.panels.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 			wp_enqueue_script( 'so-panels-admin-grid', POOTLEPAGE_URL . 'js/panels.admin.grid.js', array( 'jquery' ), POOTLEPAGE_VERSION );
 			wp_enqueue_script( 'so-panels-admin-prebuilt', POOTLEPAGE_URL . 'js/panels.admin.prebuilt.js', array( 'jquery' ), POOTLEPAGE_VERSION );

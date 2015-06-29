@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: shramee
+ * Date: 29/6/15
+ * Time: 10:48 PM
+ */
 
 /**
  * Store the Page Builder meta in the revision.
@@ -86,4 +92,3 @@ function siteorigin_panels_revisions_field( $value, $field, $revision ) {
 }
 
 add_filter( '_wp_post_revision_field_panels_data_field', 'siteorigin_panels_revisions_field', 10, 3 );
-

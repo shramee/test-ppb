@@ -28,10 +28,8 @@ final class Pootle_Page_Builder_Admin extends Pootle_Page_Builder_Abstract {
 		require_once POOTLEPAGE_DIR . 'inc/class-content-blocks.php';
 		/** Take care of styling fields */
 		require_once POOTLEPAGE_DIR . 'inc/styles.php';
-		/** Saving PPB meta data in revision post types. */
+		/** Handles PPB meta data *Revisions * */
 		require_once POOTLEPAGE_DIR . 'inc/revisions.php';
-		/** Filtering the PB content */
-		require_once POOTLEPAGE_DIR . 'inc/copy.php';
 		/** More styling */
 		require_once POOTLEPAGE_DIR . 'inc/vantage-extra.php';
 	}

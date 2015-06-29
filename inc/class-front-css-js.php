@@ -196,19 +196,6 @@ final class Pootle_Page_Builder_Front_Css_Js extends Pootle_Page_Builder_Abstrac
 	 */
 	public function enqueue_scripts() {
 
-		if ( class_exists( 'WooCommerce' ) ) {
-			if ( is_product() ) {
-				wp_dequeue_script( 'wc-single-product' );
-			}
-			wp_enqueue_script( 'pb-wc-single-product', POOTLEPAGE_URL . 'js/wc-single-product.js', array( 'jquery' ) );
-			wp_localize_script( 'pb-wc-single-product', 'wc_single_product_params', apply_filters( 'wc_single_product_params', array(
-				'i18n_required_rating_text' => esc_attr__( 'Please select a rating', 'woocommerce' ),
-				'review_rating_required'    => get_option( 'woocommerce_review_rating_required' ),
-			) ) );
-		}
-
-		wp_register_script( 'general', POOTLEPAGE_URL . '/js/canvas-general.js', array( 'jquery', 'third-party'	) );
-
 		wp_enqueue_script( 'pootle-page-builder-front-js', POOTLEPAGE_URL . '/js/front-end.js', array( 'jquery' ) );
 
 	}

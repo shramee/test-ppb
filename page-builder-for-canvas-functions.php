@@ -214,3 +214,49 @@ function pootle_pb_settings( $key = '' ) {
 
 	return $settings;
 }
+
+/**
+ * Convert form post data into more efficient panels data.
+ * @param $form_post
+ * @return array
+ */
+function siteorigin_panels_get_panels_data_from_post( $form_post ) {
+	$panels_data            = array();
+	$panels_data['widgets'] = array_values( stripslashes_deep( isset( $form_post['widgets'] ) ? $form_post['widgets'] : array() ) );
+
+	foreach ( $panels_data['widgets'] as $i => $widget ) {
+
+		if ( empty( $widget['info'] ) ) {
+			continue;
+		}
+
+		$info = $widget['info'];
+
+		$widget = json_decode( $widget['data'], true );
+
+		if ( class_exists( $info['class'] ) ) {
+			$the_widget = new $info['class'];
+			if ( method_exists( $the_widget, 'update' ) && ! empty( $info['raw'] ) ) {
+				$widget = $the_widget->update( $widget, $widget );
+			}
+		}
+
+		unset( $info['raw'] );
+		$widget['info'] = $info;
+
+		// if widget style is not present in $_POST, set a default
+		if ( ! isset( $info['style'] ) ) {
+			$widgetStyle = ppb_default_content_block_style();
+
+			$info['style'] = $widgetStyle;
+		}
+
+		$panels_data['widgets'][ $i ] = $widget;
+
+	}
+
+	$panels_data['grids']      = array_values( stripslashes_deep( isset( $form_post['grids'] ) ? $form_post['grids'] : array() ) );
+	$panels_data['grid_cells'] = array_values( stripslashes_deep( isset( $form_post['grid_cells'] ) ? $form_post['grid_cells'] : array() ) );
+
+	return apply_filters( 'siteorigin_panels_panels_data_from_post', $panels_data );
+}
