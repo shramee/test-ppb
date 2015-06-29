@@ -398,7 +398,7 @@
 
                         // Create the undo notification
                         $('#panels-undo-message').remove();
-                        $('<div id="panels-undo-message" class="updated"><p>' + panels.i10n.messages.deleteColumns + ' - <a href="#" class="undo">' + panels.i10n.buttons.undo + '</a></p></div>')
+                        $('<div id="panels-undo-message" class="updated"><p>' + panels.i10n.messages.deleteColumns + '. <a href="#" class="undo">' + panels.i10n.buttons.undo + '</a></p></div>')
                             .appendTo('body')
                             .hide()
                             .fadeIn()
