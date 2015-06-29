@@ -21,7 +21,7 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 		array(
 			'row_height' => array(
 				'name'      => __( 'Empty Row Height', 'ppb-panels' ),
-				'type'      => 'text',
+				'type'      => 'px',
 				'default'   => '',
 				'help-text' => 'Row height can only be set when there is no content in a row.',
 			),
@@ -46,11 +46,11 @@ function pp_vantage_panels_row_style_fields( $fields ) {
 			),
 			'margin_bottom' => array(
 				'name' => 'Row Bottom Margin',
-				'type' => 'text',
+				'type' => 'px',
 			),
 			'col_gutter' => array(
 				'name' => 'Column Gutters',
-				'type' => 'text',
+				'type' => 'px',
 			),
 			'background' => array(
 				'name' => __( 'Background Color', 'vantage' ),

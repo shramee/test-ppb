@@ -365,6 +365,11 @@ function pootlepage_render_single_field( $name, $attr ) {
 			<?php
 			break;
 
+		case 'px':
+			?><input type="number" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
+			         data-style-field="<?php echo esc_attr( $name ) ?>"
+			         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />px <?php
+			break;
 		default :
 			?><input type="text" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 			         data-style-field="<?php echo esc_attr( $name ) ?>"
