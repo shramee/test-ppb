@@ -1090,10 +1090,45 @@ button.wp-switch-editor {
     line-height: 20px;
 }
 
+#panels-container .grid-container .controls .row-bg-preview {
+    display: none;
+}
+
+#panels-container .grid-container.hide-row-enabled .controls .row-bg-preview {
+    display: inline-block;
+    position: relative;
+    color: #ef4832;
+    cursor: initial;
+}
+
+#panels-container .grid-container.hide-row-enabled .controls .row-bg-preview:after {
+    content: '';
+    border-left: 2px solid;
+    border-right: 1px solid #fff;
+    position: absolute;
+    top: 2px;
+    right: 9px;
+    height: 16px;
+    -o-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
 #panels-container .cell-wrapper {
     position: relative;
 }
 
+.row-bg-preview-screen {
+    display: block;
+    height: 90px;
+    width: 140px;
+    top: -25px;
+    right: 100px;
+    position: absolute;
+    z-index: 97;
+    background-size: cover;
+}
 #panels-container .cell-wrapper .add-widget-button {
     position: absolute;
     left: 10px;

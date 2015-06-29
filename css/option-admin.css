@@ -97,14 +97,15 @@ span.logo img {
 /* Welcome Page */
 .ppb-badge {
     float: right;
-    width: 160px;
-    padding: 35px 0 35px;
+    width: 250px;
+    padding: 160px 0 55px;
     text-align: center;
     background: #ef4832;
     color: white;
     position: absolute;
     top: 0;
     right: 0;
+    background: #ef4832 url(images/pootle-logo.png) 0 50px/contain no-repeat;
 }
 
 .ppb-badge .dashicons {
@@ -132,4 +133,15 @@ span.logo img {
 /* New page */
 .page_builder_add a{
     text-decoration: none;
+}
+
+.page-builder_page_page_builder_settings .wrap h3 {
+    display: none;
+}
+
+table.form-table th, table.form-table td {
+    padding: 7px 5px;
+}
+.about-wrap .about-text, .about-wrap h1 {
+  margin-right: 270px;
 }

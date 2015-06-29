@@ -123,7 +123,7 @@ final class Pootle_Page_Builder_Admin extends Pootle_Page_Builder_Abstract {
 	 * Add the options page
 	 */
 	public function admin_menu() {
-		add_menu_page( 'Home', 'Page Builder', 'manage_options', 'page_builder', array( $this, 'menu_page' ), 'dashicons-grid-view', 26 );
+		add_menu_page( 'Home', 'Page Builder', 'manage_options', 'page_builder', array( $this, 'menu_page' ), 'dashicons-screenoptions', 26 );
 		add_submenu_page( 'page_builder', 'Add New', 'Add New', 'manage_options', 'page_builder_add', array( $this, 'submenu_page' ) );
 		add_submenu_page( 'page_builder', 'Settings', 'Settings', 'manage_options', 'page_builder_settings', array( $this, 'submenu_page' ) );
 		add_submenu_page( 'page_builder', 'Add-ons', 'Add-ons', 'manage_options', 'page_builder_addons', array( $this, 'submenu_page' ) );

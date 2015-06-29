@@ -15,10 +15,10 @@
 		Thanks!
 	</div>
 
-	<div class="ppb-badge"><span class="dashicons dashicons-tagcloud"></span><br>Version <?php echo POOTLEPAGE_VERSION ?></div>
+	<div class="ppb-badge">Version <?php echo POOTLEPAGE_VERSION ?></div>
 
 	<p class="ppb-actions">
-		<a href="<?php echo admin_url( 'options-general.php?page=page_builder' ) ?>" class="button pootle">Settings</a>
+		<a href="<?php echo admin_url( 'admin.php?page=page_builder_settings' ) ?>" class="button pootle">Settings</a>
 		<a href="http://pootlepress.com/" class="button pootle">Docs</a>
 		<a href="http://pootlepress.com/">Love Page Builder? Please rate it.</a>
 	</p>
@@ -52,6 +52,6 @@
 	<hr>
 
 	<div class="return-to-dashboard">
-		<a href="<?php echo admin_url( 'options-general.php?page=page_builder' ) ?>">Go to Page Builder Settings</a>
+		<a href="<?php echo admin_url( 'admin.php?page=page_builder_settings' ) ?>">Go to Page Builder Settings</a>
 	</div>
 </div>

@@ -10,3 +10,11 @@ div.pootle.updated {
     border-left-color: #ef4832;
 }
 
+#toplevel_page_page_builder a.wp-first-item {
+    text-indent: -1000px;
+}
+#toplevel_page_page_builder a.wp-first-item:before {
+    content: 'Home';
+    position: absolute;
+    text-indent: 1000px;
+}

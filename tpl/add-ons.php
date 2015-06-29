@@ -10,8 +10,8 @@
 	<h2>Pootle Page Builder Add-ons</h2>
 	<?php settings_errors(); ?>
 <form action='options.php' method="POST">
+	<h4>There are no add-ons yet.</h4>
 	<?php
-
 	settings_fields( 'pootlepage-add-ons' );
 	submit_button();
 	?>
