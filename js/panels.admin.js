@@ -728,18 +728,30 @@ jQuery(function ($) {
                     $gc = $(this).closest('.grid-container');
 
                 setTimeoutConst = setTimeout(function(){
-                    $gc
-                        .find('.grid').animate( { marginBottom: '61px' }, 160, 'linear' )
-                        .find('.cell').animate( { paddingBottom: '61px' }, 160, 'linear', function () {
-                            $t.find('.add-widget-button').show();
-                        }
-                    );
+                    if ( 0 != $t.find('.panel').length ) {
+                        $gc
+                            .find('.grid').animate(
+                                { marginBottom: '61px' },
+                                160,
+                                'linear',
+                                function () {
+                                    $t.find('.add-widget-button').show();
+                                }
+                            )
+                            .find('.cell').animate(
+                                { paddingBottom: '61px' },
+                                160,
+                                'linear'
+                            );
+                    } else {
+                        $t.find('.add-widget-button').show();
+                    }
                 }, 500);
 
             },
             //MOUSE OUT
             function () {
-                clearTimeout(setTimeoutConst );
+                clearTimeout( setTimeoutConst );
                 var $t = $(this).closest('.grid-container');
                 var numPanels = $t.find('.panel-wrapper').length;
                 if (numPanels > 0) {
