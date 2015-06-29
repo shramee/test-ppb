@@ -187,7 +187,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php do_action( 'siteorigin_panels_metabox_end' ); ?>
 </div>
 <?php
-if ( 'pootle' == filter_input( INPUT_GET, 'page_builder' ) || 1 == $visit_count ) {
+if ( 'post-new.php' == $pagenow ) {
 ?>
 	<style>.wrap{opacity:0;}</style>
 	<script>
