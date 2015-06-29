@@ -650,7 +650,7 @@
                 if(text.length > 10) text = text.substring(0,14);
                 return 'Text<span class="extra">: ' + text + '...</span>';
             }
-            return title + ' <span class="extra">& text</span>';
+            return title;
         } else {
             return title;
         }
