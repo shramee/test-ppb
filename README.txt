@@ -1,112 +1,77 @@
-Page Builder for Canvas
-=======================
+=== pootle page builder ===
 
-Instructions
+Contributors: pootlepress, nickburne
+Plugin Name: pootle page builder
+Plugin URI: http://www.pootlepress.com/page-builder
+Tags: page builder, pagebuilder, pootlepress, pootle page builder, pootlepagebuilder, pootle pagebuilder
+Author URI: http://www.pootlepress.com
+Author: PootlePress
+Donate link:
+Requires at least: 4.1.0
+Tested up to: 4.2.2
+Stable tag: 
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-1. Install zip file as a plugin (not a theme)
-2. Page Builder will be turned on automatically, you will see a 'Page Builder' tab next to the Visual and Text tabs on your pages.
-3. Please see help documentation here: http://www.pootlepress.com/canvas-extensions/help/canvas-page-builder/
-4. Page Builder works with widgets and specifically works great with the PootlePress Visual Editor widget (now included inside Page Builder)
+== Description ==
 
+pootle page builder helps you build compelling WordPress pages easily. No more boring, linear, article pages that are as limited as your posts. With pootle page builder you can:
 
-Support
+ * Add rows and columns to create the page you want
+ * Customize the styles of cells (blocks)
+ * Add full width rows, to create long sectional pages
+ * Add background images to rows with effects such as parallax
+ * Add autoplay background videos to rows
+ * Do CSS customizations per cell/block, column or row (for advanced users)
 
-- Please see a full video tutorial here:http://www.pootlepress.com/canvas-extensions/tutorials/canvas-page-builder/
-- For support issues please email support@pootlepress.com
+We have made sure the plugin:
 
-Versions
+ * Feels as much like WordPress as possible making it easy to use for site owners.
+ * Code is well written & fully optimized for performance.
 
+== Usage ==
 
-07.05.2015 - Version 2.2.8
- * Fix - fatal error on activation
+Install and activate the plugin. In your WordPress dashboard simply add a new page to start using page builder.
 
+== Installation ==
 
-07.05.2015 - Version 2.2.7
- * Fix - database errors for small number of users
- * Tweak - general Wordpress coding standard improvements
+Installing "pootle page builder" can be done either by searching for "pootle page builder" via the "Plugins > Add New" screen in your WordPress dashboard, or by using the following steps:
 
-15.04.2015 - Version 2.2.6
- * Fix - fatal error on posts
+1. Download the plugin via WordPress.org.
+2. Upload the ZIP file through the "Plugins > Add New > Upload" screen in your WordPress dashboard.
+3. Activate the plugin through the 'Plugins' menu in WordPress
+4. Visit the settings screen and configure, as desired.
 
-14.04.2015 - Version 2.2.5
- * Fix - fix for WooCommerce Tab Manager
- * Fix - left align Page Builder tab issue in WordPress 4.1.1
+== Frequently Asked Questions ==
 
-04.02.2015 - Version 2.2.4
- * Fix - Event Calendar Pro issues
- * Fix - Issue with new lines not appearing in posts on front-end when using WP editor without Page Builder
- * Fix - Hide widget title not working in different languages
+= Where can I get help & support =
 
-22.01.2015 - Version 2.2.3
- * Fix - fix for Revolution Slider issue
- * Fix - settings not saving in Canvas > Settings > Page Builder
- * Fix - 'No Bottom Margin' setting in Row Visual Style not working properly
- * Fix - further fix to p tag issues in some widgets
+For help & support please head over to http://docs.pootlepress.com where there are loads of helpful artciles and you can submit a support ticket.
 
-23.12.2014 - Version 2.2.2
- * Tweak - update version number
+= How do I contribute? =
 
-19.12.2014 - Version 2.2.1
- * Fix - tab issue caused by WordPress 4.1
+We encourage everyone to contribute their ideas, thoughts and code snippets. This can be done by forking the [repository over at GitHub](https://github.com/pootlepress/pootle-page-builder/).
 
-17.12.2014 - Version 2.2
- * New - revamped Pootle Visual Editor widget with new text tab instead of html
- * New - use row color over row background image option
- * Tweak - hide widget title on site option moved to widget styling options
- * Fix - fix Page Builder tab switching issue
- * Fix - text editor automatic paragraph checkbox issue
- * Fix - WooSlider issue
- * Fix- General settings not saving
+== Screenshots ==
 
-27.11.2014 - Version 2.1.1
- * New - remove padding on list widgets option in Page Builder > Display
- * Tweak - Save row styling even if no widget is in cell
- * Fix - fix caching issue for WooCompontent blog widget
- * Fix - Page builder settings not saving in Child Themes
- * Fix - issue when installing on WordPress multi-site
- * Fix - hide title on site widget option not persisting
+1. Edit page interface
 
-19.11.2014 - Version 2.1
- * New - ability for red warning notice on future major updates inside WordPress
- * Tweak - improve way Visual Editor scrolling deals with long content
- * Tweak - new Page Builder tab for all Page Builder settings in main Canvas admin area
- * Tweak - show title on site widget option changed to hide title on site widget option
- * Tweak - rgb colors now work in row border colors in row styling settings
- * Fix - compatibility with Paid Membership Pro plugin
- * Fix - compatibility with event widget for Events Pro plugin (Modern Tribe)
- * Fix - new Page Builder tab not working with child themes
- * Fix - bottom widget border in sidebar widgets
+2. Content block editor
 
-12.11.2014 - Version 2.0.1
- * Fix - visual editor inconsistencies
- * Fix - background images not repeating
- * Fix - WooCommerce data fields js conflict (e.g. was stopping bundles extension working)
- * Tweak - improve way Post Loop widget pagination option works
+3. Content block styling
 
-30.10.2014 - Version 2.0
- * New - revamped Post Loop widget
- * New - duplicate row button
- * New - confirm delete dialogue boxes on rows and widgets
- * New - widget level styling controls
- * New - widget title display on edit page to make it easier to see
- * New - widget selection drag and drop (Settings > Page Builder > Widgets)
- * Tweak - re-order options in row styling and add help text
- * Tweak - make no bottom margin option in row styling enabled by default
- * Tweak - user interface improvements
- * Tweak - make background image size option for row styling default to cover
- * Fix - vimeo videos going to full width of container
- * Fix - when there is no widget in a row, row settings are not saved
- * Fix - Custom typography doesn't work in non page builder widget areas
- * Fix - row styling settings not being remember when using 'undo'
+4. Row display settings / Background image
 
-1.2 - Add Continue Reading option for Post Loop widget / Fix h3 underline issue in Visual Editor / other compatibility and bug fixes 
+5. Row display settings / Background video
 
-1.1.2 - fix list styling in visual editor widget & magazine slider widget
+== Upgrade Notice ==
 
-1.1.1 - Fix bottom margin for row
+= 0.1 =
+* 2015-06-29
+* Initial release. It's alive!
 
-1.1 - ability to update within WordPress
+== Changelog ==
 
-1.0 - Visual editor widget now bundled / New row visual styling options / Page Builder widget options / general bug fixes
-
-0.9 - Initial launch in beta
+= 0.1 =
+* 2015-06-29
+* Initial release. It's alive!
