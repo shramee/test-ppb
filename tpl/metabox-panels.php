@@ -67,7 +67,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 		//Update user visit count
 		$visit_count++;
 		global $pagenow;
-		if ( 'post-new.php' == $pagenow &&  ! empty( $layouts )  ){
+		if ( 'post-new.php' == $pagenow ){
 			update_user_meta( $current_user->ID, 'ppb-visit-count', $visit_count );
 		}
 
@@ -187,7 +187,7 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 	<?php do_action( 'siteorigin_panels_metabox_end' ); ?>
 </div>
 <?php
-if ( 'pootle' == filter_input( INPUT_GET, 'page_builder' ) ) {
+if ( 'pootle' == filter_input( INPUT_GET, 'page_builder' ) || 1 == $visit_count ) {
 ?>
 	<script>
 		jQuery(document).ready(function($){
