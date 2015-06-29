@@ -189,10 +189,11 @@ $layouts = apply_filters( 'siteorigin_panels_prebuilt_layouts', array() );
 <?php
 if ( 'pootle' == filter_input( INPUT_GET, 'page_builder' ) || 1 == $visit_count ) {
 ?>
-	<style>#wp-content-editor-container{display:none;}</style>
+	<style>.wrap{opacity:0;}</style>
 	<script>
 		jQuery(document).ready(function($){
 			$('#content-panels').click();
+			$('.wrap').css( 'opacity', '1' );
 		});
 	</script>
 <?php
