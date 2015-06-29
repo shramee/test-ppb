@@ -74,6 +74,8 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 		require_once POOTLEPAGE_DIR . 'page-builder-for-canvas-functions.php';
 		/** Enhancements and fixes */
 		require_once POOTLEPAGE_DIR . '/inc/enhancements-and-fixes.php';
+		/** Pootle Press Updater */
+		require_once POOTLEPAGE_DIR . 'inc/class-pootlepress-updater.php';
 		/** PPB Admin Class */
 		require_once POOTLEPAGE_DIR . 'inc/class-admin.php';
 		/** Instantiating PPB Admin Class */

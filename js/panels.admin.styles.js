@@ -120,14 +120,17 @@ jQuery(function ($) {
             });
         $('#grid-styles-dialog div[data-style-field-type="slider"]').each(function() {
             var $t = $(this),
-                $f = $t.siblings('input');
+                $f = $t.siblings('input'),
+                $spn = $(this).siblings('.slider-val');
+                $spn.text(($f.val() * 100) + '%');
             $t.slider({
                 min: 0,
                 max: 1,
                 step: 0.05,
                 value: $f.val(),
-                change: function (e, ui) {
-                    $(this).siblings('input').val(ui.value);
+                slide: function (e, ui) {
+                    $f.val(ui.value);
+                    $spn.text(Math.round(ui.value * 100) + '%');
                 }
             });
         });

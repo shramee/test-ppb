@@ -361,7 +361,7 @@ function pootlepage_render_single_field( $name, $attr ) {
 			?><input type="hidden" name="panelsStyle[<?php echo esc_attr( $name ) ?>]"
 			         data-style-field="<?php echo esc_attr( $name ) ?>"
 			         data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>" />
-			<div data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"></div>
+			<div data-style-field-type="<?php echo esc_attr( $attr['type'] ) ?>"></div><span class="slider-val"></span>
 			<?php
 			break;
 

@@ -32,8 +32,6 @@ final class Pootle_Page_Builder_Admin extends Pootle_Page_Builder_Abstract {
 		require_once POOTLEPAGE_DIR . 'inc/revisions.php';
 		/** Filtering the PB content */
 		require_once POOTLEPAGE_DIR . 'inc/copy.php';
-		/** Pootle Press Updater */
-		require_once POOTLEPAGE_DIR . 'inc/class-pootlepress-updater.php';
 		/** More styling */
 		require_once POOTLEPAGE_DIR . 'inc/vantage-extra.php';
 	}

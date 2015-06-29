@@ -311,12 +311,12 @@ video.ppb-bg-video {
 
 #so-panels-panels .panels-container .panel h4 {
     position: absolute;
-    top: 15px;
+    top: 9px;
     height: auto;
     color: #474747;
     cursor: pointer;
     font-weight: 600;
-    line-height: 1.4em;
+    line-height: 25px;
     margin: 0;
     margin-right: 15px;
     overflow: hidden;
@@ -917,14 +917,19 @@ h4 {}
     font-weight: bold;
 }
 
-#grid-styles-dialog .field > input[type="number"]{
-    width: 70px;
-}
 #grid-styles-dialog .field > *,
 #page-setting-dialog p > *,
 #hide-element-dialog p > * {
     display: inline-block;
     vertical-align: middle;
+}
+
+#grid-styles-dialog .field > input[type="number"]{
+    width: 70px;
+}
+
+#grid-styles-dialog .field > .slider-val{
+    padding: 1px 5px;
 }
 
 input:disabled{
@@ -933,6 +938,7 @@ input:disabled{
 
 #grid-styles-dialog .field .ui-slider{
     width:200px;
+    margin: 3px 0 0;
 }
 
 .dashicons-editor-help.tooltip {
@@ -1095,6 +1101,7 @@ button.wp-switch-editor {
 
 #panels-container .grid-container.hide-row-enabled .controls .row-bg-preview {
     display: inline-block;
+    opacity: 1;
     position: relative;
     color: #ef4832;
     cursor: initial;
@@ -1183,7 +1190,8 @@ button.wp-switch-editor {
     -webkit-font-smoothing: antialiased;
     font: 400 25px/34px dashicons;
     width: 30px;
-    height: 30px;
+    height: 13px;
+    line-height: 0;
     vertical-align: middle;
     text-align: center;
     color: #999;
@@ -1192,7 +1200,7 @@ button.wp-switch-editor {
     left: 50%;
     margin: -15px 0 0 -15px;
     text-indent: -1px;
-    padding: 0;
+    padding: 18px 0 0 1px;
     text-shadow: none;
     z-index: 4;
 }
