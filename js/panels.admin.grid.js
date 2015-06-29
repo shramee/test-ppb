@@ -107,9 +107,6 @@
             $('<div class="controls" />')
                 // Add the move/reorder button
                 .append(
-                $('<div class="row-bg-preview-screen"></div>')
-            )
-                .append(
                 $('<div class="row-button row-bg-preview sort-button dashicons-before dashicons-visibility"></div>')
             )
                 .append(

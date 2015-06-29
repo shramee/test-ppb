@@ -238,48 +238,12 @@ div#ppb-hello-user.visit-count-1 {
     cursor: pointer;
 }
 
-#panels-container .grid-container .controls .row-bg-preview {
-    display: none;
-}
-
-#panels-container .grid-container.hide-row-enabled .controls .row-bg-preview {
-    display: inline-block;
-    position: relative;
-    color: #ef4832;
-    cursor: initial;
-}
-
-#panels-container .grid-container.hide-row-enabled .controls .row-bg-preview:after {
-    content: '';
-    border-left: 2px solid;
-    border-right: 1px solid #fff;
-    position: absolute;
-    top: 2px;
-    right: 9px;
-    height: 16px;
-    -o-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
 #panels-container .grid-container:hover .controls .row-button {
     opacity: 1;
 }
 
 #panels-container .grid-container .controls .row-button:hover {
     color: #ef4832;
-}
-
-.row-bg-preview-screen {
-    display: block;
-    height: 90px;
-    width: 140px;
-    top: -25px;
-    right: 100px;
-    position: absolute;
-    z-index: 97;
-    background-size: cover;
 }
 
 video.ppb-bg-video {
@@ -1134,6 +1098,7 @@ button.wp-switch-editor {
     position: absolute;
     left: 10px;
     right: 10px;
+    min-height: 50px;
     text-align: center;
     top: 10px;
     bottom: 10px;

@@ -719,6 +719,9 @@ jQuery(function ($) {
                 .find('.grid').css({marginBottom: '3px'})
                 .find('.cell').css('padding-bottom', '3px')
                 .find('.add-widget-button').hide();
+        } else {
+            container
+                .find('.add-widget-button').css('bottom', '-50');
         }
         var delay=500, ppbSetTimeout;
         container.find('.cell').hover(
@@ -752,8 +755,10 @@ jQuery(function ($) {
             //MOUSE OUT
             function () {
                 clearTimeout( setTimeoutConst );
-                var $t = $(this).closest('.grid-container');
-                var numPanels = $t.find('.panel-wrapper').length;
+                var $t = $(this).closest('.grid-container'),
+                    numPanels = $t.find('.panel-wrapper').length;
+                $t.css("cursor", "default")
+
                 if (numPanels > 0) {
                     var $grids = $t.find('.grid'),
                         $cells = $t.find('.cell');
