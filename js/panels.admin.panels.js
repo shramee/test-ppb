@@ -599,7 +599,6 @@
      * Set the title of the panel
      */
     $.fn.panelsSetPanelTitle = function (data) {
-
         var $t = $(this);
 
         if ( typeof data == 'undefined' || typeof data.text == 'undefined' || data.text == '') {
@@ -607,50 +606,56 @@
             return;
         }
 
-        var text = data.text,
+        var text = data.text.replace( /<p>/g, '' ),
             title = 'Editor';
 
-        if ( -1 != text.indexOf('https://vimeo.com/') ) {
-            title = '<span class="extra">Vimeo</span> Video';
-        } else if ( -1 != text.indexOf('https://www.youtube.com/') ) {
-            title = '<span class="extra">YouTube</span> Video';
-        } else if ( text.match( /\[.+]/gi ) && 0 < text.match( /\[.+]/gi ).length ) {
+        switch ( text.replace( ' ', '' ).charAt(0) ) {
+            case '[':
+                if ( text.match( /\[.+]/gi ) && 0 < text.match( /\[.+]/gi ).length ) {
+                    var shortcode = text.match( /\[.+]/g )[0].replace( /[\[]/g, '' ).split( /[^\w]/g )[0];
+                    title = 'Shortcode: <span class="extra">' + shortcode + '</span>';
+                } else {
+                    title = detectText(text, title);
+                }
+                break;
+            case '<':
+                var $txt = $( '<p>' + text );
 
-            var shortcode = text.match( /\[.+]/g )[0].replace( /[\[]/g, '' ).split( /[^\w]/g )[0];
-
-            title = '<span class="extra">' + shortcode + '</span> Shortcode';
-        } else if ( -1 != text.indexOf('<img') ) {
-            var imgMatch = text.match( /<img [^>]+?>/gi );
-            if ( 1 < imgMatch.length ) {
-                title = 'Images';
-            } else {
-                title = 'Image<span class="extra">: ' + $(imgMatch[0]).attr('alt') + '</span>';
-            }
+                if ( 0 == text.indexOf('<a ') && 1 == $txt.find('a').eq(0).find('img').length ) {
+                    var imgMatch = $txt.find('a').eq(0).find('img');
+                    title = 'Image<span class="extra">: ' + $(imgMatch[0]).attr('alt') + '</span>';
+                } else {
+                    title = detectText(text, title);
+                }
+                break;
+            case 'h':
+                //Maybe Video
+                if ( 0 == text.indexOf('https://www.vimeo.com/') || 0 == text.indexOf('https://vimeo.com/') || 0 == text.indexOf('https://player.vimeo.com/') ) {
+                    title = 'Video<span class="extra">: Vimeo</span>';
+                } else if ( 0 == text.indexOf('https://www.youtube.com/') ||  0 == text.indexOf('https://youtube.com/' ) ) {
+                    title = 'Video<span class="extra">: YouTube</span>';
+                } else {
+                    title = detectText(text, title);
+                }
+                break;
+            default:
+                //Text
+                title = detectText(text, title);
         }
-
-        //Check Text
-        title = detectText(text, title);
-
         $t.find('h4').html(title);
     };
 
     detectText = function( text, title ) {
 
-        //Remove urls
-        text = text.replace( /http\S+?<\/p>/g, '' );
-
         //Remove shortcodes
         text = text.replace( /\[.+]/gi, '' );
 
         //Removing HTML tags
-        text = $(text).text();
+        text = $('<p>' + text + '</p>').text();
 
         if ( text ) {
-            if ( 'Editor' == title ) {
-                if(text.length > 10) text = text.substring(0,14);
-                return 'Text<span class="extra">: ' + text + '...</span>';
-            }
-            return title;
+            if (text.length > 10) text = text.substring(0, 14);
+            return 'Text<span class="extra">: ' + text + '...</span>';
         } else {
             return title;
         }

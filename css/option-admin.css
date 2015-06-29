@@ -90,23 +90,18 @@ span.logo img {
     display: none
 }
 
-.button.pootle:hover {
-    background: #e04025;
-    color: #fff;
-}
 /* Welcome Page */
 .ppb-badge {
     float: right;
     width: 250px;
     height: 70px;
-    margin: 20px 0 0;
+    margin: 0;
     text-align: center;
-    background: #ef4832;
     color: white;
     position: absolute;
-    top: 0;
+    top: -5px;
     right: 0;
-    background: #ef4832 url(images/pootle-logo.png) center/contain no-repeat;
+    background: url(images/pootle-logo.png) center/contain no-repeat;
 }
 
 .ppb-badge .dashicons {

@@ -116,7 +116,7 @@ final class Pootle_Page_Builder extends Pootle_Page_Builder_Abstract {
 			$username = " {$current_user->user_firstname}";
 		}
 
-		$welcome_message = "<b>Hey{$username}! Welcome to Page builder.</b> You're all set to start building stunning pages!<br><a class='button pootle' href='" . admin_url( '/admin.php?page=page_builder_home' ) . "'>Get started</a>";
+		$welcome_message = "<b>Hey{$username}! Welcome to Page builder.</b> You're all set to start building stunning pages!<br><a class='button pootle' href='" . admin_url( '/admin.php?page=page_builder' ) . "'>Get started</a>";
 
 		ppb_add_admin_notice( 'welcome', $welcome_message, 'updated pootle' );
 	}
